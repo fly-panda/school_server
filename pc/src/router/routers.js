@@ -114,22 +114,6 @@ export default [
                             title: '编辑表单'
                         },
                         component: () => import('@/views/page/editor/editorForm.vue')
-                    },
-                    {
-                        path: '/settingEditorForm',
-                        name: 'settingEditorForm',
-                        meta: {
-                            title: '表单设置'
-                        },
-                        component: () => import('@/views/page/editor/settingEditorForm.vue')
-                    },
-                    {
-                        path: '/publishForm',
-                        name: 'publishForm',
-                        meta: {
-                            title: '表单发布'
-                        },
-                        component: () => import('@/views/page/editor/publishForm.vue')
                     }
                 ]
             }

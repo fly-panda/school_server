@@ -12,25 +12,25 @@
         </Modal>
         <draggable element="ul" :clone="cloneData" v-model="formList" :options="dragOptions1" @end="getResult">
             <transition-group type="transition" class="baseContainer" tag="div" :name="'flip-list'">
-                <div v-for="(item, index) in formList" :key="item.obj.type + index" class="baseItem">{{item.obj.label}}</div>
+                <div v-for="item in formList" :key="item.obj.type" class="baseItem">{{item.obj.label}}</div>
             </transition-group>
         </draggable>
         <div class="title">功能控件</div>
          <draggable element="ul" :clone="cloneData" v-model="featureList" :options="dragOptions1" @end="getResult">
             <transition-group type="transition" class="baseContainer" tag="div" :name="'flip-list'">
-                <div v-for="(item, index) in featureList" :key="item.obj.type + index" class="featureItem">{{item.obj.label}}</div>
+                <div v-for="(item, index) in featureList" :key="index" class="featureItem">{{item.obj.label}}</div>
             </transition-group>
         </draggable>
         <div class="title">打分控件</div>
          <draggable element="ul" :clone="cloneData" v-model="gradesList" :options="dragOptions1" @end="getResult">
             <transition-group type="transition" class="baseContainer" tag="div" :name="'flip-list'">
-                <div v-for="(item, index) in gradesList" :key="item.obj.type + index" class="featureItem">{{item.obj.label}}</div>
+                <div v-for="item in gradesList" :key="item.obj.type" class="featureItem">{{item.obj.label}}</div>
             </transition-group>
         </draggable>
     </div>
     <Form ref="formValidate" style="height: 730px;overflow: scroll;margin-top: 30px"  class="b-a" :model="formData" label-position="top" @submit.native.prevent>
         <div class="saveContainer">
-            <div @click="previewForm">
+            <div>
                 <img style="width: 16px; height: 28px" src="@/assets/ico_preview.png" alt="">
                 <span>预览</span>
             </div>
@@ -43,11 +43,9 @@
             <div class="setTitle" style="padding: 15px" v-if="setTitleStatus" ><Input @input="changeTitle" @on-blur="setFormTitle" type="text" v-model="formTitle"></Input></div>
             <div style="padding: 15px"  @dblclick="setFormTitle" v-if="!setTitleStatus" class="setTitle">{{formTitle}}<span style="color:#979797">(双击修改)</span></div>
         </FormItem>
-        <vue-editor  style="padding: 15px;" v-model="content"></vue-editor>
-
         <draggable element="div" v-model="sortable_item" :options="dragOptions2"  @update="moveEnd">
             <transition-group name="no" class="editorArea" tag="div">
-                <renders @handleRemoveEle="removeEle" :curIndex="curIndex" @setIndex="setIndexFun" v-for="(element,index) in sortable_item" :key="element.obj.type + index"  :index="index" :ele="element.ele" :obj="element.obj || {}" :sortableItem="sortable_item" :config-icon="true">
+                <renders @handleRemoveEle="removeEle" :curIndex="curIndex" @setIndex="setIndexFun" v-for="(element,index) in sortable_item" :key="index" :index="index" :ele="element.ele" :obj="element.obj || {}" :sortableItem="sortable_item" :config-icon="true">
                 </renders>
             </transition-group>
         </draggable>
@@ -58,6 +56,9 @@
             <FormItem v-if="!(settingFormItem.type == 'describe')" label="控件名称" prop="label">
                 <Input type="text" v-model="settingFormItem.label"></Input>
             </FormItem>
+            <!-- <FormItem v-if="!(settingFormItem.type == 'describe')" label="属性名" prop="name">
+                <Input type="text" v-model="settingFormItem.name"></Input>
+            </FormItem> -->
             <FormItem v-if="!['datepicker', 'score', 'uploads', 'trueFalse', 'radio', 'checkbox', 'address', 'uploadimg', 'selectstudent', 'describe', 'title', 'selectgrade', 'selectdepartment', 'selectteacher', 'slider', 'download', 'selectcontact'].includes(settingFormItem.type)" label="默认值" prop="placeholder">
                 <Input type="text" v-model="settingFormItem.placeholder"></Input>
             </FormItem>
@@ -91,6 +92,16 @@
                     <Option v-for="item in verifyList" :value="item.dKey" :key="item.dKey">{{ item.dValue }}</Option>
                 </Select>
             </FormItem>
+            <!-- <FormItem label="选择上传类型"  v-if="settingFormItem.type==='uploads'" prop="uploads">
+                <Select v-model="settingFormItem.updateType" size="small" style="width:100px">
+                    <Option v-for="item in settingFormItem.updateTypeList" :value="item.dKey" :key="item.dKey">{{ item.dValue }}</Option>
+                </Select>
+            </FormItem> -->
+            <!-- <FormItem label="选择时间格式"  v-if="settingFormItem.type==='datepicker'" prop="datepicker">
+                <Select v-model="settingFormItem.format" size="small" style="width:100px">
+                    <Option v-for="item in formatList" :value="item.dKey" :key="item.dKey">{{ item.dValue }}</Option>
+                </Select>
+            </FormItem> -->
             <FormItem label="选择需要选择的年级范围"  v-if="settingFormItem.type==='selectgrade'">
                 <Button type="primary" ghost long size="small" @click="changeModal">点击选择年级范围</Button>
             </FormItem>
@@ -107,7 +118,7 @@
                 <span style="display:block;margin-left:15px; margin-top: 15px">选项配置</span>
                 <draggable element="div" v-model="settingFormItem.items">
                     <transition-group name="no" tag="div">
-                        <FormItem style="border: none" v-for="(SelectItem, index) in settingFormItem.items" :key="SelectItem.label_name + index">
+                        <FormItem style="border: none" v-for="(SelectItem, index) in settingFormItem.items" :key="index">
                             <Row>
                                 <Col span="9" v-if="false">
                                 <Input type="text" v-model="SelectItem.label_value" placeholder="请输入选择项的ID"></Input>
@@ -138,7 +149,7 @@
                 <span style="display:block;margin-left:15px; margin-top: 15px">选项内容</span>
                 <draggable element="div" v-model="settingFormItem.items">
                     <transition-group name="no" tag="div">
-                        <FormItem style="border: none" v-for="(SelectItem, index) in settingFormItem.items" :key="SelectItem.label_value + index">
+                        <FormItem style="border: none" v-for="(SelectItem, index) in settingFormItem.items" :key="index">
                             <Row>
                                 <Col span="9">
                                 <Input type="text" v-model="SelectItem.label_value" placeholder="请输入选择项的ID"></Input>
@@ -170,6 +181,7 @@
                 </FormItem>
             </div>
             <div v-if="settingFormItem.type =='slider'">
+                <!-- style="border: none" -->
                 <FormItem  label="选项内容">
                     <RadioGroup v-model="settingFormItem.gradesType">
                         <Radio label="add">加分</Radio>
@@ -217,6 +229,14 @@
                         <Checkbox class="checkboxItem" label="time">时间</Checkbox>
                     </CheckboxGroup>
                 </FormItem>
+             <!-- <FormItem v-if="settingFormItem.type =='title'" label="调整字体大小">
+                    <Rate v-model="settingFormItem.level" character="A" />
+            </FormItem> -->
+           
+            <!-- <FormItem>
+                <Button type="primary" @click="handleSubmit('formCustom')">保存</Button>
+                <Button @click="handleReset('formCustom')" style="margin-left: 8px">重置</Button>
+            </FormItem> -->
         </Form>
     </div>
 
@@ -234,14 +254,9 @@ import selectStudentForm from "../container/selectStudentForm";
 import selectTeacherForm from "../container/selectTeacherForm";
 import selectDepartmentForm from "../container/selectDepartmentForm";
 import Axios from 'axios'
-import { VueEditor } from "vue2-editor";
-console.log(formList)
-console.log(featureList)
-console.log(gradesList)
 export default {
     data() {
         return {
-            content: '<h1> 富文本编辑器</h1>',
             formTitle: '未命名表单',
             setTitleStatus: false,
             isDragging: false,
@@ -289,8 +304,7 @@ export default {
         selectGradeForm,
         selectStudentForm,
         selectTeacherForm,
-        selectDepartmentForm,
-        VueEditor
+        selectDepartmentForm
     },
     computed: {
         // 拖拽表单1
@@ -323,26 +337,19 @@ export default {
             return this.sortable_item[this.curIndex]?this.sortable_item[this.curIndex]['obj']['label']: ''
         },
         getModalContent(){
+            console.log(this.sortable_item[this.curIndex] && this.sortable_item[this.curIndex]['obj']['modal']?this.sortable_item[this.curIndex]['obj']['modal']: 'Input')
             return this.sortable_item[this.curIndex] && this.sortable_item[this.curIndex]['obj']['modal']?this.sortable_item[this.curIndex]['obj']['modal']: 'Input'
         }
     },
 
     methods: {
-        // 预览效果
-        previewForm(){
-            let cur_modal = this.$store.state.preview
-            cur_modal.curtime = new Date().getTime()
-            cur_modal.status = true
-            cur_modal.data = this.sortable_item
-            this.$store.commit('previewStatus', cur_modal)
-        },
         saveSoltItem(){
             let formObj = {}
             formObj.title = this.formTitle
             formObj.data = this.sortable_item
             Axios({
                 method: 'post',
-                url: `/cformApi/addForm`,
+                url: `http://127.0.0.1:8848/api/cform/addForm?objectid=EzQ319HuHN8done&objType=2&userid=nHoIlS9HDYodone`,
                 data: formObj
                 // headers: {
                 //     userId: this.$store.state.user.userId
@@ -360,7 +367,6 @@ export default {
         },
         handleSelectRes(result){
             this.modalStatus = false;
-            this.sortable_item[this.curIndex]['items'] = result
         },
         changeModal(){
             this.modalStatus = true

@@ -1,12 +1,10 @@
 export default {
   state: {
     curtime: '',
-    data: '',
     type: '',
     title: '',
     url: '',
     status: '',
-    width: '400',
     component: ''
   },
   getters: {
@@ -19,8 +17,6 @@ export default {
       state.url = param.url
       state.status = param.status
       state.component = param.component
-      state.width = param.width || 400
-      state.data = param.data
     }
   },
   actions: {

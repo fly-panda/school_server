@@ -4,7 +4,7 @@
         <Input suffix="ios-search" placeholder="请输入搜索内容" size="small" style="width: auto" />
         <span  @click="exportData(1)">导出Excel</span>
     </div>
-    <Table @on-row-click="rowClick" :columns="columns8" :data="data7" size="small" ref="table"></Table>
+    <Table :columns="columns8" :data="data7" size="small" ref="table"></Table>
     <!-- <Button type="primary" size="large" @click="exportData(1)"><Icon type="ios-download-outline"></Icon> Export source data</Button>
     <Button type="primary" size="large" @click="exportData(2)"><Icon type="ios-download-outline"></Icon> Export sorting and filtered data</Button>
     <Button type="primary" size="large" @click="exportData(3)"><Icon type="ios-download-outline"></Icon> Export custom data</Button> -->
@@ -12,7 +12,6 @@
 
 </template>
 <script>
-    
     export default {
         data () {
             return {
@@ -158,28 +157,7 @@
                 ]
             }
         },
-        components: {
-            
-        },
         methods: {
-            rowClick(curObj){
-                let cur_modal = this.$store.state.modal
-                cur_modal.curtime = new Date().getTime()
-                cur_modal.status = true
-                cur_modal.component = 'FailForm'
-                cur_modal.title = '表单信息'
-                cur_modal.data = curObj
-                cur_modal.width = 850
-                this.$store.commit('modalStatus', cur_modal)
-            },
-            cancelModal() {
-                let cur_modal = this.$store.state.modal
-                cur_modal.curtime = new Date().getTime()
-                cur_modal.status = false
-                cur_modal.data = {}
-                cur_modal.component = 'Input'
-                this.$store.commit('modalStatus', cur_modal)
-            },
             exportData (type) {
                 if (type === 1) {
                     this.$refs.table.exportCsv({

@@ -20,22 +20,36 @@
                 <Checkbox style="float: left; margin-left: 30px" :indeterminate="indeterminate" :value="checkAll" @click.prevent.native="handleCheckAll">全选</Checkbox>
             </Row>
             <div>
-                <CheckboxGroup size="large" class="positionColumn" v-model="checkAllGroup" @on-change="checkAllGroupChange">
+                <CheckboxGroup size="large" class="positionColumn" v-model="studentList" @on-change="checkAllGroupChange">
                     <Checkbox v-for="item in studentList" :key="item.id" class="checkboxItem" :label="item.id"><span>{{item.name}}</span></Checkbox>
                 </CheckboxGroup>
             </div>
-
+           
         </div>
         <div style="display: flex;flex-direction: column;padding-top: 17px">
             <Row style="border-bottom: 1px solid #e9e9e9;margin-bottom:6px;display: flex; align-items: center; justify-content:center">
-                <Button @click="removeAll" size="small" type="text" style="color: #63a854;border:none" icon="md-trash">删除全部</Button>
+                <Button size="small" type="ghost" style="color: #63a854;border:none" icon="md-trash">删除全部</Button>
             </Row>
             <div>
-                <div class="studentItem" v-for="(selectItem , index)  in studentItemSelect" :key="selectItem.id">
-                    <div>{{selectItem.name}}</div>
-                    <div @click="removeStudentItem(index)">
-                        <Icon color="red" size="18" type="md-close-circle" />
-                    </div>
+                <div class="studentItem">
+                    <div>易恒</div>
+                    <div><Icon color="red" size="18" type="md-close-circle" /></div>
+                </div>
+                <div class="studentItem">
+                    <div>易恒</div>
+                    <div><Icon color="red" size="18" type="md-close-circle" /></div>
+                </div>
+                <div class="studentItem">
+                    <div>易恒</div>
+                    <div><Icon color="red" size="18" type="md-close-circle" /></div>
+                </div>
+                <div class="studentItem">
+                    <div>易恒</div>
+                    <div><Icon color="red" size="18" type="md-close-circle" /></div>
+                </div>
+                <div class="studentItem">
+                    <div>易恒</div>
+                    <div><Icon color="red" size="18" type="md-close-circle" /></div>
                 </div>
             </div>
         </div>
@@ -89,21 +103,16 @@ export default {
             studentList: [{
                 id: 0,
                 name: '小明'
-            }, {
+            },{
                 id: 1,
                 name: '小红'
-            }, {
-                id: 2,
+            },{
+                id: 0,
                 name: '小青'
-            }],
-            studentItemSelect: []
+            }]
         }
     },
     methods: {
-        removeAll(){
-            this.studentItemSelect = []
-            this.checkAllGroup = []
-        },
         handleCheckAll() {
             if (this.indeterminate) {
                 this.checkAll = false;
@@ -113,34 +122,17 @@ export default {
             this.indeterminate = false;
 
             if (this.checkAll) {
-                let studentItemIdList = []
-                this.studentList.map((item, index)=>{
-                    studentItemIdList.push(item.id)
-                })
-                this.checkAllGroup = studentItemIdList
-                this.studentItemSelect = this.studentList;
+                // let idList = []
+                // this.studentList.map((item)=>{
+
+                // })
+                // this.checkAllGroup = this.studentList;
+                this.checkAllGroup = ['0'];
             } else {
-                this.removeAll()
+                this.checkAllGroup = [];
             }
         },
-        removeStudentItem(index){
-            console.log(this.checkAllGroup)
-            this.checkAllGroup.splice(index, 1)
-            this.studentItemSelect.splice(index, 1)
-        },
         checkAllGroupChange(data) {
-            this.studentItemSelect = []
-            let studentItemIdList = []
-            this.studentItemSelect.map((item, index)=>{
-                studentItemIdList.push(item.id)
-            })
-            this.studentList.map((item)=>{
-                if(data.includes(item.id) && !studentItemIdList.includes(item.id)){
-                    this.studentItemSelect.push(item)
-                }
-            })
-            
-            this.studentItemSelect
             if (data.length === this.studentList.length) {
                 this.indeterminate = false;
                 this.checkAll = true;
@@ -153,7 +145,7 @@ export default {
             }
         },
         submitResut() {
-            this.$emit('handleselect', this.studentItemSelect);
+            this.$emit('handleselect', this.checkAllGroup);
         },
         seearchPeople() {
             console.log(1)
@@ -169,12 +161,10 @@ export default {
     .positionColumn {
         display: flex;
         flex-direction: column;
-
-        .checkboxItem {
+        .checkboxItem{
             margin: 15px;
         }
     }
-
     .searchContainer {
         display: flex;
         align-items: center;
@@ -218,8 +208,7 @@ export default {
             border-right: none;
         }
     }
-
-    .studentItem {
+    .studentItem{
         height: 38px;
         line-height: 38px;
         display: flex;
