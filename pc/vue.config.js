@@ -14,7 +14,6 @@ const resolve = dir => {
 const BASE_URL = process.env.NODE_ENV === 'production' ?
     '/static' :
     '/'
-
     loader: 'less-loader',
 module.exports = {
     // Project deployment base
@@ -25,7 +24,7 @@ module.exports = {
     // https://www.foobar.com/my-app/
     // then change this to '/my-app/'
     baseUrl: BASE_URL,
-    outputDir: 'dist',
+    outputDir: 'static',
     // tweak internal webpack configuration.
     // see https://github.com/vuejs/vue-cli/blob/dev/docs/webpack.md
     // 如果你不需要使用eslint，把lintOnSave设为false即可
@@ -47,7 +46,7 @@ module.exports = {
     productionSourceMap: true,
     // 这里写你调用接口的基础路径，来解决跨域，如果设置了代理，那你本地开发环境的axios的baseUrl要写为 '' ，即空字符串
     devServer: {
-        port: 8888,
+        port: 8080,
         proxy: {
             '/api': {
                 target: 'http://47.93.156.129:8848',

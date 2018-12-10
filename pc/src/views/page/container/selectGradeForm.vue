@@ -1,15 +1,16 @@
 <template>
-<div class="checkContainer">
+<div class="checkContainer" :style="btnStatus === 'none'?{'min-height': '180px'}: null">
     <!-- :load-data="loadData" -->
     <Tree ref="tree" :data="data3"  show-checkbox></Tree>
     <div class="flexCenter">
-        <Button type="primary" @click="submitResut">确定</Button>
+        <Button v-if="!btnStatus === 'none'" type="primary" @click="submitResut">确定</Button>
     </div>
 </div>
 </template>
 
 <script>
 export default {
+    props: ['btnStatus'],
     data() {
         return {
             data3: [{

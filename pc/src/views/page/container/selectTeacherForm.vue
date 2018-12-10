@@ -145,10 +145,9 @@ export default {
 }
 </script>
 
-<style lang="less">
+<style lang="less" scoped>
 .checkContainer {
     min-height: 400px;
-
     .positionColumn {
         display: flex;
         flex-direction: column;

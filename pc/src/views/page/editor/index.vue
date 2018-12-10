@@ -21,8 +21,10 @@ export default {
         return {}
     },
     methods: {
-        changeRoure(){
-            console.log(1111)
+        changeRoure(name){
+            this.$router.push({
+                name
+            })
         }
     }
 }

@@ -10,6 +10,9 @@ import 'iview/dist/styles/iview.css'
 import '@/my_theme/index.less'
 import '@/my_theme/base.less'
 
+import VueClipboards from 'vue-clipboard2'
+// 复制功能
+Vue.use(VueClipboards);
 Vue.use(iView, {
     i18n: (key, value) => i18n.t(key, value)
 })

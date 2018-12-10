@@ -29,11 +29,12 @@
             </Menu>
         </Header>
         <Content :style="{height: '100%'}">
-            <Modal v-model="modalStatus"  :title="madalTitle" footer-hide @on-cancel="cancelModal()">
+            <Modal :width="getWidth" v-model="modalStatus"  :title="madalTitle" footer-hide @on-cancel="cancelModal()">
                 <component v-bind:is="currentView"></component>
             </Modal>
             <router-view />
         </Content>
+        <previewForm/>
         <!-- <Footer class="layout-footer-center">2011-2016 &copy; TalkingData</Footer> -->
     </Layout>
 </div>
@@ -41,14 +42,20 @@
 
 <script>
 import SubmitList from '_c/submitList'
+import FailForm from '@/views/page/container/fail_form'
+import previewForm from '@/views/page/editor/preview'
 export default {
     components: {
-        SubmitList
+        SubmitList,
+        FailForm,
+        previewForm
     },
     data() {
         return {
             madalTitle: '',
             modalStatus: false,
+            previewStatus: false,
+            previewData: {},
             currentView: 'Input'
         }
     },
@@ -67,8 +74,14 @@ export default {
         }
     },
     computed: {
+        getPreview () {
+            return this.$store.state.preview.curtime
+        },
         getModal () {
             return this.$store.state.modal.curtime
+        },
+        getWidth () {
+            return this.$store.state.modal.width
         }
     },
     watch: {
@@ -76,6 +89,11 @@ export default {
             this.modalStatus = this.$store.state.modal.status
             this.currentView = this.$store.state.modal.component
             this.madalTitle = this.$store.state.modal.title
+        },
+        getPreview () {
+            console.log(this.$store.state.preview.status)
+            this.previewStatus = this.$store.state.preview.status
+            this.previewData = this.$store.state.preview.data
         }
     }
 }
