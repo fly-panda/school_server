@@ -10,6 +10,9 @@ import 'iview/dist/styles/iview.css'
 import '@/my_theme/index.less'
 import '@/my_theme/base.less'
 
+import api from './common/js/index'
+Vue.prototype.$api = api;
+
 Vue.use(iView, {
     i18n: (key, value) => i18n.t(key, value)
 })

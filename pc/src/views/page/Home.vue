@@ -6,24 +6,24 @@
                 <div class="layout-logo"></div>
                 <div class="layout-nav">
                     <MenuItem name="home">
-                    <Icon type="ios-navigate"></Icon>
+                    <!-- <Icon type="ios-navigate"></Icon> -->
                     我的发布
                     </MenuItem>
                     <MenuItem name="myTask">
-                    <Icon type="ios-keypad"></Icon>
+                    <!-- <Icon type="ios-keypad"></Icon> -->
                     我的任务
                     </MenuItem>
                     <MenuItem name="duplicate">
-                    <Icon type="ios-analytics"></Icon>
+                    <!-- <Icon type="ios-analytics"></Icon> -->
                     我的抄送
                     </MenuItem>
                     <MenuItem name="publicTemp">
-                    <Icon type="ios-paper"></Icon>
+                    <!-- <Icon type="ios-paper"></Icon> -->
                     公共模板
                     </MenuItem>
                     <MenuItem name="editor">
-                    <Icon type="ios-paper"></Icon>
-                    新建任务
+                    <!-- <Icon type="ios-paper"></Icon> -->
+                        <button class="add-cls">新建任务</button>    
                     </MenuItem>
                 </div>
             </Menu>
@@ -103,8 +103,9 @@ export default {
 }
 
 .layout-nav {
-    width: 70%;
+    // width: 70%;
     margin: 0 auto;
+        float: right;
     margin-right: 20px;
 }
 
@@ -118,5 +119,19 @@ export default {
 
 .ivu-menu-dark {
     background: transparent
+}
+.add-cls{
+    background: #5DB75D;
+    border: 1px solid #5DB75D;
+    border-radius: 1px;
+    font-family: PingFang-SC-Medium;
+    color: #FFFFFF;
+    letter-spacing: 0.84px;
+    width: 104px;
+    height: 33px;
+    line-height: 33px;
+    margin-top: 13px;
+    outline: none;
+    cursor: pointer;
 }
 </style>

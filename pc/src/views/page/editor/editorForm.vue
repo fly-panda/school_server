@@ -31,11 +31,11 @@
     <Form ref="formValidate" style="height: 730px;flex:1;overflow-y: scroll;margin: 30px 121px;"  class="b-a" :model="formData" label-position="top" @submit.native.prevent>
         <div class="saveContainer">
             <div>
-                <img style="width: 16px; height: 28px" src="@/assets/ico_preview.png" alt="">
+                <img src="@/assets/ico_preview.png" alt="">
                 <span>预览</span>
             </div>
             <div @click="saveSoltItem">
-                <img style="width: 16px; height: 28px" src="@/assets/ico_save.png" alt="">
+                <img src="@/assets/ico_save.png" alt="">
                 <span>保存</span>
             </div>
         </div>
@@ -341,23 +341,28 @@ export default {
             return this.sortable_item[this.curIndex] && this.sortable_item[this.curIndex]['obj']['modal']?this.sortable_item[this.curIndex]['obj']['modal']: 'Input'
         }
     },
-
     methods: {
         saveSoltItem(){
             let formObj = {}
             formObj.title = this.formTitle
-            formObj.data = this.sortable_item
-            Axios({
-                method: 'post',
-                url: `http://127.0.0.1:8848/api/cform/addForm?objectid=EzQ319HuHN8done&objType=2&userid=nHoIlS9HDYodone`,
-                data: formObj
-                // headers: {
-                //     userId: this.$store.state.user.userId
-                // }
-            }).then(res => {
-                console.log(res)
-            })
-            console.log(this.sortable_item)
+            formObj.data = this.sortable_item;
+            this.$api.post("/cform/addForm",
+                formObj,
+                r=>{
+                    console.log(r)
+                }
+            )
+            // Axios({
+            //     method: 'post',
+            //     url: `http://47.93.156.129:8848/api/cform/addForm?objectid=EzQ319HuHN8done&objType=2&userid=nHoIlS9HDYodone`,
+            //     data: formObj
+            //     // headers: {
+            //     //     userId: this.$store.state.user.userId
+            //     // }
+            // }).then(res => {
+            //     console.log(res)
+            // })
+            // console.log(this.sortable_item)
         },
         changeTitle(title){
             this.formTitle = title
@@ -477,7 +482,7 @@ export default {
         height: 50px;
         position: absolute;
         top: 153px;
-        right: 329px;
+        right: 273px;
         display: flex;
         z-index: 1000;
         justify-content: space-between;
@@ -514,7 +519,7 @@ export default {
         height: 87%;
         overflow-y: scroll;
         background: #F1F1F1;
-     
+        padding-bottom:30px;
 
         .title {
             background: #d8d8d8;
@@ -611,7 +616,10 @@ export default {
     cursor: pointer !important;
     margin-right: 5px;
 }
-
+.saveContainer img{
+    width: 24px; height: 28px;
+    cursor: pointer;
+}
 
 </style>
 
