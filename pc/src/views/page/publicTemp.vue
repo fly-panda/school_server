@@ -33,7 +33,7 @@ export default {
 .publish-content {
     width: 100%;
     height: 100%;
-    padding: 10px 215px;
+    padding: 10px 50px;
     display: flex;
     flex-wrap: wrap;
     align-items: flex-start;

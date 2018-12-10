@@ -2,7 +2,7 @@
 <div class="my-publish-container">
     <Menu 
     mode="horizontal" 
-     style="padding: 0 215px;" 
+    style="padding-left: 50px;" 
     theme="light" 
     active-name="allTask"
     @on-select="changeRoure">

@@ -1,5 +1,5 @@
 <template>
-<div class="publish-content" style="padding: 0 215px;">
+<div class="publish-content">
     <div class="addTemp" @click="addTempFun()">
         +
     </div>

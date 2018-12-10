@@ -28,15 +28,14 @@
             </transition-group>
         </draggable>
     </div>
-    <Form ref="formValidate" style="height: 730px;flex:1;margin:27px 127px;"  class="b-a" :model="formData" label-position="top" @submit.native.prevent>
+    <Form ref="formValidate" style="height: 730px;overflow: scroll;margin-top: 30px"  class="b-a" :model="formData" label-position="top" @submit.native.prevent>
         <div class="saveContainer">
             <div>
-                
-                <img src="@/assets/ico_preview.png" alt="">
+                <img style="width: 16px; height: 28px" src="@/assets/ico_preview.png" alt="">
                 <span>预览</span>
             </div>
             <div @click="saveSoltItem">
-                <img src="@/assets/ico_save.png" alt="">
+                <img style="width: 16px; height: 28px" src="@/assets/ico_save.png" alt="">
                 <span>保存</span>
             </div>
         </div>
@@ -348,17 +347,16 @@ export default {
             let formObj = {}
             formObj.title = this.formTitle
             formObj.data = this.sortable_item
-            console.log(formObj)
-            // Axios({
-            //     method: 'post',
-            //     url: `http://127.0.0.1:8848/api/cform/addForm?objectid=EzQ319HuHN8done&objType=2&userid=nHoIlS9HDYodone`,
-            //     data: formObj
-            //     // headers: {
-            //     //     userId: this.$store.state.user.userId
-            //     // }
-            // }).then(res => {
-            //     console.log(res)
-            // })
+            Axios({
+                method: 'post',
+                url: `http://127.0.0.1:8848/api/cform/addForm?objectid=EzQ319HuHN8done&objType=2&userid=nHoIlS9HDYodone`,
+                data: formObj
+                // headers: {
+                //     userId: this.$store.state.user.userId
+                // }
+            }).then(res => {
+                console.log(res)
+            })
             console.log(this.sortable_item)
         },
         changeTitle(title){
@@ -479,7 +477,7 @@ export default {
         height: 50px;
         position: absolute;
         top: 153px;
-        right: 273px;
+        right: 329px;
         display: flex;
         z-index: 1000;
         justify-content: space-between;
@@ -493,7 +491,6 @@ export default {
             justify-content: space-between;
             align-items: center;
             background: #fff;
-            cursor: pointer;
         }
     }
     .b-a{
@@ -513,7 +510,7 @@ export default {
         line-height: 18px;
     }
     .slide {
-        width: 254px;
+        width: 230px;
         height: 87%;
         overflow: scroll;
         background: #F1F1F1;
@@ -574,7 +571,7 @@ export default {
     }
 
     .editorArea {
-        // width: 630px;
+        width: 630px;
         height: 700px;
         background: #FFFFFF;
         overflow: auto !important;
@@ -614,9 +611,7 @@ export default {
     cursor: pointer !important;
     margin-right: 5px;
 }
-.saveContainer img{
-    width: 24; height: 28px;
-}
+
 
 </style>
 
