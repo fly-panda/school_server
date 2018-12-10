@@ -1,6 +1,6 @@
 <template>
 <div  class="my-editor-container">
-    <Menu mode="horizontal" style="padding-left: 50px;" theme="light" active-name="editorForm" @on-select="changeRoure">
+    <Menu mode="horizontal" style="padding:0 230px;" theme="light" active-name="editorForm" @on-select="changeRoure">
         <MenuItem name="editorForm">
         编辑表单
         </MenuItem>

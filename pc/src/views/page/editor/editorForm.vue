@@ -28,7 +28,7 @@
             </transition-group>
         </draggable>
     </div>
-    <Form ref="formValidate" style="height: 730px;overflow: scroll;margin-top: 30px"  class="b-a" :model="formData" label-position="top" @submit.native.prevent>
+    <Form ref="formValidate" style="height: 730px;flex:1;overflow-y: scroll;margin: 30px 121px;"  class="b-a" :model="formData" label-position="top" @submit.native.prevent>
         <div class="saveContainer">
             <div>
                 <img style="width: 16px; height: 28px" src="@/assets/ico_preview.png" alt="">
@@ -502,7 +502,7 @@ export default {
     .setTitle{
         margin-top: 11px;
         margin-left: 11px;
-        width: 100%;
+        // width: 100%;
         font-size: 18px;
         font-weight: 700;
         color: #363636;
@@ -510,9 +510,9 @@ export default {
         line-height: 18px;
     }
     .slide {
-        width: 230px;
+        width: 256px;
         height: 87%;
-        overflow: scroll;
+        overflow-y: scroll;
         background: #F1F1F1;
      
 
@@ -571,10 +571,10 @@ export default {
     }
 
     .editorArea {
-        width: 630px;
+        width: 100%;
         height: 700px;
         background: #FFFFFF;
-        overflow: auto !important;
+        overflow-y: auto !important;
         min-height: 400px;
         padding-bottom: 70px;
         .itemsForm {

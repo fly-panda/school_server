@@ -6,7 +6,7 @@
         </Breadcrumb> -->
     <Menu 
     mode="horizontal" 
-    style="padding-left: 50px;" 
+    style="padding:0 215px;" 
     theme="light" 
     active-name="cardformList"
     @on-select="changeRoure">
