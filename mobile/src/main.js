@@ -4,6 +4,8 @@ import Vue from 'vue'
 import App from './App'
 import router from './router'
 import fastClick from 'fastclick'
+import '../static/css/reset.css'
+import '../static/css/border.css'
 
 fastClick.attach(document.body)
 
