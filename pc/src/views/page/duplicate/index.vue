@@ -77,14 +77,14 @@ export default {
     .duplicate-title{
         height: 60px;
         background: #fff;
-        padding-left: 70px;
+        padding:0 215px;
         line-height: 60px;
         font-size: 14px;
     }
     .duplicate-content {
         width: 100%;
         height: 100%;
-        padding: 10px 70px;
+        padding: 10px 215px;
         .contentTop{
             height: 160px;
             display: flex;

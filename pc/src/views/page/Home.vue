@@ -1,29 +1,34 @@
 <template>
 <div class="layout">
     <Layout style="height: 100%;">
-        <Header style="background: #272A34; padding: 0 215px;">
+        <Header class="padding-cls" style="background: #272A34;">
             <Menu mode="horizontal" theme="dark" @on-select="changeRoure" active-name="1">
-                <div class="layout-logo"></div>
+                <div class="layout-logo">
+                    
+                </div>
                 <div class="layout-nav">
                     <MenuItem name="home">
-                    <Icon type="ios-navigate"></Icon>
+                    <!-- <Icon type="ios-navigate"></Icon> -->
                     我的发布
                     </MenuItem>
                     <MenuItem name="myTask">
-                    <Icon type="ios-keypad"></Icon>
+                    <!-- <Icon type="ios-keypad"></Icon> -->
                     我的任务
                     </MenuItem>
                     <MenuItem name="duplicate">
-                    <Icon type="ios-analytics"></Icon>
+                    <!-- <Icon type="ios-analytics"></Icon> -->
                     我的抄送
                     </MenuItem>
                     <MenuItem name="publicTemp">
-                    <Icon type="ios-paper"></Icon>
+                    <!-- <Icon type="ios-paper"></Icon> -->
                     公共模板
                     </MenuItem>
                     <MenuItem name="editor">
-                    <Icon type="ios-paper"></Icon>
-                    新建任务
+                    <!-- <Icon type="ios-paper"></Icon> -->
+                    
+                        <button type="button" class="add-btn">新建任务</button>
+                    
+                        
                     </MenuItem>
                 </div>
             </Menu>
@@ -118,5 +123,17 @@ export default {
 
 .ivu-menu-dark {
     background: transparent
+}
+.add-btn{
+    background: #5DB75D;
+    border: 1px solid #5DB75D;
+    border-radius: 1px;
+    width:104px;
+    height: 33px;
+    margin-top: 13px;
+    line-height: 33px;
+    color:#fff;
+    outline:none;
+    cursor: pointer;
 }
 </style>

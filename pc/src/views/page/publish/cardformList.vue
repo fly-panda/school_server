@@ -1,7 +1,7 @@
 <template>
-<div class="publish-content">
-    <CardForm v-for="item in cardList" :key="item.id" :cardItem="item" />
-</div>
+    <div class="publish-content" style="padding: 0 215px;">
+        <CardForm v-for="item in cardList" :key="item.id" :cardItem="item" />
+    </div>
 </template>
 
 <script>
