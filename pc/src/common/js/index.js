@@ -1,7 +1,7 @@
 // import md5 from 'js-md5';
 // 配置API接口地址
 var baseUrlRoot = 'http://47.93.156.129:8848/api/'
-
+import {Message} from 'iview';
 // 引用axios
 import axios from 'axios'
 
@@ -38,10 +38,19 @@ function apiAxios(method, url, params, success, failure) {
     timeout: 10000
   })
     .then(function (res) {
-        console.log(res)
+        let data=res.data;
+        if(res.status==200){
+          if(data.state==0){
+            Message.success(data.result);
+            success(data);
+          }else{
+            Message.error(data.result);
+          }   
+        }
+        
     })
     .catch(function (err) {
-        console.log(err)
+        Message.error("服务异常，请刷新重试！");
 
     })
 }

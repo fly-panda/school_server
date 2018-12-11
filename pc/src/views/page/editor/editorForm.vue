@@ -50,7 +50,7 @@
         </FormItem>
         
         <draggable element="div" v-model="sortable_item" :options="dragOptions2"  @update="moveEnd">
-            <transition-group name="no" class="editorArea" tag="div">
+            <transition-group name="no" class="editorArea" tag="div" style="margin-top: 60px;">
                 <renders @handleRemoveEle="removeEle"  :curIndex="curIndex" @setIndex="setIndexFun" v-for="(element,index) in sortable_item" :key="index" :index="index" :ele="element.ele" :obj="element.obj || {}" :sortableItem="sortable_item" :config-icon="true">
                 </renders>
                 <!-- @handleCopyEle="copyEle" -->
@@ -386,8 +386,10 @@ export default {
             let formObj = {}
             formObj.title = this.formTitle
             formObj.data = this.sortable_item;
+            formObj.describe = this.content;
             console.log(this.content)
             console.log(this.sortable_item)
+            console.log(JSON.stringify(formObj))
             // this.$api.post("/cform/addForm",
             //     formObj,
             //     r=>{
