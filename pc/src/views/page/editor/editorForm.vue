@@ -390,23 +390,12 @@ export default {
             console.log(this.content)
             console.log(this.sortable_item)
             console.log(JSON.stringify(formObj))
-            // this.$api.post("/cform/addForm",
-            //     formObj,
-            //     r=>{
-            //         console.log(r)
-            //     }
-            // )
-            // Axios({
-            //     method: 'post',
-            //     url: `http://47.93.156.129:8848/api/cform/addForm?objectid=EzQ319HuHN8done&objType=2&userid=nHoIlS9HDYodone`,
-            //     data: formObj
-            //     // headers: {
-            //     //     userId: this.$store.state.user.userId
-            //     // }
-            // }).then(res => {
-            //     console.log(res)
-            // })
-            // console.log(this.sortable_item)
+            this.$api.post("/cform/addForm",
+                formObj,
+                r=>{
+                    console.log(r)
+                }
+            )
         },
         changeTitle(title){
             this.formTitle = title

@@ -1,8 +1,6 @@
 <template>
 <div class="publish-content">
-    <div class="addTemp" @click="addTempFun()">
-        +
-    </div>
+    <div class="addTemp" @click="addTempFun()">+</div>
     <CardForm v-for="item in cardList" :key="item.id" :cardItem="item" />
 </div>
 </template>
