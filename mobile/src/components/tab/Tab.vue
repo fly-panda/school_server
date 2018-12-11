@@ -47,7 +47,7 @@ export default {
   color: #9b9b9b;
   display: flex;
   align-items: center;
-  padding: px2rem(20);
+  padding: 20px;
   background: #fff;
   box-sizing: border-box;
   .mr-35 {

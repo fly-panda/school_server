@@ -7,14 +7,16 @@ import Copy from '@/pages/copy/Copy'
 
 
 Vue.use(Router)
-
-export default new Router({
+const router = new Router({
   mode: 'history',
   routes: [
     {
       path: '/',
       name: 'Home',
       component: Home,
+      meta: {
+        title: '我的任务'
+      }
     },
     {
       path: '/history',
@@ -24,7 +26,10 @@ export default new Router({
     {
       path: '/task',
       name: 'Task',
-      component: Task
+      component: Task,
+      meta: {
+        title: '任务管理'
+      }
     },
     {
       path: '/copy',
@@ -33,3 +38,10 @@ export default new Router({
     }
   ]
 })
+
+router.beforeEach((to, from, next) => {
+  document.title = to.meta.title
+  next();
+})
+
+export default router

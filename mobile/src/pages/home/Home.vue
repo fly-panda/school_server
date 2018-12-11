@@ -1,54 +1,79 @@
 <template>
   <div class="home">
     <tab :tabData="tab" @toogleTab="toogleTab"></tab>
-    <ul
-      class="list current-list">
-      <li class="li-item" v-for="(item, index) of listData" :key="index">
-        <div class="yuan">
-          <img v-if="item.statu == '不合格'" src="../../assets/img/icon/yuan-timeout.png" alt>
-          <div v-else>
-            <img v-if="item.type == '单次任务'" src="../../assets/img/icon/yuan-once.png" alt>
-            <img v-if="item.type == '周任务'" src="../../assets/img/icon/yuan-week.png" alt>
+    <scroller use-pullup 
+              lock-x  
+              :pullup-config="pullupDefaultConfig" 
+              @on-pullup-loading="loadMore" 
+              ref="scrollerBottom" 
+              :height="lishH">
+      <ul class="list current-list" v-if="tabIndex == 0">
+        <li class="li-item" v-for="(item, index) of listData" :key="index">
+          <div class="yuan">
+            <img v-if="item.statu == '不合格'" src="../../assets/img/icon/yuan-timeout.png" alt>
+            <div v-else>
+              <img v-if="item.type == '单次任务'" src="../../assets/img/icon/yuan-once.png" alt>
+              <img v-if="item.type == '周任务'" src="../../assets/img/icon/yuan-week.png" alt>
+            </div>
           </div>
-        </div>
-        <div class="top">
-          <div class="title">{{ item.title }}</div>
-          <div class="type">{{ item.type }}</div>
-        </div>
-        <div class="user">发布人：{{ item.user }}</div>
-        <div class="bottom">
-          <div class="date">截止时间：{{ item.date }}</div>
-          <div class="statu" :class="{ 'time-out' : item.statu == '不合格' }">{{ item.statu }}</div>
-        </div>
-      </li>
-    </ul>
-    <ul class="list history-list" v-if="tabIndex == 1">
-      <li class="li-item" v-for="(item, index) of listData" :key="index">
-        <div class="top">
-          <div class="title">{{ item.title }}</div>
-          <div class="type">{{ item.type }}</div>
-        </div>
-        <div class="user">创建人：{{ item.user }}</div>
-        <div class="bottom">
-          <div class="date">截止时间：{{ item.date }}</div>
-          <div class="statu">{{ item.statu }}</div>
-        </div>
-      </li>
-    </ul>
+          <div class="top">
+            <div class="title">{{ item.title }}</div>
+            <div class="type">{{ item.type }}</div>
+          </div>
+          <div class="user">发布人：{{ item.user }}</div>
+          <div class="bottom">
+            <div class="date">截止时间：{{ item.date }}</div>
+            <div class="statu" :class="{ 'time-out' : item.statu == '不合格' }">{{ item.statu }}</div>
+          </div>
+        </li>
+      </ul>
+      <ul class="list history-list" v-if="tabIndex == 1">
+        <li class="li-item" v-for="(item, index) of listData" :key="index">
+          <div class="top">
+            <div class="title">{{ item.title }}</div>
+            <div class="type">{{ item.type }}</div>
+          </div>
+          <div class="user">创建人：{{ item.user }}</div>
+          <div class="bottom">
+            <div class="date">截止时间：{{ item.date }}</div>
+            <div class="statu">{{ item.statu }}</div>
+          </div>
+        </li>
+      </ul>
+    </scroller>
   </div>
 </template>
 
 <script>
+import { Scroller, Divider, Spinner, XButton, Group, Cell, LoadMore } from 'vux';
+import { TransferDomDirective as TransferDom } from 'vux'
+
 import Tab from "../../components/tab/Tab";
+
+
+
+const pullupDefaultConfig = {
+  content: "上拉加载更多",
+  pullUpHeight: 60,
+  height: 40,
+  autoRefresh: false,
+  downContent: "释放后加载",
+  upContent: "上拉加载更多",
+  loadingContent: "加载中...",
+  clsPrefix: "xs-plugin-pullup-"
+};
 
 export default {
   name: "Home",
   components: {
-    Tab
+    Tab,
+    Scroller
   },
   data() {
     return {
       tabIndex: 0,
+      lishH: '-53',
+      pullupDefaultConfig: pullupDefaultConfig,
       tab: [
         {
           title: "当前任务",
@@ -113,6 +138,13 @@ export default {
     toogleTab(...data) {
       this.tabIndex = data[0];
       console.log(data[0]);
+    },
+    // 加载更多
+    loadMore() {
+      console.log(111)
+      let data = this.listData
+      this.listData = data.concat(data)
+      console.log(this.listData)
     }
   },
   mounted() {}
@@ -125,7 +157,7 @@ export default {
   padding-bottom: 53px;
   .list {
     padding: 0 px2rem(20);
-    margin-top: px2rem(70);
+    margin-top: 70px;
     .li-item {
       margin-left: px2rem(10);
       margin-bottom: px2rem(10);
