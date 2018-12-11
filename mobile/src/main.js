@@ -4,8 +4,11 @@ import Vue from 'vue'
 import App from './App'
 import router from './router'
 import fastClick from 'fastclick'
-import '../static/css/reset.css'
-import '../static/css/border.css'
+import Mint from 'mint-ui'
+import './assets/styles/border.css'
+import './assets/styles/reset.css'
+
+Vue.use(Mint)
 
 fastClick.attach(document.body)
 
