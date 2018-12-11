@@ -82,6 +82,15 @@ export default {
 </script>
 
 <style lang="less" scoped>
+.ivu-menu-dark.ivu-menu-horizontal .ivu-menu-item, .ivu-menu-dark.ivu-menu-horizontal .ivu-menu-submenu{
+    color: #8195AD;
+}
+.ivu-menu-dark.ivu-menu-horizontal .ivu-menu-item-active, .ivu-menu-dark.ivu-menu-horizontal .ivu-menu-submenu-active, .ivu-menu-dark.ivu-menu-horizontal .ivu-menu-item:hover, .ivu-menu-dark.ivu-menu-horizontal .ivu-menu-submenu:hover{
+    color:#fff;
+}
+.ivu-menu-item{
+    font-size: 16px;
+}
 .layout {
     height: 100%;
     border: 1px solid #d7dde4;
@@ -105,8 +114,8 @@ export default {
 .layout-nav {
     // width: 70%;
     margin: 0 auto;
-        float: right;
-    margin-right: 20px;
+    float: left;
+    margin-left: 80px;
 }
 
 .layout-footer-center {

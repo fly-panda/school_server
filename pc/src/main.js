@@ -12,6 +12,9 @@ import '@/my_theme/base.less'
 
 import api from './common/js/index'
 Vue.prototype.$api = api;
+// 复制功能
+import VueClipboards from 'vue-clipboard2'
+Vue.use(VueClipboards);
 
 Vue.use(iView, {
     i18n: (key, value) => i18n.t(key, value)

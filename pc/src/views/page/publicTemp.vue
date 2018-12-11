@@ -1,7 +1,7 @@
 
 <template>
 <div class="publish-content">
-    <CardForm v-for="item in cardList" :key="item.id" :cardItem="item" />
+    <CardForm v-for="item in cardList" :key="item.id" :cardItem="item" :temp="temps"/>
 </div>
 </template>
 
@@ -13,6 +13,7 @@ export default {
     },
     data() {
         return {
+            temps:1,
             // status 0 结束 1为开启
             // type 0 simple 1week
             cardList: [{

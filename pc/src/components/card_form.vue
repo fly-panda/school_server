@@ -1,9 +1,11 @@
 <template>
 <div>
+
     <div class="cardform" v-if="cardItem.status==0">
+
         <div class="card-tag" :style="{background: cardItem.status==0?'#90e1ce': '#74aaf7'}">{{cardItem.tag_text}}</div>
         <div class="cardform-title">{{cardItem.title}}</div>
-        <img class="cardform-img" src='@/assets/logo.png'/>
+        <img class="cardform-img" src='@/assets/dancirenwu_ico.png'/>
         <!-- 根据状态可显示不同的图片 -->
         <!-- <img v-if="" class="cardform-img" src='@/assets/logo.png'/> -->
         <div class="cardform-submiteinfo-contioner">
@@ -30,7 +32,8 @@
     </div>
     <div class="cardform" v-if="cardItem.status == 1">
         <div class="cardform-title">{{cardItem.title}}</div>
-        <img class="cardform-img" src='@/assets/logo.png'/>
+        <img v-if="temp" class="cardform-img" src='@/assets/moban_ico.png'/>
+        <img v-if="!temp" class="cardform-img" src='@/assets/dancirenwu_ico.png'/>
         <!-- 根据状态可显示不同的图片 -->
         <!-- <img v-if="" class="cardform-img" src='@/assets/logo.png'/> -->
 
@@ -40,7 +43,8 @@
     </div>
     <div class="cardform" v-if="cardItem.status == 3">
         <div class="cardform-title">{{cardItem.title}}</div>
-        <img class="cardform-img" src='@/assets/logo.png'/>
+
+        <img class="cardform-img" src='@/assets/jieshurenwu_ico.png'/>
         <!-- 根据状态可显示不同的图片 -->
         <!-- <img v-if="" class="cardform-img" src='@/assets/logo.png'/> -->
 
@@ -53,7 +57,7 @@
 
 <script>
 export default {
-    props: ['cardItem'],
+    props: ['cardItem','temp'],
     data() {
         return {}
     }
@@ -71,7 +75,10 @@ export default {
     display: flex;
     flex-direction: column;
     align-items: center;
-
+    background: #FFFFFF;
+    border: 1px solid #C3C9CF;
+    border-radius: 5px;
+    cursor: pointer;
     .card-tag {
         background: #90e1ce;
         color: #fff;
@@ -126,8 +133,10 @@ export default {
     }
 
     .cardform-enddate {
-        font-size: 10px;
         text-align: center;
+        font-size: 14px;
+        color: #363636;
+        letter-spacing: 0.46px;
     }
 }
 </style>

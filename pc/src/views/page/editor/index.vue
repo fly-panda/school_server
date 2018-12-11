@@ -2,7 +2,7 @@
 <div  class="my-editor-container">
     <Menu mode="horizontal" style="padding:0 230px;" theme="light" active-name="editorForm" @on-select="changeRoure">
         <MenuItem name="editorForm">
-        编辑表单
+        编写表单
         </MenuItem>
         <MenuItem name="settingEditorForm">
         设置表单规则
@@ -21,8 +21,10 @@ export default {
         return {}
     },
     methods: {
-        changeRoure(){
-            console.log(1111)
+        changeRoure(name){
+            this.$router.push({
+                name
+            })
         }
     }
 }

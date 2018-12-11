@@ -30,14 +30,17 @@ export default {
     },
     methods: {
         addTempFun(){
-            let curID = this.cardList.length + 1
-            this.cardList.push(
-                {
-                    id: curID,
-                    status: 1,
-                    title: '卫生检查'
-                }
-            )
+            this.$router.push({
+                name:"editorForm"
+            })
+            // let curID = this.cardList.length + 1
+            // this.cardList.push(
+            //     {
+            //         id: curID,
+            //         status: 1,
+            //         title: '卫生检查'
+            //     }
+            // )
         }
     }
 }

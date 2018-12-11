@@ -28,9 +28,9 @@
             </transition-group>
         </draggable>
     </div>
-    <Form ref="formValidate" style="height: 730px;flex:1;overflow-y: scroll;margin: 30px 121px;"  class="b-a" :model="formData" label-position="top" @submit.native.prevent>
+    <Form ref="formValidate" style="max-height: 100%;flex:1;margin: 30px 121px;"  class="b-a" :model="formData" label-position="top" @submit.native.prevent>
         <div class="saveContainer">
-            <div>
+            <div @click="previewForm">
                 <img src="@/assets/ico_preview.png" alt="">
                 <span>预览</span>
             </div>
@@ -42,11 +42,18 @@
         <FormItem prop="label" >
             <div class="setTitle" style="padding: 15px" v-if="setTitleStatus" ><Input @input="changeTitle" @on-blur="setFormTitle" type="text" v-model="formTitle"></Input></div>
             <div style="padding: 15px"  @dblclick="setFormTitle" v-if="!setTitleStatus" class="setTitle">{{formTitle}}<span style="color:#979797">(双击修改)</span></div>
+            <!-- 富文本 -->
+            <VueEditor style="width: 90%;margin:0 auto;height:200px;"
+            @imageAdded="handleImageAdded"
+            :editorToolbar="customToolbar"
+            v-model="content"></VueEditor>
         </FormItem>
+        
         <draggable element="div" v-model="sortable_item" :options="dragOptions2"  @update="moveEnd">
             <transition-group name="no" class="editorArea" tag="div">
-                <renders @handleRemoveEle="removeEle" :curIndex="curIndex" @setIndex="setIndexFun" v-for="(element,index) in sortable_item" :key="index" :index="index" :ele="element.ele" :obj="element.obj || {}" :sortableItem="sortable_item" :config-icon="true">
+                <renders @handleRemoveEle="removeEle"  :curIndex="curIndex" @setIndex="setIndexFun" v-for="(element,index) in sortable_item" :key="index" :index="index" :ele="element.ele" :obj="element.obj || {}" :sortableItem="sortable_item" :config-icon="true">
                 </renders>
+                <!-- @handleCopyEle="copyEle" -->
             </transition-group>
         </draggable>
     </Form>
@@ -253,10 +260,21 @@ import selectGradeForm from "../container/selectGradeForm";
 import selectStudentForm from "../container/selectStudentForm";
 import selectTeacherForm from "../container/selectTeacherForm";
 import selectDepartmentForm from "../container/selectDepartmentForm";
-import Axios from 'axios'
+import { VueEditor } from "vue2-editor";
 export default {
     data() {
         return {
+            content: '<h1> 富文本编辑器</h1>',
+            content:'',
+            customToolbar:[
+                    ['bold', 'italic', 'underline'],
+                    [{'align':''},{'align':'center'},{'align':'right'}],
+                    [{ 'list': 'ordered'}, { 'list': 'bullet' }, { 'list': 'check' }],
+                    [{'background':[]},{'color':[]}],
+                    ['image','link'],
+                    ['strike'],
+                    ['clean'],
+            ],//更多工具栏选项在下面
             formTitle: '未命名表单',
             setTitleStatus: false,
             isDragging: false,
@@ -304,7 +322,8 @@ export default {
         selectGradeForm,
         selectStudentForm,
         selectTeacherForm,
-        selectDepartmentForm
+        selectDepartmentForm,
+        VueEditor
     },
     computed: {
         // 拖拽表单1
@@ -337,21 +356,44 @@ export default {
             return this.sortable_item[this.curIndex]?this.sortable_item[this.curIndex]['obj']['label']: ''
         },
         getModalContent(){
-            console.log(this.sortable_item[this.curIndex] && this.sortable_item[this.curIndex]['obj']['modal']?this.sortable_item[this.curIndex]['obj']['modal']: 'Input')
+            // console.log(this.sortable_item[this.curIndex] && this.sortable_item[this.curIndex]['obj']['modal']?this.sortable_item[this.curIndex]['obj']['modal']: 'Input')
             return this.sortable_item[this.curIndex] && this.sortable_item[this.curIndex]['obj']['modal']?this.sortable_item[this.curIndex]['obj']['modal']: 'Input'
         }
     },
+    mounted(){
+        console.log(this.sortable_item)
+    },
     methods: {
+                // 预览效果
+        previewForm(){
+            // let cur_modal = this.$store.state.preview
+            // console.log(new Date().getTime())
+            // cur_modal.curtime = new Date().getTime()
+            // cur_modal.status = true
+            // cur_modal.data = this.sortable_item
+            // this.$store.commit('previewStatus', cur_modal);
+            this.$router.push(
+                "/preview"
+            )
+        },
+        handleImageAdded:function(file,Editor,cursorLocation){
+            //上传图片操作
+
+            //把获取到的图片url 插入到鼠标所在位置 回显图片
+            Editor.insertEmbed(cursorLocation, 'image', url);
+        },
         saveSoltItem(){
             let formObj = {}
             formObj.title = this.formTitle
             formObj.data = this.sortable_item;
-            this.$api.post("/cform/addForm",
-                formObj,
-                r=>{
-                    console.log(r)
-                }
-            )
+            console.log(this.content)
+            console.log(this.sortable_item)
+            // this.$api.post("/cform/addForm",
+            //     formObj,
+            //     r=>{
+            //         console.log(r)
+            //     }
+            // )
             // Axios({
             //     method: 'post',
             //     url: `http://47.93.156.129:8848/api/cform/addForm?objectid=EzQ319HuHN8done&objType=2&userid=nHoIlS9HDYodone`,
@@ -396,6 +438,7 @@ export default {
         },
         // 点击更改
         setIndexFun(index) {
+            console.log(index);
             if (this.curIndex === index) return;
             this.curIndex = index
             let curClickItem = this.sortable_item[index]
@@ -421,6 +464,7 @@ export default {
             // 深拷贝对象，防止默认空对象被更改
             return JSON.parse(JSON.stringify(original));
         },
+        // 删除
         removeEle(index) {
             // console.log(index)
             // let temp = index - 1
@@ -435,6 +479,14 @@ export default {
                 console.log(this.curIndex)
             }
             this.sortable_item.splice(index, 1)
+        },
+        // 复制
+        copyEle(index){
+            let self=this;
+            let objs=this.sortable_item[index];
+            console.log(this.sortable_item[index])
+            self.sortable_item.push(objs);
+            console.log(index)
         },
         moveEnd(relatedContext) {
             if(relatedContext.oldIndex == this.curIndex){
@@ -517,7 +569,7 @@ export default {
     .slide {
         width: 256px;
         height: 87%;
-        overflow-y: scroll;
+        overflow-y: auto;
         background: #F1F1F1;
         padding-bottom:30px;
 
@@ -548,6 +600,7 @@ export default {
                 cursor: pointer;
             }
             .featureItem{
+                margin:0 auto;
                  margin-top: 6px;
                  font-size: 14px;
                 background: #FFFFFF;
@@ -615,6 +668,10 @@ export default {
 .delete-icon-form i {
     cursor: pointer !important;
     margin-right: 5px;
+    display:none;
+}
+.ivu-icon .ivu-icon-md-trash{
+    color:#fff!important;
 }
 .saveContainer img{
     width: 24px; height: 28px;

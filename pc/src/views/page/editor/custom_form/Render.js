@@ -1,4 +1,5 @@
 import ItemIcon from './ItemIcon';
+import copyIcon from './copyIcon';
 import input from './control/Input';
 import checkbox from './control/CheckBox';
 import radio from './control/Radio';
@@ -83,6 +84,7 @@ export default {
         this.$set(this.obj, 'value', typeof this.value !== "undefined" ? this.value : this.obj.value);
         // 显示配置按钮并且控件允许被配置
         const item_icon = this.curIndex == this.index ? ItemIcon(this, h) : [];
+        const copy_icon = this.curIndex == this.index ? copyIcon(this, h) : [];
         // 已被绑定name,且require为必填,视为校验字段
         const validate = !!this.obj.name && !!this.obj.require;
         // 非 Title Hr P 需要FormItem
@@ -131,6 +133,7 @@ export default {
                 nativeOn: {
                     click: (val) => {
                         // if(!(this && this.index)) return
+                        // alert(1);
                         this.$emit('setIndex', this.index)
                         // this.$router.push({
                         //     name: 'home'
@@ -151,6 +154,7 @@ export default {
             return h(
                 "FormItem", FormItem,
                 arr.concat(item_icon)
+                // arr.concat(item_icon,copy_icon)
             );
         } else {
             if(this.curIndex == this.index){
@@ -162,6 +166,14 @@ export default {
                     right: '30px',
                     bottom: '-12px',
                 }
+                // copy_icon.data.style = {
+                //     background: '#fff',
+                //     position: 'absolute',
+                //     width: '23px',
+                //     height: '23px',
+                //     right: '60px',
+                //     bottom: '-12px',
+                // }
             }
             return h(
                 "div", {
@@ -175,7 +187,7 @@ export default {
                     },
                     on: {
                         click: (val) => {
-                            console.log(this.index)
+                            // console.log(this.index)
                             this.$emit('setIndex', this.index)
                             // this.$router.push({
                             //     name: 'home'
@@ -184,6 +196,8 @@ export default {
                     }
                 },
                 arr.concat(item_icon)
+                // arr.concat(item_icon,copy_icon)
+                // arr.concat()
             );
         }
     },
