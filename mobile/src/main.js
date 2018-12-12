@@ -10,6 +10,9 @@ import './assets/styles/reset.css'
 
 import { ToastPlugin,ConfirmPlugin,AlertPlugin} from 'vux'
 
+import api from './common/js/index'
+Vue.prototype.$api = api;
+
 Vue.use(ToastPlugin)
 Vue.use(ConfirmPlugin)
 Vue.use(AlertPlugin)

@@ -1,55 +1,81 @@
 <template>
   <div class="copy">
     <tab :tabData="tab" @toogleTab="toogleTab"></tab>
-    <ul class="list list1" v-if="tabIndex == 0">
-      <li class="item" v-for="(item, index) of listData" :key="index">
-        <div class="top">
-          <div class="title">
-            <img class="icon" src="../../assets/img/task/icon1.png" alt>
-            <span class="txt">{{ item.title }}</span>
+
+    <scroller
+      lock-x
+      scrollbar-y
+      use-pullup
+      :pullup-config="pullupDefaultConfig"
+      @on-pullup-loading="loadMore"
+      ref="scrollerBottom"
+      :height="lishH"
+    >
+      <ul class="list list1" v-if="tabIndex == 0">
+        <li class="item" v-for="(item, index) of listData" :key="index">
+          <div class="top">
+            <div class="title">
+              <img class="icon" src="../../assets/img/task/icon1.png" alt>
+              <span class="txt">{{ item.title }}</span>
+            </div>
+            <!-- <div class="statu">{{ item.statu }}</div> -->
           </div>
-          <div class="statu">{{ item.statu }}</div>
-        </div>
-        <div class="bottom">
-          <div class="date">填写时间：{{ item.date }}</div>
-          <div class="type">填写人：{{ item.type }}</div>
-        </div>
-      </li>
-    </ul>
-    <ul class="list" v-if="tabIndex == 1">
-      <li class="item" v-for="(item, index) of listData" :key="index">
-        <div class="top">
-          <div class="title">
-            <img class="icon" src="../../assets/img/task/icon1.png" alt>
-            <span class="txt">{{ item.title }}</span>
+          <div class="bottom">
+            <div class="date">填写时间：{{ item.date }}</div>
+            <div class="type">填写人：{{ item.type }}</div>
           </div>
-          <!-- <div class="statu">{{ item.statu }}</div> -->
-        </div>
-        <div class="mid">
-          <div class="mid-item" v-for="(item, index) of item.data" :key="index">
-            <div class="mid-txt">{{ item.title }}</div>
-            <div class="number">{{ item.number }}</div>
+        </li>
+      </ul>
+      <ul class="list" v-if="tabIndex == 1">
+        <li class="item" v-for="(item, index) of listData" :key="index">
+          <div class="top">
+            <div class="title">
+              <img class="icon" src="../../assets/img/task/icon1.png" alt>
+              <span class="txt">{{ item.title }}</span>
+            </div>
+            <!-- <div class="statu">{{ item.statu }}</div> -->
           </div>
-        </div>
-        <div class="bottom">
-          <div class="date">截止时间：{{ item.date }}</div>
-          <div class="type">创建人：{{ item.type }}</div>
-        </div>
-      </li>
-    </ul>
+          <div class="mid">
+            <div class="mid-item" v-for="(item, index) of item.data" :key="index">
+              <div class="mid-txt">{{ item.title }}</div>
+              <div class="number">{{ item.number }}</div>
+            </div>
+          </div>
+          <div class="bottom">
+            <div class="date">截止时间：{{ item.date }}</div>
+            <div class="type" style="font-size: 14px;color: #5B5B5B;">创建人：{{ item.type }}</div>
+          </div>
+        </li>
+      </ul>
+    </scroller>
   </div>
 </template>
 
 <script>
+import { Scroller } from "vux";
 import Tab from "../../components/tab/Tab";
+
+const pullupDefaultConfig = {
+  content: "上拉加载更多",
+  pullUpHeight: 60,
+  height: 40,
+  autoRefresh: false,
+  downContent: "释放后加载",
+  upContent: "上拉加载更多",
+  loadingContent: "加载中...",
+  clsPrefix: "xs-plugin-pullup-"
+};
 
 export default {
   name: "Copy",
   components: {
-    Tab
+    Tab,
+    Scroller
   },
   data() {
     return {
+      lishH: '-53',
+      pullupDefaultConfig: pullupDefaultConfig,
       tabIndex: 0,
       tab: [
         {
@@ -132,7 +158,11 @@ export default {
     // 调用子组件tab切换的事件
     toogleTab(...data) {
       console.log(data[0]);
-      this.tabIndex = data[0]
+      this.tabIndex = data[0];
+    },
+    loadMore() {
+      console.log(222)
+      this.$refs.scrollerBottom.donePullup()
     }
   },
   mounted() {}
@@ -146,6 +176,7 @@ export default {
   .list {
     margin-top: px2rem(70);
     padding: 0 px2rem(25);
+    padding-bottom: 5px;
     .item {
       margin: 13px 0;
       padding: px2rem(10) px2rem(25);

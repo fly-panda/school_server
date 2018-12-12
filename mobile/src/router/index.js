@@ -1,7 +1,8 @@
 import Vue from 'vue'
 import Router from 'vue-router'
 import Home from '@/pages/home/Home'
-import History from '@/pages/home/history/History'
+import FormPage from '@/pages/home/formPage/FormPage'
+import SelectList from '@/pages/home/formPage/selectList/SelectList'
 import Task from '@/pages/task/Task'
 import Copy from '@/pages/copy/Copy'
 
@@ -19,11 +20,6 @@ const router = new Router({
       }
     },
     {
-      path: '/history',
-      name: 'History',
-      component: History
-    },
-    {
       path: '/task',
       name: 'Task',
       component: Task,
@@ -34,7 +30,26 @@ const router = new Router({
     {
       path: '/copy',
       name: 'Copy',
-      component: Copy
+      component: Copy,
+      meta: {
+        title: '抄送'
+      }
+    },
+    {
+      path: '/formPage',
+      name: 'FormPage',
+      component: FormPage,
+      meta: {
+        title: '我的任务'
+      }
+    },
+    {
+      path: '/selectList',
+      name: 'SelectList',
+      component: SelectList,
+      meta: {
+        title: '选择年级'
+      }
     }
   ]
 })

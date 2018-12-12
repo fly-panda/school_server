@@ -1,39 +1,86 @@
 <template>
   <div class="task">
     <div class="no-data" v-if="listData.length == 0">
-      <img src="../../assets/img/task/nodata.png" alt="">
+      <img src="../../assets/img/task/nodata.png" alt>
       <div>暂无任务！</div>
     </div>
-    <ul class="list" v-else>
-      <li class="item" v-for="(item, index) of listData">
-        <div class="top">
-          <div class="title">
-            <img class="icon" src="../../assets/img/task/icon1.png" alt="">
-            <span class="txt">{{ item.title }}</span>
+    <scroller
+      v-else
+      lock-x
+      scrollbar-y
+      use-pullup
+      :pullup-config="pullupDefaultConfig"
+      @on-pullup-loading="loadMore"
+      ref="scrollerBottom"
+      :height="lishH"
+    >
+      <ul class="list">
+        <li class="item" v-for="(item, index) of listData" :key="index">
+          <div class="top">
+            <div class="title">
+              <img
+                v-if="item.type == '单次任务'"
+                class="icon1"
+                src="../../assets/img/task/icon1.png"
+                alt
+              >
+              <img
+                v-if="item.type == '周任务'"
+                class="icon2"
+                src="../../assets/img/task/icon2.png"
+                alt
+              >
+              <span class="txt">{{ item.title }}</span>
+            </div>
+            <div class="statu">{{ item.statu }}</div>
           </div>
-          <div class="statu">{{ item.statu }}</div>
-        </div>
-        <div class="mid">
-          <div class="mid-item" v-for="item of item.data">
-            <div class="mid-txt">{{ item.title }}</div>
-            <div class="number">{{ item.number }}</div>
+          <div class="mid">
+            <div class="mid-item" v-for="(item, index) of item.data" :key="index">
+              <div class="mid-txt">{{ item.title }}</div>
+              <div class="number">{{ item.number }}</div>
+            </div>
           </div>
-        </div>
-        <div class="bottom">
-          <div class="date">截止时间：{{ item.date }}</div>
-          <div class="type">{{ item.type }}</div>
-        </div>
-      </li>
-    </ul>
+          <div class="bottom">
+            <div class="date">截止时间：{{ item.date }}</div>
+            <div class="type">{{ item.type }}</div>
+          </div>
+        </li>
+      </ul>
+    </scroller>
   </div>
 </template>
 
 <script>
+import {
+  Scroller,
+  Divider,
+  Spinner,
+  XButton,
+  Group,
+  Cell,
+  LoadMore
+} from "vux";
+
+const pullupDefaultConfig = {
+  content: "上拉加载更多",
+  pullUpHeight: 60,
+  height: 40,
+  autoRefresh: false,
+  downContent: "释放后加载",
+  upContent: "上拉加载更多",
+  loadingContent: "加载中...",
+  clsPrefix: "xs-plugin-pullup-"
+};
+
 export default {
   name: "Task",
-  components: {},
+  components: {
+    Scroller
+  },
   data() {
     return {
+      pullupDefaultConfig: pullupDefaultConfig,
+      lishH: "-53",
       listData1: [],
       listData: [
         {
@@ -58,7 +105,7 @@ export default {
         },
         {
           title: "卫生检查明细",
-          type: "单次任务",
+          type: "周任务",
           date: "11/09 08:00",
           statu: "进行中",
           data: [
@@ -100,7 +147,12 @@ export default {
     };
   },
   computed: {},
-  methods: {},
+  methods: {
+    loadMore() {
+      console.log(222);
+      this.$refs.scrollerBottom.donePullup()
+    }
+  },
   mounted() {}
 };
 </script>
@@ -117,7 +169,7 @@ export default {
     align-items: center;
     justify-content: center;
     font-size: 14px;
-    color: #9B9B9B;
+    color: #9b9b9b;
     img {
       margin-bottom: 40px;
       width: px2rem(76);
@@ -126,6 +178,7 @@ export default {
   }
   .list {
     padding: 0 px2rem(25);
+    padding-bottom: 5px;
     .item {
       margin: 13px 0;
       padding: px2rem(10) px2rem(25);
@@ -145,10 +198,16 @@ export default {
           color: #333333;
           display: flex;
           align-items: center;
-          .icon {
+          .icon1 {
             display: inline-block;
             width: 13px;
             height: 18px;
+            margin-right: 10px;
+          }
+          .icon2 {
+            display: inline-block;
+            width: 22px;
+            height: 22px;
             margin-right: 10px;
           }
         }

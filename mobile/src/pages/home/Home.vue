@@ -11,7 +11,7 @@
       :height="lishH"
     >
       <ul class="list current-list" v-if="tabIndex == 0">
-        <li class="li-item" v-for="(item, index) of listData" :key="index">
+        <li class="li-item" v-for="(item, index) of listData" :key="index" @click="currentTask">
           <div class="yuan">
             <img v-if="item.statu == '不合格'" src="../../assets/img/icon/yuan-timeout.png" alt>
             <div v-else>
@@ -48,15 +48,7 @@
 </template>
 
 <script>
-import {
-  Scroller,
-  Divider,
-  Spinner,
-  XButton,
-  Group,
-  Cell,
-  LoadMore
-} from "vux";
+import { Scroller } from "vux";
 import { TransferDomDirective as TransferDom } from "vux";
 
 import Tab from "../../components/tab/Tab";
@@ -162,6 +154,10 @@ export default {
       setTimeout(() => {
         this.$refs.scrollerBottom.donePullup()
       }, 2000)
+    },
+    // 详情
+    currentTask() {
+      this.$router.push({path:'/formPage', query:{}})
     }
   },
   mounted() {}
