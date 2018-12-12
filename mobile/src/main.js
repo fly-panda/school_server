@@ -8,6 +8,12 @@ import Mint from 'mint-ui'
 import './assets/styles/border.css'
 import './assets/styles/reset.css'
 
+import { ToastPlugin,ConfirmPlugin,AlertPlugin} from 'vux'
+
+Vue.use(ToastPlugin)
+Vue.use(ConfirmPlugin)
+Vue.use(AlertPlugin)
+
 Vue.use(Mint)
 
 fastClick.attach(document.body)

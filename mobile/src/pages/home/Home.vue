@@ -1,12 +1,15 @@
 <template>
   <div class="home">
     <tab :tabData="tab" @toogleTab="toogleTab"></tab>
-    <scroller use-pullup 
-              lock-x  
-              :pullup-config="pullupDefaultConfig" 
-              @on-pullup-loading="loadMore" 
-              ref="scrollerBottom" 
-              :height="lishH">
+    <scroller
+      lock-x
+      scrollbar-y
+      use-pullup
+      :pullup-config="pullupDefaultConfig"
+      @on-pullup-loading="loadMore"
+      ref="scrollerBottom"
+      :height="lishH"
+    >
       <ul class="list current-list" v-if="tabIndex == 0">
         <li class="li-item" v-for="(item, index) of listData" :key="index">
           <div class="yuan">
@@ -45,12 +48,18 @@
 </template>
 
 <script>
-import { Scroller, Divider, Spinner, XButton, Group, Cell, LoadMore } from 'vux';
-import { TransferDomDirective as TransferDom } from 'vux'
+import {
+  Scroller,
+  Divider,
+  Spinner,
+  XButton,
+  Group,
+  Cell,
+  LoadMore
+} from "vux";
+import { TransferDomDirective as TransferDom } from "vux";
 
 import Tab from "../../components/tab/Tab";
-
-
 
 const pullupDefaultConfig = {
   content: "上拉加载更多",
@@ -71,8 +80,14 @@ export default {
   },
   data() {
     return {
+      pullupConfig2: {
+        content: '上拉加载更多',
+        downContent: '松开进行加载',
+        upContent: '上拉加载更多',
+        loadingContent: '加载中...'
+      },
       tabIndex: 0,
-      lishH: '-53',
+      lishH: "-53",
       pullupDefaultConfig: pullupDefaultConfig,
       tab: [
         {
@@ -141,10 +156,12 @@ export default {
     },
     // 加载更多
     loadMore() {
-      console.log(111)
-      let data = this.listData
-      this.listData = data.concat(data)
-      console.log(this.listData)
+      console.log(222)
+      let data = this.listData;
+      this.listData = data.concat(data);
+      setTimeout(() => {
+        this.$refs.scrollerBottom.donePullup()
+      }, 2000)
     }
   },
   mounted() {}
@@ -158,6 +175,7 @@ export default {
   .list {
     padding: 0 px2rem(20);
     margin-top: 70px;
+    padding-bottom: 5px;
     .li-item {
       margin-left: px2rem(10);
       margin-bottom: px2rem(10);
