@@ -74,6 +74,66 @@ export default {
                 expectSubmit: 100,
                 hasSubmitNum: 10,
                 allSubmitNum: 50
+            },{
+                id: 7,
+                status: 0,
+                type: 0,
+                tag_text: '单次任务',
+                title: '关于《两学一做》班会的感想',
+                endDate: '11/09 18:00',
+                expectSubmit: 100,
+                hasSubmitNum: 10,
+                allSubmitNum: 50
+            }, {
+                id: 8,
+                status: 0,
+                type: 0,
+                tag_text: '单次任务',
+                title: '卫生检查',
+                endDate: '11/09 18:00',
+                expectSubmit: 100,
+                hasSubmitNum: 10,
+                allSubmitNum: 50
+            }, {
+                id: 9,
+                status: 0,
+                type: 0,
+                tag_text: '单次任务',
+                title: '卫生检查',
+                endDate: '任务已结束',
+                expectSubmit: 100,
+                hasSubmitNum: 10,
+                allSubmitNum: 50
+            }, {
+                id: 10,
+                status: 0,
+                type: 0,
+                tag_text: '单次任务',
+                title: '卫生检查',
+                endDate: '11/09 18:00',
+                expectSubmit: 100,
+                hasSubmitNum: 10,
+                allSubmitNum: 50
+            }, {
+                id: 11,
+                status: 0,
+                type: 0,
+                tag_text: '单次任务',
+                title: '卫生检查',
+                endDate: '11/09 18:00',
+                expectSubmit: 100,
+                hasSubmitNum: 10,
+                allSubmitNum: 50
+            }, {
+                id: 12,
+                status: 0,
+                type: 0,
+                tag_text: '周任务',
+                title: '卫生检查',
+                endDate: '11/09 18:00',
+                expectSubmit: 100,
+                hasSubmitNum: 10,
+                allSubmitNum: 50
             }]
         }
     }

@@ -359,6 +359,7 @@ export default {
             return this.sortable_item[this.curIndex]?this.sortable_item[this.curIndex]['obj']['label']: ''
         },
         getModalContent(){
+            console.log(this.sortable_item[this.curIndex])
             // console.log(this.sortable_item[this.curIndex] && this.sortable_item[this.curIndex]['obj']['modal']?this.sortable_item[this.curIndex]['obj']['modal']: 'Input')
             return this.sortable_item[this.curIndex] && this.sortable_item[this.curIndex]['obj']['modal']?this.sortable_item[this.curIndex]['obj']['modal']: 'Input'
         }

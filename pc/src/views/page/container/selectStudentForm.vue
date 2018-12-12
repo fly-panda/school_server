@@ -13,7 +13,7 @@
     </Row>
     <Row style="height: 500px; " class="titleContainer">
         <div>
-            <Tree style="margin-left: 15px" ref="tree" :data="data3" show-checkbox></Tree>
+            <Tree style="margin-left: 15px" ref="tree" :data="data3"></Tree>
         </div>
         <div style="display: flex;flex-direction: column">
             <Row style="border-bottom: 1px solid #e9e9e9;padding-bottom:6px;margin-bottom:6px;">
@@ -112,7 +112,21 @@ export default {
             }]
         }
     },
+     mounted(){
+        let self=this;
+        self.getData();
+    },
     methods: {
+        getData(){
+            let self=this;
+            self.$api.post("/campus/getDepartmentInfoList",{
+                usertype:1
+            },r=>{
+                
+                self.data3=JSON.parse(r.data);
+                console.log(self.data3);
+            })
+        },
         handleCheckAll() {
             if (this.indeterminate) {
                 this.checkAll = false;

@@ -4,7 +4,7 @@
         <span class="back-cls" @click="backFun"><Icon type="ios-arrow-back" /></span>{{title}}
         <img class="new-form" @click="newFun" src="@/assets/bianji_ico.png" alt="">
     </div>
-    <div class="duplicate-content">
+    <div class="duplicate-content" :style="{height:fullHeight.height}">
         <div class="contentTop">
             <div class="formMsg">
                 <div class="title">表单信息</div>
@@ -83,6 +83,9 @@ export default {
     },
     data() {
         return {
+            fullHeight:{// 动态获取屏幕高度
+                height: (document.documentElement.clientHeight-124)+"px"
+            },
             title: '一年级校服尺寸收集表',
             types:true,//周期
             modalTitle:"一年级尺寸收集表",
@@ -195,6 +198,7 @@ export default {
         width: 100%;
         height: 100%;
         padding: 10px 215px;
+        overflow-y: auto;
         .contentTop{
             height: 160px;
             display: flex;

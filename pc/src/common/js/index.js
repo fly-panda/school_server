@@ -9,13 +9,16 @@ function getParams(req){
     // let objType = sGetObject("_objType");
     // let objectid=sGetObject("_objectid");
     // let userid=sGetObject("_userid");
+    // let openAppID=sGetObject("_openAppID");
     let objType = "2";
     let objectid="EzQ319HuHN8done";
     let userid="nHoIlS9HDYodone";
+    let openAppID="315492154052";
     let params={
         objType:objType,
         objectid:objectid,
         userid:userid,
+        openAppID:openAppID,
         reqData:req
     };
     return params;

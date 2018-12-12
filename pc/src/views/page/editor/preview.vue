@@ -1,6 +1,12 @@
 <template>
 <div class="previewContioner">
-    <div class="previewContent">
+     <div class="btn-view">
+        <p :class="['btns',active==1?'activeCls':'']" @click="preview('pc')"><img :src="active==1?activeImg1:img1" alt=""></p>
+        <p :class="['btns',active==2?'activeCls':'']" @click="preview('mobile')"><img :src="active==2?activeImg2:img2" alt=""></p>
+        <p :class="['btns',active==3?'activeCls':'']" @click="preview('quit')"><img :src="active==3?activeImg3:img3" alt=""></p>
+    </div>
+    <div class="previewContent" :style="{height:fullHeight.height}">
+       
         <div class="header">表单名称</div>
         <div class="content">
             <div class="discribe">
@@ -216,12 +222,33 @@
 export default {
     data() {
         return {
-            checkAllGroup: []
+            checkAllGroup: [],
+            fullHeight:{// 动态获取屏幕高度
+                height: (document.documentElement.clientHeight-60)+"px"
+            },
+            active:1,
+            img1:require("@/assets/pcyulan_ico_nor.png"),
+            activeImg1:require("@/assets/pcyulan_icon_pre.png"),
+            img2:require("@/assets/shoujiyulan_ico_nor.png"),
+            activeImg2:require("@/assets/shoujiyulan_ico-pre.png"),
+            img3:require("@/assets/tuichu_ico_nor.png"),
+            activeImg3:require("@/assets/tuichu_ico_pre.png"),
+
         }
     },
     methods: {
         checkAllGroupChange() {
 
+        },
+        preview(type){
+            let self=this;
+            if(type=="pc"){
+                console.log("PC")
+            }else if(type=="mobile"){
+                console.log("mobile")
+            }else if(type=="quit"){
+                self.$router.go(-1);
+            }
         }
     }
 }
@@ -234,7 +261,25 @@ export default {
     position: fixed;
     z-index: 1000;
     background: #F1F1F1;
-
+    .btn-view{
+            position: absolute;
+            top:40px;
+            right:120px;
+            .btns{
+                display: inline-block;
+                margin-left: 10px;
+                width:40px;
+                height:40px;
+                background: #FFFFFF;
+                box-shadow: 0 2px 4px 0 rgba(0,0,0,0.12);
+                border-radius: 1.5px;
+                cursor: pointer;
+            }
+            .activeCls{
+                background: #5DB75D;
+            }
+        }
+        
     .positionColumn {
         display: flex;
         flex-direction: column;
@@ -244,12 +289,11 @@ export default {
     }
     .previewContent {
         width: 660px;
-        height: 700px;
+        position: relative;
         background: #fff;
-        margin: 0 auto;
+        margin: 30px auto;
         overflow-y: auto;
-        margin-top: 60px;
-
+        
         .header {
             height: 50px;
             font-size: 16px;
@@ -289,6 +333,7 @@ export default {
                     width: 8rem;
                     height: 1.5rem;
                     line-height: 1.5rem;
+                    cursor: pointer;
                 }
 
                 .downloadBtn {

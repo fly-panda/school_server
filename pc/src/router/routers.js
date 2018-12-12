@@ -140,18 +140,18 @@ export default [
                     title: '表单详情',
                 },
                 component: () => import('@/views/page/duplicate'),
-            },
-            {
-                path: '/preview',
-                name: 'preview',
-                meta: {
-                    title: '预览',
-                },
-                component: () => import('@/views/page/editor/preview'),
             }
+            
         ]
     },
-    
+    {
+        path: '/preview',
+        name: 'preview',
+        meta: {
+            title: '预览',
+        },
+        component: () => import('@/views/page/editor/preview'),
+    },
     {
         path: '/401',
         name: 'error_401',

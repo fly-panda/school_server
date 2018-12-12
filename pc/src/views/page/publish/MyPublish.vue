@@ -17,7 +17,9 @@
         我的模板
         </MenuItem>
     </Menu>
-    <router-view/>
+    <div :style="{height:fullHeight.height}" style="overflow-y:scroll;">
+        <router-view/>
+    </div>
    
 </div>
 </template>
@@ -27,7 +29,9 @@
 export default {
     data() {
         return {
-          
+            fullHeight:{// 动态获取屏幕高度
+                height: (document.documentElement.clientHeight-124)+"px"
+            }
         }
     },
     methods: {

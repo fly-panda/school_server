@@ -1,6 +1,6 @@
 
 <template>
-<div class="publish-content">
+<div class="publish-content" :style="{height:fullHeight.height}">
     <CardForm v-for="item in cardList" :key="item.id" :cardItem="item" :temp="temps"/>
 </div>
 </template>
@@ -13,6 +13,9 @@ export default {
     },
     data() {
         return {
+            fullHeight:{// 动态获取屏幕高度
+                height: (document.documentElement.clientHeight-64)+"px"
+            },
             temps:1,
             // status 0 结束 1为开启
             // type 0 simple 1week
@@ -22,6 +25,62 @@ export default {
                 title: '纪律检查'
             }, {
                 id: 2,
+                status: 1,
+                title: '卫生检查'
+            },{
+                id: 3,
+                status: 1,
+                title: '纪律检查'
+            }, {
+                id: 4,
+                status: 1,
+                title: '卫生检查'
+            },{
+                id: 5,
+                status: 1,
+                title: '纪律检查'
+            }, {
+                id: 6,
+                status: 1,
+                title: '卫生检查'
+            },{
+                id: 7,
+                status: 1,
+                title: '纪律检查'
+            }, {
+                id: 8,
+                status: 1,
+                title: '卫生检查'
+            },{
+                id: 9,
+                status: 1,
+                title: '纪律检查'
+            }, {
+                id: 10,
+                status: 1,
+                title: '卫生检查'
+            },{
+                id: 11,
+                status: 1,
+                title: '纪律检查'
+            }, {
+                id: 12,
+                status: 1,
+                title: '卫生检查'
+            },{
+                id: 13,
+                status: 1,
+                title: '纪律检查'
+            }, {
+                id: 14,
+                status: 1,
+                title: '卫生检查'
+            },{
+                id: 15,
+                status: 1,
+                title: '纪律检查'
+            }, {
+                id: 16,
                 status: 1,
                 title: '卫生检查'
             }]
@@ -40,6 +99,7 @@ export default {
     align-items: flex-start;
     align-content: flex-start;
     flex-grow: 20px;
+    overflow-y:auto;
     .addTemp{
         width: 150px;
         height: 220px;

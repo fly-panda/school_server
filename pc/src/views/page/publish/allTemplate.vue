@@ -23,6 +23,62 @@ export default {
                 id: 2,
                 status: 1,
                 title: '卫生检查'
+            },{
+                id: 3,
+                status: 1,
+                title: '纪律检查'
+            }, {
+                id: 4,
+                status: 1,
+                title: '卫生检查'
+            },{
+                id: 5,
+                status: 1,
+                title: '纪律检查'
+            }, {
+                id: 6,
+                status: 1,
+                title: '卫生检查'
+            },{
+                id: 7,
+                status: 1,
+                title: '纪律检查'
+            }, {
+                id: 8,
+                status: 1,
+                title: '卫生检查'
+            },{
+                id: 9,
+                status: 1,
+                title: '纪律检查'
+            }, {
+                id: 10,
+                status: 1,
+                title: '卫生检查'
+            },{
+                id: 11,
+                status: 1,
+                title: '纪律检查'
+            }, {
+                id: 12,
+                status: 1,
+                title: '卫生检查'
+            },{
+                id: 13,
+                status: 1,
+                title: '纪律检查'
+            }, {
+                id: 14,
+                status: 1,
+                title: '卫生检查'
+            },{
+                id: 15,
+                status: 1,
+                title: '纪律检查'
+            }, {
+                id: 16,
+                status: 1,
+                title: '卫生检查'
             }]
         }
     },
