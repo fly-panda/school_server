@@ -91,12 +91,12 @@ export default [
                 component: () => import('@/views/page/publicTemp.vue'),
             },
             {
-                path: '/duplicate',
-                name: 'duplicate',
+                path: '/myCc',
+                name: 'myCc',
                 meta: {
-                    title: '抄送人',
+                    title: '我的抄送',
                 },
-                component: () => import('@/views/page/duplicate'),
+                component: () => import('@/views/page/duplicate/myCc.vue'),
             },
             {
                 path: '/editor',
@@ -132,6 +132,14 @@ export default [
                         component: () => import('@/views/page/editor/publishForm.vue')
                     }
                 ]
+            },
+            {
+                path: '/duplicate',
+                name: 'duplicate',
+                meta: {
+                    title: '表单详情',
+                },
+                component: () => import('@/views/page/duplicate'),
             },
             {
                 path: '/preview',

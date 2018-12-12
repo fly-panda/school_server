@@ -25,6 +25,7 @@ export default (_self, h) => {
 export let inputConf = {
     // 对应数据库内类型
     type: 'input',
+    icons:require("@/assets/danhangwenzi_nor.png"),
     // 是否可配置
     config: true,
     // 控件左侧label内容

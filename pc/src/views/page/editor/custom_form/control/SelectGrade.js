@@ -39,6 +39,8 @@ export default (_self, h) => {
 export let selectGradeConf = {
     // 对应数据库内类型
     type: 'selectgrade',
+            //  图标
+    icons:require("@/assets/nianji_nor.png"),
     modal: 'selectGradeForm',
     // 是否可配置
     config: true,

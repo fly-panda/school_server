@@ -39,6 +39,8 @@ export default (_self, h) => {
 export let selectDepartmentConf = {
     // 对应数据库内类型
     type: 'selectdepartment',
+        //  图标
+    icons:require("@/assets/bumen_nor.png"),
     modal: 'selectDepartmentForm',
     // 是否可配置
     config: true,

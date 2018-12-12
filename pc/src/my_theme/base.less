@@ -107,3 +107,24 @@ a,button,input{-webkit-tap-highlight-color:rgba(255,0,0,0);}
     -webkit-transform:rotate(45deg); /* Safari 和 Chrome */
     -o-transform:rotate(45deg); 	/* Opera */
 }
+ ::-webkit-scrollbar {
+     width: 7px;
+     height: 5px;
+ }
+ 
+ ::-webkit-scrollbar-track-piece {
+     background-color: rgba(0, 0, 0, 0.2);
+     -webkit-border-radius: 6px;
+ }
+ 
+ ::-webkit-scrollbar-thumb:vertical {
+     height: 5px;
+     background-color: rgba(125, 125, 125, 0.7);
+     -webkit-border-radius: 6px;
+ }
+ 
+ ::-webkit-scrollbar-thumb:horizontal {
+     width: 7px;
+     background-color: rgba(125, 125, 125, 0.7);
+     -webkit-border-radius: 6px;
+ }

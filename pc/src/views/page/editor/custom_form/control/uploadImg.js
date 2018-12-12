@@ -41,6 +41,8 @@ export default (_self, h) => {
 export let uploadImgConf = {
     // 对应数据库内类型
     type: 'uploadimg',
+                //  图标
+    icons:require("@/assets/tupianshangchuan_nor.png"),
     lessNum: 1,
     lessImgRequire: false,
     // 是否可配置

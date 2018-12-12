@@ -13,7 +13,7 @@
                     <!-- <Icon type="ios-keypad"></Icon> -->
                     我的任务
                     </MenuItem>
-                    <MenuItem name="duplicate">
+                    <MenuItem name="myCc">
                     <!-- <Icon type="ios-analytics"></Icon> -->
                     我的抄送
                     </MenuItem>
@@ -28,7 +28,7 @@
                 </div>
             </Menu>
         </Header>
-        <Content :style="{height: '100%'}">
+        <Content :style="{height: '100%',background: '#F1F1F1'}">
             <Modal v-model="modalStatus"  :title="madalTitle" footer-hide @on-cancel="cancelModal()">
                 <component v-bind:is="currentView"></component>
             </Modal>

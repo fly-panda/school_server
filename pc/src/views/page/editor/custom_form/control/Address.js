@@ -13,10 +13,18 @@ export default (_self, h) => {
                     value: _self.obj.value || ''
                 },
                 on: {
+                    "on-keyup": (e) => {
 
+                        
+                            
+                       
+                    },
+                    "on-change":(e) => {
+                        // console.log(e)
+                    }
                 }
             },
-            _self.obj.items.map(v => {
+            _self.obj.sheng.map(v => {
                 return h(
                     "Option", {
                         props: {
@@ -40,10 +48,12 @@ export default (_self, h) => {
                     value: _self.obj.value || ''
                 },
                 on: {
-
+                    "on-change":(e) => {
+                        console.log(e)
+                    }
                 }
             },
-            _self.obj.items.map(v => {
+            _self.obj.shi.map(v => {
                 return h(
                     "Option", {
                         props: {
@@ -66,10 +76,12 @@ export default (_self, h) => {
                     value: _self.obj.value || ''
                 },
                 on: {
-
+                    "on-change":(e) => {
+                        console.log(e)
+                    }
                 }
             },
-            _self.obj.items.map(v => {
+            _self.obj.qu.map(v => {
                 return h(
                     "Option", {
                         props: {
@@ -115,14 +127,17 @@ export default (_self, h) => {
     }
     return control;
 }
+
 export let addressConf = {
     // 对应数据库内类型
     type: 'address',
     chooseCheck: ['province', 'city', 'zone', 'detail'],
+    //  图标
+    icons:require("@/assets/address_ico_pre.png"),
     // 是否可配置
     config: true,
     // 控件左侧label内容
-    label: '详细地址',
+    label: '地址',
     placeholder: '请输入详细地址',
     // 是否显示行内元素
     inlineBlock: false,
@@ -134,10 +149,9 @@ export let addressConf = {
     name: 'default',
     // 绑定的值
     value: [],
-    items: [{
-        "label_value": 'a',
-        "label_name": 'v'
-    }],
+    sheng: [],
+    shi:[],
+    qu:[],
     // 验证错误提示信息
     ruleError: '请选择并输入详细地址',
     // 是否关联字段

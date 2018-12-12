@@ -83,6 +83,8 @@ export default (_self, h) => {
 export let datePickerConf = {
   // 对应数据库内类型
   type: 'datepicker',
+  //  图标
+  icons:require("@/assets/shoudong_nor.png"),
   chooseCheck: ['date', 'time'],
   // 是否可配置
   config: true,

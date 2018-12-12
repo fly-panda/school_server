@@ -37,6 +37,8 @@ export default (_self, h) => {
 export let downloadConf = {
     // 对应数据库内类型
     type: 'download',
+      //  图标
+    icons:require("@/assets/wenjianxiazai_nor.png"),
     // 是否可配置
     config: true,
     // 控件左侧label内容

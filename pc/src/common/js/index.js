@@ -24,7 +24,7 @@ function getParams(req){
 
 
 function apiAxios(method, url, params, success, failure) {
-  if (params) {
+  if (method=="POST") {
     params = getParams(params)
   }
   console.log(1,params)
@@ -65,6 +65,9 @@ function sGetObject(k) {
 
 // 返回在vue模板中的调用接口
 export default {
+  getBase:function(){
+    return baseUrlRoot;
+  },
   get: function (url, params, success, failure) {
     return apiAxios('GET', url, params, success, failure)
   },

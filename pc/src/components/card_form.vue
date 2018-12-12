@@ -1,7 +1,7 @@
 <template>
 <div>
 
-    <div class="cardform" v-if="cardItem.status==0">
+    <div class="cardform" v-if="cardItem.status==0" @click="jumpDetails(cardItem)">
 
         <div class="card-tag" :style="{background: cardItem.status==0?'#90e1ce': '#74aaf7'}">{{cardItem.tag_text}}</div>
         <div class="cardform-title">{{cardItem.title}}</div>
@@ -30,7 +30,7 @@
             截止时间： {{cardItem.endDate}}
         </div>
     </div>
-    <div class="cardform" v-if="cardItem.status == 1">
+    <div class="cardform" v-if="cardItem.status == 1" @click="jumpDetails(cardItem)">
         <div class="cardform-title">{{cardItem.title}}</div>
         <img v-if="temp" class="cardform-img" src='@/assets/moban_ico.png'/>
         <img v-if="!temp" class="cardform-img" src='@/assets/dancirenwu_ico.png'/>
@@ -41,7 +41,7 @@
             点击修改
         </div>
     </div>
-    <div class="cardform" v-if="cardItem.status == 3">
+    <div class="cardform" v-if="cardItem.status == 3" @click="jumpDetails(cardItem)">
         <div class="cardform-title">{{cardItem.title}}</div>
 
         <img class="cardform-img" src='@/assets/jieshurenwu_ico.png'/>
@@ -60,6 +60,16 @@ export default {
     props: ['cardItem','temp'],
     data() {
         return {}
+    },
+    methods:{
+        jumpDetails(cardItem){
+            let self=this;
+            console.log(cardItem);
+            self.$router.push({
+                name:"duplicate"
+            })
+
+        }
     }
 }
 </script>

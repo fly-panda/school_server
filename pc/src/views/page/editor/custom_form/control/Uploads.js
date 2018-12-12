@@ -61,6 +61,8 @@ export default (_self, h) => {
 export const uploadsConf = {
     // 对应数据库内类型
     type: 'uploads',
+                    //  图标
+    icons:require("@/assets/wenjianshangchuan_nor.png"),
     // 是否可配置
     config: true,
     // 上传地址

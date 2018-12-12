@@ -39,6 +39,8 @@ export default (_self, h) => {
 export let selectTeacherConf = {
     // 对应数据库内类型
     type: 'selectteacher',
+                //  图标
+    icons:require("@/assets/laoshi_nor.png"),
     modal: 'selectTeacherForm',
     // 是否可配置
     config: true,

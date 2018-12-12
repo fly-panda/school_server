@@ -40,11 +40,11 @@ export default {
         return {
             defaultList: [{
                     'name': 'a42bdcc1178e62b4694c830f028db5c0',
-                    'url': 'https://o5wwk8baw.qnssl.com/a42bdcc1178e62b4694c830f028db5c0/avatar'
+                    'url': require("@/assets/logo.png")
                 },
                 {
                     'name': 'bc7521e033abdd1e92222d733590f104',
-                    'url': 'https://o5wwk8baw.qnssl.com/bc7521e033abdd1e92222d733590f104/avatar'
+                    'url': require("@/assets/logo.png")
                 }
             ],
             imgName: '',

@@ -12,23 +12,23 @@
         </Modal>
         <draggable element="ul" :clone="cloneData" v-model="formList" :options="dragOptions1" @end="getResult">
             <transition-group type="transition" class="baseContainer" tag="div" :name="'flip-list'">
-                <div v-for="item in formList" :key="item.obj.type" class="baseItem">{{item.obj.label}}</div>
+                <div v-for="item in formList" :key="item.obj.type" class="baseItem"><img :src="item.obj.icons" alt="">{{item.obj.label}}</div>
             </transition-group>
         </draggable>
         <div class="title">功能控件</div>
          <draggable element="ul" :clone="cloneData" v-model="featureList" :options="dragOptions1" @end="getResult">
             <transition-group type="transition" class="baseContainer" tag="div" :name="'flip-list'">
-                <div v-for="(item, index) in featureList" :key="index" class="featureItem">{{item.obj.label}}</div>
+                <div v-for="(item, index) in featureList" :key="index" class="featureItem"><img :src="item.obj.icons" alt="">{{item.obj.label}}</div>
             </transition-group>
         </draggable>
         <div class="title">打分控件</div>
          <draggable element="ul" :clone="cloneData" v-model="gradesList" :options="dragOptions1" @end="getResult">
             <transition-group type="transition" class="baseContainer" tag="div" :name="'flip-list'">
-                <div v-for="item in gradesList" :key="item.obj.type" class="featureItem">{{item.obj.label}}</div>
+                <div v-for="item in gradesList" :key="item.obj.type" class="featureItem"><img :src="item.obj.icons" alt="">{{item.obj.label}}</div>
             </transition-group>
         </draggable>
     </div>
-    <Form ref="formValidate" style="max-height: 100%;flex:1;margin: 30px 121px;"  class="b-a" :model="formData" label-position="top" @submit.native.prevent>
+    <Form ref="formValidate" style="flex:1;margin: 30px 121px;overflow-y: auto;" :style="{height:fullHeight.height}" class="b-a" :model="formData" label-position="top" @submit.native.prevent>
         <div class="saveContainer">
             <div @click="previewForm">
                 <img src="@/assets/ico_preview.png" alt="">
@@ -43,7 +43,7 @@
             <div class="setTitle" style="padding: 15px" v-if="setTitleStatus" ><Input @input="changeTitle" @on-blur="setFormTitle" type="text" v-model="formTitle"></Input></div>
             <div style="padding: 15px"  @dblclick="setFormTitle" v-if="!setTitleStatus" class="setTitle">{{formTitle}}<span style="color:#979797">(双击修改)</span></div>
             <!-- 富文本 -->
-            <VueEditor style="width: 90%;margin:0 auto;height:200px;"
+            <VueEditor style="width: 90%;margin:0 auto;height:160px;"
             @imageAdded="handleImageAdded"
             :editorToolbar="customToolbar"
             v-model="content"></VueEditor>
@@ -313,7 +313,10 @@ export default {
                 //     dKey: 'hour',
                 //     dValue: '时间'
                 // }
-            ]
+            ],
+            fullHeight:{// 动态获取屏幕高度
+                height: (document.documentElement.clientHeight-184)+"px"
+            }
         }
     },
     components: {
@@ -361,7 +364,8 @@ export default {
         }
     },
     mounted(){
-        console.log(this.sortable_item)
+        // console.log(this.sortable_item);
+        console.log(this.fullHeight)
     },
     methods: {
                 // 预览效果
@@ -539,6 +543,7 @@ export default {
             justify-content: space-between;
             align-items: center;
             background: #fff;
+            cursor: pointer;
         }
     }
     .b-a{
@@ -589,6 +594,14 @@ export default {
                 border-radius: 2px;
                 text-align: center;
                 cursor: pointer;
+                img{
+                    display:inline-block;
+                    width: 16px;
+                    height:16px;
+                    margin-right:2px;
+                    vertical-align: middle;
+                    border:0;
+                }
             }
             .featureItem{
                 margin:0 auto;
@@ -602,7 +615,13 @@ export default {
                 width: 206px;
                 height: 40px;
                 line-height: 40px;
-
+                 img{
+                    display:inline-block;
+                    width: 20px;
+                    height:20px;
+                    vertical-align: middle;
+                    border:0;
+                }
             }
         }
 
@@ -621,7 +640,7 @@ export default {
 
     .editorArea {
         width: 100%;
-        height: 700px;
+        height: auto;
         background: #FFFFFF;
         overflow-y: auto !important;
         min-height: 400px;
