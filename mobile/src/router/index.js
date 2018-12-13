@@ -3,6 +3,7 @@ import Router from 'vue-router'
 import Home from '@/pages/home/Home'
 import FormPage from '@/pages/home/formPage/FormPage'
 import SelectList from '@/pages/home/formPage/selectList/SelectList'
+import SelectStudent from '@/pages/home/formPage/selectStudent/SelectStudent'
 import Task from '@/pages/task/Task'
 import Copy from '@/pages/copy/Copy'
 
@@ -49,6 +50,14 @@ const router = new Router({
       component: SelectList,
       meta: {
         title: '选择年级'
+      }
+    },
+    {
+      path: '/selectStudent',
+      name: 'SelectStudent',
+      component: SelectStudent,
+      meta: {
+        title: '选择学生'
       }
     }
   ]

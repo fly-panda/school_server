@@ -1,10 +1,15 @@
 <template>
   <div class="form-page">
     <tab :line-width="1" custom-bar-width="60px">
-      <tab-item selected>表单</tab-item>
-      <tab-item>历史记录</tab-item>
+      <tab-item
+        :selected="selectTabIndex === index"
+        v-for="(item, index) in tabData"
+        :key="index"
+      >{{ item }}</tab-item>
+      <!-- <tab-item>历史记录</tab-item> -->
     </tab>
-    <div class="form-wrapper">
+    <!-- 表单 -->
+    <div class="form-wrapper" v-if="selectTabIndex == 0">
       <div class="title">卫生检查金数据是人人可用的在线表单工</div>
       <div
         class="des"
@@ -190,22 +195,26 @@
             <label>
               <input name="img" type="checkbox" value>选项
             </label>
-          </div><div class="img-select-item">
+          </div>
+          <div class="img-select-item">
             <img src alt>
             <label>
               <input name="img" type="checkbox" value>选项
             </label>
-          </div><div class="img-select-item">
+          </div>
+          <div class="img-select-item">
             <img src alt>
             <label>
               <input name="img" type="checkbox" value>选项
             </label>
-          </div><div class="img-select-item">
+          </div>
+          <div class="img-select-item">
             <img src alt>
             <label>
               <input name="img" type="checkbox" value>选项
             </label>
-          </div><div class="img-select-item">
+          </div>
+          <div class="img-select-item">
             <img src alt>
             <label>
               <input name="img" type="checkbox" value>选项
@@ -226,11 +235,49 @@
       </div>
       <button class="submit">提交</button>
     </div>
+    <!-- 历史记录 -->
+    <div class="history-record" v-if="selectTabIndex == 1">
+      <scroller
+        lock-x
+        scrollbar-y
+        use-pullup
+        :pullup-config="pullupDefaultConfig"
+        @on-pullup-loading="loadMore"
+        ref="scrollerBottom"
+        :height="lishH"
+      >
+        <ul class="list">
+          <li class="item" v-for="(item, index) of historyRecord" :key="index">
+            <div class="left">
+              <div class="title">{{ item.title }}</div>
+              <div class="date">填写时间：{{ item.date }}</div>
+            </div>
+            <div class="statu">
+              <img src="../../../assets/img/icon/icon-tanhao.png" width="16" alt>
+            </div>
+            <div class="right">
+              <x-icon type="ios-arrow-right" size="16" class="icon-arrow-right"></x-icon>
+            </div>
+          </li>
+        </ul>
+      </scroller>
+    </div>
   </div>
 </template>
 
 <script>
 import { Tab, TabItem, Scroller, PopupPicker, Checklist, Range } from "vux";
+
+const pullupDefaultConfig = {
+  content: "上拉加载更多",
+  pullUpHeight: 60,
+  height: 40,
+  autoRefresh: false,
+  downContent: "释放后加载",
+  upContent: "上拉加载更多",
+  loadingContent: "加载中...",
+  clsPrefix: "xs-plugin-pullup-"
+};
 
 export default {
   name: "FormPage",
@@ -244,9 +291,30 @@ export default {
   },
   data() {
     return {
+      historyRecord: [
+        {
+          title: '我是一个标题',
+          date: '09/11 10:00'
+        },
+        {
+          title: '我是一个标题',
+          date: '09/11 10:00'
+        },
+        {
+          title: '我是一个标题',
+          date: '09/11 10:00'
+        },
+        {
+          title: '我是一个标题',
+          date: '09/11 10:00'
+        }
+      ],
       lishH: "-53",
       rangeValue: 5,
-      rangeValueMax: 10
+      pullupDefaultConfig: pullupDefaultConfig,
+      rangeValueMax: 10,
+      tabData: ["表单", "历史记录"],
+      selectTabIndex: 1 // tab选中的下标
     };
   },
   computed: {},
@@ -268,7 +336,8 @@ export default {
       if (type == 1 && this.rangeValueMax > rangeValue) {
         this.rangeValue = rangeValue + 1;
       }
-    }
+    },
+    loadMore() {}
   },
   mounted() {}
 };
@@ -276,6 +345,9 @@ export default {
 
 <style scope lang="scss">
 @import "../../../assets/styles/mixins.scss";
+.vux-x-icon-ios-arrow-right  {
+  fill: #C3C9CF !important;
+}
 .vux-tab-wrap {
   position: fixed !important;
   top: 0;
@@ -579,7 +651,7 @@ export default {
           width: px2rem(75);
           margin-bottom: 15px;
           margin-right: px2rem(11);
-          &:nth-child(4n+0) {
+          &:nth-child(4n + 0) {
             margin-right: 0;
           }
           label {
@@ -652,6 +724,42 @@ export default {
             margin-right: px2rem(10);
             font-size: 18px;
           }
+        }
+      }
+    }
+  }
+}
+.history-record {
+  padding: 0 px2rem(20);
+  padding-top: 40px;
+  .list {
+    padding-bottom: 20px;
+    .item {
+      padding: 12px px2rem(20);
+      box-sizing: border-box;
+      background: #ffffff;
+      box-shadow: 0 3px 15px 0 rgba(0, 0, 0, 0.06);
+      border-radius: 2px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 10px;
+      .statu {
+        flex: 1;
+      }
+      .left {
+        width: px2rem(236);
+        .title {
+          font-size: 17px;
+          color: #333333;
+          overflow: hidden;
+          text-overflow: ellipsis;
+          white-space: nowrap;
+          margin-bottom: 7px;
+        }
+        .date {
+          font-size: 13.9px;
+          color: #939393;
         }
       }
     }
