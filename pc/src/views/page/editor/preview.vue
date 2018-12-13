@@ -1,11 +1,11 @@
 <template>
 <div class="previewContioner">
      <div class="btn-view">
-        <p :class="['btns',active==1?'activeCls':'']" @click="preview('pc')"><img :src="active==1?activeImg1:img1" alt=""></p>
-        <p :class="['btns',active==2?'activeCls':'']" @click="preview('mobile')"><img :src="active==2?activeImg2:img2" alt=""></p>
-        <p :class="['btns',active==3?'activeCls':'']" @click="preview('quit')"><img :src="active==3?activeImg3:img3" alt=""></p>
+        <p :class="['btns',active==1?'activeCls':'']" @click="preview('1')"><img :src="active==1?activeImg1:img1" alt=""></p>
+        <p :class="['btns',active==2?'activeCls':'']" @click="preview('2')"><img :src="active==2?activeImg2:img2" alt=""></p>
+        <p :class="['btns',active==3?'activeCls':'']" @click="preview('3')"><img :src="active==3?activeImg3:img3" alt=""></p>
     </div>
-    <div class="previewContent" :style="{height:fullHeight.height}">
+    <div v-show="active==1" class="previewContent" :style="{height:fullHeight.height}">
        
         <div class="header">表单名称</div>
         <div class="content">
@@ -215,18 +215,26 @@
 
         </div>
     </div>
+    <div v-show="active==2" class="previewMobile">
+        <previewMobile/>
+    </div>
+    
 </div>
 </template>
 
 <script>
+import previewMobile from "./previewMobile.vue"
 export default {
+    components:{
+        previewMobile
+    },
     data() {
         return {
             checkAllGroup: [],
             fullHeight:{// 动态获取屏幕高度
                 height: (document.documentElement.clientHeight-60)+"px"
             },
-            active:1,
+            active:1,//pc 1,mobile  2,quit   3
             img1:require("@/assets/pcyulan_ico_nor.png"),
             activeImg1:require("@/assets/pcyulan_icon_pre.png"),
             img2:require("@/assets/shoujiyulan_ico_nor.png"),
@@ -242,11 +250,13 @@ export default {
         },
         preview(type){
             let self=this;
-            if(type=="pc"){
+            if(type=="1"){
+                self.active=type;
                 console.log("PC")
-            }else if(type=="mobile"){
+            }else if(type=="2"){
+                self.active=type;
                 console.log("mobile")
-            }else if(type=="quit"){
+            }else if(type=="3"){
                 self.$router.go(-1);
             }
         }
@@ -374,6 +384,10 @@ export default {
                 }
             }
         }
+    }
+    .previewMobile{
+        height: 100%;
+        width: 100%;
     }
 }
 </style>

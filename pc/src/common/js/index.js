@@ -53,7 +53,7 @@ function apiAxios(method, url, params, success, failure) {
         
     })
     .catch(function (err) {
-        Message.error("服务异常，请刷新重试！");
+        // Message.error("服务异常，请刷新重试！");
 
     })
 }
