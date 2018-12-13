@@ -5,6 +5,7 @@ import App from './App'
 import router from './router'
 import fastClick from 'fastclick'
 import Mint from 'mint-ui'
+import 'mint-ui/lib/style.css'
 import './assets/styles/border.css'
 import './assets/styles/reset.css'
 
