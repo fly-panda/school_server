@@ -22,21 +22,22 @@ export default {
 <style lang='less' scoped > 
     .mobile-container{
         position: fixed;
-        width: 410px;
-        height: 840px;
-        background: url('../../../assets/iphone-bg.png') no-repeat no-repeat;
+        width: 421px;
+        height: 755px;
+        background: url('../../../assets/iphone-bg.png') no-repeat;
+         background-size:cover;
         z-index: 9999;
         // margin:0 auto;
         top:30px;
         left:50%;
-        padding: 99px 23px;
+        padding: 122px 65px;
         transform: translateX(-50%);
         .contents{
-            width: 100%;
-            height: 640px;
+            // width: 100%;
+            height: 511px;
             overflow-y: auto;
             position: relative;
-            background: red;
+            background: #fff;
         }
     }
 </style>

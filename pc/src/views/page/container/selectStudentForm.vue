@@ -40,7 +40,7 @@
             <div>
                 <div class="studentItem" v-for="(item,index) in selStudentList">
                     <div>{{item.name}}</div>
-                    <div class="delS-cls" @click="delFun(item,index)"><Icon color="red" size="18" type="md-close-circle" /></div>
+                    <div class="del-cls" @click="delFun(item,index)"><Icon color="red" size="18" type="md-close-circle" /></div>
                 </div>
                 
             </div>
@@ -60,8 +60,7 @@ export default {
             data3: [],
             indeterminate: true,
             checkAll: false,
-            studentList: [
-
+            studentList: [ 
             ],
             selStudentList:[]
         }
@@ -76,9 +75,9 @@ export default {
             self.$api.post("/campus/getDepartmentInfoList",{
                 usertype:1
             },r=>{
-                
+                 
                 self.data3=JSON.parse(r.data);
-                console.log(self.data3);
+                // console.log(self.data3);
             })
         },
         // 树节点 事件
@@ -240,14 +239,16 @@ export default {
                 cursor: pointer;
                 span{
                     display:inline-block;
+                    border:none;
                 }
                 .check-cls{
                     width: 15px;
                     height: 15px;
-                    border:1px solid #e2e5e7;
+
+                    background:url("../../../assets/choix_nor.png");
                 }
                 .active-cls{
-                    background: #63a854;
+                    background:url("../../../assets/choix_pre.png");
                 }
             }
             

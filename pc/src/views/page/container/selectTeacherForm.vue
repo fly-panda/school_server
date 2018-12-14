@@ -240,14 +240,16 @@ export default {
                 cursor: pointer;
                 span{
                     display:inline-block;
+                    border:none;
                 }
                 .check-cls{
                     width: 15px;
                     height: 15px;
-                    border:1px solid #e2e5e7;
+
+                    background:url("../../../assets/choix_nor.png");
                 }
                 .active-cls{
-                    background: #63a854;
+                    background:url("../../../assets/choix_pre.png");
                 }
             }
             
