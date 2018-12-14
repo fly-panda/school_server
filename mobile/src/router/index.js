@@ -6,6 +6,7 @@ import SelectList from '@/pages/home/formPage/selectList/SelectList'
 import SelectStudent from '@/pages/home/formPage/selectStudent/SelectStudent'
 import Task from '@/pages/task/Task'
 import SubmitFormData from '@/pages/task/submitFormData/SubmitFormData'
+import FillInHisory from '@/pages/task/fillInHisory/FillInHisory';
 import Copy from '@/pages/copy/Copy'
 
 
@@ -67,6 +68,14 @@ const router = new Router({
       component: SubmitFormData,
       meta: {
         title: '提交的表单数据'
+      }
+    },
+    {
+      path: '/fillInHisory',
+      name: 'FillInHisory',
+      component: FillInHisory,
+      meta: {
+        title: '填写历史'
       }
     }
   ]
