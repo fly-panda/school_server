@@ -5,6 +5,7 @@
         :selected="selectTabIndex === index"
         v-for="(item, index) in tabData"
         :key="index"
+        @on-item-click="tabItemClick(index)"
       >{{ item }}</tab-item>
       <!-- <tab-item>历史记录</tab-item> -->
     </tab>
@@ -262,11 +263,17 @@
         </ul>
       </scroller>
     </div>
+
+
+    <!-- 悬浮按钮 -->
+    <suspend-btn :isShowMenu="isShowMenu" @menuHandleClick="menuHandleClick"></suspend-btn>
+
   </div>
 </template>
 
 <script>
 import { Tab, TabItem, Scroller, PopupPicker, Checklist, Range } from "vux";
+import SuspendBtn from '../../../components/suspendBtn/SuspendBtn';
 
 const pullupDefaultConfig = {
   content: "上拉加载更多",
@@ -287,10 +294,12 @@ export default {
     TabItem,
     PopupPicker,
     Checklist,
-    Range
+    Range,
+    SuspendBtn
   },
   data() {
     return {
+      isShowMenu: false, //是否显示悬浮菜单
       historyRecord: [
         {
           title: '我是一个标题',
@@ -314,11 +323,23 @@ export default {
       pullupDefaultConfig: pullupDefaultConfig,
       rangeValueMax: 10,
       tabData: ["表单", "历史记录"],
-      selectTabIndex: 1 // tab选中的下标
+      selectTabIndex: 0 // tab选中的下标
     };
   },
   computed: {},
   methods: {
+    // tab切换
+    tabItemClick(index) {
+      this.selectTabIndex = index
+    },
+    /** 
+     * 悬浮菜单操作按钮
+     * @type==0 修改
+     * @type==1 删除
+    */
+    menuHandleClick(type) {
+      console.log(type)
+    },
     // 上传图片
     fileImage(e) {
       console.log(e);
