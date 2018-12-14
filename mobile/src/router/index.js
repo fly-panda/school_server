@@ -5,6 +5,7 @@ import FormPage from '@/pages/home/formPage/FormPage'
 import SelectList from '@/pages/home/formPage/selectList/SelectList'
 import SelectStudent from '@/pages/home/formPage/selectStudent/SelectStudent'
 import Task from '@/pages/task/Task'
+import SubmitFormData from '@/pages/task/submitFormData/SubmitFormData'
 import Copy from '@/pages/copy/Copy'
 
 
@@ -58,6 +59,14 @@ const router = new Router({
       component: SelectStudent,
       meta: {
         title: '选择学生'
+      }
+    },
+    {
+      path: '/submitFormData',
+      name: 'SubmitFormData',
+      component: SubmitFormData,
+      meta: {
+        title: '提交的表单数据'
       }
     }
   ]

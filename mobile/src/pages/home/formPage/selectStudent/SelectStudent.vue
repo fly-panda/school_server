@@ -13,24 +13,24 @@
         </ul>
       </div>
       <div class="right">
-              <scroller
-      lock-x
-      scrollbar-y
-      use-pullup
-      :pullup-config="pullupDefaultConfig"
-      @on-pullup-loading="loadMore"
-      ref="scrollerBottom"
-      :height="lishH"
-      > 
-        <ul>
-          <li v-for="(item, index) of studentList" :class="{ 'active' : index == 0 }">
-            <span>{{ item }}</span>
-            <icon v-if="index == 0" type="success-no-circle"></icon>
-          </li>
-        </ul>
-      </scroller>
+        <scroller
+          lock-x
+          scrollbar-y
+          use-pullup
+          :pullup-config="pullupDefaultConfig"
+          @on-pullup-loading="loadMore"
+          ref="scrollerBottom"
+          :height="lishH"
+        >
+          <ul>
+            <li v-for="(item, index) of studentList" :class="{ 'active' : index == 0 }" :key="index">
+              <span>{{ item }}</span>
+              <icon v-if="index == 0" type="success-no-circle"></icon>
+            </li>
+          </ul>
+        </scroller>
       </div>
-      </div>
+    </div>
   </div>
 </template>
 
@@ -57,18 +57,29 @@ export default {
   data() {
     return {
       pullupDefaultConfig: pullupDefaultConfig,
-      studentList: ['张三','张三','张三','张三','张三','张三','张三','张三','张三','张三'],
+      studentList: [
+        "张三",
+        "张三",
+        "张三",
+        "张三",
+        "张三",
+        "张三",
+        "张三",
+        "张三",
+        "张三",
+        "张三"
+      ],
       results: [],
-      value: 'test',
-      lishH: '-80'
+      value: "test",
+      lishH: "-80"
     };
   },
   methods: {
     loadMore() {
-      let data = this.studentList
-      this.studentList = data.concat(this.studentList)
-      this.$refs.scrollerBottom.donePullup()
-    },
+      let data = this.studentList;
+      this.studentList = data.concat(this.studentList);
+      this.$refs.scrollerBottom.donePullup();
+    }
   }
 };
 </script>
@@ -125,13 +136,13 @@ export default {
           padding-left: px2rem(23);
           box-sizing: border-box;
           font-size: 15px;
-          color: #5DB75D;
+          color: #5db75d;
           &::after {
             position: absolute;
-            content: '';
+            content: "";
             width: 2px;
             height: 80%;
-            background: #5DB75D;
+            background: #5db75d;
             left: 0;
             top: 10%;
           }
@@ -157,7 +168,7 @@ export default {
           }
         }
         .active {
-          color: #5DB75D;
+          color: #5db75d;
         }
       }
     }
