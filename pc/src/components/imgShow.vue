@@ -5,8 +5,8 @@
             <template v-if="item.status === 'finished'">
                 <img :src="item.url">
                 <div class="demo-upload-list-cover">
-                    <Icon type="ios-eye-outline" @click.native="handleView(item.name)"></Icon>
-                    <Icon type="ios-trash-outline" @click.native="handleRemove(item)"></Icon>
+                    <Icon type="ios-eye-outline" @click.native="handleView(item)"></Icon>
+                    <!-- <Icon type="ios-trash-outline" @click.native="handleRemove(item)"></Icon> -->
                 </div>
             </template>
             <template v-else>
@@ -18,7 +18,7 @@
             <Checkbox style="font-weight: 400;" v-if="isCheck"></Checkbox>
         </div>
     </div>
-    <Upload ref="upload" :show-upload-list="false" :default-file-list="defaultList" :on-success="handleSuccess" :format="['jpg','jpeg','png']" :max-size="2048" :on-format-error="handleFormatError" :on-exceeded-size="handleMaxSize" :before-upload="handleBeforeUpload" multiple type="drag" action="//jsonplaceholder.typicode.com/posts/" 
+    <Upload v-show="false" ref="upload" :show-upload-list="false" :default-file-list="defaultList" :on-success="handleSuccess" :format="['jpg','jpeg','png']" :max-size="2048" :on-format-error="handleFormatError" :on-exceeded-size="handleMaxSize" :before-upload="handleBeforeUpload" multiple type="drag" action="//jsonplaceholder.typicode.com/posts/" 
         :style="isCheck?{
             display: 'inline-block',width:'58px', position: 'absolute', top: '17px'
         }:{ display: 'inline-block',width:'58px'}">
@@ -28,33 +28,36 @@
     </Upload>
 
     <Modal title="View Image" v-model="visible">
-        <img :src="'https://o5wwk8baw.qnssl.com/' + imgName + '/large'" v-if="visible" style="width: 100%">
+        <img :src="imgSrc" v-if="visible" style="width: 100%">
     </Modal>
 </div>
 </template>
 
 <script>
 export default {
-    props: ['isCheck'],
+    props: ['isCheck','defaultList'],
     data() {
         return {
-            defaultList: [{
-                    'name': 'a42bdcc1178e62b4694c830f028db5c0',
-                    'url': require("@/assets/logo.png")
-                },
-                {
-                    'name': 'bc7521e033abdd1e92222d733590f104',
-                    'url': require("@/assets/logo.png")
-                }
-            ],
+            imgSrc:"",
+            // defaultList: [
+                // {
+                //     'name': 'a42bdcc1178e62b4694c830f028db5c0',
+                //     'url': require("@/assets/logo.png")
+                // },
+                // {
+                //     'name': 'bc7521e033abdd1e92222d733590f104',
+                //     'url': require("@/assets/logo.png")
+                // }
+            // ],
             imgName: '',
             visible: false,
             uploadList: []
         }
     },
     methods: {
-        handleView(name) {
-            this.imgName = name;
+        handleView(item) {
+            this.imgSrc= item.url;
+            this.imgName = item.name;
             this.visible = true;
         },
         handleRemove(file) {
@@ -89,6 +92,7 @@ export default {
     },
     mounted() {
         this.uploadList = this.$refs.upload.fileList;
+        console.log(this.uploadList)
     }
 }
 </script>

@@ -1,5 +1,6 @@
 <template>
 <div class="checkContainer">
+    <div class="title-cls">选择班级范围</div>
     <!-- :load-data="loadData" -->
     <Tree ref="tree" :data="data3"  show-checkbox></Tree>
     <div class="flexCenter">
@@ -14,7 +15,7 @@ export default {
         return {
             data3: [{
                 title: '政教处',
-                expand: true,
+                // expand: true,
                 loading: false,
                 children: [
                     {
@@ -30,7 +31,7 @@ export default {
             },
             {
                 title: '教务处',
-                expand: true,
+                // expand: true,
                 loading: false,
                 children: [
                     {
@@ -68,7 +69,13 @@ export default {
 <style lang="less" scoped>
 .checkContainer {
     min-height: 400px;
-
+    text-align: center;
+    .title-cls{
+        font-size: 20px;
+        padding:5px 15px;
+        border-bottom: 1px solid #e2e5e7;
+        
+    }
     .positionColumn {
         display: flex;
         flex-direction: column;

@@ -2,11 +2,11 @@
 <div class="editorContainer">
     <div class="slide">
         <div class="title">基础控件</div>
+                    <!-- :title="getModalTitle" -->
         <Modal
             v-model="modalStatus"
-            :title="getModalTitle"
             footer-hide
-            width="800"
+            :width="(settingFormItem.type=='selectgrade'||settingFormItem.type=='selectdepartment')?400:800"
             >
             <component  v-on:handleselect="handleSelectRes" v-bind:is="getModalContent"></component>
         </Modal>
@@ -28,7 +28,7 @@
             </transition-group>
         </draggable>
     </div>
-    <Form ref="formValidate" style="flex:1;margin: 30px 121px;overflow-y: auto;" :style="{height:fullHeight.height}" class="b-a" :model="formData" label-position="top" @submit.native.prevent>
+    <Form ref="formValidate" style="flex:1;margin: 30px 121px;overflow-y: auto;padding-bottom:30px;" :style="{height:fullHeight.height}" class="b-a" :model="formData" label-position="top" @submit.native.prevent>
         <div class="saveContainer">
             <div @click="previewForm">
                 <img src="@/assets/ico_preview.png" alt="">
@@ -53,6 +53,8 @@
             <transition-group name="no" class="editorArea" tag="div" style="margin-top: 60px;">
                 <renders @handleRemoveEle="removeEle"  :curIndex="curIndex" @setIndex="setIndexFun" v-for="(element,index) in sortable_item" :key="index" :index="index" :ele="element.ele" :obj="element.obj || {}" :sortableItem="sortable_item" :config-icon="true">
                 </renders>
+                
+                
                 <!-- @handleCopyEle="copyEle" -->
             </transition-group>
         </draggable>
@@ -60,20 +62,25 @@
     <div class="slide">
         <div class="title">控件设置</div>
         <Form v-if="curIndex !== -1" ref="formCustom" class="settingForm" :model="settingFormItem" label-position="top">
-            <FormItem v-if="!(settingFormItem.type == 'describe')" label="控件名称" prop="label">
+            <FormItem v-if="!(settingFormItem.type == 'describe'||settingFormItem.type == 'imgShow')" label="控件名称" prop="label">
                 <Input type="text" v-model="settingFormItem.label"></Input>
             </FormItem>
             <!-- <FormItem v-if="!(settingFormItem.type == 'describe')" label="属性名" prop="name">
                 <Input type="text" v-model="settingFormItem.name"></Input>
             </FormItem> -->
-            <FormItem v-if="!['datepicker', 'score', 'uploads', 'trueFalse', 'radio', 'checkbox', 'address', 'uploadimg', 'selectstudent', 'describe', 'title', 'selectgrade', 'selectdepartment', 'selectteacher', 'slider', 'download', 'selectcontact'].includes(settingFormItem.type)" label="默认值" prop="placeholder">
+            <FormItem v-if="!['datepicker', 'score', 'uploads', 'trueFalse', 'radio', 'checkbox', 'address', 'uploadimg', 'selectstudent', 'describe', 'title', 'selectgrade', 'selectdepartment', 'selectteacher', 'slider', 'download', 'selectcontact','imgCheck','imgShow'].includes(settingFormItem.type)" label="默认值" prop="placeholder">
                 <Input type="text" v-model="settingFormItem.placeholder"></Input>
             </FormItem>
-            <FormItem v-if="!(settingFormItem.type == 'title')"  label="提示" prop="describe">
+            <FormItem v-if="!(settingFormItem.type == 'title'||settingFormItem.type == 'imgShow')"  label="提示" prop="describe">
                 <Input type="textarea" :rows="3" v-model="settingFormItem.describe"></Input>
             </FormItem>
-            <FormItem  v-if="!(settingFormItem.type == 'describe'  || settingFormItem.type == 'title')" label="校验" :style="settingFormItem.type==='input'?{'font-weight': 400, 'border-bottom': 'none', 'padding-bottom': 0}:{'font-weight': 400}" prop="require">
+            <FormItem  v-if="!(settingFormItem.type == 'describe'  || settingFormItem.type == 'title'||settingFormItem.type == 'imgShow')" label="校验" :style="settingFormItem.type==='input'?{'font-weight': 400, 'border-bottom': 'none', 'padding-bottom': 0}:{'font-weight': 400}" prop="require">
                 <Checkbox style="font-weight: 400" v-model="settingFormItem.require">&nbsp;&nbsp;这是一个必填选项</Checkbox>
+                <div v-if="settingFormItem.type =='imgCheck'">
+                    <Checkbox style="font-weight: 400">&nbsp;&nbsp;最少选&nbsp;&nbsp;<input type="number" class="img-inp" v-model="settingFormItem.minlen">&nbsp;&nbsp;项&nbsp;&nbsp;</Checkbox>
+                    <Checkbox style="font-weight: 400">&nbsp;&nbsp;最多选&nbsp;&nbsp;<input type="number" class="img-inp" v-model="settingFormItem.maxlen">&nbsp;&nbsp;项&nbsp;&nbsp;</Checkbox>
+                </div>
+                
                 <Checkbox v-if="settingFormItem.type =='score'"  style="font-weight: 400" v-model="settingFormItem.isCheck">&nbsp;&nbsp;可以选择多个评分项</Checkbox>
                 <Row v-if="settingFormItem.type == 'uploadimg'">
                     <Col span="3" >
@@ -90,6 +97,38 @@
                     </Col>
                 </Row>
             </FormItem>
+            
+            <div class="pad-cls" v-if="settingFormItem.type =='imgCheck'||settingFormItem.type == 'imgShow'">
+                <p class="label-cls">{{settingFormItem.type =='imgCheck'?'选项内容':'已上传图片'}}</p>
+                 <draggable element="div" v-model="settingFormItem.imgArr">
+                    <transition-group name="no" tag="div">
+                        <FormItem style="border: none;padding:3px 0;" v-for="(SelectItem, index) in settingFormItem.imgArr" :key="index">
+                            <p>{{SelectItem.titles}}</p>
+                            <Row class='file-view'>
+                                <div>
+                                     <p class="flex-cls">
+                                        <img class="img-cls" :src="SelectItem.url" alt="">
+                                        <span class="title-cls" :title="SelectItem.name">{{SelectItem.name}}</span>
+                                        <Icon class="close-cls" type="ios-close" @click="delImgFun(SelectItem)"/>
+                                    </p>
+                                    
+                                    <Progress v-show="index==(settingFormItem.imgArr.length-1)" :percent="progress" :stroke-width="5" style="text-align: center;"/>
+                                    <span class="size-cls">{{SelectItem.size}}</span>
+                                </div>
+                               
+                                
+                            </Row>
+                            
+                            <!-- <RadioGroup v-model="SelectItem.scoreType">
+
+                            </RadioGroup> -->
+                        </FormItem>
+                    </transition-group>
+                </draggable>
+                <div>
+                    
+                </div>
+            </div>
             <FormItem  v-if="settingFormItem.type == 'radio'  || settingFormItem.type == 'checkbox'" label=""  prop="require">
                 <Checkbox style="font-weight: 400" v-model="settingFormItem.hasOther">&nbsp;&nbsp;是否添加其他选项</Checkbox>
             </FormItem>
@@ -261,11 +300,13 @@ import selectStudentForm from "../container/selectStudentForm";
 import selectTeacherForm from "../container/selectTeacherForm";
 import selectDepartmentForm from "../container/selectDepartmentForm";
 import { VueEditor } from "vue2-editor";
+import {mapState,mapGetters,mapActions} from 'vuex'; //先要引入
 export default {
     data() {
         return {
             content: '<h1> 富文本编辑器</h1>',
             content:'',
+            progress:0,
             customToolbar:[
                     ['bold', 'italic', 'underline'],
                     [{'align':''},{'align':'center'},{'align':'right'}],
@@ -329,6 +370,7 @@ export default {
         VueEditor
     },
     computed: {
+        ...mapState(['studentList','teacherList']),
         // 拖拽表单1
         dragOptions1() {
             return {
@@ -359,14 +401,15 @@ export default {
             return this.sortable_item[this.curIndex]?this.sortable_item[this.curIndex]['obj']['label']: ''
         },
         getModalContent(){
-            console.log(this.sortable_item[this.curIndex])
+            // console.log(this.sortable_item[this.curIndex])
             // console.log(this.sortable_item[this.curIndex] && this.sortable_item[this.curIndex]['obj']['modal']?this.sortable_item[this.curIndex]['obj']['modal']: 'Input')
             return this.sortable_item[this.curIndex] && this.sortable_item[this.curIndex]['obj']['modal']?this.sortable_item[this.curIndex]['obj']['modal']: 'Input'
         }
     },
     mounted(){
         // console.log(this.sortable_item);
-        console.log(this.fullHeight)
+        console.log("我获取的",this.studentList);
+
     },
     methods: {
                 // 预览效果
@@ -377,6 +420,7 @@ export default {
             // cur_modal.status = true
             // cur_modal.data = this.sortable_item
             // this.$store.commit('previewStatus', cur_modal);
+            
             this.$router.push(
                 "/preview"
             )
@@ -388,19 +432,29 @@ export default {
             Editor.insertEmbed(cursorLocation, 'image', url);
         },
         saveSoltItem(){
+            for(let i=0;i<this.sortable_item.length;i++){
+                this.sortable_item[i].obj.icons="";
+                if(this.sortable_item[i].ele=="selectteacher"){
+                    this.sortable_item[i].obj.items = this.teacherList;
+                }
+                if(this.sortable_item[i].ele=="selectstudent"){
+                    this.sortable_item[i].obj.items = this.studentList;
+                }
+            }
             let formObj = {}
             formObj.title = this.formTitle
             formObj.data = this.sortable_item;
             formObj.describe = this.content;
-            console.log(this.content)
+            // console.log("我保存的",this.sortable_item);
+            // console.log(this.content)
             console.log(this.sortable_item)
-            console.log(JSON.stringify(formObj))
-            this.$api.post("/cform/addForm",
-                formObj,
-                r=>{
-                    console.log(r)
-                }
-            )
+            // // console.log(JSON.stringify(formObj))
+            // this.$api.post("/cform/addForm",
+            //     formObj,
+            //     r=>{
+            //         console.log(r)
+            //     }
+            // )
         },
         changeTitle(title){
             this.formTitle = title
@@ -455,6 +509,7 @@ export default {
             this.$refs[name].resetFields();
         },
         cloneData(original) {
+            console.log("clone",original)
             // 添加一个modal标题
             original.obj.modalTitle = original.obj.label || "";
             // 深拷贝对象，防止默认空对象被更改
@@ -485,6 +540,7 @@ export default {
             console.log(index)
         },
         moveEnd(relatedContext) {
+            console.log("moveEnd",relatedContext)
             if(relatedContext.oldIndex == this.curIndex){
                 this.curIndex = relatedContext.newIndex
             }else if(relatedContext.newIndex == this.curIndex){
@@ -498,6 +554,10 @@ export default {
             // return (
             //     (!relatedElement || !relatedElement.fixed) && !draggedElement.fixed
             // );
+        },
+        delImgFun(r){
+            console.log(r)
+            console.log(this.settingFormItem);
         }
 
     }
@@ -568,7 +628,7 @@ export default {
         height: 87%;
         overflow-y: auto;
         background: #F1F1F1;
-        padding-bottom:30px;
+        padding-bottom:80px;
 
         .title {
             background: #d8d8d8;
@@ -688,7 +748,61 @@ export default {
     width: 24px; height: 28px;
     cursor: pointer;
 }
-
+.img-inp{
+    width:51px;
+    height: 23px;
+    background: #FFFFFF;
+    border: 1px solid #C3C9D0;
+    border-radius: 2px;
+}
+.label-cls{
+    
+    font-size: 13px;
+    font-weight: 700;
+    color: #363636;
+    letter-spacing: 0.66px;
+    line-height: 13px;
+}
+.pad-cls{
+    padding: 15px;
+}
+.file-view{
+    background: #FFFFFF;
+    border: 1px solid #C3C9D0;
+    border-radius: 2px;
+    padding:5px;
+    line-height:15px;
+    p{
+        height: auto;
+        .img-cls{
+            width:16px;
+            height:16px;
+        }
+    }
+    .title-cls{
+        font-family: PingFang-SC-Medium;
+        font-size: 12px;
+        color: #4A4A4A;
+        letter-spacing: 0.72px;
+        padding-left:4px;
+        flex:1;
+        overflow: hidden; white-space: nowrap; text-overflow: ellipsis
+    } 
+    .size-cls{
+        font-family: PingFang-SC-Medium;
+        font-size: 9px;
+        color: #9B9B9B;
+        letter-spacing: 0.54px;
+    }
+    .close-cls{
+        font-size:20px;
+        cursor: pointer;
+    }
+}
+.flex-cls{
+    display: flex;
+    justify-content:space-between;    
+}
 </style>
 
 

@@ -1,6 +1,6 @@
 <template>
 <div class="checkContainer">
-    <!-- <div class="title-cls">选择学生范围</div> -->
+    <div class="title-cls">选择老师范围</div>
     <div class="save-cls">
         <Button type="primary" @click="saveFun">保存</Button>
     </div>
@@ -51,6 +51,7 @@
 </template>
 
 <script>
+import {mapState,mapGetters,mapActions} from 'vuex'; //先要引入
 export default {
     data() {
         return {
@@ -71,6 +72,7 @@ export default {
         self.getData();
     },
     methods: {
+        ...mapActions(['setTeachers']),
         getData(){
             let self=this;
             self.$api.post("/campus/getDepartmentInfoList",{
@@ -159,6 +161,7 @@ export default {
         },
         saveFun(){
             this.$emit('handleselect', this.selStudentList);
+            this.setTeachers(this.selStudentList)
         },
         seearchPeople() {
             console.log(1)

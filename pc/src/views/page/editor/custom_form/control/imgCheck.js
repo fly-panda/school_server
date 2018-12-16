@@ -6,7 +6,8 @@ export default (_self, h) => {
 return [
     h("imgShow", {
         props: {
-            isCheck: true
+            isCheck: true,
+            defaultList:imgCheckConf.imgArr
         },
         on: {
         }
@@ -17,7 +18,7 @@ return [
 
 export let imgCheckConf = {
 // 对应数据库内类型
-type: 'imgcheck',
+type: 'imgCheck',
   //  图标
 icons:require("@/assets/tupianxuanze_nor.png"),
 // 是否可配置
@@ -30,6 +31,27 @@ inlineBlock: false,
 // 是否必填
 require: true,
 // 最大长度
+maxlen:1,
+minlen:0,
+imgArr:[
+                {
+                    'titles':'图片',
+                    'name': 'a42bdcc1178e62b4694c830f028db5c0',
+                    'url': require("@/assets/dancirenwu_ico.png"),
+                    'progress':0,
+                    "size":"10kb",
+                    'labels':"选项1"
+                },
+                {
+                    'titles':'图片',
+                    'name': 'bc7521e033abdd1e92222d733590f104',
+                    'url': require("@/assets/publishForm.png"),
+                    'progress':0,
+                    "size":"10M",
+                    'labels':"选项2"
+                    
+                }
+],
 describe: '',
 gradesType: 'add',
 low: 0,

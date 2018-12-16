@@ -103,7 +103,7 @@ export default {
                     'sortable-items-required': validate
                 },
                 props: {
-                    label: (this.obj.label || this.ele) + '：',
+                    label:this.obj.label!='图片展示'?((this.obj.label || this.ele) + '：'):"",
                     // 指定验证name
                     prop: this.obj.name || 'temp',
                     // 验证规则
