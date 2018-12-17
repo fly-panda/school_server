@@ -7,7 +7,7 @@ return [
     h("imgShow", {
         props: {
             isCheck: true,
-            defaultList:imgCheckConf.imgArr
+            defaultList:_self.obj.imgArr
         },
         on: {
         }
@@ -36,20 +36,11 @@ minlen:0,
 imgArr:[
                 {
                     'titles':'图片',
-                    'name': 'a42bdcc1178e62b4694c830f028db5c0',
-                    'url': require("@/assets/dancirenwu_ico.png"),
+                    'name': '',
+                    'url': '',
                     'progress':0,
                     "size":"10kb",
                     'labels':"选项1"
-                },
-                {
-                    'titles':'图片',
-                    'name': 'bc7521e033abdd1e92222d733590f104',
-                    'url': require("@/assets/publishForm.png"),
-                    'progress':0,
-                    "size":"10M",
-                    'labels':"选项2"
-                    
                 }
 ],
 describe: '',

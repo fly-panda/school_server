@@ -1,6 +1,6 @@
 // import md5 from 'js-md5';
 // 配置API接口地址
-var baseUrlRoot = 'http://47.93.156.129:8848/api/'
+var baseUrlRoot = 'http://47.93.156.129:8848/'
 import {Message} from 'iview';
 // 引用axios
 import axios from 'axios'
@@ -30,13 +30,12 @@ function apiAxios(method, url, params, success, failure) {
   if (method=="POST") {
     params = getParams(params)
   }
-  console.log(1,params)
   axios({
     method: method,
     url: url,
     data: method === 'POST'? params : null,
     params: method === 'GET'? params : null,
-    baseURL: baseUrlRoot,
+    baseURL: baseUrlRoot+"api/",
     withCredentials: false,
     timeout: 10000
   })
@@ -66,16 +65,63 @@ function sGetObject(k) {
   }
 };
 
+function uploadFile(url,params, file, success){
+  var fd = new FormData();
+    if (params != null && params != undefined) {
+      for (var i = 0; i < params.length; i++) {
+        fd.append(params[i].name, params[i].value)
+      }
+    }
+    if (file != null) {
+      fd.append("file", file);
+    } else {
+      Message.success("请选择一个文件");
+      return;
+    }
+   axios({
+      method: 'post',
+      url: baseUrlRoot +"api/" + url,
+      data: fd,
+      params:params,
+      headers: {
+        'Content-Type': 'multipart/form-data'
+      },
+      timeout: 40000,
+
+    })
+    .then(function (res) {
+
+      let data=res.data;
+      if(res.status==200){
+        if(data.state==0){
+          Message.success(data.result);
+          success(data);
+        }else{
+          Message.error(data.result);
+        }   
+      }
+    })
+    .catch(function (err) {
+        // Message.error("服务异常，请刷新重试！");
+
+    })
+}
 // 返回在vue模板中的调用接口
 export default {
   getBase:function(){
     return baseUrlRoot;
+  },
+  getImgBase:function(){
+    return baseUrlRoot+"/web/images/";
   },
   get: function (url, params, success, failure) {
     return apiAxios('GET', url, params, success, failure)
   },
   post: function (url, params, success, failure) {
     return apiAxios('POST', url, params, success, failure)
+  },
+  uploadFile:function(url,params, file, success){
+    return uploadFile(url,params, file, success);
   },
   sset: function(k, v) {
     try {

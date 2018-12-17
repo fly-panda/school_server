@@ -1,5 +1,7 @@
 <template>
-    <Upload
+    <div>
+        {{fileList}}
+        <Upload
         style="margin: 10px auto;"
         :before-upload="beforeUpload"
         :multiple="true"
@@ -8,13 +10,15 @@
         :action="updateUrl || ''">
         <Button icon="md-add">点击上传文件</Button>
     </Upload>
+    </div>
+    
 </template>
 <script>
     export default {
-        props: ['updateUrl'],
+        props: ['updateUrl','fileList'],
         data(){
             return {
-                fileList: []
+                // fileList: []
             }
         },
         methods: {

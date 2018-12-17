@@ -1,3 +1,4 @@
+import api from '../../../../../common/js/index.js'
 export default (_self, h) => {
     let icons = []
      // 删除按钮
@@ -16,20 +17,29 @@ export default (_self, h) => {
 
   icons.push(h('span', '下载文件'))
     return [
-        h("div", {
-            style: {
-                width: '100%',
-                height: '30px',
-                background: '#FFFFFF',
-                border: '1px dashed #C1C1C1',
-                'border-radius': '2px',
-                'text-indent': '10px',
-                cursor: 'pointer'
-            },
-            props: {
-             
-            }
-        }, icons)
+        h("div",_self.obj.items.map(function(item,index){
+            return [
+                h("p",{
+                    style: {
+                        width: '100%',
+                        height: '38px',
+                        background: '#FFFFFF',
+                        border: '1px dashed #C1C1C1',
+                        'border-radius': '2px',
+                        'text-indent': '10px',
+                        cursor: 'pointer',
+                        'margin':'2px 0',
+                        'background-image':"url(http://47.93.156.129:8848/web/images/down_ico_dis.png)",
+                        'background-repeat':'no-repeat',
+                        'background-position':'95% 10px',
+
+                    },
+                    props: {
+                     
+                    }
+                },item.label_name)
+            ]
+        }), icons)
     ];
 };
 
@@ -47,14 +57,18 @@ export let downloadConf = {
     // 是否显示行内元素
     inlineBlock: false,
     // 是否必填
-    require: true,
+    require: false,
     // 最大长度
     describe: '',
     // 选项内数据
-    items: [{
-        "label_value": 'null',
-        "label_name": "222"
-    }],
+    items: [
+        // {
+        //     "label_value": '1',
+        //     "label_name": "文件1",
+        //     "url":"",
+        //     "size":"10kb"
+        // }
+    ],
     verify: 'none',
     value: '',
     // 表单name

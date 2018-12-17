@@ -74,7 +74,7 @@
             <FormItem v-if="!(settingFormItem.type == 'title'||settingFormItem.type == 'imgShow')"  label="提示" prop="describe">
                 <Input type="textarea" :rows="3" v-model="settingFormItem.describe"></Input>
             </FormItem>
-            <FormItem  v-if="!(settingFormItem.type == 'describe'  || settingFormItem.type == 'title'||settingFormItem.type == 'imgShow')" label="校验" :style="settingFormItem.type==='input'?{'font-weight': 400, 'border-bottom': 'none', 'padding-bottom': 0}:{'font-weight': 400}" prop="require">
+            <FormItem  v-if="!(settingFormItem.type == 'describe'  || settingFormItem.type == 'title'||settingFormItem.type == 'imgShow'||settingFormItem.type == 'download')" label="校验" :style="settingFormItem.type==='input'?{'font-weight': 400, 'border-bottom': 'none', 'padding-bottom': 0}:{'font-weight': 400}" prop="require">
                 <Checkbox style="font-weight: 400" v-model="settingFormItem.require">&nbsp;&nbsp;这是一个必填选项</Checkbox>
                 <div v-if="settingFormItem.type =='imgCheck'">
                     <Checkbox style="font-weight: 400">&nbsp;&nbsp;最少选&nbsp;&nbsp;<input type="number" class="img-inp" v-model="settingFormItem.minlen">&nbsp;&nbsp;项&nbsp;&nbsp;</Checkbox>
@@ -97,38 +97,83 @@
                     </Col>
                 </Row>
             </FormItem>
-            
-            <div class="pad-cls" v-if="settingFormItem.type =='imgCheck'||settingFormItem.type == 'imgShow'">
-                <p class="label-cls">{{settingFormItem.type =='imgCheck'?'选项内容':'已上传图片'}}</p>
+            <!-- 图片选择 控件设置 -->
+            <div class="pad-cls" v-if="settingFormItem.type =='imgCheck'">
+                <p class="label-cls">选项内容</p>
                  <draggable element="div" v-model="settingFormItem.imgArr">
                     <transition-group name="no" tag="div">
                         <FormItem style="border: none;padding:3px 0;" v-for="(SelectItem, index) in settingFormItem.imgArr" :key="index">
-                            <p>{{SelectItem.titles}}</p>
-                            <Row class='file-view'>
+                            <p>{{SelectItem.titles}}{{index+1}}</p>
+                            <Row class='file-view' v-if="SelectItem.name!=''">
                                 <div>
                                      <p class="flex-cls">
                                         <img class="img-cls" :src="SelectItem.url" alt="">
                                         <span class="title-cls" :title="SelectItem.name">{{SelectItem.name}}</span>
-                                        <Icon class="close-cls" type="ios-close" @click="delImgFun(SelectItem)"/>
+                                        <!-- <Icon class="close-cls" type="ios-close" @click="delImgFun(SelectItem)"/> -->
                                     </p>
                                     
                                     <Progress v-show="index==(settingFormItem.imgArr.length-1)" :percent="progress" :stroke-width="5" style="text-align: center;"/>
                                     <span class="size-cls">{{SelectItem.size}}</span>
                                 </div>
-                               
                                 
                             </Row>
+                            <Row class='btn-view' v-if="SelectItem.name==''">
+                                    <input class="files" id="files" type="file" accept="image/*" @change="addFile(index)">            
+                                    <i-button type="ghost" icon="md-add">点击上传图片</i-button>
+                                    
+                                
+                            </Row>
+                            <p class="flex-cls tools">
+                                <input class="title-cls" v-model="SelectItem.labels" type="text" placeholder="选项">
+                               
+                                <img class="jian-cls" src="@/assets/jian_ico.png" @click="jian(index)" alt="">
+                                <img class="move-cls" src="@/assets/move_ico.png" alt="">
+                            </p>
                             
                             <!-- <RadioGroup v-model="SelectItem.scoreType">
-
+                            
                             </RadioGroup> -->
                         </FormItem>
                     </transition-group>
                 </draggable>
                 <div>
-                    
+                    <p>
+                        <Button style="width: 140px;" type="dashed" long @click="add" icon="md-add">点击上传图片</Button>
+                    </p>
                 </div>
             </div>
+            <!-- 图片展示 展示设置 -->
+            <div class="pad-cls" v-if="settingFormItem.type == 'imgShow'">
+                <p class="label-cls">已上传图片</p>
+                 <draggable element="div" v-model="settingFormItem.imgArr">
+                    <transition-group name="no" tag="div">
+                        <FormItem style="border: none;padding:3px 0;" v-for="(SelectItem, index) in settingFormItem.imgArr" :key="index">
+                            <Row class='file-view' v-if="SelectItem.name!=''">
+                                <div>
+                                     <p class="flex-cls">
+                                        <img class="img-cls" :src="getBase+SelectItem.url" alt="">
+                                        <span class="title-cls" :title="SelectItem.name">{{SelectItem.name}}</span>
+                                        <Icon class="close-cls" type="ios-close" @click="jian(index)"/>
+                                    </p>
+                                    
+                                    <Progress v-show="index==(settingFormItem.imgArr.length-1)" :percent="progress" :stroke-width="5" style="text-align: center;"/>
+                                    <span class="size-cls">{{SelectItem.size}}</span>
+                                </div>
+                                
+                            </Row>
+                        </FormItem>
+                    </transition-group>
+                </draggable>
+                <div>
+                    <Row class='btn-view'>
+                            <input class="files" id="showFiles" type="file" accept="image/*" @change="addShowFile(index)">            
+                            <i-button type="ghost" class="dashed-cls" icon="md-add">点击上传图片</i-button>
+                            
+                        
+                    </Row>
+                </div>
+            </div>
+
             <FormItem  v-if="settingFormItem.type == 'radio'  || settingFormItem.type == 'checkbox'" label=""  prop="require">
                 <Checkbox style="font-weight: 400" v-model="settingFormItem.hasOther">&nbsp;&nbsp;是否添加其他选项</Checkbox>
             </FormItem>
@@ -160,23 +205,76 @@
             <FormItem label="选择需要选择的老师范围"  v-if="settingFormItem.type==='selectteacher'">
                 <Button type="primary" ghost long size="small" @click="changeModal">点击选择老师范围</Button>
             </FormItem>
+            <!-- 下拉配置 -->
             <div v-if="settingFormItem.type =='select' || settingFormItem.type == 'radio' || settingFormItem.type == 'checkbox'">
-                <span style="display:block;margin-left:15px; margin-top: 15px">选项配置</span>
+                <span style="display:block;margin:15px 0 0 15px;">选项配置</span>
                 <draggable element="div" v-model="settingFormItem.items">
                     <transition-group name="no" tag="div">
-                        <FormItem style="border: none" v-for="(SelectItem, index) in settingFormItem.items" :key="index">
-                            <Row>
+                        <FormItem style="border: none;padding: 3px 15px;" v-for="(SelectItem, index) in settingFormItem.items" :key="index">
+                            <Row class="sel-cls">
                                 <Col span="9" v-if="false">
-                                <Input type="text" v-model="SelectItem.label_value" placeholder="请输入选择项的ID"></Input>
+                                    <Input type="text" v-model="SelectItem.label_value" placeholder="请输入选择项的ID"></Input>
                                 </Col>
                                 <Col span="18">
-                                <Input type="text" v-model="SelectItem.label_name" placeholder="请输入选择项的值"></Input>
+                                    <Input type="text" v-model="SelectItem.label_name" placeholder="请输入选择项的值"></Input>
                                 </Col>
                                 <Col span="2" offset="1">
-                                <Icon @click="handleRemoveSelectItem(index)" size="20" color="#FF5A49" type="md-trash" />
+                                    <img @click="handleRemoveSelectItem(index)" class="jian-cls" src="@/assets/jian_ico.png" alt="">
                                 </Col>
                                 <Col span="2" offset="1">
-                                <Icon style="course: move" size="18"  type="md-move" />
+                                    <img class="move-cls" src="@/assets/move_ico.png" alt="">
+                                </Col>
+                                
+                                
+                            </Row>
+                        </FormItem>
+                    </transition-group>
+                </draggable>
+                
+                <FormItem>
+                    <Row>
+                        <Col span="12">
+                        <Button type="dashed" long @click="handleAddSelectItem" icon="md-add">增加选项</Button>
+                        </Col>
+                    </Row>
+                </FormItem>
+            </div>
+            <!-- 二级下拉配置 -->
+            <div v-if="settingFormItem.type =='selectcontact'">
+                <span style="display:block;margin:15px 0 0 15px;">选项配置</span>
+                <draggable element="div" v-model="settingFormItem.items">
+                    <transition-group name="no" tag="div">
+                        <FormItem style="border: none;padding: 3px 15px;" v-for="(SelectItem, index) in settingFormItem.items" :key="index">
+                            <Row class="sel-cls">
+                                <Col span="9" v-if="false">
+                                    <Input type="text" v-model="SelectItem.label_value" placeholder="请输入选择项的ID"></Input>
+                                </Col>
+                                <Col span="18">
+                                    <Input type="text" v-model="SelectItem.label_name" placeholder="请输入选择项的值"></Input>
+                                </Col>
+                                <Col span="2" offset="1">
+                                    <img @click="handleRemoveSelectItem(index)" class="jian-cls" src="@/assets/jian_ico.png" alt="">
+                                </Col>
+                                <Col span="2" offset="1">
+                                    <img class="move-cls" src="@/assets/move_ico.png" alt="">
+                                </Col>
+                                
+                                
+                            </Row>
+                            <Row class="sel-cls" style="padding: 0 10px;" v-for="(cont,i) in SelectItem.arrs">
+                                <Col span="9" v-if="false">
+                                    <Input type="text" v-model="cont.label_value" placeholder="请输入选择项的ID"></Input>
+                                </Col>
+                                <Col span="18">
+                                    <Input type="text" v-model="cont.label_name" placeholder="请输入选择项的值"></Input>
+                                </Col>
+                                <Col span="2" offset="1">
+                                    <img @click="handleRemoveSelectItems(index,i)" class="jian-cls" src="@/assets/jian_ico.png" alt="">
+                                </Col>
+                            </Row>
+                            <Row style="padding: 0 20px;" >
+                                <Col span="12">
+                                <Button type="dashed" long @click="handleAddSelectItems(index)" icon="md-add">增加选项</Button>
                                 </Col>
                             </Row>
                         </FormItem>
@@ -258,9 +356,36 @@
                     </RadioGroup>
                 </FormItem>
             </div>
-            <FormItem v-if="settingFormItem.type == 'download'" label="已上传文件"   prop="selectgrade">
-                 <uploadList/>
-            </FormItem>
+                 <!-- <uploadList :fileList="settingFormItem.items"/> -->
+                 <!-- 文件上传控件设置 -->
+            <div class="pad-cls" v-if="settingFormItem.type == 'download'">
+                <p class="label-cls">已上传文件</p>
+                 <draggable element="div" v-model="settingFormItem.items">
+                    <transition-group name="no" tag="div">
+                        <FormItem style="border: none;padding:3px 0;" v-for="(SelectItem, index) in settingFormItem.items" :key="index">
+                            <Row class='file-view' v-if="SelectItem.name!=''">
+                                <div>
+                                     <p class="flex-cls">
+                                        <span class="title-cls" :title="SelectItem.label_name">{{SelectItem.label_name}}</span>
+                                        <Icon class="close-cls" type="ios-close" @click="jianFile(index)"/>
+                                    </p>
+                                    
+                                    <Progress v-show="index==(settingFormItem.items.length-1)" :percent="progress" :stroke-width="5" style="text-align: center;"/>
+                                    <span class="size-cls">{{SelectItem.size}}</span>
+                                </div>
+                                
+                            </Row>
+                        </FormItem>
+                    </transition-group>
+                </draggable>
+                <div>
+                    <Row class='btn-view'>
+                            <input class="files" id="downloadFiles" type="file" @change="dwFile">            
+                            <i-button type="ghost" class="dashed-cls" icon="md-add">点击上传文件</i-button>
+              
+                    </Row>
+                </div>
+            </div>
              <FormItem v-if="settingFormItem.type == 'address'" >
                     <CheckboxGroup size="large" class="positionColumn" v-model="settingFormItem.chooseCheck">
                         <Checkbox class="checkboxItem" label="province">省/直辖市</Checkbox>
@@ -357,7 +482,8 @@ export default {
             ],
             fullHeight:{// 动态获取屏幕高度
                 height: (document.documentElement.clientHeight-184)+"px"
-            }
+            },
+            getBase:this.$api.getBase()
         }
     },
     components: {
@@ -479,8 +605,23 @@ export default {
             }
             curRemoveObj.splice(index, 1)
         },
+        handleRemoveSelectItems(index,i){
+            let curRemoveObj = this.sortable_item[this.curIndex].obj.items[index].arrs;
+            if(curRemoveObj.length == 1){
+                this.$Message.error('至少保留一个选项')
+                return false
+            }
+            curRemoveObj.splice(i, 1)
+        },
         handleAddSelectItem() {
             let curRemoveObj = this.sortable_item[this.curIndex].obj.items
+            curRemoveObj.push({
+                "label_value": curRemoveObj.length + 1,
+                "label_name": ''
+            })
+        },
+        handleAddSelectItems(index){
+            let curRemoveObj = this.sortable_item[this.curIndex].obj.items[index].arrs;
             curRemoveObj.push({
                 "label_value": curRemoveObj.length + 1,
                 "label_name": ''
@@ -558,6 +699,84 @@ export default {
         delImgFun(r){
             console.log(r)
             console.log(this.settingFormItem);
+        },
+        add(){
+            let self=this;
+            self.settingFormItem.imgArr.push({
+                    'titles':'图片',
+                    'name': '',
+                    'url': "",
+                    'progress':0,
+                    "size":"0",
+                    'labels':"选项"
+            })
+        },
+        jian(i){
+            let self=this;
+            self.settingFormItem.imgArr.splice(i,1)
+        },
+        addFile(index){
+            let self=this;
+            let fileObj=document.getElementById("files").files[0];
+            let curRemoveObj = this.sortable_item[this.curIndex].obj.imgArr;
+            curRemoveObj[index].name=fileObj.name;
+            self.$api.uploadFile("file/upload ", {},fileObj, (r) => {
+                setInterval(() => {
+                    if(self.progress<100){
+                        self.progress+=10;
+                    }
+                }, 200)            
+                curRemoveObj[index].titles='图片';
+                
+                curRemoveObj[index].url= r.data;
+                curRemoveObj[index].size=fileObj.size;
+                curRemoveObj[index].labels='选项';
+            });
+        },
+        addShowFile(index){
+            let self=this;
+            let fileObj=document.getElementById("showFiles").files[0];
+            let curRemoveObj = this.sortable_item[this.curIndex].obj.imgArr;
+            self.$api.uploadFile("file/upload ", {},fileObj, (r) => {
+                setInterval(() => {
+                    if(self.progress<100){
+                        self.progress+=10;
+                    }
+                }, 200)       
+                curRemoveObj.push({
+                    titles:'图片',
+                    name:fileObj.name,
+                    url:r.data,
+                    size:fileObj.size
+                })     
+
+            });
+        },
+        dwFile(index){
+            
+            let self=this;
+            self.progress=0;
+            let fileObj=document.getElementById("downloadFiles").files[0];
+            let curRemoveObj = this.sortable_item[this.curIndex].obj.items;
+            curRemoveObj.push({
+                label_value: curRemoveObj.length+1,
+                label_name: fileObj.name,
+                url:"",
+                size:fileObj.size
+            })
+            self.$api.uploadFile("file/upload ", {},fileObj, (r) => {
+                setInterval(() => {
+                    if(self.progress<100){
+                        self.progress+=10;
+                    }
+                }, 200)       
+                curRemoveObj[curRemoveObj.length-1].url=r.data;    
+
+            });
+        },
+        jianFile(i){
+            let self=this;
+            self.settingFormItem.items.splice(i,1)
         }
 
     }
@@ -793,15 +1012,78 @@ export default {
         font-size: 9px;
         color: #9B9B9B;
         letter-spacing: 0.54px;
+        padding-left: 16px;
     }
     .close-cls{
         font-size:20px;
         cursor: pointer;
     }
+    
 }
+.btn-view{
+    position: relative;    
+    margin:3px 0;
+    button{
+        width:140px;
+        height:50px;
+        background: #FFFFFF;
+        border: 1px solid #C3C9D0;
+        border-radius: 2px;
+        color: #686868;
+        span{
+            font-size: 16px;
+        }
+    }
+    .files{
+        width:140px;
+        height:50px;
+        position: absolute;
+        top:0;
+        left:0;
+        opacity:0;
+        cursor: pointer;
+    }
+    .dashed-cls{
+        border: 1px dashed #C3C9D0;
+    }
+}
+
 .flex-cls{
     display: flex;
     justify-content:space-between;    
+}
+.tools{
+    color:#505050;
+    margin: 5px 0;
+    input{
+        background: #FFFFFF;
+        border: 1px solid #C3C9D0;
+        border-radius: 2px;
+        height: 27px;
+    }
+    img{
+        display:inline-block;
+        width: 14px;
+        height: 14px;
+        margin: 5px 2px;
+    }
+    .add-cls,.jian-cls{
+        cursor: pointer;
+    }
+    .move-cls{
+        cursor: move;
+    }
+}
+.sel-cls{
+    display:flex;
+    justify-content: space-between;
+    align-items: center;
+    .add-cls,.jian-cls{
+        cursor: pointer;
+    }
+    .move-cls{
+        cursor: move;
+    }
 }
 </style>
 

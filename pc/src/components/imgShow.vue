@@ -1,9 +1,11 @@
 <template>
 <div>
-    <div style="paddding-bottom:20px;display: inline-block;" v-for="item in uploadList" :key="item.name">
+    <div style="paddding-bottom:20px;display: inline-block;" v-for="item in defaultList" :key="item.name">
         <div class="demo-upload-list">
             <template v-if="item.status === 'finished'">
-                <img :src="item.url">
+    
+                <!-- <img v-if="item.url==''" src="@/assets/tupianshangchuan_nor.png" alt=""> -->
+                <img v-if="item.url!=''" :src="baseImgUrl+item.url">
                 <div class="demo-upload-list-cover">
                     <Icon type="ios-eye-outline" @click.native="handleView(item)"></Icon>
                     <!-- <Icon type="ios-trash-outline" @click.native="handleRemove(item)"></Icon> -->
@@ -15,7 +17,7 @@
 
         </div>
         <div style="text-align:center">
-            <Checkbox style="font-weight: 400;" v-if="isCheck"></Checkbox>
+            <Checkbox style="font-weight: 400;" v-if="isCheck">{{item.labels}}</Checkbox>
         </div>
     </div>
     <Upload v-show="false" ref="upload" :show-upload-list="false" :default-file-list="defaultList" :on-success="handleSuccess" :format="['jpg','jpeg','png']" :max-size="2048" :on-format-error="handleFormatError" :on-exceeded-size="handleMaxSize" :before-upload="handleBeforeUpload" multiple type="drag" action="//jsonplaceholder.typicode.com/posts/" 
@@ -28,12 +30,13 @@
     </Upload>
 
     <Modal title="View Image" v-model="visible">
-        <img :src="imgSrc" v-if="visible" style="width: 100%">
+        <img :src="baseImgUrl+imgSrc" v-if="visible" style="width: 100%">
     </Modal>
 </div>
 </template>
 
 <script>
+import api from '../common/js/index.js'
 export default {
     props: ['isCheck','defaultList'],
     data() {
@@ -51,7 +54,9 @@ export default {
             // ],
             imgName: '',
             visible: false,
-            uploadList: []
+            uploadList: [],
+            baseImgUrl:api.getBase(),
+            // noImg:require("@/assets/tupianshangchuan_nor.png")
         }
     },
     methods: {
