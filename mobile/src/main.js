@@ -3,11 +3,14 @@
 import Vue from 'vue'
 import App from './App'
 import router from './router'
-import fastClick from 'fastclick'
-import Mint from 'mint-ui'
+// import fastClick from 'fastclick'
+import MintUI from 'mint-ui'
+// import iView from 'iview'
+
 import 'mint-ui/lib/style.css'
 import './assets/styles/border.css'
 import './assets/styles/reset.css'
+import 'iview/dist/styles/iview.css'
 
 import { ToastPlugin,ConfirmPlugin,AlertPlugin} from 'vux'
 
@@ -17,10 +20,9 @@ Vue.prototype.$api = api;
 Vue.use(ToastPlugin)
 Vue.use(ConfirmPlugin)
 Vue.use(AlertPlugin)
+Vue.use(MintUI)
 
-Vue.use(Mint)
-
-fastClick.attach(document.body)
+// fastClick.attach(document.body)
 
 Vue.config.productionTip = false
 

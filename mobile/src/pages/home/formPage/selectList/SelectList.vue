@@ -7,9 +7,9 @@
       </div>
     </div>
     <ul class="list">
-      <li v-for="(item, index) of listData" :key="index" :class="{ 'active' : index == 0 }" @click="selectItem(index)">
-        <div>{{ item }}</div>
-        <icon v-if="index==0" type="success-no-circle"></icon>
+      <li v-for="(item, index) of listData" :key="index" :class="{ 'active' : item.active }" @click="selectItem(item)">
+        <div>{{ item.val }}</div>
+        <icon v-if="item.active" type="success-no-circle"></icon>
       </li>
     </ul>
   </div>
@@ -26,13 +26,51 @@ export default {
   },
   data() {
     return {
-      listData: ["1", "2", "3", "4", "5", "6","1", "2", "3", "4", "5", "6","1", "2", "3", "4", "5", "6",]
+      keyType: '',
+      listData: [
+        {
+          val: '张三',
+          active: false
+        },
+        {
+          val: '李四1',
+          active: false
+        },
+        {
+          val: '李四2',
+          active: false
+        },
+        {
+          val: '李四3',
+          active: false
+        }
+      ]
     };
   },
   methods: {
-    selectItem(index) {
-      console.log(index)
+    selectItem(data) {
+      let val = data.val
+      console.log(val)
+
+      console.log(this.keyType)
+      sessionStorage.setItem(this.keyType, val)
+      this.$router.go(-1)
     }
+  },
+  created() {
+    let options = this.$route.query
+    //动态设置标题
+    document.title = options.title   
+    this.keyType = options.type
+
+    this.listData.map((v, i) => {
+      v.active = v.val == options.value
+    })
+
+
+  },
+  mounted() {
+
   }
 };
 </script>

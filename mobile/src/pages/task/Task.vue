@@ -47,18 +47,32 @@
         </li>
       </ul>
     </scroller>
+
+    <tabbar>
+      <tabbar-item link="/">
+        <img slot="icon" src="../../assets/img/tabbar/tab1.png">
+        <img slot="icon-active" src="../../assets/img/tabbar/tab1-active.png">
+        <span slot="label">我的任务</span>
+      </tabbar-item>
+      <tabbar-item link="/task" selected>
+        <img slot="icon" src="../../assets/img/tabbar/tab2.png">
+        <img slot="icon-active" src="../../assets/img/tabbar/tab2-active.png">
+        <span slot="label">任务管理</span>
+      </tabbar-item>
+      <tabbar-item link="/copy">
+        <img slot="icon" src="../../assets/img/tabbar/tab3.png">
+        <img slot="icon-active" src="../../assets/img/tabbar/tab3-active.png">
+        <span slot="label">抄送</span>
+      </tabbar-item>
+    </tabbar>
   </div>
 </template>
 
 <script>
 import {
   Scroller,
-  Divider,
-  Spinner,
-  XButton,
-  Group,
-  Cell,
-  LoadMore
+  Tabbar,
+  TabbarItem
 } from "vux";
 
 const pullupDefaultConfig = {
@@ -75,7 +89,9 @@ const pullupDefaultConfig = {
 export default {
   name: "Task",
   components: {
-    Scroller
+    Scroller,
+    Tabbar,
+    TabbarItem
   },
   data() {
     return {
@@ -150,7 +166,7 @@ export default {
   methods: {
     loadMore() {
       console.log(222);
-      this.$refs.scrollerBottom.donePullup()
+      this.$refs.scrollerBottom.donePullup();
     }
   },
   mounted() {}

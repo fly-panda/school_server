@@ -44,11 +44,29 @@
         </li>
       </ul>
     </scroller>
+
+    <tabbar>
+      <tabbar-item link="/" selected>
+        <img slot="icon" src="../../assets/img/tabbar/tab1.png">
+        <img slot="icon-active" src="../../assets/img/tabbar/tab1-active.png">
+        <span slot="label">我的任务</span>
+      </tabbar-item>
+      <tabbar-item link="/task">
+        <img slot="icon" src="../../assets/img/tabbar/tab2.png">
+        <img slot="icon-active" src="../../assets/img/tabbar/tab2-active.png">
+        <span slot="label">任务管理</span>
+      </tabbar-item>
+      <tabbar-item link="/copy">
+        <img slot="icon" src="../../assets/img/tabbar/tab3.png">
+        <img slot="icon-active" src="../../assets/img/tabbar/tab3-active.png">
+        <span slot="label">抄送</span>
+      </tabbar-item>
+    </tabbar>
   </div>
 </template>
 
 <script>
-import { Scroller } from "vux";
+import { Scroller, Tabbar, TabbarItem } from "vux";
 import { TransferDomDirective as TransferDom } from "vux";
 
 import Tab from "../../components/tab/Tab";
@@ -68,15 +86,17 @@ export default {
   name: "Home",
   components: {
     Tab,
-    Scroller
+    Scroller,
+    Tabbar,
+    TabbarItem
   },
   data() {
     return {
       pullupConfig2: {
-        content: '上拉加载更多',
-        downContent: '松开进行加载',
-        upContent: '上拉加载更多',
-        loadingContent: '加载中...'
+        content: "上拉加载更多",
+        downContent: "松开进行加载",
+        upContent: "上拉加载更多",
+        loadingContent: "加载中..."
       },
       tabIndex: 0,
       lishH: "-53",
@@ -148,16 +168,16 @@ export default {
     },
     // 加载更多
     loadMore() {
-      console.log(222)
+      console.log(222);
       let data = this.listData;
       this.listData = data.concat(data);
       setTimeout(() => {
-        this.$refs.scrollerBottom.donePullup()
-      }, 2000)
+        this.$refs.scrollerBottom.donePullup();
+      }, 2000);
     },
     // 详情
     currentTask() {
-      this.$router.push({path:'/formPage', query:{}})
+      this.$router.push({ path: "/formPage", query: {} });
     }
   },
   mounted() {}
