@@ -261,7 +261,7 @@
                                 
                                 
                             </Row>
-                            <Row class="sel-cls" style="padding: 0 10px;" v-for="(cont,i) in SelectItem.arrs">
+                            <Row class="sel-cls" style="padding: 0 10px;" v-for="(cont,i) in SelectItem.arrs" :key="i">
                                 <Col span="9" v-if="false">
                                     <Input type="text" v-model="cont.label_value" placeholder="请输入选择项的ID"></Input>
                                 </Col>
@@ -580,7 +580,7 @@ export default {
             formObj.data = this.sortable_item;
             formObj.describe = this.content;
             console.log(this.sortable_item)
-
+    console.log(JSON.stringify(this.sortable_item))
             // this.$api.post("/cform/addForm",
             //     formObj,
             //     r=>{

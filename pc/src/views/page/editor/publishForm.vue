@@ -1,20 +1,23 @@
 <template>
-<div class="publishContainer">
-    <img  class="banner" src="@/assets/publishForm.png" alt="">
-    <div class="qrContainer">
-        <img  class="qrContent" src="@/assets/publishForm.png" alt=""></img>
-        <Button type="text" style="color: #63a854;border:none" icon="md-download">下载二维码</Button>
+<div :style="{height:fullHeight.height}" style="overflow-y:auto;">
+    <div class="publishContainer">
+        <img  class="banner" src="@/assets/publishForm.png" alt="">
+        <div class="qrContainer">
+            <img class="qrContent" src="@/assets/publishForm.png" alt=""/>
+            <Button type="text" style="color: #63a854;border:none" icon="md-download">下载二维码</Button>
+        </div>
+        <div class="title">表单地址</div>
+        <Input style="width: 60%;margin: 10px 0 0 30px" v-model="urlText">
+            <Button
+            v-clipboard:copy="urlText"
+            v-clipboard:success="onCopy"
+            v-clipboard:error="onError"
+            slot="append" icon="md-copy">复制地址</Button>
+        </Input>
+        <Button style="margin: 30px 0 0 30px" type="default" icon="md-copy" @click="saveSetting">保存设置</Button>
     </div>
-    <div class="title">表单地址</div>
-    <Input style="width: 60%;margin: 10px 0 0 30px" v-model="urlText">
-    <Button
-     v-clipboard:copy="urlText"
-     v-clipboard:success="onCopy"
-     v-clipboard:error="onError"
-      slot="append" icon="md-copy">复制地址</Button>
-    </Input>
-    <Button style="margin: 30px 0 0 30px" type="default" icon="md-copy">保存设置</Button>
 </div>
+
 </template>
 
 <script>
@@ -22,7 +25,10 @@ export default {
     data() {
         return {
             // qrImg: qrImg,
-            urlText: 'https://www.iviewui.com/components/icon'
+            urlText: 'https://www.iviewui.com/components/icon',
+            fullHeight:{// 动态获取屏幕高度
+                height: (document.documentElement.clientHeight-124)+"px"
+            }
         }
     },
     methods: {
@@ -32,6 +38,17 @@ export default {
         },
         onError: function (e) {
             console.log('复制失败！')
+        },
+        saveSetting(){
+            let self=this;
+            console.log(1)
+            self.$api.get("/cform/tempDetail",{
+                tempid:"5c189861d725d24950b66849"
+            },r=>{
+                console.log("r",r)
+            },e=>{
+                console.log(e)
+            })
         }
     }
 }
@@ -40,10 +57,10 @@ export default {
 <style lang="less" scoped>
 .publishContainer {
     width: 573px;
-    height: 570px;
+    // overflow-y: auto;
     margin: 30px auto;
     background: #fff;
-
+    padding-bottom: 30px;
     .banner {
         width: 100%;
         height: 230px;
