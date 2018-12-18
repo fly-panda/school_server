@@ -17,7 +17,7 @@
       :key="index"
     >
       <!-- 标题&描述 -->
-      <div class="title" v-html="allList.title "></div>
+      <div class="title" v-html="allList.title"></div>
       <div class="des" v-html="allList.describe"></div>
 
       <div v-for="(obj, idx) of allList.data" :key="idx">
@@ -128,7 +128,7 @@
           <div class="checkbox-form">
             <checklist
               :required="checkboxRequired"
-              :options="obj.obj.items"
+              :options="obj.obj.items | filtersData"
               @on-change="checkboxChange"
             ></checklist>
           </div>
@@ -150,12 +150,12 @@
           </div>
         </div>
         <!-- 地址 -->
-        <div class="select-item address-box" v-if="true">
+        <div class="select-item address-box" v-if="obj.ele == 'address'">
           <div class="select-item-title">地址</div>
           <div class="select-address">
             <div class="sheng">
               <popup-picker
-                :data="province"
+                :data="province | cityDatafilter"
                 :columns="1"
                 v-model="dropDownBoxValue"
                 placeholder="省/自治区/直辖市"
@@ -165,7 +165,7 @@
             </div>
             <div class="shi">
               <popup-picker
-                :data="city"
+                :data="city | cityDatafilter"
                 :columns="1"
                 v-model="dropDownBoxValue1"
                 placeholder="市"
@@ -176,7 +176,7 @@
             </div>
             <div class="qu">
               <popup-picker
-                :data="zone"
+                :data="zone | cityDatafilter"
                 :columns="1"
                 v-model="dropDownBoxValue2"
                 placeholder="区/县"
@@ -272,7 +272,7 @@
           <div class="select-item-title" v-html="obj.obj.label"></div>
           <div class="img-select-list">
             <div class="img-select-item" v-for="(item, index) of imgArr" :key="index">
-              <img :src="item.src" alt @click="previewerImg(index)">
+              <img :src="item.src" @click="previewerImg(index)">
               <label>
                 <input name="img" type="checkbox" value>选项
               </label>
@@ -385,6 +385,32 @@ export default {
     Calendar,
     Previewer
   },
+  filters: {
+    filtersData(r) {
+      // console.log(r)
+      let list = []
+      r.map((v, i) =>{
+        let item = {
+          key: v.name,
+          value: v.value
+        }
+        list.push(item)
+      })
+      return list
+    },
+    cityDatafilter(r) {
+      // console.log(r)
+      let list = []
+      r.map((v, i) => {
+        let item = {
+          value: v.id,
+          name: v.name
+        }
+        list.push(item)
+      })
+      return list
+    }
+  },
   data() {
     return {
       allListData: mockData.data,
@@ -404,19 +430,19 @@ export default {
       zoneDisabled: true,
       cityDisabled: true,
 
+      // 上传图片
+      uoloadImgArr: ["http://ww1.sinaimg.cn/large/663d3650gy1fplwu9ze86j20m80b40t2.jpg","http://ww1.sinaimg.cn/large/663d3650gy1fplwu9ze86j20m80b40t2.jpg","http://ww1.sinaimg.cn/large/663d3650gy1fplwu9ze86j20m80b40t2.jpg"],
+
       previewerOptions: {},
       imgArr: [
         {
-          src:
-            "http://ww1.sinaimg.cn/large/663d3650gy1fplwu9ze86j20m80b40t2.jpg"
+          src: "http://ww1.sinaimg.cn/large/663d3650gy1fplwu9ze86j20m80b40t2.jpg"
         },
         {
-          src:
-            "http://ww1.sinaimg.cn/large/663d3650gy1fplwvqwuoaj20xc0p0t9s.jpg"
+          src: "http://ww1.sinaimg.cn/large/663d3650gy1fplwvqwuoaj20xc0p0t9s.jpg"
         },
         {
-          src:
-            "http://ww1.sinaimg.cn/large/663d3650gy1fplwwcynw2j20p00b4js9.jpg"
+          src: "http://ww1.sinaimg.cn/large/663d3650gy1fplwwcynw2j20p00b4js9.jpg"
         }
       ],
 
@@ -630,15 +656,12 @@ export default {
     },
     // 获取表单数据
     getFormData() {
-      let formObj = {};
-      formObj.tempid = "5c189861d725d24950b66849";
-      this.$api.get(
-        "/cform/tempDetail?tempid=5c189861d725d24950b66849",
+      this.$api.get("/cform/tempDetail", {tempid: "5c189861d725d24950b66849"},
         r => {
-          console.log(r);
+          console.log(2,r);
         },
-        r => {
-          // console.log(r.data)
+        e => {
+          console.log(3,e)
         }
       );
     },
@@ -654,9 +677,6 @@ export default {
         r => {
           // console.log(r.data)
           let data = JSON.parse(r.data);
-          data.map((v, i) => {
-            v.value = v.id;
-          });
           this.province = data;
           console.log(data);
         }

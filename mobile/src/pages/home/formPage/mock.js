@@ -162,10 +162,10 @@ exports.data = [{
       "require": false,
       "value": [],
       "items": [{
-        "key": "1",
+        "name": "1",
         "value": "大米"
       }, {
-        "key": "2",
+        "name": "2",
         "value": "面"
       }],
       "name": "default",

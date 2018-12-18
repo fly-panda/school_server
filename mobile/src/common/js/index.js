@@ -27,7 +27,7 @@ function getParams(req){
 
 
 function apiAxios(method, url, params, success, failure) {
-  if (params) {
+  if (method=="POST") {
     params = getParams(params)
   }
   console.log(1,params)
