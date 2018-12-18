@@ -1,8 +1,10 @@
 // import md5 from 'js-md5';
 // 配置API接口地址
 var baseUrlRoot = 'http://47.93.156.129:8848/api/'
-// import {Message} from 'vux';
-import  { ToastPlugin } from 'vux'
+import {Message} from 'iview'
+import  { Toast } from 'vux'
+import Vue from 'vue'
+
 // 引用axios
 import axios from 'axios'
 
@@ -39,11 +41,12 @@ function apiAxios(method, url, params, success, failure) {
     timeout: 10000
   })
     .then(function (res) {
+      // console.log(res)
         let data=res.data;
         if(res.status==200){
           if(data.state==0){
             // Message.success(data.result);
-            this.$vux.toast.show({
+            Vue.$vux.toast.show({
               text: data.result,
               time: "2000",
               type: "text",
@@ -51,7 +54,8 @@ function apiAxios(method, url, params, success, failure) {
             });
             success(data);
           }else{
-            this.$vux.toast.show({
+            // failure(data)
+            Vue.$vux.toast.show({
               text: data.result,
               time: "2000",
               type: "text",
@@ -63,14 +67,14 @@ function apiAxios(method, url, params, success, failure) {
         
     })
     .catch(function (err) {
-      this.$vux.toast.show({
+      // failure(err)
+      Vue.$vux.toast.show({
         text: '服务异常，请刷新重试！',
         time: "2000",
         type: "text",
         position: "middle"
       });
-        // Message.error("服务异常，请刷新重试！");
-
+      // Message.error("服务异常，请刷新重试！");
     })
 }
 
@@ -81,6 +85,48 @@ function sGetObject(k) {
   } catch (e) {
   }
 };
+
+function uploadFile(url,params, file, success){
+  var fd = new FormData();
+    if (params != null && params != undefined) {
+      for (var i = 0; i < params.length; i++) {
+        fd.append(params[i].name, params[i].value)
+      }
+    }
+    if (file != null) {
+      fd.append("file", file);
+    } else {
+      Message.success("请选择一个文件");
+      return;
+    }
+   axios({
+      method: 'post',
+      url: baseUrlRoot +"api/" + url,
+      data: fd,
+      params:params,
+      headers: {
+        'Content-Type': 'multipart/form-data'
+      },
+      timeout: 40000,
+
+    })
+    .then(function (res) {
+
+      let data=res.data;
+      if(res.status==200){
+        if(data.state==0){
+          Message.success(data.result);
+          success(data);
+        }else{
+          Message.error(data.result);
+        }   
+      }
+    })
+    .catch(function (err) {
+        // Message.error("服务异常，请刷新重试！");
+
+    })
+}
 
 // 返回在vue模板中的调用接口
 export default {

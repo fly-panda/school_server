@@ -10,277 +10,300 @@
       <!-- <tab-item>历史记录</tab-item> -->
     </tab>
     <!-- 表单 -->
-    <div class="form-wrapper" v-if="selectTabIndex == 0">
-      <div class="title">卫生检查金数据是人人可用的在线表单工</div>
-      <div
-        class="des"
-      >金数据(jinshuju.net)是人人可用的在线表单工具,快速创建问卷调查、活动报名、意见反馈、信息登记、在线订单、考试测评等表单,自动化收集整理数据,节省工作时间,更聪明。</div>
-      <!-- 选择学生 -->
-      <div class="select-item">
-        <div class="select-item-title">选择学生</div>
-        <div class="select-item-txt">请选择学生</div>
-        <button @click="selectList(0)">{{ selectStudentValue }}</button>
-      </div>
-      <!-- 选择老师 -->
-      <div class="select-item">
-        <div class="select-item-title">选择老师</div>
-        <div class="select-item-txt">请选择老师</div>
-        <button @click="selectList(1)">{{ selectTeacherValue }}</button>
-      </div>
-      <!-- 选择班级 -->
-      <div class="select-item">
-        <div class="select-item-title">选择班级</div>
-        <div class="select-item-txt">请选择你的班级</div>
-        <button @click="selectList(2)">{{ selectClassValue }}</button>
-      </div>
-      <!-- 选择部门 -->
-      <div class="select-item">
-        <div class="select-item-title">选择部门</div>
-        <div class="select-item-txt">请选择你的部门</div>
-        <button @click="selectList(3)">{{ selectDepartmentValue }}</button>
-      </div>
-      <!-- 图片上传 -->
-      <div class="select-item upload-img">
-        <div class="select-item-title">图片上传</div>
-        <div class="select-item-txt">请上传的的图片</div>
-        <div class="img-box">
-          <div class="upload">
-            <div>
-              <span>+</span>
-              <span>点击上传</span>
+    <div
+      class="form-wrapper"
+      v-if="selectTabIndex == 0"
+      v-for="(allList, index) of allListData"
+      :key="index"
+    >
+      <!-- 标题&描述 -->
+      <div class="title" v-html="allList.title "></div>
+      <div class="des" v-html="allList.describe"></div>
+
+      <div v-for="(obj, idx) of allList.data" :key="idx">
+        <!-- 选择学生 -->
+        <div class="select-item" v-if="false">
+          <div class="select-item-title">选择学生</div>
+          <div class="select-item-txt">请选择学生</div>
+          <button @click="selectList(0)">{{ selectStudentValue }}</button>
+        </div>
+        <!-- 选择老师 -->
+        <div class="select-item" v-if="false">
+          <div class="select-item-title">选择老师</div>
+          <div class="select-item-txt">请选择老师</div>
+          <button @click="selectList(1)">{{ selectTeacherValue }}</button>
+        </div>
+        <!-- 选择班级 -->
+        <div class="select-item" v-if="false">
+          <div class="select-item-title">选择班级</div>
+          <div class="select-item-txt">请选择你的班级</div>
+          <button @click="selectList(2)">{{ selectClassValue }}</button>
+        </div>
+        <!-- 选择部门 -->
+        <div class="select-item" v-if="false">
+          <div class="select-item-title">选择部门</div>
+          <div class="select-item-txt">请选择你的部门</div>
+          <button @click="selectList(3)">{{ selectDepartmentValue }}</button>
+        </div>
+        <!-- 图片上传 -->
+        <div class="select-item upload-img" v-if="obj.ele == 'uploadimg'">
+          <div class="select-item-title" v-html="obj.obj.label"></div>
+          <div class="select-item-txt" v-html="obj.obj.describe"></div>
+          <div class="img-box">
+            <div class="upload">
+              <div>
+                <span>+</span>
+                <span>点击上传</span>
+              </div>
+              <input class="files" id="files" type="file" accept="image/*" @change="fileImage()">
             </div>
-            <input
-              @change="fileImage"
-              type="file"
-              accept="image/jpeg, image/x-png, image/gif"
-              id
-              value>
+          </div>
+          <div class="tip">请上传jpg、png、gif、psd等图片格式</div>
+        </div>
+        <!-- 文件下载 -->
+        <div class="select-item download" v-if="obj.ele == 'download'">
+          <div class="select-item-title">{{ obj.obj.label }}</div>
+          <div class="select-item-txt">{{ obj.obj.describe }}</div>
+          <div
+            class="download-btn"
+            v-for="(items, itemsIndex) of obj.obj.items"
+            :key="itemsIndex"
+            style="margin-bottom: 10px;"
+          >
+            <div>{{ items.label_name }}</div>
+            <img
+              class="icon-download"
+              src="../../../assets/img/icon/icon-download.png"
+              width="12"
+              height="15"
+              alt
+            >
           </div>
         </div>
-        <div class="tip">请上传jpg、png、gif、psd等图片格式</div>
-      </div>
-      <!-- 文件下载 -->
-      <div class="select-item download">
-        <div class="select-item-title">文件下载</div>
-        <div class="select-item-txt">请选择你的组织</div>
-        <div class="download-btn">
-          <div>重要文件.doc</div>
-          <img
-            class="icon-download"
-            src="../../../assets/img/icon/icon-download.png"
-            width="12"
-            height="15"
-            alt
+        <div class="des" v-if="obj.ele == 'p'" v-html="obj.obj.describe"></div>
+        <!-- 单行文字 -->
+        <div class="select-item once-text" v-if="obj.ele == 'input'">
+          <div class="select-item-title" v-html="obj.obj.modalTitle"></div>
+          <div class="select-item-txt" v-html="obj.obj.label "></div>
+          <input
+            type="text"
+            :maxlength="obj.obj.maxLength"
+            :placeholder="obj.obj.placeholder"
+            v-model="obj.obj.value"
           >
         </div>
-      </div>
-      <div
-        class="des"
-      >金数据(jinshuju.net)是人人可用的在线表单工具,快速创建问卷调查、活动报名、意见反馈、信息登记、在线订单、考试测评等表单,自动化收集整理数据,节省工作时间,更聪明。</div>
-      <!-- 单行文字 -->
-      <div class="select-item once-text">
-        <div class="select-item-title">单行文字</div>
-        <div class="select-item-txt">请选择你的组织</div>
-        <input type="text" v-model='oneLineValue'>
-      </div>
-      <!-- 下拉框 -->
-      <div class="select-item picker">
-        <div class="select-item-title">下拉框</div>
-        <div class="select-item-txt">请选择你的组织</div>
-        <div class="packet-box">
-          <div class="picker-btn drop-down-box">
-            <popup-picker :data="dropDownBoxData" v-model="dropDownBoxValue" placeholder="请选择"></popup-picker>            
-          </div>
-        </div>
-      </div>
-      <!-- 二级下拉 -->
-      <div class="select-item picker">
-        <div class="select-item-title">二级下拉</div>
-        <div class="packet-box mt-12">
-          <div class="picker-btn">
-            <div>请选择</div>
-            <!-- <img class="icon" src="" alt=""> -->
-          </div>
-          <div class="picker-btn">
-            <div>请选择</div>
-            <!-- <img class="icon" src="" alt=""> -->
-          </div>
-        </div>
-      </div>
-      <!-- 多选 -->
-      <div class="select-item checkbox">
-        <div class="select-item-title">多选</div>
-        <div class="checkbox-form">
-          <checklist :required="checkboxRequired" :options="commonList" @on-change="checkboxChange"></checklist>
-        </div>
-      </div>
-      <!-- 手动填写分数 -->
-      <div class="select-item range-box">
-        <div class="select-item-title">手动填写分数</div>
-        <div class="range">
-          <range
-            :range-bar-height="4"
-            :max="rangeValueMax"
-            v-model="rangeValue"
-            @on-touchstart="touchstartRange"
-          ></range>
-          <div class="js-btn">
-            <img src="../../../assets/img/icon/icon-jian.png" alt @click="countRangeValue(-1)">
-            <img src="../../../assets/img/icon/icon-add.png" alt @click="countRangeValue(1)">
-          </div>
-        </div>
-      </div>
-      <!-- 地址 -->
-      <div class="select-item address-box">
-        <div class="select-item-title">地址</div>
-        <div class="select-address">
-          <div class="sheng">
-            <div>省/自治区/直辖市</div>
-          </div>
-          <div class="shi">
-            <div>市</div>
-          </div>
-          <div class="qu">
-            <div>区/县</div>
-          </div>
-          <input type="text" placeholder="详细地址" v-model="addressInfo">
-        </div>
-      </div>
-      <!-- 日期/时间 -->
-      <div class="select-item date-time-box">
-        <div class="select-item-title">日期/时间</div>
-        <div class="date-time">
-          <div class="calendar-box">
-            <group>
-              <calendar
-                :readonly="calendarReadonly"
-                placeholder="选择日期"
-                v-model="calendarValue"
-                :title="calendarTitle"
-                disable-past
-              ></calendar>
-            </group>
-          </div>
-          <div class="time-picker hour">
-            <popup-picker :data="hoursData" v-model="hour" placeholder="时"></popup-picker>
-          </div>
-          <div class="time-picker">
-            <popup-picker :data="minuteData" v-model="minute" placeholder="分"></popup-picker>
-          </div>
-        </div>
-      </div>
-      <!-- 日期 -->
-      <div class="select-item date-box">
-        <div class="select-item-title">日期</div>
-        <div class="date">
-          <div class="calendar-box">
-            <group>
-              <calendar
-                :readonly="calendarReadonly"
-                placeholder="选择日期"
-                v-model="calendarValue"
-                :title="calendarTitle"
-                disable-past
-              ></calendar>
-            </group>
-          </div>
-        </div>
-      </div>
-      <!-- 时间 -->
-      <div class="select-item time-box">
-        <div class="select-item-title">时间</div>
-        <div class="time">
-          <div class="time-picker">
-            <popup-picker :data="hoursData" v-model="hour" placeholder="时"></popup-picker>
-          </div>
-          <div class="time-picker">
-            <popup-picker :data="minuteData" v-model="minute" placeholder="分"></popup-picker>
-          </div>
-        </div>
-      </div>
-      <!-- 文件上传 -->
-      <div class="select-item wj-upload">
-        <div class="select-item-title">文件上传</div>
-        <div class="wj-upload-list">
-          <div class="wj-upload-item">
-            <div class="top">
-              <div class="wjm">名字.doc</div>
-              <div class="del">X</div>
+        <!-- 下拉框 -->
+        <div class="select-item picker" v-if="obj.ele == 'select'">
+          <div class="select-item-title" v-html="obj.obj.modalTitle"></div>
+          <div class="select-item-txt" v-html="obj.obj.label"></div>
+          <div class="packet-box">
+            <div class="picker-btn drop-down-box">
+              <popup-picker
+                :data="obj.obj.items"
+                :columns="1"
+                v-model="dropDownBoxValue"
+                placeholder="请选择"
+                show-name
+              ></popup-picker>
             </div>
-            <div class="jdt"></div>
-            <div class="wj-size">10.8M</div>
           </div>
         </div>
-        <div class="wj-upload-btn">
-          <div>
-            <span class="icon-add">+</span>
-            <span>上传文件或压缩包</span>
+        <!-- 二级下拉 -->
+        <div class="select-item picker" v-if="false">
+          <div class="select-item-title">二级下拉</div>
+          <div class="packet-box mt-12">
+            <div class="picker-btn">
+              <div>请选择</div>
+              <!-- <img class="icon" src="" alt=""> -->
+            </div>
+            <div class="picker-btn">
+              <div>请选择</div>
+              <!-- <img class="icon" src="" alt=""> -->
+            </div>
           </div>
         </div>
-      </div>
-      <!-- 单选 -->
-      <div class="select-item radio">
-        <div class="select-item-title">单选</div>
-        <div class="radio-box-form">
-          <mt-radio :options="radioDataList" v-model="radioValue"></mt-radio>
-        </div>
-      </div>
-      <!-- 图片选择 -->
-      <div class="select-item img-select">
-        <div class="select-item-title">图片选择</div>
-        <div class="img-select-list">
-          <div class="img-select-item">
-            <img src alt>
-            <label>
-              <input name="img" type="checkbox" value>选项
-            </label>
-          </div>
-          <div class="img-select-item">
-            <img src alt>
-            <label>
-              <input name="img" type="checkbox" value>选项
-            </label>
-          </div>
-          <div class="img-select-item">
-            <img src alt>
-            <label>
-              <input name="img" type="checkbox" value>选项
-            </label>
-          </div>
-          <div class="img-select-item">
-            <img src alt>
-            <label>
-              <input name="img" type="checkbox" value>选项
-            </label>
-          </div>
-          <div class="img-select-item">
-            <img src alt>
-            <label>
-              <input name="img" type="checkbox" value>选项
-            </label>
-          </div>
-          <div class="img-select-item">
-            <img src alt>
-            <label>
-              <input name="img" type="checkbox" value>选项
-            </label>
+        <!-- 多选 -->
+        <div class="select-item checkbox" v-if="obj.ele == 'checkbox'">
+          <div class="select-item-title" v-html="obj.obj.label"></div>
+          <div class="checkbox-form">
+            <checklist
+              :required="checkboxRequired"
+              :options="obj.obj.items"
+              @on-change="checkboxChange"
+            ></checklist>
           </div>
         </div>
-      </div>
-      <!-- 单选-是否 -->
-      <div class="select-item checkbox">
-        <div class="select-item-title">是/否</div>
-        <div class="checkbox-form radio-only-one">
-          <mt-radio :options="['是','否']" v-model="radioValueOnlyOne"></mt-radio>
+        <!-- 手动填写分数 -->
+        <div class="select-item range-box" v-if="false">
+          <div class="select-item-title">手动填写分数</div>
+          <div class="range">
+            <range
+              :range-bar-height="4"
+              :max="rangeValueMax"
+              v-model="rangeValue"
+              @on-touchstart="touchstartRange"
+            ></range>
+            <div class="js-btn">
+              <img src="../../../assets/img/icon/icon-jian.png" alt @click="countRangeValue(-1)">
+              <img src="../../../assets/img/icon/icon-add.png" alt @click="countRangeValue(1)">
+            </div>
+          </div>
+        </div>
+        <!-- 地址 -->
+        <div class="select-item address-box" v-if="true">
+          <div class="select-item-title">地址</div>
+          <div class="select-address">
+            <div class="sheng">
+              <popup-picker
+                :data="province"
+                :columns="1"
+                v-model="dropDownBoxValue"
+                placeholder="省/自治区/直辖市"
+                show-name
+                @on-hide="provinceHide"
+              ></popup-picker>
+            </div>
+            <div class="shi">
+              <popup-picker
+                :data="city"
+                :columns="1"
+                v-model="dropDownBoxValue1"
+                placeholder="市"
+                :disabled="cityDisabled"
+                @on-hide="cityHide"
+                show-name
+              ></popup-picker>
+            </div>
+            <div class="qu">
+              <popup-picker
+                :data="zone"
+                :columns="1"
+                v-model="dropDownBoxValue2"
+                placeholder="区/县"
+                show-name
+                @on-show="popupPickerAddress(2)"
+                :disabled="zoneDisabled"
+              ></popup-picker>
+            </div>
+            <input type="text" placeholder="详细地址" v-model="addressInfo" style="padding: 0 12px;">
+          </div>
+        </div>
+        <!-- 日期/时间 -->
+        <div class="select-item date-time-box" v-if="false">
+          <div class="select-item-title">日期/时间</div>
+          <div class="date-time">
+            <div class="calendar-box">
+              <group>
+                <calendar
+                  :readonly="calendarReadonly"
+                  placeholder="选择日期"
+                  v-model="calendarValue"
+                  :title="calendarTitle"
+                  disable-past
+                ></calendar>
+              </group>
+            </div>
+            <div class="time-picker hour">
+              <popup-picker :data="hoursData" v-model="hour" placeholder="时"></popup-picker>
+            </div>
+            <div class="time-picker">
+              <popup-picker :data="minuteData" v-model="minute" placeholder="分"></popup-picker>
+            </div>
+          </div>
+        </div>
+        <!-- 日期 -->
+        <div class="select-item date-box" v-if="obj.ele == 'datepicker'">
+          <div class="select-item-title" v-html="obj.obj.label"></div>
+          <div class="date">
+            <div class="calendar-box">
+              <group>
+                <calendar
+                  :readonly="calendarReadonly"
+                  :placeholder="obj.obj.placeholder"
+                  v-model="calendarValue1"
+                  :title="calendarTitle"
+                  disable-past
+                ></calendar>
+              </group>
+            </div>
+          </div>
+        </div>
+        <!-- 时间 -->
+        <div class="select-item time-box" v-if="false">
+          <div class="select-item-title">时间</div>
+          <div class="time">
+            <div class="time-picker">
+              <popup-picker :data="hoursData" v-model="hour1" placeholder="时"></popup-picker>
+            </div>
+            <div class="time-picker">
+              <popup-picker :data="minuteData" v-model="minute1" placeholder="分"></popup-picker>
+            </div>
+          </div>
+        </div>
+        <!-- 文件上传 -->
+        <div class="select-item wj-upload" v-if="false">
+          <div class="select-item-title">文件上传</div>
+          <div class="wj-upload-list">
+            <div class="wj-upload-item">
+              <div class="top">
+                <div class="wjm">名字.doc</div>
+                <div class="del">X</div>
+              </div>
+              <div class="jdt"></div>
+              <div class="wj-size">10.8M</div>
+            </div>
+          </div>
+          <div class="wj-upload-btn">
+            <div>
+              <span class="icon-add">+</span>
+              <span>上传文件或压缩包</span>
+            </div>
+          </div>
+        </div>
+        <!-- 单选 -->
+        <div class="select-item radio" v-if="obj.ele == 'radio'">
+          <div class="select-item-title" v-html="obj.obj.label"></div>
+          <div class="radio-box-form">
+            <mt-radio :options="obj.obj.items" v-model="obj.obj.value"></mt-radio>
+          </div>
+        </div>
+        <!-- 图片选择 -->
+        <div class="select-item img-select" v-if="obj.ele == 'imgshow'">
+          <div class="select-item-title" v-html="obj.obj.label"></div>
+          <div class="img-select-list">
+            <div class="img-select-item" v-for="(item, index) of imgArr" :key="index">
+              <img :src="item.src" alt @click="previewerImg(index)">
+              <label>
+                <input name="img" type="checkbox" value>选项
+              </label>
+            </div>
+          </div>
+          <div v-transfer-dom>
+            <previewer :list="imgArr" ref="previewer" :options="previewerOptions"></previewer>
+          </div>
+        </div>
+        <!-- 单选-是否 -->
+        <div class="select-item checkbox" v-if="obj.ele == 'truefalse'">
+          <div class="select-item-title" v-html="obj.obj.label"></div>
+          <div class="checkbox-form radio-only-one">
+            <mt-radio :options="obj.obj.items" v-model="radioValueOnlyOne"></mt-radio>
+          </div>
+        </div>
+        <!-- 多行文本 -->
+        <div class="select-item" v-if="obj.ele == 'text'">
+          <div class="select-item-title" v-html="obj.obj.modalTitle"></div>
+          <div class="select-item-txt" v-html="obj.obj.label"></div>
+          <textarea
+            name
+            id
+            cols="30"
+            rows="10"
+            v-model="textareaValue"
+            :placeholder="obj.obj.placeholder"
+          ></textarea>
         </div>
       </div>
-      <!-- 多行文本 -->
-      <div class="select-item">
-        <div class="select-item-title">多行文本</div>
-        <div class="select-item-txt">请输入您的选项</div>
-        <textarea name id cols="30" rows="10" v-model="textareaValue"></textarea>
-      </div>
-      <button class="submit">提交</button>
+      <button class="submit" @click="submitForm">提交</button>
     </div>
     <!-- 历史记录 -->
     <div class="history-record" v-if="selectTabIndex == 1">
@@ -325,10 +348,13 @@ import {
   Range,
   Radio,
   Group,
-  Calendar
+  Calendar,
+  Previewer,
+  TransferDom
 } from "vux";
-import Uploader from 'vux-uploader'
+import Uploader from "vux-uploader";
 import SuspendBtn from "../../../components/suspendBtn/SuspendBtn";
+import mockData from "./mock.js"; // 本地模拟数据
 
 const pullupDefaultConfig = {
   content: "上拉加载更多",
@@ -343,6 +369,9 @@ const pullupDefaultConfig = {
 
 export default {
   name: "FormPage",
+  directives: {
+    TransferDom
+  },
   components: {
     Scroller,
     Tab,
@@ -353,33 +382,70 @@ export default {
     Checklist,
     Radio,
     Group,
-    Calendar
+    Calendar,
+    Previewer
   },
   data() {
     return {
-      oneLineValue: '', // 单行文字
-      selectStudentValue: '点击选择学生范围',
-      selectTeacherValue: '点击选择老师范围',
-      selectClassValue: '点击选择班级范围',
-      selectDepartmentValue: '点击选择部门范围',
+      allListData: mockData.data,
 
+      oneLineValue: "", // 单行文字
+      selectStudentValue: "点击选择学生范围",
+      selectTeacherValue: "点击选择老师范围",
+      selectClassValue: "点击选择班级范围",
+      selectDepartmentValue: "点击选择部门范围",
+
+      // 地址信息
+      province: [],
+      city: [],
+      zone: [],
+      selectAddress: [],
+
+      zoneDisabled: true,
+      cityDisabled: true,
+
+      previewerOptions: {},
+      imgArr: [
+        {
+          src:
+            "http://ww1.sinaimg.cn/large/663d3650gy1fplwu9ze86j20m80b40t2.jpg"
+        },
+        {
+          src:
+            "http://ww1.sinaimg.cn/large/663d3650gy1fplwvqwuoaj20xc0p0t9s.jpg"
+        },
+        {
+          src:
+            "http://ww1.sinaimg.cn/large/663d3650gy1fplwwcynw2j20p00b4js9.jpg"
+        }
+      ],
+
+      sortable_item: [],
       hour: [],
       minute: [],
+      hour1: [],
+      minute1: [],
       hoursData: [[]],
       minuteData: [[]],
       dropDownBoxValue: [],
-      dropDownBoxData: [['一年级','二年级','三年级']],
+      dropDownBoxValue1: [],
+      dropDownBoxValue2: [],
+
+      // dropDownBoxData: [["一年级", "二年级", "三年级"]],
+
       calendarTitle: "TODAY",
       calendarValue: "", // 日历时间
+      calendarValue1: "", // 日历时间
       calendarReadonly: false,
-      textareaValue: '',  // 多行文本
-      radioValueOnlyOne: '是',
+
+      textareaValue: "", // 多行文本
+      radioValueOnlyOne: "1",
       radioValue: "China", // 单选选中的值
       checkboxRequired: true, //多选是否为必选
       commonList: ["China", "Japan", "America"],
       radioDataList: ["China", "Japan", "America"],
       isShowMenu: false, //是否显示悬浮菜单
-      addressInfo: '', // 详细地址
+      addressInfo: "", // 详细地址
       historyRecord: [
         {
           title: "我是一个标题",
@@ -408,6 +474,81 @@ export default {
   },
   computed: {},
   methods: {
+    cityHide(type) {
+      console.log(type)
+      if (type || this.dropDownBoxValue1.length) {
+        console.log(this.dropDownBoxValue1);
+        this.zoneDisabled = false;
+
+        this.$api.get(
+          `/city/getCity?pid=${this.dropDownBoxValue1[0]}`,
+          r => {
+            console.log(r);
+          },
+          r => {
+            // console.log(r.data)
+            let data = JSON.parse(r.data);
+            data.map((v, i) => {
+              v.value = v.id;
+            });
+            this.zone = data;
+          }
+        );
+
+        this.getCity;
+      }
+    },
+    provinceHide(type) {
+      console.log(type);
+      if (type || this.dropDownBoxValue.length) {
+        console.log(this.dropDownBoxValue);
+        this.cityDisabled = false;
+
+        this.$api.get(
+          `/city/getCity?pid=${this.dropDownBoxValue[0]}`,
+          r => {
+            console.log(r);
+          },
+          r => {
+            // console.log(r.data)
+            let data = JSON.parse(r.data);
+            data.map((v, i) => {
+              v.value = v.id;
+            });
+            this.city = data;
+          }
+        );
+
+        this.getCity;
+      }
+    },
+    popupPickerAddress(type) {
+      console.log(type);
+    },
+    // 图片预览
+    previewerImg(index) {
+      this.$refs.previewer.show(index);
+    },
+    // 上传图片
+    fileImage() {
+      let self = this;
+      let fileObj = document.getElementById("files").files[0];
+      console.log(fileObj);
+      // let curRemoveObj = this.sortable_item[this.curIndex].obj.imgArr;
+      // curRemoveObj[index].name = fileObj.name;
+      // self.$api.uploadFile("file/upload ", {}, fileObj, r => {
+      //   setInterval(() => {
+      //     if (self.progress < 100) {
+      //       self.progress += 10;
+      //     }
+      //   }, 200);
+      //   curRemoveObj[index].titles = "图片";
+
+      //   curRemoveObj[index].url = r.data;
+      //   curRemoveObj[index].size = fileObj.size;
+      //   curRemoveObj[index].labels = "选项";
+      // });
+    },
     // 多选按钮
     checkboxChange(val, label) {
       // console.log(val);
@@ -429,37 +570,45 @@ export default {
     },
     selectList(type) {
       let title = "";
-      let value = '';
-      let typeValue = '';
+      let value = "";
+      let typeValue = "";
       if (type == 0) {
         title = "选择学生范围";
-        value = this.selectStudentValue == '点击选择学生范围' ? '' : this.selectStudentValue
-        typeValue = 'selectStudentValue'
+        value =
+          this.selectStudentValue == "点击选择学生范围"
+            ? ""
+            : this.selectStudentValue;
+        typeValue = "selectStudentValue";
       }
       if (type == 1) {
         title = "选择老师范围";
-        value = this.selectTeacherValue == '点击选择老师范围' ? '' : this.selectTeacherValue
-        typeValue = 'selectTeacherValue'
+        value =
+          this.selectTeacherValue == "点击选择老师范围"
+            ? ""
+            : this.selectTeacherValue;
+        typeValue = "selectTeacherValue";
       }
       if (type == 2) {
         title = "选择班级";
-        value = this.selectClassValue == '点击选择班级范围' ? '' : this.selectClassValue
-        typeValue = 'selectClassValue'        
+        value =
+          this.selectClassValue == "点击选择班级范围"
+            ? ""
+            : this.selectClassValue;
+        typeValue = "selectClassValue";
       }
       if (type == 3) {
         title = "选择分部";
-        value = this.selectDepartmentValue == '点击选择部门范围' ? '' : this.selectDepartmentValue
-        typeValue = 'selectDepartmentValue'
+        value =
+          this.selectDepartmentValue == "点击选择部门范围"
+            ? ""
+            : this.selectDepartmentValue;
+        typeValue = "selectDepartmentValue";
       }
 
       this.$router.push({
         path: "/selectList",
         query: { title: title, type: typeValue, value: value }
       });
-    },
-    // 上传图片
-    fileImage(e) {
-      console.log(e);
     },
     change() {},
     touchstartRange(e) {
@@ -475,9 +624,50 @@ export default {
         this.rangeValue = rangeValue + 1;
       }
     },
-    loadMore() {}
+    loadMore() {},
+    submitForm() {
+      console.log(this.allListData);
+    },
+    // 获取表单数据
+    getFormData() {
+      let formObj = {};
+      formObj.tempid = "5c189861d725d24950b66849";
+      this.$api.get(
+        "/cform/tempDetail?tempid=5c189861d725d24950b66849",
+        r => {
+          console.log(r);
+        },
+        r => {
+          // console.log(r.data)
+        }
+      );
+    },
+    // 获取省市区
+    getCity(pid) {
+      // let obj = {}
+      // obj.pid = pid
+      this.$api.get(
+        `/city/getCity?pid=${pid}`,
+        r => {
+          console.log(r);
+        },
+        r => {
+          // console.log(r.data)
+          let data = JSON.parse(r.data);
+          data.map((v, i) => {
+            v.value = v.id;
+          });
+          this.province = data;
+          console.log(data);
+        }
+      );
+    }
   },
   mounted() {
+    this.getFormData();
+
+    this.getCity(0);
+
     for (let i = 0; i < 24; i++) {
       this.hoursData[0].push(i + "");
     }
@@ -485,12 +675,18 @@ export default {
       this.minuteData[0].push(j + "");
     }
 
-    this.selectStudentValue = sessionStorage.getItem('selectStudentValue') ? sessionStorage.getItem('selectStudentValue') : this.selectStudentValue
-    this.selectTeacherValue = sessionStorage.getItem('selectTeacherValue') ? sessionStorage.getItem('selectTeacherValue') : this.selectTeacherValue
-    this.selectClassValue = sessionStorage.getItem('selectClassValue') ? sessionStorage.getItem('selectClassValue') : this.selectClassValue
-    this.selectDepartmentValue = sessionStorage.getItem('selectDepartmentValue') ? sessionStorage.getItem('selectDepartmentValue') : this.selectDepartmentValue
-
-
+    this.selectStudentValue = sessionStorage.getItem("selectStudentValue")
+      ? sessionStorage.getItem("selectStudentValue")
+      : this.selectStudentValue;
+    this.selectTeacherValue = sessionStorage.getItem("selectTeacherValue")
+      ? sessionStorage.getItem("selectTeacherValue")
+      : this.selectTeacherValue;
+    this.selectClassValue = sessionStorage.getItem("selectClassValue")
+      ? sessionStorage.getItem("selectClassValue")
+      : this.selectClassValue;
+    this.selectDepartmentValue = sessionStorage.getItem("selectDepartmentValue")
+      ? sessionStorage.getItem("selectDepartmentValue")
+      : this.selectDepartmentValue;
   }
 };
 </script>
@@ -498,7 +694,9 @@ export default {
 <style scope lang="scss">
 @import "../../../assets/styles/mixins.scss";
 // 重置样式选择日期
-.calendar-box, .time-picker, .drop-down-box {
+.calendar-box,
+.time-picker,
+.drop-down-box {
   .vux-cell-value,
   .vux-cell-placeholder {
     color: #575757;
@@ -534,7 +732,24 @@ export default {
     border-color: #fff !important;
   }
 }
-.time-picker, .drop-down-box {
+.time-picker,
+.address-box,
+.drop-down-box {
+  .vux-cell-box {
+    width: 100%;
+    height: 40px;
+    line-height: 40px;
+  }
+  .vux-cell-value,
+  .vux-cell-placeholder {
+    color: #535353;
+  }
+  .weui-cell_access .weui-cell__ft:after {
+    border-color: #fff !important;
+  }
+  .weui-cell {
+    padding: 0;
+  }
   .weui-cell__hd {
     width: 100%;
     display: none;
@@ -604,7 +819,7 @@ a:hover {
     margin: 0;
   }
   .mint-cell {
-    width:px2rem(200);
+    width: px2rem(200);
   }
 }
 .vux-x-icon-ios-arrow-right {
@@ -648,7 +863,7 @@ a:hover {
     color: #ffffff;
   }
   .form-wrapper {
-    padding: 20px;
+    padding: px2rem(20);
     .title {
       font-size: 18.5px;
       color: #333333;
@@ -763,7 +978,7 @@ a:hover {
         display: flex;
         align-items: center;
         justify-content: space-between;
-        width: px2rem(160);
+        width: px2rem(150);
         box-sizing: border-box;
         height: 40px;
         border: 1px solid #c3c9cf;
@@ -806,9 +1021,9 @@ a:hover {
           display: flex;
           align-items: center;
           justify-content: space-between;
-          width: px2rem(160);
+          width: px2rem(150);
           height: 40px;
-          padding: 0 12px;
+          // padding: 0 12px;
           background: #ffffff;
           border: 1px solid #c3c9cf;
           box-sizing: border-box;
@@ -817,9 +1032,9 @@ a:hover {
           display: flex;
           align-items: center;
           justify-content: space-between;
-          width: px2rem(160);
+          width: px2rem(150);
           height: 40px;
-          padding: 0 12px;
+          // padding: 0 12px;
           background: #ffffff;
           border: 1px solid #c3c9cf;
           box-sizing: border-box;
@@ -834,7 +1049,7 @@ a:hover {
           justify-content: space-between;
           width: 100%;
           height: 40px;
-          padding: 0 12px;
+          // padding: 0 12px;
           background: #ffffff;
           border: 1px solid #c3c9cf;
           box-sizing: border-box;
@@ -859,13 +1074,13 @@ a:hover {
           background: #ffffff;
           border: 1px solid #c3c9cf;
           &:nth-child(1) {
-            width: px2rem(135);
+            width: px2rem(130);
           }
           &:nth-child(2) {
-            width: px2rem(85);
+            width: px2rem(80);
           }
           &:nth-child(3) {
-            width: px2rem(85);
+            width: px2rem(80);
           }
         }
       }
@@ -877,7 +1092,7 @@ a:hover {
         margin-bottom: 12px;
       }
       .date {
-        >div {
+        > div {
           overflow: hidden;
           width: 100%;
           height: 40px;
@@ -898,8 +1113,8 @@ a:hover {
         display: flex;
         justify-content: space-between;
         align-items: center;
-        >div {
-          width: px2rem(160);
+        > div {
+          width: px2rem(150);
           height: 40px;
           text-align: center;
           line-height: 40px;
@@ -918,9 +1133,9 @@ a:hover {
           flex-direction: column;
           align-items: center;
           justify-content: center;
-          width: px2rem(75);
+          width: px2rem(70);
           margin-bottom: 15px;
-          margin-right: px2rem(11);
+          margin-right: px2rem(8);
           &:nth-child(4n + 0) {
             margin-right: 0;
           }
@@ -928,12 +1143,12 @@ a:hover {
             font-size: 14px;
             color: #686868;
             input {
-              margin-right: 4px;
+              margin-right: px2rem(4);
             }
           }
           img {
-            width: px2rem(75);
-            height: px2rem(75);
+            width: px2rem(70);
+            height: px2rem(70);
             background: #eee;
             margin-bottom: 7px;
           }
