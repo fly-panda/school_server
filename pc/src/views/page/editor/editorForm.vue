@@ -294,18 +294,20 @@
                 <draggable element="div" v-model="settingFormItem.items">
                     <transition-group name="no" tag="div">
                         <FormItem style="border: none" v-for="(SelectItem, index) in settingFormItem.items" :key="index">
-                            <Row>
+                            <Row class="sel-cls">
                                 <Col span="9">
-                                <Input type="text" v-model="SelectItem.label_value" placeholder="请输入选择项的ID"></Input>
+                                    <Input type="text" v-model="SelectItem.label_value" placeholder="请输入分数"></Input>
                                 </Col>
                                 <Col span="9">
-                                <Input type="text" v-model="SelectItem.label_name" placeholder="请输入选择项的值"></Input>
+                                    <Input type="text" v-model="SelectItem.label_name" placeholder="请输入选择项的值"></Input>
                                 </Col>
                                 <Col span="2" offset="1">
-                                <Icon @click="handleRemoveSelectItem(index)" size="20" color="#FF5A49" type="md-trash" />
+                                    <!-- <Icon size="20" color="#FF5A49" type="md-trash" /> -->
+                                    <img @click="handleRemoveSelectItem(index)" class="jian-cls" src="@/assets/jian_ico.png" alt="">
                                 </Col>
                                 <Col span="2" offset="1">
-                                <Icon style="course: move" size="18"  type="md-move" />
+                                    <!-- <Icon style="course: move" size="18"  type="md-move" /> -->
+                                    <img class="move-cls" src="@/assets/move_ico.png" alt="">
                                 </Col>
                             </Row>
                              <RadioGroup v-model="SelectItem.scoreType">
@@ -496,7 +498,7 @@ export default {
         VueEditor
     },
     computed: {
-        ...mapState(['studentList','teacherList']),
+        ...mapState(['studentList','teacherList','gradeList','departmentList']),
         // 拖拽表单1
         dragOptions1() {
             return {
@@ -534,7 +536,7 @@ export default {
     },
     mounted(){
         // console.log(this.sortable_item);
-        console.log("我获取的",this.studentList);
+        // console.log("我获取的",this.departmentList);
 
     },
     methods: {
@@ -566,15 +568,19 @@ export default {
                 if(this.sortable_item[i].ele=="selectstudent"){
                     this.sortable_item[i].obj.items = this.studentList;
                 }
+                if(this.sortable_item[i].ele=="selectgrade"){
+                    this.sortable_item[i].obj.items = this.gradeList;
+                }
+                if(this.sortable_item[i].ele=="selectdepartment"){
+                    this.sortable_item[i].obj.items = this.departmentList;
+                }
             }
             let formObj = {}
             formObj.title = this.formTitle
             formObj.data = this.sortable_item;
             formObj.describe = this.content;
-            // console.log("我保存的",this.sortable_item);
-            // console.log(this.content)
             console.log(this.sortable_item)
-            // // console.log(JSON.stringify(formObj))
+
             // this.$api.post("/cform/addForm",
             //     formObj,
             //     r=>{

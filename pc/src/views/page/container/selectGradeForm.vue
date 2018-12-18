@@ -10,56 +10,35 @@
 </template>
 
 <script>
+import {mapState,mapGetters,mapActions} from 'vuex'; //先要引入
 export default {
     data() {
         return {
-            data3: [{
-                title: '政教处',
-                // expand: true,
-                loading: false,
-                children: [
-                    {
-                        title: '语文组'
-                    },
-                    {
-                        title: '数学组'
-                    },
-                    {
-                        title: '英语组'
-                    }
-                ]
-            },
-            {
-                title: '教务处',
-                // expand: true,
-                loading: false,
-                children: [
-                    {
-                        title: '教导处'
-                    }
-                ]
-            }]
+            data3: []
         }
     },
+    computed: {
+        ...mapState(['gradeList']),
+    },
+    mounted(){
+        let self=this;
+        self.getData();
+    },
     methods: {
-        loadData(item, callback) {
-            // setTimeout(() => {
-            //     const data = [{
-            //             title: 'children',
-            //             loading: false,
-            //             children: []
-            //         },
-            //         {
-            //             title: 'children',
-            //             loading: false,
-            //             children: []
-            //         }
-            //     ];
-            //     callback(data);
-            // }, 1000);
+        ...mapActions(['setGrades']),
+        getData(){
+            let self=this;
+            self.$api.post("/campus/getDepartmentInfoList",{
+                usertype:1
+            },r=>{
+                 
+                self.data3=JSON.parse(r.data);
+                // console.log(self.data3);
+            })
         },
         submitResut() {
             let selectNode = this.$refs.tree.getCheckedNodes()
+            this.setGrades(selectNode);
             this.$emit('handleselect', selectNode);
         }
     }

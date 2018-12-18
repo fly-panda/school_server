@@ -5,24 +5,38 @@ import modal from './module/modal_status'
 Vue.use(Vuex);
 const state={   //要设置的全局访问的state对象
   studentList: [],
-  teacherList:[]
+  teacherList:[],
+  gradeList:[],
+  departmentList:[]
   //要设置的初始属性值
 };
 const getters = {   //实时监听state值的变化(最新状态)
   students(state) {
-     return state.studentList
+    return state.studentList
   },
   teachers(){
-     return state.teacherList
+    return state.teacherList
+  },
+  grades(){
+    return state.gradeList
+  },
+  departments(){
+    return state.departmentList
   }
 };
 const mutations = {
   //自定义改变state初始值的方法，这里面的参数除了state之外还可以再传额外的参数(变量或对象);
   updateStudents(state,arrs) {  //同上
-      state.studentList = arrs;
+    state.studentList = arrs;
   },
   updateTeachers(state,arrs){ //同上，这里面的参数除了state之外还传实的值
-     state.teacherList=arrs;
+    state.teacherList=arrs;
+  },
+  updateGrades(state,arrs){ //同上，这里面的参数除了state之外还传实的值
+    state.gradeList=arrs;
+  },
+  updateDepartments(state,arrs){ //同上，这里面的参数除了state之外还传实的值
+    state.departmentList=arrs;
   }
 };
 const actions = {
@@ -32,13 +46,19 @@ const actions = {
   },
   setTeachers(context,arrs){ 
       context.commit('updateStudents',arrs)
-   }
+  },
+  setGrades(context,arrs){ 
+      context.commit('updateGrades',arrs)
+  },
+  setDepartments(context,arrs){ 
+      context.commit('updateDepartments',arrs)
+  }
 };
 export default new Vuex.Store({
   state,
   getters,
   mutations,
-  actions:actions,
+  actions,
   modules: {
     modal
   }

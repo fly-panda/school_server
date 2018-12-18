@@ -40,7 +40,7 @@
             <div>
                 <div class="studentItem" v-for="(item,index) in selStudentList">
                     <div>{{item.name}}</div>
-                    <div class="delS-cls" @click="delFun(item,index)"><Icon color="red" size="18" type="md-close-circle" /></div>
+                    <div class="del-cls" @click="delFun(item,index)"><Icon color="red" size="18" type="md-close-circle" /></div>
                 </div>
                 
             </div>
@@ -159,6 +159,7 @@ export default {
             let self=this;
             self.selStudentList.splice(i,1)
         },
+        
         saveFun(){
             this.$emit('handleselect', this.selStudentList);
             this.setTeachers(this.selStudentList)
