@@ -76,7 +76,7 @@ export default {
         getData(){
             let self=this;
             self.$api.post("/campus/getDepartmentInfoList",{
-                usertype:1
+                usertype:2
             },r=>{
                 
                 self.data3=JSON.parse(r.data);

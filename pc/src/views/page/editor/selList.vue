@@ -87,7 +87,7 @@ export default {
         getData(){
             let self=this;
             self.$api.post("/campus/getDepartmentInfoList",{
-                usertype:1
+                usertype:2
             },r=>{
                  console.log(r)
                 self.gradeList=JSON.parse(r.data);
@@ -104,7 +104,7 @@ export default {
             }
             self.studentList=[];
             self.$api.post("/campus/searchUser",{
-                usertype:1,
+                usertype:2,
                 departid:r[0].departid,
                 level:r[0].level
             },r=>{

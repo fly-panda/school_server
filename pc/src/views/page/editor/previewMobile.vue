@@ -1,9 +1,7 @@
 <template>
     <div  class="mobile-container">
         <div class="contents">
-            <div style="height:1000px;">
-                    
-            </div>   
+            <iframe id="preview-html" name="preview-html" src="http://47.93.156.129:8080/formPage?preview=1"></iframe>   
         </div>
     </div>
 </template>
@@ -30,14 +28,22 @@ export default {
         // margin:0 auto;
         top:30px;
         left:50%;
-        padding: 122px 65px;
+        padding: 121px 65px;
         transform: translateX(-50%);
         .contents{
             // width: 100%;
-            height: 511px;
-            overflow-y: auto;
+            height: 513px;
             position: relative;
             background: #fff;
         }
     }
+    #preview-html{
+        width: 100%;
+        height: 100%;
+        border: none;
+        border-radius: 5px;
+        outline: none;
+        background-color: #fff;
+    }
+
 </style>

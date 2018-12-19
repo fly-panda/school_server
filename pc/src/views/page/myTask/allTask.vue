@@ -1,6 +1,6 @@
 <template>
 <div class="publish-content">
-    <CardForm v-for="item in cardList" :key="item.id" :cardItem="item" />
+    <CardForm v-for="item in cardList" :key="item.id" :cardItem="item" :status="status"/>
 </div>
 </template>
 
@@ -12,6 +12,7 @@ export default {
     },
     data() {
         return {
+            status:0,
             // status 0 结束 1为开启
             // type 0 simple 1week
             cardList: [{
@@ -19,7 +20,7 @@ export default {
                 status: 0,
                 type: 0,
                 tag_text: '单次任务',
-                title: '关于《两学一做》班会的感想',
+                tempname: '关于《两学一做》班会的感想',
                 endDate: '11/09 18:00',
                 expectSubmit: 100,
                 hasSubmitNum: 10,
@@ -29,7 +30,7 @@ export default {
                 status: 0,
                 type: 0,
                 tag_text: '单次任务',
-                title: '卫生检查',
+                tempname: '卫生检查',
                 endDate: '11/09 18:00',
                 expectSubmit: 100,
                 hasSubmitNum: 10,
@@ -39,7 +40,7 @@ export default {
                 status: 0,
                 type: 0,
                 tag_text: '单次任务',
-                title: '卫生检查',
+                tempname: '卫生检查',
                 endDate: '任务已结束',
                 expectSubmit: 100,
                 hasSubmitNum: 10,
@@ -49,7 +50,7 @@ export default {
                 status: 0,
                 type: 0,
                 tag_text: '单次任务',
-                title: '卫生检查',
+                tempname: '卫生检查',
                 endDate: '11/09 18:00',
                 expectSubmit: 100,
                 hasSubmitNum: 10,
@@ -59,7 +60,7 @@ export default {
                 status: 0,
                 type: 0,
                 tag_text: '单次任务',
-                title: '卫生检查',
+                tempname: '卫生检查',
                 endDate: '11/09 18:00',
                 expectSubmit: 100,
                 hasSubmitNum: 10,
@@ -69,7 +70,7 @@ export default {
                 status: 0,
                 type: 0,
                 tag_text: '周任务',
-                title: '卫生检查',
+                tempname: '卫生检查',
                 endDate: '11/09 18:00',
                 expectSubmit: 100,
                 hasSubmitNum: 10,
@@ -79,7 +80,7 @@ export default {
                 status: 0,
                 type: 0,
                 tag_text: '单次任务',
-                title: '关于《两学一做》班会的感想',
+                tempname: '关于《两学一做》班会的感想',
                 endDate: '11/09 18:00',
                 expectSubmit: 100,
                 hasSubmitNum: 10,
@@ -89,7 +90,7 @@ export default {
                 status: 0,
                 type: 0,
                 tag_text: '单次任务',
-                title: '卫生检查',
+                tempname: '卫生检查',
                 endDate: '11/09 18:00',
                 expectSubmit: 100,
                 hasSubmitNum: 10,
@@ -99,7 +100,7 @@ export default {
                 status: 0,
                 type: 0,
                 tag_text: '单次任务',
-                title: '卫生检查',
+                tempname: '卫生检查',
                 endDate: '任务已结束',
                 expectSubmit: 100,
                 hasSubmitNum: 10,
@@ -109,7 +110,7 @@ export default {
                 status: 0,
                 type: 0,
                 tag_text: '单次任务',
-                title: '卫生检查',
+                tempname: '卫生检查',
                 endDate: '11/09 18:00',
                 expectSubmit: 100,
                 hasSubmitNum: 10,
@@ -119,7 +120,7 @@ export default {
                 status: 0,
                 type: 0,
                 tag_text: '单次任务',
-                title: '卫生检查',
+                tempname: '卫生检查',
                 endDate: '11/09 18:00',
                 expectSubmit: 100,
                 hasSubmitNum: 10,
@@ -129,7 +130,7 @@ export default {
                 status: 0,
                 type: 0,
                 tag_text: '周任务',
-                title: '卫生检查',
+                tempname: '卫生检查',
                 endDate: '11/09 18:00',
                 expectSubmit: 100,
                 hasSubmitNum: 10,

@@ -1,7 +1,7 @@
 <template>
 <div class="publish-content">
     <!-- <div class="addTemp" @click="addTempFun()">+</div> -->
-    <CardForm v-for="item in cardList" :key="item.id" :cardItem="item" />
+    <CardForm v-for="(item,i) in cardList" :key="item.id" :cardItem="item" :status="status"/>
 </div>
 </template>
 
@@ -15,74 +15,30 @@ export default {
         return {
             // status 0 结束 1为开启
             // type 0 simple 1week
-            cardList: [{
-                id: 1,
-                status: 1,
-                title: '纪律检查'
-            }, {
-                id: 2,
-                status: 1,
-                title: '卫生检查'
-            },{
-                id: 3,
-                status: 1,
-                title: '纪律检查'
-            }, {
-                id: 4,
-                status: 1,
-                title: '卫生检查'
-            },{
-                id: 5,
-                status: 1,
-                title: '纪律检查'
-            }, {
-                id: 6,
-                status: 1,
-                title: '卫生检查'
-            },{
-                id: 7,
-                status: 1,
-                title: '纪律检查'
-            }, {
-                id: 8,
-                status: 1,
-                title: '卫生检查'
-            },{
-                id: 9,
-                status: 1,
-                title: '纪律检查'
-            }, {
-                id: 10,
-                status: 1,
-                title: '卫生检查'
-            },{
-                id: 11,
-                status: 1,
-                title: '纪律检查'
-            }, {
-                id: 12,
-                status: 1,
-                title: '卫生检查'
-            },{
-                id: 13,
-                status: 1,
-                title: '纪律检查'
-            }, {
-                id: 14,
-                status: 1,
-                title: '卫生检查'
-            },{
-                id: 15,
-                status: 1,
-                title: '纪律检查'
-            }, {
-                id: 16,
-                status: 1,
-                title: '卫生检查'
-            }]
+            cardList: [
+                // {
+                //     id: 1,
+                //     status: 1,
+                //     title: '纪律检查'
+                // }
+            ],
+            status:1
         }
     },
+    mounted(){
+        this.getData();
+    },
     methods: {
+        getData(){
+            let self=this;
+            self.$api.post("/cform/myForm",{},r=>{
+                 console.log(r)
+                self.cardList=JSON.parse(r.data);
+                // console.log(self.data3);
+            },e=>{
+                console.log(e)
+            })
+        },
         addTempFun(){
             this.$router.push({
                 name:"editorForm"

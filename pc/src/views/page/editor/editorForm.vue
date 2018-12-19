@@ -542,6 +542,9 @@ export default {
     methods: {
                 // 预览效果
         previewForm(){
+            let formObj=this.formatData();
+            this.$api.sSetObject("previewObj",formObj)
+            console.log(formObj)
             // let cur_modal = this.$store.state.preview
             // console.log(new Date().getTime())
             // cur_modal.curtime = new Date().getTime()
@@ -559,7 +562,7 @@ export default {
             //把获取到的图片url 插入到鼠标所在位置 回显图片
             Editor.insertEmbed(cursorLocation, 'image', url);
         },
-        saveSoltItem(){
+        formatData(){
             for(let i=0;i<this.sortable_item.length;i++){
                 this.sortable_item[i].obj.icons="";
                 if(this.sortable_item[i].ele=="selectteacher"){
@@ -579,14 +582,18 @@ export default {
             formObj.title = this.formTitle
             formObj.data = this.sortable_item;
             formObj.describe = this.content;
-            console.log(this.sortable_item)
-    console.log(JSON.stringify(this.sortable_item))
-            // this.$api.post("/cform/addForm",
-            //     formObj,
-            //     r=>{
-            //         console.log(r)
-            //     }
-            // )
+            return formObj;
+        },
+        saveSoltItem(){
+            let formObj=this.formatData();
+            // console.log(formObj)
+            // console.log(JSON.stringify(this.sortable_item))
+            this.$api.post("/cform/addForm",
+                formObj,
+                r=>{
+                    console.log(r)
+                }
+            )
         },
         changeTitle(title){
             this.formTitle = title

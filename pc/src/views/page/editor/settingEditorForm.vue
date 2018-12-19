@@ -127,8 +127,6 @@ export default {
                 
             },
             gradeList:[],// 班主任列表
-            studentList:[],//人员
-            selStudentList:[],
             weekList:[
                 {name:"周一",id:1,check:false},
                 {name:"周二",id:2,check:false},
@@ -138,7 +136,6 @@ export default {
                 {name:"周六",id:6,check:false},
                 {name:"周日",id:7,check:false}
             ],
-            resultList:[]
         }
     },
     components: {
@@ -151,9 +148,41 @@ export default {
     },
     methods: {
         submit(){
-            console.log(this.$refs.studentList.selStudentList);
-            console.log(this.$refs.resultList.selStudentList);
+            let self=this;
+            if(self.checkStatus=="-1"){
+                self.$Message.warning('请选择填写人');
+                return
+            }
+
+            console.log(self.checkStatus)
+            // console.log(this.$refs.studentList.selStudentList);
+            // console.log(this.$refs.resultList.selStudentList);
+
             
+            // console.log(self.settingForm)
+
+        },
+        submitAjax(){
+            let self=this;
+            self.$api.post("/task/addRule",{
+                classTeacher:self.settingForm.classTeacher,
+                teacher:self.settingForm.teacher,
+                noSetting:self.settingForm.noSetting,
+                isCycle:self.settingForm.isCycle,
+                isRepeat:self.settingForm.isRepeat,
+                week:self.settingForm.week,
+                submitTimes:self.settingForm.submitTimes,
+                isTemplate:self.settingForm.isTemplate,
+                resultCopy:self.settingForm.resultCopy,
+                classRelationTeacher:self.settingForm.classRelationTeacher,
+            
+            },r=>{
+                 console.log(r)
+                // self.gradeList=JSON.parse(r.data);
+                // console.log(self.data3);
+            },e=>{
+                console.log(e)
+            })
         },
         changeCheck(status, index, type) {
             // console.log(status, index)

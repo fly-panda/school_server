@@ -1,6 +1,6 @@
 <template>
 <div class="publish-content" :style="{height:fullHeight.height}">
-    <CardForm v-for="item in cardList" :key="item.id" :cardItem="item" />
+    <CardForm v-for="item in cardList" :key="item.id" :cardItem="item" :status="status"/>
 </div>
 </template>
 
@@ -12,68 +12,35 @@ export default {
     },
     data() {
         return {
+            status:3,
             fullHeight:{// 动态获取屏幕高度
                 height: (document.documentElement.clientHeight-124)+"px"
             },
             // status 0 结束 1为开启
             // type 0 simple 1week
-            cardList: [{
-                id: 1,
-                status: 3,
-                title: '纪律检查'
-            }, {
-                id: 2,
-                status: 3,
-                title: '卫生检查'
-            },{
-                id: 3,
-                status: 3,
-                title: '纪律检查'
-            }, {
-                id: 4,
-                status: 3,
-                title: '卫生检查'
-            },{
-                id: 5,
-                status: 3,
-                title: '纪律检查'
-            }, {
-                id: 6,
-                status: 3,
-                title: '卫生检查'
-            },{
-                id: 7,
-                status: 3,
-                title: '纪律检查'
-            }, {
-                id: 8,
-                status: 3,
-                title: '卫生检查'
-            },{
-                id: 9,
-                status: 3,
-                title: '纪律检查'
-            }, {
-                id: 10,
-                status: 3,
-                title: '卫生检查'
-            },{
-                id: 11,
-                status: 3,
-                title: '纪律检查'
-            }, {
-                id: 12,
-                status: 3,
-                title: '卫生检查'
-            },{
-                id: 13,
-                status: 3,
-                title: '纪律检查'
-            }, {
-                id: 14,
-                status: 3,
-                title: '卫生检查'
-            }]
+            cardList: [
+                {
+                    id: 1,
+                    status: 3,
+                    tempname: '纪律检查'
+                }, {
+                    id: 2,
+                    status: 3,
+                    tempname: '卫生检查'
+                },{
+                    id: 3,
+                    status: 3,
+                    tempname: '纪律检查'
+                }, {
+                    id: 4,
+                    status: 3,
+                    tempname: '卫生检查'
+                },{
+                    id: 5,
+                    status: 3,
+                    tempname: '纪律检查'
+                }
+            ]
         }
     }
 }
