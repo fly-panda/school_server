@@ -99,7 +99,7 @@
           <div class="packet-box">
             <div class="picker-btn drop-down-box">
               <popup-picker
-                :data="obj.obj.items"
+                :data="obj.obj.items | dropDownFilter"
                 :columns="1"
                 v-model="dropDownBoxValue"
                 placeholder="请选择"
@@ -128,7 +128,7 @@
           <div class="checkbox-form">
             <checklist
               :required="checkboxRequired"
-              :options="obj.obj.items | filtersData"
+              :options="obj.obj.items | checkBoxFilter"
               @on-change="checkboxChange"
             ></checklist>
           </div>
@@ -264,7 +264,7 @@
         <div class="select-item radio" v-if="obj.ele == 'radio'">
           <div class="select-item-title" v-html="obj.obj.label"></div>
           <div class="radio-box-form">
-            <mt-radio :options="obj.obj.items" v-model="obj.obj.value"></mt-radio>
+            <mt-radio :options="obj.obj.items | radioFilter" v-model="obj.obj.value"></mt-radio>
           </div>
         </div>
         <!-- 图片选择 -->
@@ -286,7 +286,7 @@
         <div class="select-item checkbox" v-if="obj.ele == 'truefalse'">
           <div class="select-item-title" v-html="obj.obj.label"></div>
           <div class="checkbox-form radio-only-one">
-            <mt-radio :options="obj.obj.items" v-model="radioValueOnlyOne"></mt-radio>
+            <mt-radio :options="obj.obj.items | radioFilter" v-model="radioValueOnlyOne"></mt-radio>
           </div>
         </div>
         <!-- 多行文本 -->
@@ -386,6 +386,40 @@ export default {
     Previewer
   },
   filters: {
+    dropDownFilter(r) {
+      let list = []
+      r.map((v, i) =>{
+        let item = {
+          name: v.label_name,
+          value: v.label_value,
+          parent: 0
+        }
+        list.push(item)
+      })
+      return list
+    },
+    checkBoxFilter (r) {
+      let list = []
+      r.map((v, i) =>{
+        let item = {
+          key: v.label_value,
+          value: v.label_name
+        }
+        list.push(item)
+      })
+      return list
+    },
+    radioFilter(r) {
+      let list = []
+      r.map((v, i) =>{
+        let item = {
+          label: v.label_name,
+          value: v.label_value
+        }
+        list.push(item)
+      })
+      return list
+    },
     filtersData(r) {
       // console.log(r)
       let list = []
@@ -693,6 +727,12 @@ export default {
     }
     for (let j = 0; j < 60; j++) {
       this.minuteData[0].push(j + "");
+    }
+
+    let previewObj = sessionStorage.getItem("previewObj")
+    console.log('session值：' + previewObj)
+    if(previewObj) {
+      this.allListData = previewObj
     }
 
     this.selectStudentValue = sessionStorage.getItem("selectStudentValue")
