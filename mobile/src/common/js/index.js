@@ -30,7 +30,7 @@ function apiAxios(method, url, params, success, failure) {
   if (method=="POST") {
     params = getParams(params)
   }
-  console.log(1,params)
+  // console.log(1,params)
   axios({
     method: method,
     url: url,

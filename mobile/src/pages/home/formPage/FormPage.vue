@@ -1,6 +1,6 @@
 <template>
   <div class="form-page">
-    <tab :line-width="1" custom-bar-width="60px">
+    <tab :line-width="1" custom-bar-width="60px" v-if="preview != '1'">
       <tab-item
         :selected="selectTabIndex === index"
         v-for="(item, index) in tabData"
@@ -83,8 +83,8 @@
         <div class="des" v-if="obj.ele == 'p'" v-html="obj.obj.describe"></div>
         <!-- 单行文字 -->
         <div class="select-item once-text" v-if="obj.ele == 'input'">
-          <div class="select-item-title" v-html="obj.obj.modalTitle"></div>
-          <div class="select-item-txt" v-html="obj.obj.label "></div>
+          <div class="select-item-title" v-html="obj.obj.label"></div>
+          <div class="select-item-txt" v-html="obj.obj.describe "></div>
           <input
             type="text"
             :maxlength="obj.obj.maxLength"
@@ -94,10 +94,34 @@
         </div>
         <!-- 下拉框 -->
         <div class="select-item picker" v-if="obj.ele == 'select'">
-          <div class="select-item-title" v-html="obj.obj.modalTitle"></div>
-          <div class="select-item-txt" v-html="obj.obj.label"></div>
+          <div class="select-item-title" v-html="obj.obj.label"></div>
+          <div class="select-item-txt" v-html="obj.obj.describe"></div>
           <div class="packet-box">
             <div class="picker-btn drop-down-box">
+              <popup-picker
+                :data="obj.obj.items | dropDownFilter"
+                :columns="1"
+                :v-model="obj.obj.value | dropDownValueFilter"
+                placeholder="请选择"
+                show-name
+              ></popup-picker>
+            </div>
+          </div>
+        </div>
+        <!-- 二级下拉 -->
+        <div class="select-item picker" v-if="obj.ele == 'selectcontact'">
+          <div class="select-item-title">二级下拉</div>
+          <div class="packet-box mt-12">
+            <div class="picker-btn">
+              <popup-picker
+                :data="obj.obj.items | dropDownFilter"
+                :columns="1"
+                v-model="dropDownBoxValue"
+                placeholder="请选择"
+                show-name
+              ></popup-picker>
+            </div>
+            <div class="picker-btn">
               <popup-picker
                 :data="obj.obj.items | dropDownFilter"
                 :columns="1"
@@ -108,27 +132,14 @@
             </div>
           </div>
         </div>
-        <!-- 二级下拉 -->
-        <div class="select-item picker" v-if="false">
-          <div class="select-item-title">二级下拉</div>
-          <div class="packet-box mt-12">
-            <div class="picker-btn">
-              <div>请选择</div>
-              <!-- <img class="icon" src="" alt=""> -->
-            </div>
-            <div class="picker-btn">
-              <div>请选择</div>
-              <!-- <img class="icon" src="" alt=""> -->
-            </div>
-          </div>
-        </div>
         <!-- 多选 -->
         <div class="select-item checkbox" v-if="obj.ele == 'checkbox'">
           <div class="select-item-title" v-html="obj.obj.label"></div>
           <div class="checkbox-form">
             <checklist
-              :required="checkboxRequired"
+              :required="obj.obj.require"
               :options="obj.obj.items | checkBoxFilter"
+              v-model="obj.obj.value"
               @on-change="checkboxChange"
             ></checklist>
           </div>
@@ -151,9 +162,9 @@
         </div>
         <!-- 地址 -->
         <div class="select-item address-box" v-if="obj.ele == 'address'">
-          <div class="select-item-title">地址</div>
+          <div class="select-item-title" v-html="obj.obj.label"></div>
           <div class="select-address">
-            <div class="sheng">
+            <div class="sheng" v-if="obj.obj.chooseCheck.indexOf('province') == 0">
               <popup-picker
                 :data="province | cityDatafilter"
                 :columns="1"
@@ -163,7 +174,7 @@
                 @on-hide="provinceHide"
               ></popup-picker>
             </div>
-            <div class="shi">
+            <div class="shi" v-if="obj.obj.chooseCheck.indexOf('city') > -1">
               <popup-picker
                 :data="city | cityDatafilter"
                 :columns="1"
@@ -174,7 +185,7 @@
                 show-name
               ></popup-picker>
             </div>
-            <div class="qu">
+            <div class="qu" v-if="obj.obj.chooseCheck.indexOf('zone') > -1">
               <popup-picker
                 :data="zone | cityDatafilter"
                 :columns="1"
@@ -185,12 +196,16 @@
                 :disabled="zoneDisabled"
               ></popup-picker>
             </div>
-            <input type="text" placeholder="详细地址" v-model="addressInfo" style="padding: 0 12px;">
+            <input v-if="obj.obj.chooseCheck.indexOf('address') > -1" 
+                   type="text" 
+                   placeholder="详细地址" 
+                   v-model="addressInfo" 
+                   style="padding: 0 12px;">
           </div>
         </div>
         <!-- 日期/时间 -->
-        <div class="select-item date-time-box" v-if="false">
-          <div class="select-item-title">日期/时间</div>
+        <div class="select-item date-time-box" v-if="(obj.ele == 'datepicker') && (obj.obj.chooseCheck.length == 2)">
+          <div class="select-item-title" v-html="obj.obj.label"></div>
           <div class="date-time">
             <div class="calendar-box">
               <group>
@@ -212,7 +227,7 @@
           </div>
         </div>
         <!-- 日期 -->
-        <div class="select-item date-box" v-if="obj.ele == 'datepicker'">
+        <div class="select-item date-box" v-if="obj.ele == 'datepicker' && obj.obj.chooseCheck[0] == ['date'] && obj.obj.chooseCheck.length == 1">
           <div class="select-item-title" v-html="obj.obj.label"></div>
           <div class="date">
             <div class="calendar-box">
@@ -220,7 +235,7 @@
                 <calendar
                   :readonly="calendarReadonly"
                   :placeholder="obj.obj.placeholder"
-                  v-model="calendarValue1"
+                  v-model="obj.obj.value"
                   :title="calendarTitle"
                   disable-past
                 ></calendar>
@@ -229,7 +244,7 @@
           </div>
         </div>
         <!-- 时间 -->
-        <div class="select-item time-box" v-if="false">
+        <div class="select-item time-box" v-if="obj.ele == 'datepicker' && obj.obj.chooseCheck[0] == ['time'] && obj.obj.chooseCheck.length == 1">
           <div class="select-item-title">时间</div>
           <div class="time">
             <div class="time-picker">
@@ -241,8 +256,8 @@
           </div>
         </div>
         <!-- 文件上传 -->
-        <div class="select-item wj-upload" v-if="false">
-          <div class="select-item-title">文件上传</div>
+        <div class="select-item wj-upload" v-if="obj.ele == 'uploads'">
+          <div class="select-item-title" v-html="obj.obj.label"></div>
           <div class="wj-upload-list">
             <div class="wj-upload-item">
               <div class="top">
@@ -286,24 +301,24 @@
         <div class="select-item checkbox" v-if="obj.ele == 'truefalse'">
           <div class="select-item-title" v-html="obj.obj.label"></div>
           <div class="checkbox-form radio-only-one">
-            <mt-radio :options="obj.obj.items | radioFilter" v-model="radioValueOnlyOne"></mt-radio>
+            <mt-radio :options="obj.obj.items | radioFilter" v-model="obj.obj.value"></mt-radio>
           </div>
         </div>
         <!-- 多行文本 -->
         <div class="select-item" v-if="obj.ele == 'text'">
-          <div class="select-item-title" v-html="obj.obj.modalTitle"></div>
-          <div class="select-item-txt" v-html="obj.obj.label"></div>
+          <div class="select-item-title" v-html="obj.obj.label"></div>
+          <div class="select-item-txt" v-html="obj.obj.describe"></div>
           <textarea
             name
             id
             cols="30"
             rows="10"
-            v-model="textareaValue"
+            v-model="obj.obj.value"
             :placeholder="obj.obj.placeholder"
           ></textarea>
         </div>
       </div>
-      <button class="submit" @click="submitForm">提交</button>
+      <button v-if="preview != '1'" class="submit" @click="submitForm">提交</button>
     </div>
     <!-- 历史记录 -->
     <div class="history-record" v-if="selectTabIndex == 1">
@@ -386,6 +401,10 @@ export default {
     Previewer
   },
   filters: {
+    dropDownValueFilter(r) {
+      let a = []
+      return a
+    },
     dropDownFilter(r) {
       let list = []
       r.map((v, i) =>{
@@ -448,6 +467,8 @@ export default {
   data() {
     return {
       allListData: mockData.data,
+
+      preview: '',   // 值为1时，为预览页面
 
       oneLineValue: "", // 单行文字
       selectStudentValue: "点击选择学生范围",
@@ -692,24 +713,14 @@ export default {
     getFormData() {
       this.$api.get("/cform/tempDetail", {tempid: "5c189861d725d24950b66849"},
         r => {
-          console.log(2,r);
-        },
-        e => {
-          console.log(3,e)
+          // console.log(2,r);
         }
       );
     },
     // 获取省市区
     getCity(pid) {
-      // let obj = {}
-      // obj.pid = pid
-      this.$api.get(
-        `/city/getCity?pid=${pid}`,
+      this.$api.get(`/city/getCity`, {pid: pid},
         r => {
-          console.log(r);
-        },
-        r => {
-          // console.log(r.data)
           let data = JSON.parse(r.data);
           this.province = data;
           console.log(data);
@@ -718,6 +729,10 @@ export default {
     }
   },
   mounted() {
+
+    // 判断页面是不是预览
+    this.preview = this.$route.query.preview ? this.$route.query.preview : ''
+
     this.getFormData();
 
     this.getCity(0);
@@ -794,7 +809,8 @@ export default {
 }
 .time-picker,
 .address-box,
-.drop-down-box {
+.drop-down-box,
+.picker {
   .vux-cell-box {
     width: 100%;
     height: 40px;
@@ -804,11 +820,29 @@ export default {
   .vux-cell-placeholder {
     color: #535353;
   }
+  .weui-cell__ft:after {
+    position: absolute;
+    top: 50%;
+    margin-top: -4px;
+    right: px2rem(11);
+    content: "";
+    display: inline-block;
+    border-width: 5px;
+    border-style: solid;
+    border-color: #505050 transparent transparent transparent;
+    transform: none;
+    margin-top: -2px;
+  }
   .weui-cell_access .weui-cell__ft:after {
-    border-color: #fff !important;
+    border-width: 5px;
+    border-style: solid;
+    border-color: #505050 transparent transparent transparent;
+    transform: none;
+    margin-top: -2px;
   }
   .weui-cell {
     padding: 0;
+    padding-right: px2rem(10);
   }
   .weui-cell__hd {
     width: 100%;
@@ -866,7 +900,8 @@ a:hover {
   [class*=" weui-icon-"]:before {
     margin: 0;
   }
-  选中状态 .weui-cells_checkbox .weui-icon-checked:before {
+  // 选中状态 
+  .weui-cells_checkbox .weui-icon-checked:before {
     font-size: 18px;
   }
 }
@@ -1042,7 +1077,7 @@ a:hover {
         box-sizing: border-box;
         height: 40px;
         border: 1px solid #c3c9cf;
-        padding: 0 10px;
+        // padding: 0 10px;
         font-size: 12px;
         color: #575757;
       }
@@ -1310,4 +1345,29 @@ a:hover {
     }
   }
 }
+
+// 滚动条样式
+::-webkit-scrollbar {
+     width: 7px;
+     height: 5px;
+ }
+ 
+ ::-webkit-scrollbar-track-piece {
+     background-color: rgba(0, 0, 0, 0.2);
+     -webkit-border-radius: 6px;
+ }
+ 
+ ::-webkit-scrollbar-thumb:vertical {
+     height: 5px;
+     background-color: rgba(125, 125, 125, 0.7);
+     -webkit-border-radius: 6px;
+ }
+ 
+ ::-webkit-scrollbar-thumb:horizontal {
+     width: 7px;
+     background-color: rgba(125, 125, 125, 0.7);
+     -webkit-border-radius: 6px;
+ }
+
+
 </style>
