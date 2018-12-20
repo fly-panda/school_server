@@ -99,6 +99,8 @@ export let datePickerConf = {
   name: 'default',
   // 绑定的值
   value: "",
+  valueDate:"",
+  valueTime:"",
   // 验证错误提示信息
   ruleError: '选项不能为空',
   // 是否关联字段

@@ -95,7 +95,7 @@ export let sliderConf = {
     high: 100,
     step: 1,
     verify: 'none',
-    value: '',
+    value: 0,
     // 表单name
     name: 'default',
     // 验证错误提示信息

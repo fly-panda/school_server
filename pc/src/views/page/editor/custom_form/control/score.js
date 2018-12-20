@@ -75,7 +75,8 @@ export let scoreConf = {
     // 是否必填
     require: true,
     // 绑定的值
-    value: '',
+    value: "",
+    valueArr:[],
     // 选项内数据
     items: [{
         "label_value": "1",

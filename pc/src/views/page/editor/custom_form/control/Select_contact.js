@@ -91,6 +91,7 @@ export let selectContactConf = {
     name: 'default',
     // 绑定的值
     value: [],
+    value1:[],
     items: [
         {
             "label_value": 'a1v',

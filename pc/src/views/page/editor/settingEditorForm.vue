@@ -44,11 +44,11 @@
             <Row>
                 <Col span="8">
                     <p class="time-cls">开始时间</p>
-                    <DatePicker type="datetime" placeholder="请选择日期/时间" class="time-cls"></DatePicker>
+                    <DatePicker format="yyyy-MM-dd HH:mm:ss" v-model="settingForm.startTime" type="datetime" placeholder="请选择日期/时间" class="time-cls"></DatePicker>
                 </Col>
                 <Col span="12">
                     <p class="time-cls">结束时间</p> 
-                    <DatePicker type="datetime" placeholder="请选择日期/时间" class="time-cls"></DatePicker>
+                    <DatePicker format="yyyy-MM-dd HH:mm:ss" v-model="settingForm.endTime" type="datetime" placeholder="请选择日期/时间" class="time-cls"></DatePicker>
                 </Col>
             </Row>
         </FormItem>
@@ -114,7 +114,9 @@ export default {
                 submitTimes: '',
                 isTemplate: false,
                 resultCopy: false,
-                classRelationTeacher: false
+                classRelationTeacher: false,
+                startTime:"",
+                endTime:""
             },
             ruleValidate: {
                 submitTimes: [{
@@ -149,37 +151,54 @@ export default {
     methods: {
         submit(){
             let self=this;
+            console.log(self.settingForm)
+            let arr=[];
+            let settingObj={
+                checkStatus:self.checkStatus,
+                isCycle:self.settingForm.isCycle,
+                isRepeat:self.settingForm.isRepeat,
+                isTemplate:self.settingForm.isTemplate,
+                classRelationTeacher:self.settingForm.classRelationTeacher,
+                resultCopy:self.settingForm.resultCopy
+            };
+            for(let i=0;i<self.weekList.length;i++){
+                if(self.weekList[i].check){
+                    arr.push(self.weekList[i]);
+                }
+            }
+
             if(self.checkStatus=="-1"){
                 self.$Message.warning('请选择填写人');
                 return
+            }else if(self.checkStatus=="0"){
+                settingObj.writes=self.$refs.grade.getCheckedNodes();
+            }else if(self.checkStatus=="1"){
+                settingObj.writes=self.$refs.studentList.selStudentList
             }
-
-            console.log(self.checkStatus)
-            // console.log(this.$refs.studentList.selStudentList);
-            // console.log(this.$refs.resultList.selStudentList);
-
-            
-            // console.log(self.settingForm)
-
+            if(self.settingForm.isCycle==1&&arr.length==0){
+                self.$Message.warning('请设置每周执行时间段');
+                return
+            }
+            settingObj.weekList=arr;
+            settingObj.startTime=self.settingForm.startTime;
+            settingObj.endTime=self.settingForm.endTime;
+            if(self.settingForm.isRepeat==0&&self.settingForm.submitTimes==""){
+                self.$Message.warning('请设置重复提交次数');
+                return
+            }
+            settingObj.submitTimes=self.settingForm.submitTimes;
+            if(self.settingForm.resultCopy){
+                 settingObj.resultObj=self.$refs.resultList.selStudentList
+            }
+            self.submitAjax(settingObj)
         },
-        submitAjax(){
+        submitAjax(obj){
             let self=this;
-            self.$api.post("/task/addRule",{
-                classTeacher:self.settingForm.classTeacher,
-                teacher:self.settingForm.teacher,
-                noSetting:self.settingForm.noSetting,
-                isCycle:self.settingForm.isCycle,
-                isRepeat:self.settingForm.isRepeat,
-                week:self.settingForm.week,
-                submitTimes:self.settingForm.submitTimes,
-                isTemplate:self.settingForm.isTemplate,
-                resultCopy:self.settingForm.resultCopy,
-                classRelationTeacher:self.settingForm.classRelationTeacher,
-            
-            },r=>{
-                 console.log(r)
-                // self.gradeList=JSON.parse(r.data);
-                // console.log(self.data3);
+            self.$api.post("/task/addRule",obj,r=>{
+                // self.$Message.warning(r.result); 
+                self.$router.push(
+                    "/publishForm"
+                );
             },e=>{
                 console.log(e)
             })
@@ -201,7 +220,7 @@ export default {
             self.$api.post("/campus/getDepartmentInfoList",{
                 usertype:1
             },r=>{
-                 
+                
                 self.gradeList=JSON.parse(r.data);
                 // console.log(self.data3);
             })

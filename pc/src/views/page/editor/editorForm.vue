@@ -428,6 +428,7 @@ import selectTeacherForm from "../container/selectTeacherForm";
 import selectDepartmentForm from "../container/selectDepartmentForm";
 import { VueEditor } from "vue2-editor";
 import {mapState,mapGetters,mapActions} from 'vuex'; //先要引入
+import datas from "_c/mock.js"
 export default {
     data() {
         return {
@@ -537,7 +538,8 @@ export default {
     mounted(){
         // console.log(this.sortable_item);
         // console.log("我获取的",this.departmentList);
-
+        // this.sortable_item=datas.data.data;
+        console.log(this.sortable_item)
     },
     methods: {
                 // 预览效果
@@ -586,7 +588,7 @@ export default {
         },
         saveSoltItem(){
             let formObj=this.formatData();
-            // console.log(formObj)
+            console.log(formObj)
             // console.log(JSON.stringify(this.sortable_item))
             this.$api.post("/cform/addForm",
                 formObj,
