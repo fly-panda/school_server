@@ -147,11 +147,15 @@ export let addressConf = {
     multiple: false,
     // 表单name
     name: 'default',
+
     // 绑定的值
     value: [],
     sheng: [],
     shi:[],
     qu:[],
+    shengValue: "",
+    shiValue: "",
+    quValue: "",
     // 验证错误提示信息
     ruleError: '请选择并输入详细地址',
     // 是否关联字段

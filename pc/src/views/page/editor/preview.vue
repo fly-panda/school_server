@@ -6,10 +6,10 @@
         <p :class="['btns',active==3?'activeCls':'']" @click="preview('3')"><img :src="active==3?activeImg3:img3" alt=""></p>
     </div>
     <div v-show="active==1" class="previewContent" :style="{height:fullHeight.height}">
-        <formDetail :previewObj="previewObj" :isSave="false"/>
+        <formDetail :previewObj="previewObj" :types="'edits'" :isSave="false"/>
     </div>
     <div v-show="active==2" class="previewMobile">
-        <previewMobile/>
+        <!-- <previewMobile/> -->
     </div>
     
 </div>
@@ -36,12 +36,15 @@ export default {
             activeImg2:require("@/assets/shoujiyulan_ico-pre.png"),
             img3:require("@/assets/tuichu_ico_nor.png"),
             activeImg3:require("@/assets/tuichu_ico_pre.png"),
-            previewObj:{}
+            previewObj:{},
+            ids:2
 
         }
     },
     mounted(){
         this.previewObj=this.$api.sGetObject("previewObj");
+        this.ids=this.$route.query.ids;
+        console.log(this.ids);
         console.log(this.previewObj)
     },
     methods: {

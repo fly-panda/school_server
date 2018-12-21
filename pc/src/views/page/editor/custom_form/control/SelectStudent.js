@@ -55,10 +55,10 @@ export let selectStudentConf = {
     maxLength: 2000,
     describe: '',
     // 选项内数据
-    items: [{
-    }],
+    items: [],
     verify: 'none',
     value: '',
+    selArr:[],
     // 表单name
     name: 'default',
     // 验证错误提示信息

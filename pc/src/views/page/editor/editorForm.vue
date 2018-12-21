@@ -545,18 +545,26 @@ export default {
                 // 预览效果
         previewForm(){
             let formObj=this.formatData();
-            this.$api.sSetObject("previewObj",formObj)
-            console.log(formObj)
+            // this.$api.sSetObject("previewObj",formObj)
             // let cur_modal = this.$store.state.preview
             // console.log(new Date().getTime())
             // cur_modal.curtime = new Date().getTime()
             // cur_modal.status = true
             // cur_modal.data = this.sortable_item
             // this.$store.commit('previewStatus', cur_modal);
-            
-            this.$router.push(
-                "/preview"
+
+            console.log(formObj)
+            // console.log(JSON.stringify(this.sortable_item))
+            this.$api.post("cform/preview",
+                formObj,
+                r=>{
+                    console.log(r)
+                   // this.$router.push(
+                   //      "/preview"
+                   //  )
+                }
             )
+            
         },
         handleImageAdded:function(file,Editor,cursorLocation){
             //上传图片操作

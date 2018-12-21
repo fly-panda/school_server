@@ -12,28 +12,144 @@
             <div class="selectStudentContainer" v-if="cont.ele=='selectstudent'">
                 <div class="title" :class="{'require-cls':cont.obj.require}">选择学生</div>
                 <div class="point">提示内容</div>
-                <div class="selectBtn">点击选择学生范围</div>
+                <!-- {{cont.obj.selArr}} -->
+                <div class="selectBtn" v-if="!type_student" @click="selS">       
+                    <span v-show="cont.obj.selArr.length==0">点击选择学生范围</span>
+                    <span v-for="item in cont.obj.selArr">{{item.name}}、</span>
+                </div>
+                <div class="student-view" v-if="type_student">
+                    <div class="title-cls flex-cls">
+                        
+                        <p class="posi-cls">
+                            <input type="text" placeholder="请输入姓名"> 
+                            <img src="@/assets/search_ico.png" alt="">
+                        </p>
+                        <p class="btns" @click="saveStudent(cont.obj.selArr)">确认</p>
+                    </div>
+                    <div class="view-list">
+                        <div style="border-right:1px solid #C3C9D0;">
+                            <p>部门</p>
+                            <div class='cont'>
+                                <div>
+                                    <Tree style="margin-left: 15px" ref="students" :data="studentData" @on-select-change="changeFun"></Tree>
+                                </div>
+                            </div>
+                        </div>
+                        <div>
+                            <p>人员</p>
+                            <div class='cont'>
+                                <!-- {{studentList}} -->
+                                 <ul class="peo-list">
+                                   <li v-for="(item,index) in studentList" @click="selClick(item,index)">
+                                       
+                                       <span class="name-cls">{{item.name}}</span>
+                                       <span class="check-cls" :class="{'active-cls':item.checked}"></span>
+                                   </li>
+                               </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
             <div class="selectStudentContainer" v-if="cont.ele=='selectteacher'">
                 <div class="title" :class="{'require-cls':cont.obj.require}">选择老师</div>
                 <div class="point">提示内容</div>
-                <div class="selectBtn">点击选择老师范围</div>
+                <div class="selectBtn" v-if="!type_teacher" @click="selT">    
+                    点击选择老师范围
+                </div>
+                <div class="teacher-view" v-if="type_teacher">
+                     <div class="title-cls flex-cls">
+                        
+                        <p class="posi-cls">
+                            <input type="text" placeholder="请输入姓名"> 
+                            <img src="@/assets/search_ico.png" alt="">
+                        </p>
+                        <p class="btns">确认</p>
+                    </div>
+                     <div class="view-list">
+                        <div style="border-right:1px solid #C3C9D0;">
+                            <p>部门</p>
+                            <div class='cont'>
+                                <div>
+                                    <Tree style="margin-left: 15px" ref="students" :data="teacherData" @on-select-change="changeFuns" ></Tree>
+                                </div>
+                            </div>
+                        </div>
+                        <div>
+                            <p>人员</p>
+                            <div class='cont'>
+                                <!-- {{studentList}} -->
+                                 <ul class="peo-list">
+                                   <li v-for="(item,index) in teacherList" @click="selsClick(item,index)">
+                                       
+                                       <span class="name-cls">{{item.name}}</span>
+                                       <span class="check-cls" :class="{'active-cls':item.checked}"></span>
+                                   </li>
+                               </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
             <div class="selectStudentContainer" v-if="cont.ele=='selectdepartment'">
                 <div class="title" :class="{'require-cls':cont.obj.require}">选择部门</div>
                 <div class="point">提示内容</div>
-                <div class="selectBtn">点击选择部门范围</div>
+                <div class="selectBtn" v-if="!type_department" @click="selD">
+                    点击选择部门范围
+                </div>
+                <div class="department-view" v-if="type_department">
+                     <div class="title-cls flex-cls">
+                        
+                        <p class="posi-cls">
+                            <input type="text" placeholder="请输入姓名"> 
+                            <img src="@/assets/search_ico.png" alt="">
+                        </p>
+                        <p class="btns">确认</p>
+                    </div>
+                    <div class="view-list">
+                        <div style="border-right:1px solid #C3C9D0;">
+                            <p>部门</p>
+                            <div class='cont center-cls'>
+                                <div>
+                                    <Tree style="margin-left: 15px" ref="students" :data="departmentData" show-checkbox></Tree>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
             <div class="selectStudentContainer" v-if="cont.ele=='selectgrade'">
                 <div class="title" :class="{'require-cls':cont.obj.require}">选择班级</div>
                 <div class="point">提示内容</div>
-                <div class="selectBtn">点击选择班级范围</div>
+                <div class="selectBtn" v-if="!type_grade" @click="selG">
+                    点击选择班级范围
+                </div>
+                <div class="grade-view" v-if="type_grade">
+                    <div class="title-cls flex-cls">
+                        
+                        <p class="posi-cls">
+                            <input type="text" placeholder="请输入姓名"> 
+                            <img src="@/assets/search_ico.png" alt="">
+                        </p>
+                        <p class="btns">确认</p>
+                    </div>
+                    <div class="view-list">
+                        <div style="border-right:1px solid #C3C9D0;">
+                            <p>部门</p>
+                            <div class='cont center-cls'>
+                                <div>
+                                    <Tree style="margin-left: 15px" ref="students" :data="gradeData" show-checkbox></Tree>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
             <!-- 文件下载 -->
             <div class="selectStudentContainer" v-if="cont.ele=='download'">
                 <div class="title" :class="{'require-cls':cont.obj.require}">{{cont.obj.label}}</div>
                 <div class="point">{{cont.obj.describe}}</div>
-                <div class="downloadBtn" v-for="(item,ind) in cont.obj.items" @click="downloadFun(item)">
+                <div class="downloadBtn" v-for="(item,ind) in cont.obj.items" :key="ind" @click="downloadFun(item)">
                     <span >{{item.label_name}}</span>
                     <Icon size="19" type="md-download" />
                 </div>
@@ -67,25 +183,31 @@
             <div class="selectStudentContainer" v-if="cont.ele=='select'">
                 <div class="title" :class="{'require-cls':cont.obj.require}">{{cont.obj.label}}</div>
                 <div class="point">{{cont.obj.describe}}</div>
-                <Select  :model.sync="cont.obj.value" style="width:250px;">
+                {{cont.obj.value}}
+                <Select  v-model="cont.obj.value" style="width:250px;">
                     <Option v-for="item in cont.obj.items" :value="item.label_value" :key="item.label_value">{{ item.label_name }}</Option>
                 </Select>
             </div>
             <div class="selectStudentContainer" v-if="cont.ele=='selectcontact'">
                 <div class="title" :class="{'require-cls':cont.obj.require}">{{cont.obj.label}}</div>
                 <div class="point">{{cont.obj.describe}}</div>
-                <Select :model.sync="cont.obj.value" style="width:200px;">
-                    <Option v-for="a in cont.obj.items" :value="a.label_value" :key="a.label_value">{{ a.label_name }}</Option>
-                </Select>
-                <Select  style="width:200px;margin-left: 20px;">
-                    <Option v-for="a in twoArrs" :value="a.label_value" :key="a.label_value">{{ a.label_name }}</Option>
-                </Select>
+                {{cont.obj.items}}
+                 <!-- v-model="cont.obj.value" -->
+                 <div>
+                    <Select style="width:200px;">
+                        <Option v-for="item in cont.obj.items" :value="item.label_value" :key="item.label_value">{{ item.label_name }}</Option>
+                    </Select>
+                    <Select v-model="cont.obj.value1" style="width:200px;margin-left: 20px;">
+                        <Option v-for="a in twoArrs" :value="a.label_value" :key="a.label_value">{{ a.label_name }}</Option>
+                    </Select>
+                 </div>
+              
             </div>
             <div class="selectStudentContainer" v-if="cont.ele=='checkbox'">
                 <div class="title" :class="{'require-cls':cont.obj.require}">{{cont.obj.label}}</div>
                 <div class="point">{{cont.obj.describe}}</div>
                 <CheckboxGroup size="large" class="positionColumn" :model.sync="cont.obj.value">
-                    <Row v-for="(item,ind) in cont.obj.items">
+                    <Row v-for="(item,ind) in cont.obj.items" :key="ind">
                         <Checkbox class="checkboxItem" :label="item.label_name"></Checkbox>
                     </Row>
                     <Row>
@@ -104,7 +226,7 @@
                 <div class="point">{{cont.obj.describe}}</div>
 <!--                 {{cont.obj.valueArr}} -->
                 <CheckboxGroup size="large" class="positionColumn" :model.sync="cont.obj.valueArr">
-                    <Row v-for="(item,ind) in cont.obj.items">
+                    <Row v-for="(item,ind) in cont.obj.items" :key="ind">
                         <Checkbox class="checkboxItem" :value="item.label_value"><span>{{item.label_name}}
                             &nbsp;
                             <span v-text="item.scoreType=='add'?'+':'-'"></span>{{item.label_value}}分</span>
@@ -117,7 +239,7 @@
                 <div class="title" :class="{'require-cls':cont.obj.require}">{{cont.obj.label}}</div>
                 <div class="point">{{cont.obj.describe}}</div>
                 <RadioGroup size="large" class="positionColumn" :model.sync="cont.obj.value">
-                    <Row v-for="(item,ind) in cont.obj.items">   
+                    <Row v-for="(item,ind) in cont.obj.items" :key="ind">   
                         <Radio class="checkboxItem" :value="item.label_value" :label="item.label_name"></Radio>
                    
                     </Row>
@@ -139,8 +261,9 @@
                 <!-- <DatePicker type="date" placeholder="请选择日期" style="width: 200px"></DatePicker> -->
                  <row>
                     <i-col span="8" v-for="(item,ind) in cont.obj.chooseCheck">
-                        <DatePicker v-show="item=='date'" v-model="cont.obj.valueDate" type="date" placeholder="选择日期" style="width: 200px"></DatePicker>
-                        <Time-picker v-show="item=='time'" v-model="cont.obj.valueTime" type="time" placeholder="选择时间" style="width: 200px"></Time-picker>
+                        <!-- {{cont.obj.valueDate}} -->
+                        <DatePicker v-show="item=='date'" format="yyyy/MM/dd" :value="cont.obj.valueDate" type="date" placeholder="选择日期" style="width: 200px"></DatePicker>
+                        <Time-picker v-show="item=='time'" format="HH:mm:ss" :value="cont.obj.valueTime" type="time" placeholder="选择时间" style="width: 200px"></Time-picker>
                     </i-col>
                 </row>
                  
@@ -151,27 +274,31 @@
                 <div class="point">{{cont.obj.describe}}</div>
                 <Row>
                     <Col span="7">
-                        <Select placeholder="省/市/区/直辖市"   style="width:10rem;">
-                        </Select>
-                    </Col>
-                    <Col span="5">
-                        <Select placeholder="市"   style="width:6rem;">
+                        <Select placeholder="省/市/区/直辖市" v-model="cont.obj.shengValue" @on-change="getShi" style="width:10rem;">
+                            <Option v-for="item in shengArr" :value="item.id" :key="item.id">{{ item.name }}</Option>
                         </Select>
                     </Col>
                     <Col span="7">
-                        <Select placeholder="县/区"   style="width:6rem;">
+                        <Select placeholder="市" v-model="cont.obj.shiValue" @on-change="getQu" style="width:10rem;">
+                            
+                            <Option v-for="item in shiArr" :value="item.id" :key="item.id">{{ item.name }}</Option>
+                        </Select>
+                    </Col>
+                    <Col span="7">
+                        <Select placeholder="县/区" v-model="cont.obj.quValue" style="width:10rem;">
+                             <Option v-for="item in quArr" :value="item.id" :key="item.id">{{ item.name }}</Option>
                         </Select>
                     </Col>
                 </Row>
                 <Row style="margin-top: .4rem">
-                    <Input  type="text" placeholder="请输入详细地址"></Input>
+                    <Input  type="text" v-model="cont.obj.value" placeholder="请输入详细地址"></Input>
                 </Row>
             </div>
             <!-- 文件上传 -->
             <div class="selectStudentContainer" v-if="cont.ele=='uploads'">
                 <div class="title" :class="{'require-cls':cont.obj.require}">{{cont.obj.label}}</div>
                 <div class="point">{{cont.obj.describe}}</div>
-                <Row class="fileList-cls" v-for="(item,ind) in cont.obj.value">
+                <Row class="fileList-cls" v-for="(item,ind) in cont.obj.value" :key="ind">
                     <p class="flex-cls">
                         <span class="title-cls" :title="item.name">{{item.name}}</span>
                         <Icon class="close-cls" type="ios-close" @click="delFile(cont.obj.value,ind)"/>
@@ -230,25 +357,224 @@
 import datas from "_c/mock.js"
 export default {
 // 'previewObj',
-    props: ['isSave'],
+    props: ['isSave','types'],
     data() {
         return {
             checkAllGroup: [],
             previewObj:{},
             twoArrs:[],
             a:"",
-            baseImg:this.$api.getBase()
+            baseImg:this.$api.getBase(),
+            shengArr:[],
+            shiArr:[],
+            quArr:[],
+            indexs:0,
+            type_student:false,
+            type_teacher:false,
+            type_department:false,
+            type_grade:false,
+            studentData:[],
+            studentList:[],
+            teacherData:[],
+            teacherList:[],
+            departmentData:[],
+            departmentList:[],
+            gradeData:[],
+            gradeList:[],
         }
+    },
+    filter:{
+        
     },
     mounted(){
         // this.previewObj=this.$api.sGetObject("previewObj");
+
         this.previewObj=datas.data;
-        console.log(0,this.previewObj)
+        this.getData();
+        this.getSheng();
+        let arr=this.previewObj.data;
+
+        if(this.types=='edits'){
+            for(let i=0;i<arr.length;i++){
+                
+                if(arr[i].ele=="address"){
+                    this.getShi(arr[i].obj.shengValue);
+                    this.getQu(arr[i].obj.shiValue);
+                }
+            }
+        }
+
     },
     methods: {
+        selS(){
+            let self=this;
+            self.$api.post("/campus/getDepartmentInfoList",{
+                usertype:1
+            },r=>{
+                 
+                self.studentData=JSON.parse(r.data);
+                // console.log(self.data3);
+            })
+            self.type_student=!self.type_student
+        }, 
+        selT(){
+            let self=this;
+            self.$api.post("/campus/getDepartmentInfoList",{
+                usertype:2
+            },r=>{
+                 
+                self.teacherData=JSON.parse(r.data);
+                // console.log(self.data3);
+            })
+            self.type_teacher=!self.type_teacher
+        },
+        selD(){
+            let self=this;
+            self.$api.post("/campus/getDepartmentInfoList",{
+                usertype:2
+            },r=>{
+                 
+                self.departmentData=JSON.parse(r.data);
+                // console.log(self.data3);
+            })
+            self.type_department=!self.type_department
+        },
+        selG(){
+            let self=this;
+            self.$api.post("/campus/getDepartmentInfoList",{
+                usertype:1
+            },r=>{
+                 
+                self.gradeData=JSON.parse(r.data);
+                // console.log(self.data3);
+            })
+            self.type_grade=!self.type_grade
+        },
+        saveStudent(res){
+            let self=this;
+            console.log(res)
+            res=[];
+            self.studentList.forEach(item => {
+                 if(item.checked){
+                        res.push(item);
+                    }
+            });
+            
+          
+            this.type_student=!this.type_student;
+
+        },
+        getData(arr,ids){
+            let self=this;
+            // self.$api.post("/campus/getDepartmentInfoList",{
+            //     usertype:1
+            // },r=>{
+                 
+            //     self.studentData=JSON.parse(r.data);
+            //     // console.log(self.data3);
+            // })
+        },
+        // 树节点 事件
+        changeFun(r){
+            let self=this;
+            if(r[0].children!=undefined){
+                return;
+            }
+            self.studentList=[];
+            self.$api.post("/campus/searchUser",{
+                usertype:1,
+                departid:r[0].departid,
+                level:r[0].level
+            },r=>{
+                
+                let arr=JSON.parse(r.data);
+                for(let i=0;i<arr.length;i++){
+                    self.studentList.push({
+                        checked: false,
+                        departid: arr[i].departid,
+                        gender: arr[i].gender,
+                        is_subscribe: arr[i].is_subscribe,
+                        join_date: arr[i].join_date,
+                        name: arr[i].name,
+                        other_departid: arr[i].other_departid,
+                        wxuserid: arr[i].wxuserid,
+                        userid: arr[i].userid
+                    });
+                }
+            })
+        },
+        // 树节点 事件
+        changeFuns(r){
+            let self=this;
+            if(r[0].children!=undefined){
+                return;
+            }
+            self.teacherList=[];
+            self.$api.post("/campus/searchUser",{
+                usertype:1,
+                departid:r[0].departid,
+                level:r[0].level
+            },r=>{
+                
+                let arr=JSON.parse(r.data);
+                for(let i=0;i<arr.length;i++){
+                    self.teacherList.push({
+                        checked: false,
+                        departid: arr[i].departid,
+                        gender: arr[i].gender,
+                        is_subscribe: arr[i].is_subscribe,
+                        join_date: arr[i].join_date,
+                        name: arr[i].name,
+                        other_departid: arr[i].other_departid,
+                        wxuserid: arr[i].wxuserid,
+                        userid: arr[i].userid
+                    });
+                }
+            })
+        },
+        concat_(arr1,arr2){  
+            //不要直接使用var arr = arr1，这样arr只是arr1的一个引用，两者的修改会互相影响  
+            var arr = arr1.concat();  
+            //或者使用slice()复制，var arr = arr1.slice(0)  
+            for(var i=0;i<arr2.length;i++){  
+                arr.indexOf(arr2[i]) === -1 ? arr.push(arr2[i]) : 0;  
+            }  
+            return arr;  
+        }, 
+        selClick(item,index){
+            let self=this;
+            item.checked=!item.checked;
+        },
+        selsClick(item,index){
+            let self=this;
+            item.checked=!item.checked;
+        },
+        getSheng(){
+
+            this.$api.get("/city/getCity",{
+                pid:0
+            },r=>{
+                this.shengArr=JSON.parse(r.data);
+            }) 
+        },
+        getShi(res){
+
+            this.$api.get("/city/getCity",{
+                pid:res
+            },r=>{
+                this.shiArr=JSON.parse(r.data);
+            })
+        },
+        getQu(item){
+            this.$api.get("/city/getCity",{
+                pid:item
+            },r=>{
+                this.quArr=JSON.parse(r.data);
+            })
+        },
         //二级下拉方法
         change(res){
-            console.log(res)
+            // console.log(res)
         },
         checkAllGroupChange() {
 
@@ -257,24 +583,19 @@ export default {
             console.log(this.previewObj)
         },
         downloadFun(res){
-            console.log(res);
             let self=this;
-            // self.$api.get("/file/download",{
-            //     path:res.url
-            // },function(r){
 
-            // })
             window.location.href=this.baseImg+"api/file/download?path="+res.url;
         },
         addFile(res){
             let self=this;
             let fileObj=document.getElementById("files").files[0];
-            console.log(self.$api.onver(fileObj.size))
+            let sizes=self.$api.onver(fileObj.size);
             self.$api.uploadFile("file/upload ", {},fileObj, (r) => {
                 res.value.push({
                     name:fileObj.name,
                     url:r.data,
-                    size:fileObj.size
+                    size:sizes
                 })            
              
             });
@@ -335,8 +656,9 @@ export default {
                     border: 1px solid #5DB75D;
                     color: #5DB75D;
                     text-align: center;
-                    width: 8rem;
-                    height: 1.5rem;
+                    display:inline-block;
+                    min-width: 200px;
+                    padding:5px;
                     line-height: 1.5rem;
                     cursor: pointer;
                 }
@@ -460,4 +782,84 @@ export default {
         letter-spacing: 0.72px;
         margin:2px 7px;
     }
+    .student-view,.teacher-view,.department-view,.grade-view{
+        width: 362px;
+        height: 339px;
+        border: 1px solid #C3C9D0;
+    }
+    .title-cls{
+        border-bottom: 1px solid #C3C9D0;
+            padding:5px 10px;
+        input{
+            height: 22px;
+            border: 1px solid #C3C9D0;
+        }
+        .btns{
+            color: #5DB75D;
+            cursor: pointer;
+        }
+    }
+
+.flex-cls{
+    width:100%;
+    display:flex;
+    justify-content: space-between;
+    // padding:0;
+    margin:0;
+}
+  .posi-cls{
+        position: relative;
+        img{
+            width: 20px;
+            height:20px;
+            cursor: pointer;
+            position: absolute;
+            right:0;
+            top:50%;
+            margin-top: -10px;
+        }
+    }
+    .view-list{
+        display:flex;
+        div{
+            flex:1;
+            p{
+                text-align:center;
+                border-bottom: 1px solid #C3C9D0;
+                padding:5px;
+
+            }
+            .cont{
+                height: 276px;
+                overflow-y: auto;
+            }
+        }
+    }
+
+    .peo-list{
+            li{
+                text-align:left;
+                display:flex;
+                justify-content: space-between;
+                padding:5px 20px;
+                cursor: pointer;
+                span{
+                    display:inline-block;
+                    border:none;
+                }
+                .check-cls{
+                    width: 15px;
+                    height: 15px;
+
+                    background:url("../assets/choix_nor.png");
+                }
+                .active-cls{
+                    background:url("../assets/choix_pre.png");
+                }
+            }
+            
+        }
+        .center-cls{
+            margin-left: 30%;
+        }
 </style>

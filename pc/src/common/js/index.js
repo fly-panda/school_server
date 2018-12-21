@@ -178,5 +178,16 @@ export default {
       return sizestr.substring(0,len) + sizestr.substr(len + 3,2);
     }
     return sizestr;
-  }
+  },
+  arrUniq(tmpArr,attr){
+      var result = [], hash = {};
+        for (var i = 0; i<tmpArr.length; i++) {
+            var elem = tmpArr[i][attr]; 
+            if (!hash[elem]) {
+                result.push(tmpArr[i]);
+                hash[elem] = true;
+            }
+        }
+        return result;
+    }
 }

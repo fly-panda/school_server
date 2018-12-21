@@ -18,7 +18,7 @@ export default [
         meta: {
             title: 'Login - 登录',
         },
-        component: () => import('@/views/page/Login.vue')
+        component:resolve=>require(["@/views/page/Login.vue"],resolve)
     },
     {
         path: '/',
@@ -27,7 +27,7 @@ export default [
         meta: {
             title: 'Home - 主页',
         },
-        component: () => import('@/views/page/Home.vue'),
+        component:resolve=>require(["@/views/page/Home.vue"],resolve),
         children: [
             {
                 path: '/myPublish',
@@ -35,7 +35,7 @@ export default [
                 meta: {
                     title: '我的发布'
                 },
-                component: () => import('@/views/page/publish/MyPublish.vue'),
+                component:resolve=>require(['@/views/page/publish/MyPublish.vue'],resolve),
                 children: [
                     {
                         path: '/cardformList',
@@ -43,7 +43,7 @@ export default [
                         meta: {
                             title: '表单列表'
                         },
-                        component: () => import('@/views/page/publish/cardformList.vue')
+                        component:resolve=>require(['@/views/page/publish/cardformList.vue'],resolve)
                     },
                     {
                         path: '/allTemplate',
@@ -51,7 +51,7 @@ export default [
                         meta: {
                             title: '全部模板'
                         },
-                        component: () => import('@/views/page/publish/allTemplate.vue')
+                        component:resolve=>require(["@/views/page/publish/allTemplate.vue"],resolve)
                     }
                 ]
             },
@@ -62,7 +62,7 @@ export default [
                 meta: {
                     title: '我的任务',
                 },
-                component: () => import('@/views/page/myTask'),
+                component:resolve=>require(["@/views/page/myTask"],resolve),
                 children: [
                     {
                         path: '/allTask',
@@ -70,7 +70,7 @@ export default [
                         meta: {
                             title: '全部任务'
                         },
-                        component: () => import('@/views/page/myTask/allTask.vue')
+                        component:resolve=>require(['@/views/page/myTask/allTask.vue'],resolve)
                     },
                     {
                         path: '/historyTask',
@@ -78,7 +78,7 @@ export default [
                         meta: {
                             title: '历史任务'
                         },
-                        component: () => import('@/views/page/myTask/history.vue')
+                        component:resolve=>require(["@/views/page/myTask/history.vue"],resolve)
                     }
                 ]
             },
@@ -88,7 +88,15 @@ export default [
                 meta: {
                     title: '公共模板',
                 },
-                component: () => import('@/views/page/publicTemp.vue'),
+                component:resolve=>require(["@/views/page/publicTemp.vue"],resolve)
+            },
+            {
+                path: '/taskDetail',
+                name: 'taskDetail',
+                meta: {
+                    title: '我的抄送',
+                },
+                component:resolve=>require(["@/views/page/myTask/taskDetail.vue"],resolve)
             },
             {
                 path: '/myCc',
@@ -96,7 +104,7 @@ export default [
                 meta: {
                     title: '我的抄送',
                 },
-                component: () => import('@/views/page/duplicate/myCc.vue'),
+                component:resolve=>require(["@/views/page/duplicate/myCc.vue"],resolve)
             },
             {
                 path: '/editor',
@@ -105,7 +113,7 @@ export default [
                 meta: {
                     title: '创建表单',
                 },
-                component: () => import('@/views/page/editor'),
+                component:resolve=>require(["@/views/page/editor"],resolve),
                 children: [
                     {
                         path: '/editorForm',
@@ -113,7 +121,7 @@ export default [
                         meta: {
                             title: '编写表单'
                         },
-                        component: () => import('@/views/page/editor/editorForm.vue')
+                        component:resolve=>require(["@/views/page/editor/editorForm.vue"],resolve)
                     },
                     {
                         path: '/settingEditorForm',
@@ -121,7 +129,7 @@ export default [
                         meta: {
                             title: '设置表单规则'
                         },
-                        component: () => import('@/views/page/editor/settingEditorForm.vue')
+                        component:resolve=>require(["@/views/page/editor/settingEditorForm.vue"],resolve)
                     },
                     {
                         path: '/publishForm',
@@ -129,7 +137,7 @@ export default [
                         meta: {
                             title: '发布设置'
                         },
-                        component: () => import('@/views/page/editor/publishForm.vue')
+                        component:resolve=>require(["@/views/page/editor/publishForm.vue"],resolve)
                     }
                 ]
             },
@@ -139,7 +147,7 @@ export default [
                 meta: {
                     title: '表单详情',
                 },
-                component: () => import('@/views/page/duplicate'),
+                component:resolve=>require(["@/views/page/duplicate"],resolve)
             }
             
         ]
@@ -150,11 +158,11 @@ export default [
         meta: {
             title: '预览',
         },
-        component: () => import('@/views/page/editor/preview'),
+        component:resolve=>require(["@/views/page/editor/preview"],resolve)
     },
     {
         path: '/401',
         name: 'error_401',
-        component: () => import('@/views/error-page/401.vue')
+        component:resolve=>require(['@/views/error-page/401.vue'],resolve)
     }
 ]

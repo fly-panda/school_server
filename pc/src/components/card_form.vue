@@ -63,10 +63,18 @@ export default {
     methods:{
         jumpDetails(cardItem){
             let self=this;
+            if(self.status==0){
+                self.$router.push({
+                    name:"taskDetail"
+                })
+            }else if(self.status==1){
+                self.$router.push({
+                    name:"duplicate"
+                })
+            }
+            
             console.log(cardItem);
-            self.$router.push({
-                name:"duplicate"
-            })
+            
 
         }
     }
