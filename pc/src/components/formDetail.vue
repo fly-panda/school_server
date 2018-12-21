@@ -262,7 +262,7 @@
                  <row>
                     <i-col span="8" v-for="(item,ind) in cont.obj.chooseCheck" :key="ind">
                         <!-- {{cont.obj.valueDate}} -->
-                        <DatePicker v-show="item=='date'" format="yyyy/MM/dd" :value="cont.obj.valueDate" type="date" placeholder="选择日期" style="width: 200px"></DatePicker>
+                        <DatePicker v-show="item=='date'" format="yyyy/MM/dd" :value="cont.obj.valueDate" type="date" placeholder="选择日期" style="width: 200px" @on-change="cont.obj.valueDate=$event"></DatePicker>
                         <Time-picker v-show="item=='time'" format="HH:mm:ss" :value="cont.obj.valueTime" type="time" placeholder="选择时间" style="width: 200px"></Time-picker>
                     </i-col>
                 </row>

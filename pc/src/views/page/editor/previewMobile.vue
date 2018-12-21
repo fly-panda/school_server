@@ -8,8 +8,14 @@
 
 <script>
 export default {
+    props:["ids"],
     data() {
-        return {}
+        return {
+
+        }
+    },
+    mounted(){
+        console.log(this.ids)
     },
     methods: {
 

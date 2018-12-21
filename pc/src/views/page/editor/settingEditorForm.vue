@@ -8,9 +8,9 @@
                 }" class="checkboxItem" v-model="settingForm.classTeacher" label=""><span>由相关班级的班主任来填写</span>
             </Checkbox>
             <div class="class-view" v-if="checkStatus == 0">
-                <div class="title-cls padding-cls">本表单将有一下班主任填写</div>
+                <div class="title-cls padding-cls">本表单将有以下班主任填写</div>
                 <div class="padding-cls">
-                    <Tree ref="grade" :data="gradeList"  show-checkbox></Tree>
+                    <Tree ref="grade" :data="gradeList"  show-checkbox check-strictly="true"></Tree>
                 </div>
                 
             </div>
@@ -44,11 +44,11 @@
             <Row>
                 <Col span="8">
                     <p class="time-cls">开始时间</p>
-                    <DatePicker format="yyyy-MM-dd HH:mm:ss" v-model="settingForm.startTime" type="datetime" placeholder="请选择日期/时间" class="time-cls"></DatePicker>
+                    <DatePicker format="yyyy-MM-dd HH:mm:ss" v-model="settingForm.startTime" type="datetime" placeholder="请选择日期/时间" class="time-cls" @on-change="settingForm.startTime=$event"></DatePicker>
                 </Col>
                 <Col span="12">
                     <p class="time-cls">结束时间</p> 
-                    <DatePicker format="yyyy-MM-dd HH:mm:ss" v-model="settingForm.endTime" type="datetime" placeholder="请选择日期/时间" class="time-cls"></DatePicker>
+                    <DatePicker format="yyyy-MM-dd HH:mm:ss" v-model="settingForm.endTime" type="datetime" placeholder="请选择日期/时间" class="time-cls" @on-change="settingForm.endTime=$event"></DatePicker>
                 </Col>
             </Row>
         </FormItem>
@@ -151,7 +151,12 @@ export default {
     methods: {
         submit(){
             let self=this;
-            console.log(self.settingForm)
+            if(self.$route.query.ids==undefined){
+                
+                self.$Message.warning('请选择表单');
+                return
+            }
+            // console.log(self.settingForm)
             let arr=[];
             let settingObj={
                 checkStatus:self.checkStatus,
@@ -159,7 +164,8 @@ export default {
                 isRepeat:self.settingForm.isRepeat,
                 isTemplate:self.settingForm.isTemplate,
                 classRelationTeacher:self.settingForm.classRelationTeacher,
-                resultCopy:self.settingForm.resultCopy
+                resultCopy:self.settingForm.resultCopy,
+                id:this.$route.query.ids
             };
             for(let i=0;i<self.weekList.length;i++){
                 if(self.weekList[i].check){
@@ -172,6 +178,7 @@ export default {
                 return
             }else if(self.checkStatus=="0"){
                 settingObj.writes=self.$refs.grade.getCheckedNodes();
+                
             }else if(self.checkStatus=="1"){
                 settingObj.writes=self.$refs.studentList.selStudentList
             }
@@ -179,6 +186,7 @@ export default {
                 self.$Message.warning('请设置每周执行时间段');
                 return
             }
+            
             settingObj.weekList=arr;
             settingObj.startTime=self.settingForm.startTime;
             settingObj.endTime=self.settingForm.endTime;

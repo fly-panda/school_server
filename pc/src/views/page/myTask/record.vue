@@ -3,18 +3,11 @@
 
    <div class="duplicate-title">
         <p class='title-txt'><span class="back-cls" @click="backFun"><Icon type="ios-arrow-back" /></span>{{title}}</p>
-        <p class="btn-view">
-            <Button type="error" ghost @click="del">删除</Button>
-            <Button type="success" ghost @click="history">填写记录</Button>
-        </p>
+       
     </div>
     <div class="duplicate-content" :style="{height:fullHeight.height}">
-        <div class="nopass">
-            <h3>不合格理由</h3>
-            <p>请按正确格式填写所有信息，请及时修改尽快提交。</p>
-        </div>
         <div class="previewContent">
-            <formDetail :previewObj="previewObj" :types="'edits'" :isSave="false"/>
+            <ExcelTable/>
         </div>
     </div>
 </div>
@@ -58,11 +51,6 @@ export default {
                     // this.$Message.info('Clicked cancel');
                 }
             });
-        },
-        history(){
-            this.$router.push({
-                path:"/record"
-            })
         },
         backFun(){
             this.$router.go(-1);

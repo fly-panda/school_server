@@ -94,10 +94,19 @@ export default [
                 path: '/taskDetail',
                 name: 'taskDetail',
                 meta: {
-                    title: '我的抄送',
+                    title: '表单详情',
                 },
                 component:resolve=>require(["@/views/page/myTask/taskDetail.vue"],resolve)
             },
+            {
+                path: '/record',
+                name: 'record',
+                meta: {
+                    title: '填写记录',
+                },
+                component:resolve=>require(["@/views/page/myTask/record.vue"],resolve)
+            },
+            
             {
                 path: '/myCc',
                 name: 'myCc',

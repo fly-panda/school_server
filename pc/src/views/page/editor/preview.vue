@@ -9,7 +9,7 @@
         <formDetail :previewObj="previewObj" :types="'edits'" :isSave="false"/>
     </div>
     <div v-show="active==2" class="previewMobile">
-        <!-- <previewMobile/> -->
+        <previewMobile :ids="ids"/>
     </div>
     
 </div>
@@ -37,26 +37,32 @@ export default {
             img3:require("@/assets/tuichu_ico_nor.png"),
             activeImg3:require("@/assets/tuichu_ico_pre.png"),
             previewObj:{},
-            ids:2
+            ids:""
 
         }
     },
     mounted(){
         this.previewObj=this.$api.sGetObject("previewObj");
         this.ids=this.$route.query.ids;
-        console.log(this.ids);
-        console.log(this.previewObj)
+        // console.log(this.ids);
+        // console.log(this.previewObj)
     },
     methods: {
-
+        getData(){
+            let self=this;
+            self.$api.get("/cform/getpreview",{
+                tempid:this.ids
+            },r=>{
+                self.previewOb=JSON.parse(r.data);
+                console.log(r)
+            })
+        },    
         preview(type){
             let self=this;
             if(type=="1"){
                 self.active=type;
-                console.log("PC")
             }else if(type=="2"){
                 self.active=type;
-                console.log("mobile")
             }else if(type=="3"){
                 self.$router.go(-1);
             }

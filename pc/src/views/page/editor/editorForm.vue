@@ -559,9 +559,9 @@ export default {
                 formObj,
                 r=>{
                     console.log(r)
-                   // this.$router.push(
-                   //      "/preview"
-                   //  )
+                   this.$router.push({
+                       path:"/preview?ids="+r.data
+                   })
                 }
             )
             
@@ -601,7 +601,10 @@ export default {
             this.$api.post("/cform/addForm",
                 formObj,
                 r=>{
-                    console.log(r)
+
+                   this.$router.push({
+                       path:"/settingEditorForm?ids="+r.data
+                   })
                 }
             )
         },
