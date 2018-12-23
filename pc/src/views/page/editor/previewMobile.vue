@@ -1,7 +1,7 @@
 <template>
     <div  class="mobile-container">
         <div class="contents">
-            <iframe id="preview-html" name="preview-html" src="http://47.93.156.129:8080/formPage?preview=1"></iframe>   
+            <iframe id="preview-html" name="preview-html" :src=srcs+ids></iframe>   
         </div>
     </div>
 </template>
@@ -11,7 +11,7 @@ export default {
     props:["ids"],
     data() {
         return {
-
+            srcs:"http://47.93.156.129:8080/formPage?preview=1&ids="
         }
     },
     mounted(){

@@ -58,6 +58,7 @@ export let selectStudentConf = {
     items: [],
     verify: 'none',
     value: '',
+    valueArr:[],
     selArr:[],
     // 表单name
     name: 'default',

@@ -31,7 +31,8 @@
                             <p>部门</p>
                             <div class='cont'>
                                 <div>
-                                    <Tree style="margin-left: 15px" ref="students" :data="studentData" @on-select-change="changeFun"></Tree>
+                                    <!-- studentData -->
+                                    <Tree style="margin-left: 15px" ref="students" :data="cont.obj.items" @on-select-change="changeFun"></Tree>
                                 </div>
                             </div>
                         </div>
@@ -61,7 +62,7 @@
                      <div class="title-cls flex-cls">
                         
                         <p class="posi-cls">
-                            <input type="text" placeholder="请输入姓名"> 
+                            <input type="text" placeholder="请输入老师"> 
                             <img src="@/assets/search_ico.png" alt="">
                         </p>
                         <p class="btns">确认</p>
@@ -101,7 +102,7 @@
                      <div class="title-cls flex-cls">
                         
                         <p class="posi-cls">
-                            <input type="text" placeholder="请输入姓名"> 
+                            <input type="text" placeholder="请输入部门"> 
                             <img src="@/assets/search_ico.png" alt="">
                         </p>
                         <p class="btns">确认</p>
@@ -111,7 +112,8 @@
                             <p>部门</p>
                             <div class='cont center-cls'>
                                 <div>
-                                    <Tree style="margin-left: 15px" ref="students" :data="departmentData" show-checkbox></Tree>
+                                    <!-- :data="departmentData" -->
+                                    <Tree style="margin-left: 15px" ref="students" :data="cont.obj.items" show-checkbox></Tree>
                                 </div>
                             </div>
                         </div>
@@ -128,7 +130,7 @@
                     <div class="title-cls flex-cls">
                         
                         <p class="posi-cls">
-                            <input type="text" placeholder="请输入姓名"> 
+                            <input type="text" placeholder="请输入班级"> 
                             <img src="@/assets/search_ico.png" alt="">
                         </p>
                         <p class="btns">确认</p>
@@ -138,7 +140,8 @@
                             <p>部门</p>
                             <div class='cont center-cls'>
                                 <div>
-                                    <Tree style="margin-left: 15px" ref="students" :data="gradeData" show-checkbox></Tree>
+                                     <!-- :data="gradeData" -->
+                                    <Tree style="margin-left: 15px" ref="students" :data="cont.obj.items" show-checkbox></Tree>
                                 </div>
                             </div>
                         </div>
@@ -155,14 +158,33 @@
                 </div>
             
             </div>
-            <div class="imgPreview" v-if="cont.ele=='imgshow'">
+            <!-- 图片展示 -->
+            <div class="imgPreview selectStudentContainer" v-if="cont.ele=='imgshow'">
                 <p v-for="(item,ind) in cont.obj.imgArr">
                     <img :src="baseImg+item.url" alt="">
                 </p>
                 
                 <!-- <img src="@/assets/logo.png" alt=""> -->
             </div>
-           
+            <!-- 图片上传 -->
+            <div class="selectStudentContainer" v-if="cont.ele=='uploadimg'">
+                <div class="title" :class="{'require-cls':cont.obj.require}">{{cont.obj.label}}</div>
+                <div class="point">{{cont.obj.describe}}</div>
+                <div class="imgPreview uploadimg-cls">
+                    <p v-for="(item,ind) in cont.obj.uploadList">
+                        <img :src="baseImg+item.url" alt="">
+                        <Icon type="md-close-circle" class="delImg" @click="delImgFun(cont.obj,ind)"/>
+                    </p>
+                    <p class="post">
+                        <Icon type="md-camera" />
+                        上传图片
+                        <input class="files" id="fileImg" type="file" accept="image/*" @change="addFileImg(cont.obj)"> 
+                    </p>
+                </div>
+               
+                
+                <!-- <img src="@/assets/logo.png" alt=""> -->
+            </div>
             <!-- 输入框 -->
             <div class="selectStudentContainer" v-if="cont.ele=='input'">
                 <div class="title" :class="{'require-cls':cont.obj.require}">{{cont.obj.label}}</div>
@@ -188,25 +210,25 @@
                     <Option v-for="item in cont.obj.items" :value="item.label_value" :key="item.label_value">{{ item.label_name }}</Option>
                 </Select>
             </div>
+            <!-- 二级下拉 -->
             <div class="selectStudentContainer" v-if="cont.ele=='selectcontact'">
                 <div class="title" :class="{'require-cls':cont.obj.require}">{{cont.obj.label}}</div>
                 <div class="point">{{cont.obj.describe}}</div>
-                {{cont.obj.items}}
-                 <!-- v-model="cont.obj.value" -->
                  <div>
-                    <Select style="width:200px;">
+                    <Select style="width:200px;" v-model="cont.obj.value" @on-change="changeSel(cont.obj,cont.obj.value)">
                         <Option v-for="item in cont.obj.items" :value="item.label_value" :key="item.label_value">{{ item.label_name }}</Option>
                     </Select>
                     <Select v-model="cont.obj.value1" style="width:200px;margin-left: 20px;">
-                        <Option v-for="a in twoArrs" :value="a.label_value" :key="a.label_value">{{ a.label_name }}</Option>
+                        <Option v-for="a in cont.obj.two_arr" :value="a.label_value" :key="a.label_value">{{ a.label_name }}</Option>
                     </Select>
                  </div>
               
             </div>
+            <!-- 复选框 -->
             <div class="selectStudentContainer" v-if="cont.ele=='checkbox'">
                 <div class="title" :class="{'require-cls':cont.obj.require}">{{cont.obj.label}}</div>
                 <div class="point">{{cont.obj.describe}}</div>
-                <CheckboxGroup size="large" class="positionColumn" :model.sync="cont.obj.value">
+                <CheckboxGroup size="large" class="positionColumn" v-model="cont.obj.value">
                     <Row v-for="(item,ind) in cont.obj.items" :key="ind">
                         <Checkbox class="checkboxItem" :label="item.label_name"></Checkbox>
                     </Row>
@@ -225,14 +247,24 @@
                 <div class="title" :class="{'require-cls':cont.obj.require}">{{cont.obj.label}}</div>
                 <div class="point">{{cont.obj.describe}}</div>
 <!--                 {{cont.obj.valueArr}} -->
-                <CheckboxGroup size="large" class="positionColumn" :model.sync="cont.obj.valueArr">
+                <CheckboxGroup v-if="cont.obj.isCheck" size="large" class="positionColumn" v-model="cont.obj.valueArr">
                     <Row v-for="(item,ind) in cont.obj.items" :key="ind">
-                        <Checkbox class="checkboxItem" :value="item.label_value"><span>{{item.label_name}}
+                        <Checkbox class="checkboxItem" :value="item.label_value" :label="ind"><span>{{item.label_name}}
                             &nbsp;
                             <span v-text="item.scoreType=='add'?'+':'-'"></span>{{item.label_value}}分</span>
                         </Checkbox>
                     </Row>
                 </CheckboxGroup>
+                <RadioGroup v-if="!cont.obj.isCheck" size="large" class="positionColumn" v-model="cont.obj.value">
+                    <Row v-for="(item,ind) in cont.obj.items" :key="ind">   
+                        <Radio class="checkboxItem" :value="item.label_value" :label="ind">
+                            <span>{{item.label_name}}
+                            &nbsp;
+                            <span v-text="item.scoreType=='add'?'+':'-'"></span>{{item.label_value}}分</span>
+                        </Radio>
+                   
+                    </Row>
+                </RadioGroup>
             </div>
             <!-- 单选 -->
             <div class="selectStudentContainer" v-if="cont.ele=='radio'">
@@ -249,7 +281,7 @@
             <div class="selectStudentContainer" v-if="cont.ele=='truefalse'">
                 <div class="title" :class="{'require-cls':cont.obj.require}">{{cont.obj.label}}</div>
                 <div class="point">{{cont.obj.describe}}</div>
-                <RadioGroup size="large">
+                <RadioGroup size="large" v-model="cont.obj.value">
                     <Radio label="是"></Radio>
                     <Radio style="margin-right: .8rem"  label="否"></Radio>
                 </RadioGroup>
@@ -306,12 +338,13 @@
                     </p>
                 </Row>
                 <Row class='btn-view'>
-                    <input class="files" id="files" type="file" accept="image/*" @change="addFile(cont.obj)">            
-                    <i-button type="ghost" icon="md-add">点击上传图片</i-button>
+                    <input class="files" id="files" type="file" @change="addFile(cont.obj)">            
+                    <i-button type="ghost" icon="md-add">点击上传文件</i-button>
                         
                     
                 </Row>
             </div>
+            <!-- 手动打分 -->
             <div class="selectStudentContainer" v-if="cont.ele=='slider'">
                 <div class="title" :class="{'require-cls':cont.obj.require}">{{cont.obj.label}}</div>
                 <div class="point">{{cont.obj.describe}}</div>
@@ -320,7 +353,7 @@
                         <span>{{cont.obj.low}}</span>
                     </Col>
                     <Col span="14">
-                        <vueSlider :min="cont.obj.low" :max="cont.obj.high" :value="cont.obj.value"/>
+                        <vueSlider :min="cont.obj.low" :max="cont.obj.high" v-model="cont.obj.value"/>
                     </Col>
                     <Col span="1">
                         <span>{{cont.obj.high}}</span>
@@ -334,8 +367,11 @@
                 <div class="point">{{cont.obj.describe}}</div>
                 <div class="imgCheckPreview">
                     <div v-for="(item,ind) in cont.obj.imgArr">
-                        <img :src="baseImg+item.url" alt="">
-                        <Checkbox class="checkboxItem" :label="item.labels"></Checkbox>
+                        <CheckboxGroup v-model="cont.obj.value">
+                            <img :src="baseImg+item.url" alt="">
+                            <Checkbox class="checkboxItem" :label="item.labels"></Checkbox>
+                        </CheckboxGroup>
+                       
                     </div>
                     
                 </div>
@@ -387,9 +423,9 @@ export default {
         
     },
     mounted(){
-        // this.previewObj=this.$api.sGetObject("previewObj");
-
-        this.previewObj=datas.data;
+        this.previewObj=this.$api.sGetObject("previewObj");
+        console.log("asd",this.previewObj)
+        // this.previewObj=datas.data;
         this.getData();
         this.getSheng();
         let arr=this.previewObj.data;
@@ -573,14 +609,31 @@ export default {
             })
         },
         //二级下拉方法
-        change(res){
-            // console.log(res)
+        changeSel(cont,res){
+            console.log(cont)
+            cont.items.forEach(item => {
+                if(item.label_value==res){
+                    console.log(item.arrs)
+                    cont.two_arr=item.arrs;
+                }
+            });
+            console.log(res)
         },
         checkAllGroupChange() {
 
         },
         saveForm(){
-            console.log(this.previewObj)
+            console.log(JSON.stringify(this.previewObj));
+            this.previewObj.data.forEach(item => {
+                console.log(item.require)
+                if(item.obj.require){
+                    console.log(23213)
+                    if(item.obj.value==""||item.obj.valueArr.length==0){
+                        this.$Message.error("请填写"+item.obj.label)
+                    }
+                    
+                }
+            });
         },
         downloadFun(res){
             let self=this;
@@ -603,7 +656,28 @@ export default {
         delFile(res,i){
             let self=this;
             res.splice(i,1)
+        },
+        addFileImg(res){
+            let self=this;
+            let fileObj=document.getElementById("fileImg").files[0];
+            let sizes=self.$api.onver(fileObj.size);
+            console.log(fileObj)
+            self.$api.uploadFile("file/upload ", {},fileObj, (r) => {
+                res.uploadList.push({
+                    name:fileObj.name,
+                    url:r.data,
+                    size:sizes
+                })            
+             
+            });
+        },
+        delImgFun(cont,i){
+            this.$api.delFile(cont.uploadList[i].url);
+            cont.uploadList.splice(i,1);
+
+            console.log(cont)
         }
+
     }
 }
 </script>
@@ -683,10 +757,44 @@ export default {
                 // justify-content: space-between;
                 p{
                     padding:10px;
+                    margin:0 5px;
+                    border: 1px solid #C3C9D0;
                 }
                 img {
                     width: 175px;
                     height: 175px;
+                }
+            }
+            .uploadimg-cls{
+
+                p,img,input {
+                    padding: 0;
+                    width: 150px;
+                    height: 150px;
+                    position: relative;
+                }
+                .delImg{
+                    position: absolute;
+                    display: inline-block;
+                    width:20px;
+                    height: 20px;
+                    font-size: 20px;
+                    top:0;
+                    right:0;
+                }
+                .post{
+                    font-size: 25px;
+                    text-align: center;
+                    line-height: 140px;
+                    border: 1px dashed #C3C9D0;
+                    input{
+                        position: absolute;
+                        top:0;
+                        left:0;
+                        opacity: 0;
+                        background: red;
+                    }
+
                 }
             }
             .imgCheckPreview {
@@ -786,10 +894,14 @@ export default {
         width: 362px;
         height: 339px;
         border: 1px solid #C3C9D0;
+        .title-cls{
+            border-bottom: 1px solid #C3C9D0;
+            padding:5px 10px;
+        }
     }
     .title-cls{
-        border-bottom: 1px solid #C3C9D0;
-            padding:5px 10px;
+        // border-bottom: 1px solid #C3C9D0;
+            padding:1px 10px;
         input{
             height: 22px;
             border: 1px solid #C3C9D0;

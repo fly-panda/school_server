@@ -63,6 +63,9 @@ export let uploadImgConf = {
     // }],
     verify: 'none',
     value: '',
+    uploadList:[
+
+    ],
     // 表单name
     name: 'default',
     // 验证错误提示信息

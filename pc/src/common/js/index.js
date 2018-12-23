@@ -180,14 +180,21 @@ export default {
     return sizestr;
   },
   arrUniq(tmpArr,attr){
-      var result = [], hash = {};
-        for (var i = 0; i<tmpArr.length; i++) {
-            var elem = tmpArr[i][attr]; 
-            if (!hash[elem]) {
-                result.push(tmpArr[i]);
-                hash[elem] = true;
-            }
-        }
-        return result;
-    }
+    var result = [], hash = {};
+      for (var i = 0; i<tmpArr.length; i++) {
+          var elem = tmpArr[i][attr]; 
+          if (!hash[elem]) {
+              result.push(tmpArr[i]);
+              hash[elem] = true;
+          }
+      }
+      return result;
+  },
+  delFile(paths){
+    this.get("/file/deleteFile",{
+      path:paths
+    },r=>{
+      
+    })
+  }
 }

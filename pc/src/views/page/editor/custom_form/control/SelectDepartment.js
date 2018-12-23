@@ -59,6 +59,7 @@ export let selectDepartmentConf = {
     }],
     verify: 'none',
     value: '',
+    valueArr:[],
     // 表单name
     name: 'default',
     // 验证错误提示信息

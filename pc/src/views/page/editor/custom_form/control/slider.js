@@ -1,7 +1,4 @@
 
-{
-  
-    }
 export default (_self, h) => {
     
    let control = [
@@ -17,7 +14,7 @@ export default (_self, h) => {
                 display: 'inline-block'
             },
             props: {
-                value: 0,// 值
+                value: _self.obj.value,// 值
                 width: "80%",// 组件宽度
                 height: 6,// 组件高度
                 direction: "horizontal",// 组件方向
@@ -48,12 +45,24 @@ export default (_self, h) => {
             },
             on: {
                 "on-change": function (val) {
+                    alert(1)
                     if (!_self.obj.name) {
                         return false;
                     }
+
                     _self.obj.value = event.currentTarget.value;
+                    // _self.obj.value = val.currentTarget.value;
                     _self.$emit('handleChangeVal', val.currentTarget.value)
-                }
+                },
+                "on-input": function (val) {
+                    if (!_self.obj.name) {
+                        return false;
+                    }
+
+                    _self.obj.value = event.currentTarget.value;
+                    // _self.obj.value = val.currentTarget.value;
+                    _self.$emit('handleChangeVal', val.currentTarget.value)
+                },
                
             }
         },),

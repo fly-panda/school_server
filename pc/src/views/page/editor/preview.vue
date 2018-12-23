@@ -6,7 +6,7 @@
         <p :class="['btns',active==3?'activeCls':'']" @click="preview('3')"><img :src="active==3?activeImg3:img3" alt=""></p>
     </div>
     <div v-show="active==1" class="previewContent" :style="{height:fullHeight.height}">
-        <formDetail :previewObj="previewObj" :types="'edits'" :isSave="false"/>
+        <formDetail :previewObj="previewObj" :types="'see'" :isSave="false"/>
     </div>
     <div v-show="active==2" class="previewMobile">
         <previewMobile :ids="ids"/>
@@ -44,6 +44,7 @@ export default {
     mounted(){
         this.previewObj=this.$api.sGetObject("previewObj");
         this.ids=this.$route.query.ids;
+        // this.getData();
         // console.log(this.ids);
         // console.log(this.previewObj)
     },

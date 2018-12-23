@@ -1,15 +1,21 @@
 <template>
 <div class="checkContainer">
     <div class="title-cls">选择学生范围</div>
+    <!-- :load-data="loadData" -->
+    <Tree ref="tree" :data="data3"  show-checkbox></Tree>
+    <div class="flexCenter">
+        <Button type="primary" @click="submitResut">确定</Button>
+    </div>
+    <!-- <div class="title-cls">选择学生范围</div>
     <div class="save-cls">
         <Button type="primary" @click="saveFun">保存</Button>
     </div>
-<!--     <Row class="searchContainer">
+    <Row class="searchContainer">
         <Input suffix="ios-search" placeholder="Enter text" style="width: auto" />
         <Button style="margin-left: 360px" type="primary" size="small" @click="seearchPeople()">
              搜索
          </Button>
-    </Row> -->
+    </Row>
     <Row class="titleContainer" style="padding-top: 0;">
         <p>部门</p>
         <p class="all-sel">
@@ -45,7 +51,7 @@
                 
             </div>
         </div>
-    </Row>
+    </Row> -->
     
 </div>
 </template>
@@ -164,6 +170,12 @@ export default {
         },
         seearchPeople() {
             console.log(1)
+        },
+        
+        submitResut() {
+            let selectNode = this.$refs.tree.getCheckedNodes();
+            this.setStudents(selectNode);
+            this.$emit('handleselect', selectNode);
         }
     }
 }
@@ -287,5 +299,39 @@ export default {
 }
 .ivu-modal-body{
     padding: 0;
+}
+
+
+.checkContainer {
+    min-height: 400px;
+    text-align: center;
+    .title-cls{
+        font-size: 20px;
+        padding:5px 15px;
+        border-bottom: 1px solid #e2e5e7;
+        
+    }
+    .positionColumn {
+        display: flex;
+        flex-direction: column;
+
+        .checkboxItem {
+            margin: 15px;
+        }
+    }
+
+    .flexCenter {
+        position: absolute;
+        width: 100%;
+        padding: 30px;
+        bottom: 0;
+        display: -webkit-box;
+        display: -ms-flexbox;
+        display: flex;
+        -webkit-box-pack: center;
+        -ms-flex-pack: center;
+        justify-content: center;
+        margin-top: 20px;
+    }
 }
 </style>

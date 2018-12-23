@@ -6,7 +6,7 @@
         <Modal
             v-model="modalStatus"
             footer-hide
-            :width="(settingFormItem.type=='selectgrade'||settingFormItem.type=='selectdepartment')?400:800"
+            :width="settingFormItem.type=='selectteacher'?800:400"
             >
             <component  v-on:handleselect="handleSelectRes" v-bind:is="getModalContent"></component>
         </Modal>
@@ -545,7 +545,7 @@ export default {
                 // 预览效果
         previewForm(){
             let formObj=this.formatData();
-            // this.$api.sSetObject("previewObj",formObj)
+            this.$api.sSetObject("previewObj",formObj);
             // let cur_modal = this.$store.state.preview
             // console.log(new Date().getTime())
             // cur_modal.curtime = new Date().getTime()
@@ -553,8 +553,8 @@ export default {
             // cur_modal.data = this.sortable_item
             // this.$store.commit('previewStatus', cur_modal);
 
-            console.log(formObj)
-            // console.log(JSON.stringify(this.sortable_item))
+            // console.log(formObj)
+            console.log(JSON.stringify(this.sortable_item))
             this.$api.post("cform/preview",
                 formObj,
                 r=>{
@@ -567,10 +567,12 @@ export default {
             
         },
         handleImageAdded:function(file,Editor,cursorLocation){
+
             //上传图片操作
 
             //把获取到的图片url 插入到鼠标所在位置 回显图片
             Editor.insertEmbed(cursorLocation, 'image', url);
+            
         },
         formatData(){
             for(let i=0;i<this.sortable_item.length;i++){
@@ -641,10 +643,20 @@ export default {
         },
         handleAddSelectItem() {
             let curRemoveObj = this.sortable_item[this.curIndex].obj.items
-            curRemoveObj.push({
-                "label_value": curRemoveObj.length + 1,
-                "label_name": ''
-            })
+            console.log(this.sortable_item[this.curIndex])
+            if(this.sortable_item[this.curIndex].ele=="score"){
+                curRemoveObj.push({
+                    "label_value": curRemoveObj.length + 1,
+                    "label_name": '',
+                    "scoreType":'add'
+                })
+            }else{
+                curRemoveObj.push({
+                    "label_value": curRemoveObj.length + 1,
+                    "label_name": ''
+                })
+            }
+            
         },
         handleAddSelectItems(index){
             let curRemoveObj = this.sortable_item[this.curIndex].obj.items[index].arrs;
@@ -653,6 +665,7 @@ export default {
                 "label_name": ''
             })
         },
+        
         // 点击更改
         setIndexFun(index) {
             console.log(index);
@@ -802,6 +815,7 @@ export default {
         },
         jianFile(i){
             let self=this;
+            // this.$api.delFile(self.settingFormItem.items[i].url);
             self.settingFormItem.items.splice(i,1)
         }
 
