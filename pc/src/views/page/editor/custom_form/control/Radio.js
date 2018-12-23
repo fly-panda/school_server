@@ -59,6 +59,7 @@ export let radioConf = {
     require: true,
     // 绑定的值
     value: '',
+    otherValue:"",
     // 选项内数据
     items: [{
         "label_value": "1",

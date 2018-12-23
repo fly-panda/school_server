@@ -205,9 +205,8 @@
             <div class="selectStudentContainer" v-if="cont.ele=='select'">
                 <div class="title" :class="{'require-cls':cont.obj.require}">{{cont.obj.label}}</div>
                 <div class="point">{{cont.obj.describe}}</div>
-                {{cont.obj.value}}
                 <Select  v-model="cont.obj.value" style="width:250px;">
-                    <Option v-for="item in cont.obj.items" :value="item.label_value" :key="item.label_value">{{ item.label_name }}</Option>
+                    <Option v-for="(item,ind) in cont.obj.items" :value="ind" :key="item.label_value">{{ item.label_name }}</Option>
                 </Select>
             </div>
             <!-- 二级下拉 -->
@@ -216,10 +215,10 @@
                 <div class="point">{{cont.obj.describe}}</div>
                  <div>
                     <Select style="width:200px;" v-model="cont.obj.value" @on-change="changeSel(cont.obj,cont.obj.value)">
-                        <Option v-for="item in cont.obj.items" :value="item.label_value" :key="item.label_value">{{ item.label_name }}</Option>
+                        <Option v-for="(item,ind) in cont.obj.items" :value="ind" :key="ind">{{ item.label_name }}</Option>
                     </Select>
                     <Select v-model="cont.obj.value1" style="width:200px;margin-left: 20px;">
-                        <Option v-for="a in cont.obj.two_arr" :value="a.label_value" :key="a.label_value">{{ a.label_name }}</Option>
+                        <Option v-for="(a,i) in cont.obj.two_arr" :value="i" :key="i">{{ a.label_name }}</Option>
                     </Select>
                  </div>
               
@@ -230,14 +229,16 @@
                 <div class="point">{{cont.obj.describe}}</div>
                 <CheckboxGroup size="large" class="positionColumn" v-model="cont.obj.value">
                     <Row v-for="(item,ind) in cont.obj.items" :key="ind">
-                        <Checkbox class="checkboxItem" :label="item.label_name"></Checkbox>
+                        <Checkbox class="checkboxItem" :label="ind"><span>{{item.label_name}}</span> </Checkbox>
                     </Row>
-                    <Row>
+                    <Row v-if="cont.obj.hasOther">
                         <Col span="3">
-                            <Checkbox class="checkboxItem" label="其他"></Checkbox>
+                            <Checkbox class="checkboxItem" label="other">
+                                <span>其他</span>
+                            </Checkbox>
                         </Col>
                         <Col span="12">
-                            <Input  type="text" size="small" placeholder="请输入文字"></Input>
+                            <Input type="text" size="small" v-model="cont.obj.otherValue" placeholder="请输入文字"></Input>
                         </Col>
                     </Row>
                 </CheckboxGroup>
@@ -270,10 +271,27 @@
             <div class="selectStudentContainer" v-if="cont.ele=='radio'">
                 <div class="title" :class="{'require-cls':cont.obj.require}">{{cont.obj.label}}</div>
                 <div class="point">{{cont.obj.describe}}</div>
-                <RadioGroup size="large" class="positionColumn" :model.sync="cont.obj.value">
+                <RadioGroup size="large" class="positionColumn" v-model="cont.obj.value">
                     <Row v-for="(item,ind) in cont.obj.items" :key="ind">   
-                        <Radio class="checkboxItem" :value="item.label_value" :label="item.label_name"></Radio>
+                        <Radio class="checkboxItem" :value="item.label_value" :label="ind">
+                            <span>{{item.label_name}}</span>
+                        </Radio>
                    
+                    </Row>
+                    <Row v-if="cont.obj.hasOther">   
+
+
+                        <Col span="3">
+                            <Radio class="checkboxItem" value="other" label="other">
+                            <span>其他</span>
+                            
+                        </Radio>
+                        </Col>
+                        <Col span="12">
+                            <Input type="text" size="small" v-model="cont.obj.otherValue" placeholder="请输入文字"></Input>
+                        </Col>
+                    
+
                     </Row>
                 </RadioGroup>
             </div>
@@ -283,7 +301,7 @@
                 <div class="point">{{cont.obj.describe}}</div>
                 <RadioGroup size="large" v-model="cont.obj.value">
                     <Radio label="是"></Radio>
-                    <Radio style="margin-right: .8rem"  label="否"></Radio>
+                    <Radio style="margin-right: .8rem" label="否"></Radio>
                 </RadioGroup>
             </div>
             <!-- 日期时间 -->
@@ -294,7 +312,7 @@
                  <row>
                     <i-col span="8" v-for="(item,ind) in cont.obj.chooseCheck" :key="ind">
                         <!-- {{cont.obj.valueDate}} -->
-                        <DatePicker v-show="item=='date'" format="yyyy/MM/dd" :value="cont.obj.valueDate" type="date" placeholder="选择日期" style="width: 200px" @on-change="cont.obj.valueDate=$event"></DatePicker>
+                        <DatePicker v-show="item=='date'" format="yyyy-MM-dd" :value="cont.obj.valueDate" type="date" placeholder="选择日期" style="width: 200px" @on-change="cont.obj.valueDate=$event"></DatePicker>
                         <Time-picker v-show="item=='time'" format="HH:mm:ss" :value="cont.obj.valueTime" type="time" placeholder="选择时间" style="width: 200px"></Time-picker>
                     </i-col>
                 </row>
@@ -609,31 +627,25 @@ export default {
             })
         },
         //二级下拉方法
-        changeSel(cont,res){
-            console.log(cont)
-            cont.items.forEach(item => {
-                if(item.label_value==res){
-                    console.log(item.arrs)
-                    cont.two_arr=item.arrs;
-                }
-            });
-            console.log(res)
+        changeSel(cont,i){
+            cont.two_arr=cont.items[i].arrs;
+
+            
         },
         checkAllGroupChange() {
 
         },
         saveForm(){
             console.log(JSON.stringify(this.previewObj));
-            this.previewObj.data.forEach(item => {
-                console.log(item.require)
-                if(item.obj.require){
-                    console.log(23213)
-                    if(item.obj.value==""||item.obj.valueArr.length==0){
-                        this.$Message.error("请填写"+item.obj.label)
-                    }
+            // this.previewObj.data.forEach(item => {
+            //     if(item.obj.require){
+            //         console.log(23213)
+            //         if(item.obj.value==""||item.obj.valueArr.length==0){
+            //             this.$Message.error("请填写"+item.obj.label)
+            //         }
                     
-                }
-            });
+            //     }
+            // });
         },
         downloadFun(res){
             let self=this;

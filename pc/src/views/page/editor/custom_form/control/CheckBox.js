@@ -64,6 +64,7 @@ export let checkBoxConf = {
         "label_value": "2",
         "label_name": "多选框2"
     }],
+    otherValue:"",
     // 表单name
     name: 'default',
     // 验证错误提示信息
