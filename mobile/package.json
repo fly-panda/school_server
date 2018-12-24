@@ -17,6 +17,7 @@
     "node-sass": "^4.11.0",
     "vue": "^2.5.2",
     "vue-router": "^3.0.1",
+    "vue-slider-component": "^2.8.3",
     "vux": "^2.9.2",
     "vux-uploader": "^0.1.9"
   },

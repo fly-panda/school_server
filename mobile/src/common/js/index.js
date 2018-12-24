@@ -2,7 +2,7 @@
 // 配置API接口地址
 var baseUrlRoot = 'http://47.93.156.129:8848/api/'
 import {Message} from 'iview'
-import  { Toast } from 'vux'
+import  { Toast, Loading } from 'vux'
 import Vue from 'vue'
 
 // 引用axios
@@ -96,12 +96,20 @@ function uploadFile(url,params, file, success){
     if (file != null) {
       fd.append("file", file);
     } else {
-      Message.success("请选择一个文件");
+      Vue.$vux.toast.show({
+        text: '请选择一个文件',
+        time: "2000",
+        type: "text",
+        position: "middle"
+      });
       return;
     }
+    Vue.$vux.loading.show({
+      text: '上传中'
+    })
    axios({
       method: 'post',
-      url: baseUrlRoot +"api/" + url,
+      url: baseUrlRoot + url,
       data: fd,
       params:params,
       headers: {
@@ -111,18 +119,29 @@ function uploadFile(url,params, file, success){
 
     })
     .then(function (res) {
-
+      Vue.$vux.loading.hide()
       let data=res.data;
       if(res.status==200){
         if(data.state==0){
-          Message.success(data.result);
+          Vue.$vux.toast.show({
+            text: data.result,
+            time: "2000",
+            type: "text",
+            position: "middle"
+          });
           success(data);
         }else{
-          Message.error(data.result);
+          Vue.$vux.toast.show({
+            text: data.result,
+            time: "2000",
+            type: "text",
+            position: "middle"
+          });
         }   
       }
     })
     .catch(function (err) {
+      Vue.$vux.loading.hide()
         // Message.error("服务异常，请刷新重试！");
 
     })
@@ -142,6 +161,9 @@ export default {
     } catch(e) {
 
     }
+  },
+  uploadFile:function(url,params, file, success){
+    return uploadFile(url,params, file, success);
   },
   sget: function(k) {
     try {

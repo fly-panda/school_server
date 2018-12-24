@@ -2,6 +2,7 @@ exports.data = [{
   "title": "新建表单1",
   "describe": "<p class=\"ql-align-center\">这是我新创建的表单</p>",
   'data': [{
+    // 没问题
     "ele": "input",
     "obj": {
       "type": "input",
@@ -28,6 +29,7 @@ exports.data = [{
       "modalTitle": "单行文字"
     }
   }, {
+    // 没问题
     "ele": "text",
     "obj": {
       "type": "textarea",
@@ -51,6 +53,7 @@ exports.data = [{
       "modalTitle": "多行文字"
     }
   }, {
+    // 没问题
     "ele": "p",
     "obj": {
       "config": true,
@@ -64,6 +67,9 @@ exports.data = [{
       "modalTitle": "描述文字"
     }
   }, {
+    /** 
+     * value: 由字符串改为数组
+    */
     "ele": "select",
     "obj": {
       "type": "select",
@@ -74,13 +80,13 @@ exports.data = [{
       "inlineBlock": false,
       "require": true,
       "items": [{
-        "label_value": "",
+        "label_value": "1",
         "label_name": "12312"
       }, {
-        "label_value": 2,
+        "label_value": '2',
         "label_name": "324234"
       }],
-      "value": "",
+      "value": [],
       "name": "default",
       "ruleError": "请选择",
       "relation": false,
@@ -90,6 +96,7 @@ exports.data = [{
       "modalTitle": "下拉框"
     }
   }, {
+    // 没问题
     "ele": "truefalse",
     "obj": {
       "type": "trueFalse",
@@ -116,6 +123,7 @@ exports.data = [{
       "modalTitle": "是/否"
     }
   }, {
+    // 没问题
     "ele": "radio",
     "obj": {
       "type": "radio",
@@ -125,13 +133,13 @@ exports.data = [{
       "hasOther": false,
       "inlineBlock": false,
       "require": true,
-      "value": "2",
+      "value": "",
       "items": [{
-        "label_value": "1",
-        "label_name": "单选框1"
+        "label_value": "111",
+        "label_name": "单选框1",
       }, {
-        "label_value": "2",
-        "label_name": "单选框2"
+        "label_value": "2222",
+        "label_name": "单选框2",
       }],
       "name": "default",
       "ruleError": "请选择",
@@ -142,6 +150,7 @@ exports.data = [{
       "modalTitle": "单选"
     }
   }, {
+    // 没问题
     "ele": "checkbox",
     "obj": {
       "type": "checkbox",
@@ -158,6 +167,9 @@ exports.data = [{
       }, {
         "label_value": "2",
         "label_name": "多选框2"
+      },{
+        "label_value": "3",
+        "label_name": "其他"
       }],
       "name": "default",
       "ruleError": "该选项不能为空",
@@ -168,6 +180,7 @@ exports.data = [{
       "modalTitle": "多选"
     }
   }, {
+
     "ele": "uploads",
     "obj": {
       "type": "uploads",
@@ -198,6 +211,7 @@ exports.data = [{
       "modalTitle": "文件上传"
     }
   }, {
+    // value值问题
     "ele": "datepicker",
     "obj": {
       "type": "datepicker",
@@ -235,6 +249,7 @@ exports.data = [{
       "sheng": [],
       "shi": [],
       "qu": [],
+      "address": '',  // 不确定
       "ruleError": "请选择并输入详细地址",
       "relation": false,
       "relation_name": "",
@@ -289,7 +304,7 @@ exports.data = [{
       "require": true,
       "describe": "",
       "verify": "none",
-      "value": "",
+      "value": [],
       "name": "default",
       "ruleError": "该字段不能为空",
       "relation": false,
@@ -308,7 +323,7 @@ exports.data = [{
       "imgArr": [{
         "titles": "图片",
         "name": "18170527.jpeg",
-        "url": "/files/2018/12/18/18170527.jpeg",
+        "url": "http://ww1.sinaimg.cn/large/663d3650gy1fplwu9ze86j20m80b40t2.jpg",
         "size": 91397,
         "status": "finished",
         "percentage": 100,
@@ -316,7 +331,7 @@ exports.data = [{
       }, {
         "titles": "图片",
         "name": "00424997424706644.jpg",
-        "url": "/files/2018/12/18/00424997424706644.jpg",
+        "url": "http://ww1.sinaimg.cn/large/663d3650gy1fplwvqwuoaj20xc0p0t9s.jpg",
         "size": 223163,
         "status": "finished",
         "percentage": 100,
@@ -355,7 +370,7 @@ exports.data = [{
       "imgArr": [{
         "titles": "图片",
         "name": "00424997424706644.jpg",
-        "url": "/files/2018/12/18/00424997424706644.jpg",
+        "url": "http://ww1.sinaimg.cn/large/663d3650gy1fplwvqwuoaj20xc0p0t9s.jpg",
         "progress": 0,
         "size": 223163,
         "labels": "图片1",
@@ -365,7 +380,7 @@ exports.data = [{
       }, {
         "titles": "图片",
         "name": "00424997424706644.jpg",
-        "url": "/files/2018/12/18/00424997424706644.jpg",
+        "url": "http://ww1.sinaimg.cn/large/663d3650gy1fplwu9ze86j20m80b40t2.jpg",
         "progress": 0,
         "size": 223163,
         "labels": "图片2",
@@ -842,10 +857,10 @@ exports.data = [{
       "describe": "",
       "gradesType": "add",
       "low": 0,
-      "high": "10",
+      "high": 10,
       "step": 1,
       "verify": "none",
-      "value": "",
+      "value": "0",
       "name": "default",
       "ruleError": "该字段不能为空",
       "relation": false,
@@ -884,3 +899,909 @@ exports.data = [{
     }
   }]
 }]
+
+exports.data1 = [
+  {
+    "title": "新建表单1",
+    "describe": "<p class=\"ql-align-center\">这是我新创建的表单</p>",
+    'data': [{
+      "ele": "input",
+      "obj": {
+        "type": "input",
+        "icons": "",
+        "config": true,
+        "label": "单行文字",
+        "placeholder": "",
+        "inlineBlock": false,
+        "require": true,
+        "maxLength": 2000,
+        "describe": "",
+        "items": [{
+          "label_value": "null",
+          "label_name": "222"
+        }],
+        "verify": "none",
+        "value": "",
+        "name": "default",
+        "ruleError": "该字段不能为空",
+        "relation": false,
+        "relation_name": "",
+        "relation_value": "",
+        "visibility": true,
+        "modalTitle": "单行文字"
+      }
+    }, {
+      "ele": "text",
+      "obj": {
+        "type": "textarea",
+        "icons": "",
+        "config": true,
+        "label": "多行文字",
+        "placeholder": "",
+        "inlineBlock": false,
+        "maxLength": 2000,
+        "describe": "",
+        "require": true,
+        "maxRows": 5,
+        "value": "",
+        "name": "default",
+        "ruleError": "该字段不能为空",
+        "relation": false,
+        "relation_name": "",
+        "relation_value": "",
+        "verify": "none",
+        "visibility": true,
+        "modalTitle": "多行文字"
+      }
+    }, {
+      "ele": "p",
+      "obj": {
+        "config": true,
+        "icons": "",
+        "type": "describe",
+        "describe": "请设置文字内容",
+        "label": "描述文字",
+        "marginTop": 0,
+        "marginBottom": 24,
+        "fontSize": "",
+        "modalTitle": "描述文字"
+      }
+    }, {
+      "ele": "select",
+      "obj": {
+        "type": "select",
+        "icons": "",
+        "config": true,
+        "label": "下拉框",
+        "placeholder": "",
+        "inlineBlock": false,
+        "require": true,
+        "items": [{
+          "label_value": 1,
+          "label_name": "12312"
+        }, {
+          "label_value": 2,
+          "label_name": "324234"
+        }],
+        "value": "1",
+        "name": "default",
+        "ruleError": "请选择",
+        "relation": false,
+        "relation_name": "",
+        "relation_value": "",
+        "visibility": true,
+        "modalTitle": "下拉框"
+      }
+    }, {
+      "ele": "truefalse",
+      "obj": {
+        "type": "trueFalse",
+        "icons": "",
+        "config": true,
+        "label": "是/否",
+        "hasOther": false,
+        "inlineBlock": false,
+        "require": true,
+        "value": "",
+        "items": [{
+          "label_value": "1",
+          "label_name": "是"
+        }, {
+          "label_value": "2",
+          "label_name": "否"
+        }],
+        "name": "default",
+        "ruleError": "请选择",
+        "relation": false,
+        "relation_name": "",
+        "relation_value": "",
+        "visibility": true,
+        "modalTitle": "是/否"
+      }
+    }, {
+      "ele": "radio",
+      "obj": {
+        "type": "radio",
+        "otherValue": '',
+        "icons": "",
+        "config": true,
+        "label": "单选",
+        "hasOther": true,
+        "inlineBlock": false,
+        "require": true,
+        "value": "2",
+        "items": [{
+          "label_value": "1",
+          "label_name": "单选框1"
+        }, {
+          "label_value": "2",
+          "label_name": "单选框2"
+        }],
+        "name": "default",
+        "ruleError": "请选择",
+        "relation": false,
+        "relation_name": "",
+        "relation_value": "",
+        "visibility": true,
+        "modalTitle": "单选"
+      }
+    }, {
+      "ele": "checkbox",
+      "obj": {
+        "type": "checkbox",
+        "icons": "",
+        "config": true,
+        "label": "多选",
+        "hasOther": false,
+        "inlineBlock": false,
+        "require": true,
+        "value": [],
+        "otherValue": "",
+        "items": [{
+          "label_value": "1",
+          "label_name": "多选框1"
+        }, {
+          "label_value": "2",
+          "label_name": "多选框2"
+        }],
+        "name": "default",
+        "ruleError": "该选项不能为空",
+        "relation": false,
+        "relation_name": "",
+        "relation_value": "",
+        "visibility": true,
+        "modalTitle": "多选"
+      }
+    }, {
+      "ele": "uploads",
+      "obj": {
+        "type": "uploads",
+        "icons": "",
+        "config": true,
+        "action": "http://workflow.test/imageupload",
+        "require": true,
+        "label": "文件上传",
+        "maxSize": 2048,
+        "value": [
+          // {
+          //   "name":"文件11",
+          // "url":"asdadsa",
+          // "size":"1kb"
+          // }
+          
+        ],
+        "updateType": "",
+        "updateTypeList": [{
+          "dKey": "1",
+          "dValue": "图片类型"
+        }, {
+          "dKey": "2",
+          "dValue": "excel类型"
+        }, {
+          "dKey": "3",
+          "dValue": "压缩类型"
+        }],
+        "name": "default",
+        "ruleError": "请上传图片",
+        "relation": false,
+        "relation_name": "",
+        "relation_value": "",
+        "visibility": true,
+        "modalTitle": "文件上传"
+      }
+    }, {
+      "ele": "datepicker",
+      "obj": {
+        "type": "datepicker",
+        "icons": "",
+        "chooseCheck": ["date", "time"],
+        "config": true,
+        "label": "时间选择",
+        "placeholder": "请选择日期",
+        "inlineBlock": false,
+        "require": true,
+        "name": "default",
+        "value": "",
+        "valueDate":'2016-01-01',
+        "valueTime":"'09:41:00'",
+        "ruleError": "选项不能为空",
+        "relation": false,
+        "relation_name": "",
+        "relation_value": "",
+        "visibility": true,
+        "format": "yyyy年MM月dd日",
+        "modalTitle": "时间选择"
+      }
+    }, {
+      "ele": "address",
+      "obj": {
+        "type": "address",
+        "chooseCheck": ["province", "city", "zone"],
+        "icons": "",
+        "config": true,
+        "label": "地址",
+        "placeholder": "请输入详细地址",
+        "inlineBlock": false,
+        "require": true,
+        "multiple": false,
+        "name": "default",
+        "value": "你坚实的发发斯蒂芬水电费水电费说的发送到",
+        "sheng": [],
+        "shi": [],
+        "qu": [],
+        "shengValue": "1",
+        "shiValue": "83",
+        "quValue": "524",
+        "ruleError": "请选择并输入详细地址",
+        "relation": false,
+        "relation_name": "",
+        "relation_value": "",
+        "visibility": true,
+        "details_address": true,
+        "modalTitle": "地址"
+      }
+    }, {
+      "ele": "download",
+      "obj": {
+        "type": "download",
+        "icons": "",
+        "config": true,
+        "label": "文件下载",
+        "placeholder": "",
+        "inlineBlock": false,
+        "require": false,
+        "describe": "",
+        "items": [{
+          "label_value": 1,
+          "label_name": "add-form.txt",
+          "url": "/files/2018/12/18/add-form.txt",
+          "size": 19880
+        }, {
+          "label_value": 2,
+          "label_name": "chrome.exe",
+          "url": "",
+          "size": 1587680
+        }],
+        "verify": "none",
+        "value": "",
+        "name": "default",
+        "ruleError": "该字段不能为空",
+        "relation": false,
+        "relation_name": "",
+        "relation_value": "",
+        "visibility": true,
+        "modalTitle": "文件下载"
+      }
+    }, {
+      "ele": "uploadimg",
+      "obj": {
+        "type": "uploadimg",
+        "icons": "",
+        "lessNum": 1,
+        "lessImgRequire": false,
+        "config": true,
+        "label": "图片上传",
+        "placeholder": "",
+        "inlineBlock": false,
+        "require": true,
+        "describe": "",
+        "verify": "none",
+        "value": "",
+        "name": "default",
+        "ruleError": "该字段不能为空",
+        "relation": false,
+        "relation_name": "",
+        "relation_value": "",
+        "visibility": true,
+        "modalTitle": "图片上传"
+      }
+    }, {
+      "ele": "imgshow",
+      "obj": {
+        "type": "imgShow",
+        "icons": "",
+        "config": true,
+        "label": "图片展示",
+        "imgArr": [{
+          "titles": "图片",
+          "name": "18170527.jpeg",
+          "url": "/files/2018/12/18/18170527.jpeg",
+          "size": 91397,
+          "status": "finished",
+          "percentage": 100,
+          "uid": 1545140945634
+        }, {
+          "titles": "图片",
+          "name": "00424997424706644.jpg",
+          "url": "/files/2018/12/18/00424997424706644.jpg",
+          "size": 223163,
+          "status": "finished",
+          "percentage": 100,
+          "uid": 1545140945635
+        }],
+        "placeholder": "",
+        "inlineBlock": false,
+        "require": false,
+        "describe": "",
+        "gradesType": "add",
+        "low": 0,
+        "high": 100,
+        "step": 1,
+        "verify": "none",
+        "value": "",
+        "name": "default",
+        "ruleError": "该字段不能为空",
+        "relation": false,
+        "relation_name": "",
+        "relation_value": "",
+        "visibility": true,
+        "modalTitle": "图片展示"
+      }
+    }, {
+      "ele": "imgcheck",
+      "obj": {
+        "type": "imgCheck",
+        "icons": "",
+        "config": true,
+        "label": "图片选择",
+        "placeholder": "",
+        "inlineBlock": false,
+        "require": true,
+        "maxlen": "1",
+        "minlen": 0,
+        "imgArr": [{
+          "titles": "图片",
+          "name": "00424997424706644.jpg",
+          "url": "/files/2018/12/18/00424997424706644.jpg",
+          "progress": 0,
+          "size": 223163,
+          "labels": "图片1",
+          "status": "finished",
+          "percentage": 100,
+          "uid": 1545140964561
+        }, {
+          "titles": "图片",
+          "name": "00424997424706644.jpg",
+          "url": "/files/2018/12/18/00424997424706644.jpg",
+          "progress": 0,
+          "size": 223163,
+          "labels": "图片2",
+          "status": "finished",
+          "percentage": 100,
+          "uid": 1545140964562
+        }],
+        "describe": "",
+        "gradesType": "add",
+        "low": 0,
+        "high": 100,
+        "step": 1,
+        "verify": "none",
+        "value": "",
+        "name": "default",
+        "ruleError": "该字段不能为空",
+        "relation": false,
+        "relation_name": "",
+        "relation_value": "",
+        "visibility": true,
+        "modalTitle": "图片选择"
+      }
+    }, {
+      "ele": "selectcontact",
+      "obj": {
+        "type": "selectcontact",
+        "icons": "",
+        "config": true,
+        "label": "二级下拉",
+        "placeholder": "请输入详细地址",
+        "inlineBlock": false,
+        "require": true,
+        "multiple": false,
+        "name": "default",
+        "value": [1,2,3],
+        "items": [{
+          "label_value": "a1v",
+          "label_name": "a1",
+          "arrs": [{
+            "label_value": "a1_1",
+            "label_name": "a1_1"
+          }, {
+            "label_value": "a1_2",
+            "label_name": "a1_2"
+          }]
+        }, {
+          "label_value": "a2",
+          "label_name": "a2",
+          "arrs": [{
+            "label_value": "a2_1",
+            "label_name": "a2_1"
+          }, {
+            "label_value": "a2_1",
+            "label_name": "a2_2"
+          }]
+        }],
+        "two_arr": [],
+        "ruleError": "请选择并输入详细地址",
+        "relation": false,
+        "relation_name": "",
+        "relation_value": "",
+        "visibility": true,
+        "details_address": true,
+        "modalTitle": "二级下拉"
+      }
+    }, {
+      "ele": "selectstudent",
+      "obj": {
+        "type": "selectstudent",
+        "icons": "",
+        "modal": "selectStudentForm",
+        "config": true,
+        "label": "选择学生",
+        "placeholder": "",
+        "inlineBlock": false,
+        "require": true,
+        "maxLength": 2000,
+        "describe": "",
+        "items": [{
+          "checked": true,
+          "departid": "cpXeBttIWNMdone",
+          "gender": "2",
+          "is_subscribe": "0",
+          "join_date": "2018-10-23",
+          "name": "测试学生5",
+          "other_departid": [],
+          "wxuserid": "campus_10674256",
+          "userid": "xmasjxmasXO3EcPkEdone"
+        }, {
+          "checked": true,
+          "departid": "cpXeBttIWNMdone",
+          "gender": "2",
+          "is_subscribe": "0",
+          "join_date": "2018-10-23",
+          "name": "测试学生4",
+          "other_departid": [],
+          "wxuserid": "campus_10674254",
+          "userid": "0vIxz6QTmOYdone"
+        }, {
+          "checked": true,
+          "departid": "cpXeBttIWNMdone",
+          "gender": "",
+          "is_subscribe": "0",
+          "join_date": "0100-01-01",
+          "name": "黄小媛",
+          "other_departid": [],
+          "wxuserid": "campus_8225758",
+          "userid": "A7lJOHxxRxmasAdone"
+        }],
+        "verify": "none",
+        "value": "",
+        "selArr":[],
+        "name": "default",
+        "ruleError": "该字段不能为空",
+        "relation": false,
+        "relation_name": "",
+        "relation_value": "",
+        "visibility": true,
+        "modalTitle": "选择学生"
+      }
+    }, {
+      "ele": "selectgrade",
+      "obj": {
+        "type": "selectgrade",
+        "icons": "",
+        "modal": "selectGradeForm",
+        "config": true,
+        "label": "选择年级",
+        "placeholder": "",
+        "inlineBlock": false,
+        "require": true,
+        "maxLength": 2000,
+        "describe": "",
+        "items": [{
+          "children": [{
+            "children": [{
+              "children": [{
+                "children": [{
+                  "departid": "hHuccJElV5kdone",
+                  "join_year": "2017",
+                  "level": "6",
+                  "title": "测试班级2",
+                  "wxdepartid": "79",
+                  "nodeKey": 9,
+                  "checked": true,
+                  "indeterminate": false
+                }, {
+                  "departid": "tAgvjune2h4BgUdone",
+                  "join_year": "2017",
+                  "level": "6",
+                  "title": "测试班级3",
+                  "wxdepartid": "81",
+                  "nodeKey": 10,
+                  "checked": true,
+                  "indeterminate": false
+                }],
+                "departid": "dmgT19FmVxmasIdone",
+                "join_year": "2017",
+                "level": "5",
+                "title": "测试年级2",
+                "wxdepartid": "77",
+                "nodeKey": 8,
+                "checked": true,
+                "indeterminate": false
+              }],
+              "departid": "tpdpvxmasIiongdone",
+              "join_year": "2017",
+              "level": "4",
+              "title": "测试专业2",
+              "wxdepartid": "75",
+              "nodeKey": 7,
+              "checked": true,
+              "indeterminate": false
+            }],
+            "departid": "CYejunexmashVByPgdone",
+            "join_year": "2017",
+            "level": "3",
+            "title": "测试学院2",
+            "wxdepartid": "73",
+            "nodeKey": 6,
+            "checked": true,
+            "indeterminate": false
+          }],
+          "departid": "IS74JSgUq9gdone",
+          "join_year": "2017",
+          "level": "2",
+          "title": "测试用户2",
+          "wxdepartid": "71",
+          "nodeKey": 5,
+          "checked": true,
+          "indeterminate": false
+        }, {
+          "children": [{
+            "children": [{
+              "children": [{
+                "departid": "hHuccJElV5kdone",
+                "join_year": "2017",
+                "level": "6",
+                "title": "测试班级2",
+                "wxdepartid": "79",
+                "nodeKey": 9,
+                "checked": true,
+                "indeterminate": false
+              }, {
+                "departid": "tAgvjune2h4BgUdone",
+                "join_year": "2017",
+                "level": "6",
+                "title": "测试班级3",
+                "wxdepartid": "81",
+                "nodeKey": 10,
+                "checked": true,
+                "indeterminate": false
+              }],
+              "departid": "dmgT19FmVxmasIdone",
+              "join_year": "2017",
+              "level": "5",
+              "title": "测试年级2",
+              "wxdepartid": "77",
+              "nodeKey": 8,
+              "checked": true,
+              "indeterminate": false
+            }],
+            "departid": "tpdpvxmasIiongdone",
+            "join_year": "2017",
+            "level": "4",
+            "title": "测试专业2",
+            "wxdepartid": "75",
+            "nodeKey": 7,
+            "checked": true,
+            "indeterminate": false
+          }],
+          "departid": "CYejunexmashVByPgdone",
+          "join_year": "2017",
+          "level": "3",
+          "title": "测试学院2",
+          "wxdepartid": "73",
+          "nodeKey": 6,
+          "checked": true,
+          "indeterminate": false
+        }, {
+          "children": [{
+            "children": [{
+              "departid": "hHuccJElV5kdone",
+              "join_year": "2017",
+              "level": "6",
+              "title": "测试班级2",
+              "wxdepartid": "79",
+              "nodeKey": 9,
+              "checked": true,
+              "indeterminate": false
+            }, {
+              "departid": "tAgvjune2h4BgUdone",
+              "join_year": "2017",
+              "level": "6",
+              "title": "测试班级3",
+              "wxdepartid": "81",
+              "nodeKey": 10,
+              "checked": true,
+              "indeterminate": false
+            }],
+            "departid": "dmgT19FmVxmasIdone",
+            "join_year": "2017",
+            "level": "5",
+            "title": "测试年级2",
+            "wxdepartid": "77",
+            "nodeKey": 8,
+            "checked": true,
+            "indeterminate": false
+          }],
+          "departid": "tpdpvxmasIiongdone",
+          "join_year": "2017",
+          "level": "4",
+          "title": "测试专业2",
+          "wxdepartid": "75",
+          "nodeKey": 7,
+          "checked": true,
+          "indeterminate": false
+        }, {
+          "children": [{
+            "departid": "hHuccJElV5kdone",
+            "join_year": "2017",
+            "level": "6",
+            "title": "测试班级2",
+            "wxdepartid": "79",
+            "nodeKey": 9,
+            "checked": true,
+            "indeterminate": false
+          }, {
+            "departid": "tAgvjune2h4BgUdone",
+            "join_year": "2017",
+            "level": "6",
+            "title": "测试班级3",
+            "wxdepartid": "81",
+            "nodeKey": 10,
+            "checked": true,
+            "indeterminate": false
+          }],
+          "departid": "dmgT19FmVxmasIdone",
+          "join_year": "2017",
+          "level": "5",
+          "title": "测试年级2",
+          "wxdepartid": "77",
+          "nodeKey": 8,
+          "checked": true,
+          "indeterminate": false
+        }, {
+          "departid": "hHuccJElV5kdone",
+          "join_year": "2017",
+          "level": "6",
+          "title": "测试班级2",
+          "wxdepartid": "79",
+          "nodeKey": 9,
+          "checked": true,
+          "indeterminate": false
+        }, {
+          "departid": "tAgvjune2h4BgUdone",
+          "join_year": "2017",
+          "level": "6",
+          "title": "测试班级3",
+          "wxdepartid": "81",
+          "nodeKey": 10,
+          "checked": true,
+          "indeterminate": false
+        }, {
+          "departid": "cpXeBttIWNMdone",
+          "join_year": "2018",
+          "level": "6",
+          "title": "测试班级组织架构",
+          "wxdepartid": "114",
+          "nodeKey": 11,
+          "checked": true,
+          "indeterminate": false
+        }],
+        "verify": "none",
+        "value": "",
+        "name": "default",
+        "ruleError": "该字段不能为空",
+        "relation": false,
+        "relation_name": "",
+        "relation_value": "",
+        "visibility": true,
+        "modalTitle": "选择年级"
+      }
+    }, {
+      "ele": "selectteacher",
+      "obj": {
+        "type": "selectteacher",
+        "icons": "",
+        "modal": "selectTeacherForm",
+        "config": true,
+        "label": "选择老师",
+        "placeholder": "",
+        "inlineBlock": false,
+        "require": true,
+        "maxLength": 2000,
+        "describe": "",
+        "items": [],
+        "verify": "none",
+        "value": "",
+        "name": "default",
+        "ruleError": "该字段不能为空",
+        "relation": false,
+        "relation_name": "",
+        "relation_value": "",
+        "visibility": true,
+        "modalTitle": "选择老师"
+      }
+    }, {
+      "ele": "selectdepartment",
+      "obj": {
+        "type": "selectdepartment",
+        "icons": "",
+        "modal": "selectDepartmentForm",
+        "config": true,
+        "label": "选择部门",
+        "placeholder": "",
+        "inlineBlock": false,
+        "require": true,
+        "maxLength": 2000,
+        "describe": "",
+        "items": [{
+          "children": [{
+            "departid": "bjAyOaLCRVMdone",
+            "join_year": "2017",
+            "level": "3",
+            "title": "三教",
+            "wxdepartid": "108",
+            "nodeKey": 5,
+            "checked": true,
+            "indeterminate": false
+          }, {
+            "departid": "Oj3lq5qU8xmasMdone",
+            "join_year": "2017",
+            "level": "3",
+            "title": "qwer2",
+            "wxdepartid": "109",
+            "nodeKey": 6,
+            "checked": true,
+            "indeterminate": false
+          }, {
+            "departid": "8vPvPdISxPwdone",
+            "join_year": "2017",
+            "level": "3",
+            "title": "四教",
+            "wxdepartid": "110",
+            "nodeKey": 7,
+            "checked": true,
+            "indeterminate": false
+          }],
+          "departid": "Ab8Sp7xmas6Pa0done",
+          "join_year": "2017",
+          "level": "2",
+          "title": "教育部2",
+          "wxdepartid": "107",
+          "nodeKey": 4,
+          "checked": true,
+          "indeterminate": false
+        }, {
+          "departid": "bjAyOaLCRVMdone",
+          "join_year": "2017",
+          "level": "3",
+          "title": "三教",
+          "wxdepartid": "108",
+          "nodeKey": 5,
+          "checked": true,
+          "indeterminate": false
+        }, {
+          "departid": "Oj3lq5qU8xmasMdone",
+          "join_year": "2017",
+          "level": "3",
+          "title": "qwer2",
+          "wxdepartid": "109",
+          "nodeKey": 6,
+          "checked": true,
+          "indeterminate": false
+        }, {
+          "departid": "8vPvPdISxPwdone",
+          "join_year": "2017",
+          "level": "3",
+          "title": "四教",
+          "wxdepartid": "110",
+          "nodeKey": 7,
+          "checked": true,
+          "indeterminate": false
+        }, {
+          "departid": "iCI75juneNF8T0done",
+          "join_year": "2018",
+          "level": "2",
+          "title": "老师组织结构",
+          "wxdepartid": "116",
+          "nodeKey": 8,
+          "checked": true,
+          "indeterminate": false
+        }],
+        "verify": "none",
+        "value": "",
+        "name": "default",
+        "ruleError": "该字段不能为空",
+        "relation": false,
+        "relation_name": "",
+        "relation_value": "",
+        "visibility": true,
+        "modalTitle": "选择部门"
+      }
+    }, {
+      "ele": "slider",
+      "obj": {
+        "type": "slider",
+        "icons": "",
+        "config": true,
+        "label": "手动填写分数",
+        "placeholder": "",
+        "inlineBlock": false,
+        "require": true,
+        "describe": "",
+        "gradesType": "add",
+        "low": 0,
+        "high":10,
+        "step": 1,
+        "verify": "none",
+        "value": 0,
+        "name": "default",
+        "ruleError": "该字段不能为空",
+        "relation": false,
+        "relation_name": "",
+        "relation_value": "",
+        "visibility": true,
+        "modalTitle": "手动填写分数"
+      }
+    }, {
+      "ele": "score",
+      "obj": {
+        "type": "score",
+        "icons": "",
+        "config": true,
+        "label": "勾选打分",
+        "isCheck": false,
+        "inlineBlock": false,
+        "require": true,
+        "value": "",
+        "valueArr": [],
+        "items": [{
+          "label_value": "1",
+          "label_name": "加分",
+          "scoreType": "add"
+        }, {
+          "label_value": "2",
+          "label_name": "减分",
+          "scoreType": "mins"
+        }],
+        "name": "default",
+        "ruleError": "请选择",
+        "relation": false,
+        "relation_name": "",
+        "relation_value": "",
+        "visibility": true,
+        "modalTitle": "勾选打分"
+      }
+    }]
+  }
+]
+

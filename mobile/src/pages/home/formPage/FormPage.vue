@@ -22,27 +22,27 @@
 
       <div v-for="(obj, idx) of allList.data" :key="idx">
         <!-- 选择学生 -->
-        <div class="select-item" v-if="false">
-          <div class="select-item-title">选择学生</div>
-          <div class="select-item-txt">请选择学生</div>
+        <div class="select-item" v-if="obj.ele == 'selectstudent'">
+          <div class="select-item-title" v-html="obj.obj.label"></div>
+          <div class="select-item-txt" v-html="obj.obj.describe"></div>
           <button @click="selectList(0)">{{ selectStudentValue }}</button>
         </div>
         <!-- 选择老师 -->
-        <div class="select-item" v-if="false">
-          <div class="select-item-title">选择老师</div>
-          <div class="select-item-txt">请选择老师</div>
+        <div class="select-item" v-if="obj.ele == 'selectteacher'">
+          <div class="select-item-title" v-html="obj.obj.label"></div>
+          <div class="select-item-txt" v-html="obj.obj.describe"></div>
           <button @click="selectList(1)">{{ selectTeacherValue }}</button>
         </div>
         <!-- 选择班级 -->
-        <div class="select-item" v-if="false">
-          <div class="select-item-title">选择班级</div>
-          <div class="select-item-txt">请选择你的班级</div>
+        <div class="select-item" v-if="obj.ele == 'selectgrade'">
+          <div class="select-item-title" v-html="obj.obj.label"></div>
+          <div class="select-item-txt" v-html="obj.obj.describe"></div>
           <button @click="selectList(2)">{{ selectClassValue }}</button>
         </div>
         <!-- 选择部门 -->
-        <div class="select-item" v-if="false">
-          <div class="select-item-title">选择部门</div>
-          <div class="select-item-txt">请选择你的部门</div>
+        <div class="select-item" v-if="obj.ele == 'selectdepartment'">
+          <div class="select-item-title" v-html="obj.obj.label"></div>
+          <div class="select-item-txt" v-html="obj.obj.describe"></div>
           <button @click="selectList(3)">{{ selectDepartmentValue }}</button>
         </div>
         <!-- 图片上传 -->
@@ -50,12 +50,24 @@
           <div class="select-item-title" v-html="obj.obj.label"></div>
           <div class="select-item-txt" v-html="obj.obj.describe"></div>
           <div class="img-box">
+            <div class="upload-list">
+              <div class="img-box-item" v-for="(item, index) of obj.obj.value" :key="index">
+                <img :src="item.src">
+                <div class="del-img" @click="delImg(obj.obj.value, index)">X</div>
+              </div>
+            </div>
             <div class="upload">
               <div>
                 <span>+</span>
                 <span>点击上传</span>
               </div>
-              <input class="files" id="files" type="file" accept="image/*" @change="fileImage()">
+              <input
+                class="files"
+                id="files"
+                type="file"
+                accept="image/*"
+                @change="fileImage(obj.obj.value)"
+              >
             </div>
           </div>
           <div class="tip">请上传jpg、png、gif、psd等图片格式</div>
@@ -69,6 +81,7 @@
             v-for="(items, itemsIndex) of obj.obj.items"
             :key="itemsIndex"
             style="margin-bottom: 10px;"
+            @click="downloadInfo(items)"
           >
             <div>{{ items.label_name }}</div>
             <img
@@ -88,8 +101,9 @@
           <input
             type="text"
             :maxlength="obj.obj.maxLength"
-            :placeholder="obj.obj.placeholder"
-            v-model="obj.obj.value"
+            placeholder="请输入文字"
+            :readonly="formOnlyRead"
+            v-model="obj.obj.placeholder"
           >
         </div>
         <!-- 下拉框 -->
@@ -101,7 +115,7 @@
               <popup-picker
                 :data="obj.obj.items | dropDownFilter"
                 :columns="1"
-                :v-model="obj.obj.value | dropDownValueFilter"
+                v-model="obj.obj.value" 
                 placeholder="请选择"
                 show-name
               ></popup-picker>
@@ -110,13 +124,13 @@
         </div>
         <!-- 二级下拉 -->
         <div class="select-item picker" v-if="obj.ele == 'selectcontact'">
-          <div class="select-item-title">二级下拉</div>
+          <div class="select-item-title" v-html="obj.obj.label"></div>
           <div class="packet-box mt-12">
             <div class="picker-btn">
               <popup-picker
                 :data="obj.obj.items | dropDownFilter"
                 :columns="1"
-                v-model="dropDownBoxValue"
+                v-model="obj.obj.value"
                 placeholder="请选择"
                 show-name
               ></popup-picker>
@@ -125,7 +139,7 @@
               <popup-picker
                 :data="obj.obj.items | dropDownFilter"
                 :columns="1"
-                v-model="dropDownBoxValue"
+                v-model="obj.obj.value"
                 placeholder="请选择"
                 show-name
               ></popup-picker>
@@ -138,25 +152,36 @@
           <div class="checkbox-form">
             <checklist
               :required="obj.obj.require"
-              :options="obj.obj.items | checkBoxFilter"
+              :options="obj.obj.items | checkBoxFilter(obj.obj.hasOther)"
               v-model="obj.obj.value"
               @on-change="checkboxChange"
             ></checklist>
+            <input type="text" 
+                    placeholder="输入文字" 
+                    style="border: 1px solid #eee;"  
+                    v-model="obj.obj.otherValue"
+                    v-if="obj.obj.hasOther && obj.obj.value.indexOf('other')>-1">
           </div>
         </div>
         <!-- 手动填写分数 -->
-        <div class="select-item range-box" v-if="false">
-          <div class="select-item-title">手动填写分数</div>
+        <div class="select-item range-box" v-if="obj.ele == 'slider'">
+          <div class="select-item-title" v-html="obj.obj.label"></div>
           <div class="range">
-            <range
-              :range-bar-height="4"
-              :max="rangeValueMax"
-              v-model="rangeValue"
-              @on-touchstart="touchstartRange"
-            ></range>
+            <div class="rang-slider">
+              <div class="num">0</div>
+              <vue-slider ref="slider" 
+                        v-model="obj.obj.value"
+                        :max='obj.obj.high'
+                        width='80%'
+                        :dotSize="sliderDotSize"
+                        :processStyle='siliderProcessStyle'
+                        :tooltipStyle='sliderTooltipStyle'
+                        ></vue-slider>
+              <div class="num" v-html="obj.obj.high"></div>
+            </div>
             <div class="js-btn">
-              <img src="../../../assets/img/icon/icon-jian.png" alt @click="countRangeValue(-1)">
-              <img src="../../../assets/img/icon/icon-add.png" alt @click="countRangeValue(1)">
+              <img src="../../../assets/img/icon/icon-jian.png" alt @click="countRangeValue(-1, obj.obj.value, obj.obj.step)">
+              <img src="../../../assets/img/icon/icon-add.png" alt @click="countRangeValue(1, obj.obj.value, obj.obj.step)">
             </div>
           </div>
         </div>
@@ -166,45 +191,48 @@
           <div class="select-address">
             <div class="sheng" v-if="obj.obj.chooseCheck.indexOf('province') == 0">
               <popup-picker
-                :data="province | cityDatafilter"
+                :data="obj.obj.sheng"
                 :columns="1"
-                v-model="dropDownBoxValue"
+                v-model="obj.obj.shengValue"
                 placeholder="省/自治区/直辖市"
                 show-name
-                @on-hide="provinceHide"
+                @on-show="getCity(obj.obj.sheng, 0)"
               ></popup-picker>
             </div>
             <div class="shi" v-if="obj.obj.chooseCheck.indexOf('city') > -1">
               <popup-picker
-                :data="city | cityDatafilter"
+                :data="obj.obj.shi"
                 :columns="1"
-                v-model="dropDownBoxValue1"
+                v-model="obj.obj.shiValue"
                 placeholder="市"
-                :disabled="cityDisabled"
-                @on-hide="cityHide"
+                @on-show="getCity(obj.obj.shi, obj.obj.shengValue)"
                 show-name
               ></popup-picker>
             </div>
             <div class="qu" v-if="obj.obj.chooseCheck.indexOf('zone') > -1">
               <popup-picker
-                :data="zone | cityDatafilter"
+                :data="obj.obj.qu"
                 :columns="1"
-                v-model="dropDownBoxValue2"
+                v-model="obj.obj.quValue"
                 placeholder="区/县"
                 show-name
-                @on-show="popupPickerAddress(2)"
-                :disabled="zoneDisabled"
+                @on-show="getCity(obj.obj.qu, obj.obj.shiValue)"
               ></popup-picker>
             </div>
-            <input v-if="obj.obj.chooseCheck.indexOf('address') > -1" 
-                   type="text" 
-                   placeholder="详细地址" 
-                   v-model="addressInfo" 
-                   style="padding: 0 12px;">
+            <input
+              v-if="obj.obj.chooseCheck.indexOf('address') > -1"
+              type="text"
+              placeholder="详细地址"
+              v-model="obj.obj.value"
+              style="padding: 0 12px;"
+            >
           </div>
         </div>
         <!-- 日期/时间 -->
-        <div class="select-item date-time-box" v-if="(obj.ele == 'datepicker') && (obj.obj.chooseCheck.length == 2)">
+        <div
+          class="select-item date-time-box"
+          v-if="(obj.ele == 'datepicker') && (obj.obj.chooseCheck.length == 2)"
+        >
           <div class="select-item-title" v-html="obj.obj.label"></div>
           <div class="date-time">
             <div class="calendar-box">
@@ -212,7 +240,7 @@
                 <calendar
                   :readonly="calendarReadonly"
                   placeholder="选择日期"
-                  v-model="calendarValue"
+                  v-model="obj.obj.valueDate"
                   :title="calendarTitle"
                   disable-past
                 ></calendar>
@@ -227,7 +255,10 @@
           </div>
         </div>
         <!-- 日期 -->
-        <div class="select-item date-box" v-if="obj.ele == 'datepicker' && obj.obj.chooseCheck[0] == ['date'] && obj.obj.chooseCheck.length == 1">
+        <div
+          class="select-item date-box"
+          v-if="obj.ele == 'datepicker' && obj.obj.chooseCheck[0] == ['date'] && obj.obj.chooseCheck.length == 1"
+        >
           <div class="select-item-title" v-html="obj.obj.label"></div>
           <div class="date">
             <div class="calendar-box">
@@ -235,7 +266,7 @@
                 <calendar
                   :readonly="calendarReadonly"
                   :placeholder="obj.obj.placeholder"
-                  v-model="obj.obj.value"
+                  v-model="obj.obj.valueDate"
                   :title="calendarTitle"
                   disable-past
                 ></calendar>
@@ -244,7 +275,10 @@
           </div>
         </div>
         <!-- 时间 -->
-        <div class="select-item time-box" v-if="obj.ele == 'datepicker' && obj.obj.chooseCheck[0] == ['time'] && obj.obj.chooseCheck.length == 1">
+        <div
+          class="select-item time-box"
+          v-if="obj.ele == 'datepicker' && obj.obj.chooseCheck[0] == ['time'] && obj.obj.chooseCheck.length == 1"
+        >
           <div class="select-item-title">时间</div>
           <div class="time">
             <div class="time-picker">
@@ -279,22 +313,63 @@
         <div class="select-item radio" v-if="obj.ele == 'radio'">
           <div class="select-item-title" v-html="obj.obj.label"></div>
           <div class="radio-box-form">
+            <mt-radio :options="obj.obj.items | radioFilter(obj.obj.hasOther)" v-model="obj.obj.value"></mt-radio>
+            <input type="text" v-if='obj.obj.hasOther && obj.obj.value=="other"' v-model="obj.obj.otherValue" style="border: 1px solid #eee;">
+          </div>
+        </div>
+        <!-- 单选 勾选打分 -->
+        <div class="select-item radio" v-if="obj.ele == 'score' && obj.obj.isCheck == false">
+          <div class="select-item-title" v-html="obj.obj.label"></div>
+          <div class="radio-box-form">
             <mt-radio :options="obj.obj.items | radioFilter" v-model="obj.obj.value"></mt-radio>
           </div>
         </div>
-        <!-- 图片选择 -->
+        <!-- 多选 勾选打分-->
+        <div class="select-item checkbox" v-if="obj.ele == 'score' && obj.obj.isCheck">
+          <div class="select-item-title" v-html="obj.obj.label"></div>
+          <div class="checkbox-form">
+            <checklist
+              :required="obj.obj.require"
+              :options="obj.obj.items | checkBoxFilter"
+              v-model="obj.obj.value"
+              @on-change="checkboxChange"
+            ></checklist>
+          </div>
+        </div>
+        <!-- 图片展示 -->
         <div class="select-item img-select" v-if="obj.ele == 'imgshow'">
           <div class="select-item-title" v-html="obj.obj.label"></div>
           <div class="img-select-list">
-            <div class="img-select-item" v-for="(item, index) of imgArr" :key="index">
-              <img :src="item.src" @click="previewerImg(index)">
+            <div class="img-select-item" v-for="(item, index) of obj.obj.imgArr" :key="index">
+              <img :src="baseUrl + item.url" @click="previewerImg(index)">
+            </div>
+          </div>
+          <div v-transfer-dom>
+            <previewer
+              :list="obj.obj.imgArr | imgFilter"
+              ref="previewer"
+              :options="previewerOptions"
+            ></previewer>
+          </div>
+        </div>
+        <!-- 图片选择 -->
+        <div class="select-item img-select" v-if="obj.ele == 'imgcheck'">
+          <div class="select-item-title" v-html="obj.obj.label"></div>
+          <div class="img-select-list">
+            <div class="img-select-item" v-for="(item, index) of obj.obj.imgArr" :key="index">
+              <img :src="baseUrl + item.url" @click="previewerImg1(index)">
               <label>
-                <input name="img" type="checkbox" value>选项
+                <input name="img" type="checkbox" value>
+                {{ item.labels }}
               </label>
             </div>
           </div>
           <div v-transfer-dom>
-            <previewer :list="imgArr" ref="previewer" :options="previewerOptions"></previewer>
+            <previewer
+              :list="obj.obj.imgArr | imgFilter"
+              ref="previewer1"
+              :options="previewerOptions"
+            ></previewer>
           </div>
         </div>
         <!-- 单选-是否 -->
@@ -313,8 +388,9 @@
             id
             cols="30"
             rows="10"
-            v-model="obj.obj.value"
-            :placeholder="obj.obj.placeholder"
+            v-model="obj.obj.placeholder"
+            placeholder="请输入文字"
+            :readonly="formOnlyRead"
           ></textarea>
         </div>
       </div>
@@ -354,6 +430,7 @@
 </template>
 
 <script>
+import vueSlider from 'vue-slider-component';
 import {
   Tab,
   TabItem,
@@ -365,7 +442,8 @@ import {
   Group,
   Calendar,
   Previewer,
-  TransferDom
+  TransferDom,
+  Datetime
 } from "vux";
 import Uploader from "vux-uploader";
 import SuspendBtn from "../../../components/suspendBtn/SuspendBtn";
@@ -398,77 +476,132 @@ export default {
     Radio,
     Group,
     Calendar,
-    Previewer
+    Previewer,
+    Datetime,
+    vueSlider
   },
   filters: {
+    arrHash(r) {
+      console.log(r)
+      let item = [
+        {
+          name: '1',
+          value: '01'
+        }
+      ]
+      return item
+    },
+    imgFilter(r) {
+      let list = [];
+      r.map((v, i) => {
+        let item = {
+          src: + v.url
+        };
+        list.push(item);
+      });
+      return list;
+    },
     dropDownValueFilter(r) {
-      let a = []
-      return a
+      let a = [];
+      return a;
     },
     dropDownFilter(r) {
-      let list = []
-      r.map((v, i) =>{
+      let list = [];
+      r.map((v, i) => {
         let item = {
           name: v.label_name,
-          value: v.label_value,
+          value: i + "",
           parent: 0
-        }
-        list.push(item)
-      })
-      return list
+        };
+        list.push(item);
+      });
+      return list;
     },
-    checkBoxFilter (r) {
-      let list = []
-      r.map((v, i) =>{
+    checkBoxFilter(r, hasOther) {
+      let list = [];
+      r.map((v, i) => {
         let item = {
-          key: v.label_value,
+          key: i,
           value: v.label_name
-        }
-        list.push(item)
-      })
-      return list
+        };
+        list.push(item);
+      });
+
+      if(hasOther) {
+        list.push({
+          key: 'other',
+          value: '其他'
+        })
+      }
+      return list;
     },
-    radioFilter(r) {
-      let list = []
-      r.map((v, i) =>{
+    radioFilter(r, otherValue) {
+      let list = [];
+
+      r.map((v, i) => {
         let item = {
           label: v.label_name,
-          value: v.label_value
-        }
-        list.push(item)
-      })
-      return list
+          value: i + '',
+        };
+        list.push(item);
+      });
+
+      if(otherValue) {
+        list.push({
+          label: '其他',
+          value: 'other'
+        })
+      }
+      return list;
     },
     filtersData(r) {
       // console.log(r)
-      let list = []
-      r.map((v, i) =>{
+      let list = [];
+      r.map((v, i) => {
         let item = {
           key: v.name,
           value: v.value
-        }
-        list.push(item)
-      })
-      return list
+        };
+        list.push(item);
+      });
+      return list;
     },
     cityDatafilter(r) {
-      // console.log(r)
-      let list = []
+      console.log(r)
+      let list = [];
       r.map((v, i) => {
         let item = {
           value: v.id,
           name: v.name
-        }
-        list.push(item)
-      })
-      return list
+        };
+        list.push(item);
+      });
+      return list;
     }
   },
   data() {
     return {
-      allListData: mockData.data,
+      baseUrl: "http://47.93.156.129:8848/",
 
-      preview: '',   // 值为1时，为预览页面
+      formOnlyRead: false, // 表单状态
+
+      siliderProcessStyle: {
+        "backgroundColor": "#5DB75D"
+      },
+      sliderTooltipStyle: {
+        "backgroundColor": "#fff",
+        "color": "#aab2bd",
+        "font-size": '14px',
+        "borderColor": '#fff',
+        "box-shadow": "0 1px 11px 0 rgba(0,0,0,0.20)"
+      },
+      sliderDotSize: 25,
+
+      cityPid: -100,
+
+      allListData: mockData.data1,
+
+      preview: "", // 值为1时，为预览页面
 
       oneLineValue: "", // 单行文字
       selectStudentValue: "点击选择学生范围",
@@ -486,18 +619,35 @@ export default {
       cityDisabled: true,
 
       // 上传图片
-      uoloadImgArr: ["http://ww1.sinaimg.cn/large/663d3650gy1fplwu9ze86j20m80b40t2.jpg","http://ww1.sinaimg.cn/large/663d3650gy1fplwu9ze86j20m80b40t2.jpg","http://ww1.sinaimg.cn/large/663d3650gy1fplwu9ze86j20m80b40t2.jpg"],
+      uoloadImgArr: [
+        "http://ww1.sinaimg.cn/large/663d3650gy1fplwu9ze86j20m80b40t2.jpg",
+        "http://ww1.sinaimg.cn/large/663d3650gy1fplwu9ze86j20m80b40t2.jpg",
+        "http://ww1.sinaimg.cn/large/663d3650gy1fplwu9ze86j20m80b40t2.jpg"
+      ],
 
       previewerOptions: {},
       imgArr: [
         {
-          src: "http://ww1.sinaimg.cn/large/663d3650gy1fplwu9ze86j20m80b40t2.jpg"
+          msrc:
+            "http://ww1.sinaimg.cn/thumbnail/663d3650gy1fplwu9ze86j20m80b40t2.jpg",
+          src:
+            "http://ww1.sinaimg.cn/large/663d3650gy1fplwu9ze86j20m80b40t2.jpg",
+          w: 800,
+          h: 400
         },
         {
-          src: "http://ww1.sinaimg.cn/large/663d3650gy1fplwvqwuoaj20xc0p0t9s.jpg"
+          msrc:
+            "http://ww1.sinaimg.cn/thumbnail/663d3650gy1fplwvqwuoaj20xc0p0t9s.jpg",
+          src:
+            "http://ww1.sinaimg.cn/large/663d3650gy1fplwvqwuoaj20xc0p0t9s.jpg",
+          w: 1200,
+          h: 900
         },
         {
-          src: "http://ww1.sinaimg.cn/large/663d3650gy1fplwwcynw2j20p00b4js9.jpg"
+          msrc:
+            "http://ww1.sinaimg.cn/thumbnail/663d3650gy1fplwwcynw2j20p00b4js9.jpg",
+          src:
+            "http://ww1.sinaimg.cn/large/663d3650gy1fplwwcynw2j20p00b4js9.jpg"
         }
       ],
 
@@ -555,80 +705,67 @@ export default {
   },
   computed: {},
   methods: {
-    cityHide(type) {
-      console.log(type)
-      if (type || this.dropDownBoxValue1.length) {
-        console.log(this.dropDownBoxValue1);
-        this.zoneDisabled = false;
-
-        this.$api.get(
-          `/city/getCity?pid=${this.dropDownBoxValue1[0]}`,
-          r => {
-            console.log(r);
-          },
-          r => {
-            // console.log(r.data)
-            let data = JSON.parse(r.data);
-            data.map((v, i) => {
-              v.value = v.id;
-            });
-            this.zone = data;
+    // 数据格式化
+    dataFormat(data) {
+      // console.log(data)
+      let allData = data
+      allData.map((a, b) => {
+        a.data.map((c, d) => {
+          if(c.ele == 'select') {
+            c.obj.value = []
           }
-        );
-
-        this.getCity;
-      }
-    },
-    provinceHide(type) {
-      console.log(type);
-      if (type || this.dropDownBoxValue.length) {
-        console.log(this.dropDownBoxValue);
-        this.cityDisabled = false;
-
-        this.$api.get(
-          `/city/getCity?pid=${this.dropDownBoxValue[0]}`,
-          r => {
-            console.log(r);
-          },
-          r => {
-            // console.log(r.data)
-            let data = JSON.parse(r.data);
-            data.map((v, i) => {
-              v.value = v.id;
-            });
-            this.city = data;
+          if(c.ele == 'address') {
+            c.obj.shengValue = []
+            c.obj.shiValue = []
+            c.obj.quValue = []
           }
-        );
+          if(c.ele == 'selectcontact') {
 
-        this.getCity;
-      }
+          }
+        })
+      })
     },
-    popupPickerAddress(type) {
-      console.log(type);
+    // 文件下载
+    downloadInfo(item) {
+      let baseUrl = this.baseUrl;
+      let path = baseUrl + item.url;
+      this.$api.get(
+        `/file/download`,
+        { path: path },
+        r => {
+          console.log(r);
+        },
+        r => {
+          console.log(r);
+        }
+      );
     },
     // 图片预览
     previewerImg(index) {
-      this.$refs.previewer.show(index);
+      this.$refs.previewer[0].show(index);
+    },
+    previewerImg1(index) {
+      this.$refs.previewer1[0].show(index);
     },
     // 上传图片
-    fileImage() {
+    fileImage(list) {
       let self = this;
       let fileObj = document.getElementById("files").files[0];
       console.log(fileObj);
-      // let curRemoveObj = this.sortable_item[this.curIndex].obj.imgArr;
-      // curRemoveObj[index].name = fileObj.name;
-      // self.$api.uploadFile("file/upload ", {}, fileObj, r => {
-      //   setInterval(() => {
-      //     if (self.progress < 100) {
-      //       self.progress += 10;
-      //     }
-      //   }, 200);
-      //   curRemoveObj[index].titles = "图片";
-
-      //   curRemoveObj[index].url = r.data;
-      //   curRemoveObj[index].size = fileObj.size;
-      //   curRemoveObj[index].labels = "选项";
-      // });
+      self.$api.uploadFile("file/upload ", {}, fileObj, r => {
+        console.log(r);
+        list.push({
+          src: this.baseUrl + r.data
+        });
+      });
+    },
+    delImg(list, idx) {
+      console.log(list[idx].src);
+      let path = list[idx].src;
+      this.$api.get("/file/deleteFile", { path: path }, r => {
+        console.log(r);
+        list.splice(idx, 1);
+      });
     },
     // 多选按钮
     checkboxChange(val, label) {
@@ -695,47 +832,88 @@ export default {
     touchstartRange(e) {
       console.log(e);
     },
-    countRangeValue(type) {
-      console.log(type);
-      let rangeValue = this.rangeValue;
-      if (type == -1 && this.rangeValue > 0) {
-        this.rangeValue = rangeValue - 1;
+    countRangeValue(type, value, step) {
+      // console.log(type);
+      // console.log(value)
+      // console.log(step)
+
+      if (type == -1) {
+        value = parseInt(value) - parseInt(step);
       }
-      if (type == 1 && this.rangeValueMax > rangeValue) {
-        this.rangeValue = rangeValue + 1;
+      if (type == 1) {
+        value  = parseInt(value) + parseInt(step)
+        console.log(value)
       }
     },
     loadMore() {},
     submitForm() {
-      console.log(this.allListData);
+      console.log(this.allListData[0])
     },
     // 获取表单数据
     getFormData() {
-      this.$api.get("/cform/tempDetail", {tempid: "5c189861d725d24950b66849"},
+      this.$api.get(
+        "/cform/tempDetail",
+        { tempid: "5c189861d725d24950b66849" },
         r => {
           // console.log(2,r);
         }
       );
     },
-    // 获取省市区
-    getCity(pid) {
-      this.$api.get(`/city/getCity`, {pid: pid},
-        r => {
+    // 选择城市
+    getCity(list, model) {
+      model = model == 0 ? model : model[0];
+      // if (this.cityPid == model) {
+      //   return;
+      // }
+      this.cityPid = model;
+      let pid = model;
+      if(list.length) {
+        list = []
+      }
+
+        this.$api.get(`/city/getCity`, { pid: model }, r => {
           let data = JSON.parse(r.data);
-          this.province = data;
-          console.log(data);
-        }
-      );
+          // list = data
+          data.map((v, i) => {
+            let item = {
+              value: v.id,
+              name: v.name
+            };
+            list.push(item);
+          });
+        });
+
+
     }
   },
   mounted() {
+    console.log(this);
+
+    this.dataFormat(this.allListData)
+
 
     // 判断页面是不是预览
-    this.preview = this.$route.query.preview ? this.$route.query.preview : ''
+    this.preview = this.$route.query.preview ? this.$route.query.preview : "";
+
+
+    this.$api.get('/cform/getpreview', {tempid: '5c1f6a47d725d257ac33f392'}, r=> {
+        console.log(r)
+    })
+
+    // 预览
+    if(this.preview == 1) {
+      // 模板ID
+      let ids = this.$route.query.ids ? this.$route.query.ids : '5c1f6a47d725d257ac33f392'
+
+      this.$api.get('/cform/getpreview', {tempid: ids}, r=> {
+        console.log(r)
+      })
+
+      return false
+    }
+
 
     this.getFormData();
-
-    this.getCity(0);
 
     for (let i = 0; i < 24; i++) {
       this.hoursData[0].push(i + "");
@@ -744,10 +922,10 @@ export default {
       this.minuteData[0].push(j + "");
     }
 
-    let previewObj = sessionStorage.getItem("previewObj")
-    console.log('session值：' + previewObj)
-    if(previewObj) {
-      this.allListData = previewObj
+    let previewObj = sessionStorage.getItem("previewObj");
+    console.log("session值：" + previewObj);
+    if (previewObj) {
+      this.allListData = previewObj;
     }
 
     this.selectStudentValue = sessionStorage.getItem("selectStudentValue")
@@ -900,7 +1078,7 @@ a:hover {
   [class*=" weui-icon-"]:before {
     margin: 0;
   }
-  // 选中状态 
+  // 选中状态
   .weui-cells_checkbox .weui-icon-checked:before {
     font-size: 18px;
   }
@@ -1000,6 +1178,39 @@ a:hover {
         font-size: 9px;
         color: #575757;
       }
+      .upload-list {
+        margin-bottom: 10px;
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        .img-box-item {
+          width: px2rem(70);
+          height: px2rem(70);
+          position: relative;
+          margin-bottom: 5px;
+          margin-right: px2rem(8);
+          &:nth-child(4n + 0) {
+            margin-right: 0;
+          }
+          .del-img {
+            position: absolute;
+            width: 13px;
+            height: 13px;
+            background: rgba(0, 0, 0, 0.2);
+            color: #fff;
+            font-size: 12px;
+            right: 5px;
+            top: 5px;
+            border-radius: 50%;
+            text-align: center;
+            line-height: 13px;
+          }
+        }
+        img {
+          width: px2rem(75);
+          height: px2rem(75);
+        }
+      }
       .upload {
         position: relative;
         div {
@@ -1087,7 +1298,12 @@ a:hover {
     }
     .range-box {
       .range {
-        margin-top: 30px;
+        margin-top: 40px;
+        .rang-slider {
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+        }
       }
       .js-btn {
         display: flex;
@@ -1348,26 +1564,24 @@ a:hover {
 
 // 滚动条样式
 ::-webkit-scrollbar {
-     width: 7px;
-     height: 5px;
- }
- 
- ::-webkit-scrollbar-track-piece {
-     background-color: rgba(0, 0, 0, 0.2);
-     -webkit-border-radius: 6px;
- }
- 
- ::-webkit-scrollbar-thumb:vertical {
-     height: 5px;
-     background-color: rgba(125, 125, 125, 0.7);
-     -webkit-border-radius: 6px;
- }
- 
- ::-webkit-scrollbar-thumb:horizontal {
-     width: 7px;
-     background-color: rgba(125, 125, 125, 0.7);
-     -webkit-border-radius: 6px;
- }
+  width: 7px;
+  height: 5px;
+}
 
+::-webkit-scrollbar-track-piece {
+  background-color: rgba(0, 0, 0, 0.2);
+  -webkit-border-radius: 6px;
+}
 
+::-webkit-scrollbar-thumb:vertical {
+  height: 5px;
+  background-color: rgba(125, 125, 125, 0.7);
+  -webkit-border-radius: 6px;
+}
+
+::-webkit-scrollbar-thumb:horizontal {
+  width: 7px;
+  background-color: rgba(125, 125, 125, 0.7);
+  -webkit-border-radius: 6px;
+}
 </style>

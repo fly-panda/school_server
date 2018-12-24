@@ -12,7 +12,7 @@ import './assets/styles/border.css'
 import './assets/styles/reset.css'
 import 'iview/dist/styles/iview.css'
 
-import { ToastPlugin,ConfirmPlugin,AlertPlugin} from 'vux'
+import { ToastPlugin,ConfirmPlugin,AlertPlugin, LoadingPlugin} from 'vux'
 
 import api from './common/js/index'
 Vue.prototype.$api = api;
@@ -20,6 +20,7 @@ Vue.prototype.$api = api;
 Vue.use(ToastPlugin)
 Vue.use(ConfirmPlugin)
 Vue.use(AlertPlugin)
+Vue.use(LoadingPlugin)
 Vue.use(MintUI)
 
 // fastClick.attach(document.body)
