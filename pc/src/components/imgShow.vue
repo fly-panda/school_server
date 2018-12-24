@@ -2,8 +2,9 @@
 <div>
     <div style="paddding-bottom:20px;display: inline-block;" v-for="item in defaultList" :key="item.name">
         <div class="demo-upload-list">
+
             <template v-if="item.status === 'finished'">
-    
+            
                 <!-- <img v-if="item.url==''" src="@/assets/tupianshangchuan_nor.png" alt=""> -->
                 <img v-if="item.url!=''" :src="baseImgUrl+item.url">
                 <div class="demo-upload-list-cover">

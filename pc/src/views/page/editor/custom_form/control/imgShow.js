@@ -26,18 +26,7 @@ config: true,
 // 控件左侧label内容
 label: '图片展示',//图片展示
 imgArr:[
-    // {
-    //     'title':'图片1',
-    //     'name': 'a42bdcc1178e62b4694c830f028db5c0',
-    //     'url': require("@/assets/tupianshangchuan_nor.png"),
-    //     "size":"10kb"
-    // },
-    // {
-    //     'title':'图片2',
-    //     'name': 'bc7521e033abdd1e92222d733590f104',
-    //     'url': require("@/assets/zhourenwu_ico.png"),
-    //     "size":"10kb",
-    // }
+
 ],
 placeholder: '',
 // 是否显示行内元素

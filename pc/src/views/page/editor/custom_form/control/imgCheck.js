@@ -39,7 +39,7 @@ imgArr:[
                     'name': '',
                     'url': '',
                     'progress':0,
-                    "size":"10kb",
+                    "size":"0",
                     'labels':"选项1"
                 }
 ],

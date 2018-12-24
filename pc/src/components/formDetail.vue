@@ -319,7 +319,7 @@
                  
             </div>
             <!-- 详细地址 -->
-            <div class="selectStudentContainer" v-if="cont.ele=='address'">
+<!--             <div class="selectStudentContainer" v-if="cont.ele=='address'">
                 <div class="title" :class="{'require-cls':cont.obj.require}">{{cont.obj.label}}</div>
                 <div class="point">{{cont.obj.describe}}</div>
                 <Row>
@@ -343,7 +343,12 @@
                 <Row style="margin-top: .4rem">
                     <Input  type="text" v-model="cont.obj.value" placeholder="请输入详细地址"></Input>
                 </Row>
+            </div> -->
+
+            <div v-if="cont.ele=='address'">
+                <address_com :name.sync="cont"/>
             </div>
+
             <!-- 文件上传 -->
             <div class="selectStudentContainer" v-if="cont.ele=='uploads'">
                 <div class="title" :class="{'require-cls':cont.obj.require}">{{cont.obj.label}}</div>
@@ -409,9 +414,13 @@
 
 <script>
 import datas from "_c/mock.js"
+import address_com from "_c/address.vue"
 export default {
 // 'previewObj',
     props: ['isSave','types'],
+    components:{
+        address_com
+    },
     data() {
         return {
             checkAllGroup: [],
@@ -637,6 +646,8 @@ export default {
         },
         saveForm(){
             console.log(JSON.stringify(this.previewObj));
+            
+           
             // this.previewObj.data.forEach(item => {
             //     if(item.obj.require){
             //         console.log(23213)

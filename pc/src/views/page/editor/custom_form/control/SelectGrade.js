@@ -14,7 +14,7 @@ export default (_self, h) => {
 //     }
 //   }));
 
-  icons.push(h('span', '点击选择年级'))
+  icons.push(h('span', '点击选择班级'))
     return [
         h("div", {
             style: {
@@ -45,7 +45,7 @@ export let selectGradeConf = {
     // 是否可配置
     config: true,
     // 控件左侧label内容
-    label: '选择年级',
+    label: '选择班级',
     placeholder: '',
     // 是否显示行内元素
     inlineBlock: false,

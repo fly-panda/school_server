@@ -193,8 +193,8 @@
                     <Option v-for="item in formatList" :value="item.dKey" :key="item.dKey">{{ item.dValue }}</Option>
                 </Select>
             </FormItem> -->
-            <FormItem label="选择需要选择的年级范围"  v-if="settingFormItem.type==='selectgrade'">
-                <Button type="primary" ghost long size="small" @click="changeModal">点击选择年级范围</Button>
+            <FormItem label="选择需要选择的班级范围"  v-if="settingFormItem.type==='selectgrade'">
+                <Button type="primary" ghost long size="small" @click="changeModal">点击选择班级范围</Button>
             </FormItem>
             <FormItem label="选择需要选择的学生范围"  v-if="settingFormItem.type==='selectstudent'">
                 <Button type="primary" ghost long size="small" @click="changeModal">点击选择学生范围</Button>
@@ -390,9 +390,9 @@
             </div>
              <FormItem v-if="settingFormItem.type == 'address'" >
                     <CheckboxGroup size="large" class="positionColumn" v-model="settingFormItem.chooseCheck">
-                        <Checkbox class="checkboxItem" label="province">省/直辖市</Checkbox>
+<!--                         <Checkbox class="checkboxItem" label="province">省/直辖市</Checkbox>
                         <Checkbox class="checkboxItem" label="city">市</Checkbox>
-                        <Checkbox class="checkboxItem" label="zone">区</Checkbox>
+                        <Checkbox class="checkboxItem" label="zone">区</Checkbox> -->
                         <Checkbox class="checkboxItem" label="detail">详细地址</Checkbox>
                     </CheckboxGroup>
                 </FormItem>
@@ -604,9 +604,9 @@ export default {
                 formObj,
                 r=>{
 
-                   this.$router.push({
-                       path:"/settingEditorForm?ids="+r.data
-                   })
+                   // this.$router.push({
+                   //     path:"/settingEditorForm?ids="+r.data
+                   // })
                 }
             )
         },
@@ -768,7 +768,7 @@ export default {
                 curRemoveObj[index].titles='图片';
                 
                 curRemoveObj[index].url= r.data;
-                curRemoveObj[index].size=fileObj.size;
+                curRemoveObj[index].size=self.$api.onver(fileObj.size);
                 curRemoveObj[index].labels='选项';
             });
         },
@@ -776,18 +776,22 @@ export default {
             let self=this;
             let fileObj=document.getElementById("showFiles").files[0];
             let curRemoveObj = this.sortable_item[this.curIndex].obj.imgArr;
+            let objs={
+                    titles:'图片',
+                    name:fileObj.name,
+                    url:"",
+                    size:self.$api.onver(fileObj.size),
+                    percentage:100,
+                    uid:new Date().getTime()
+                }
             self.$api.uploadFile("file/upload ", {},fileObj, (r) => {
                 setInterval(() => {
                     if(self.progress<100){
                         self.progress+=10;
                     }
-                }, 200)       
-                curRemoveObj.push({
-                    titles:'图片',
-                    name:fileObj.name,
-                    url:r.data,
-                    size:fileObj.size
-                })     
+                }, 200)   
+                objs.url=r.data;    
+                curRemoveObj.push(objs)     
 
             });
         },
@@ -801,7 +805,8 @@ export default {
                 label_value: curRemoveObj.length+1,
                 label_name: fileObj.name,
                 url:"",
-                size:fileObj.size
+                size:fileObj.size,
+                status:"finishedss"
             })
             self.$api.uploadFile("file/upload ", {},fileObj, (r) => {
                 setInterval(() => {

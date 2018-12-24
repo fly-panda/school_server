@@ -43,7 +43,7 @@ function apiAxios(method, url, params, success, failure) {
         let data=res.data;
         if(res.status==200){
           if(data.state==0){
-            Message.success(data.result);
+            // Message.success(data.result);
             success(data);
           }else{
             Message.error(data.result);
