@@ -101,6 +101,7 @@ const validateMobile = (rule, value, callback) => {
     }
 }
 export default {
+    props:["tempId"],
     data() {
         return {
             checkStatus: -1,
@@ -165,7 +166,7 @@ export default {
                 isTemplate:self.settingForm.isTemplate,
                 classRelationTeacher:self.settingForm.classRelationTeacher,
                 resultCopy:self.settingForm.resultCopy,
-                id:this.$route.query.ids
+                id:this.tempId
             };
             for(let i=0;i<self.weekList.length;i++){
                 if(self.weekList[i].check){

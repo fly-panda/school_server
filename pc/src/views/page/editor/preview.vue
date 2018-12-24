@@ -59,13 +59,18 @@ export default {
             })
         },    
         preview(type){
+            
             let self=this;
             if(type=="1"){
                 self.active=type;
             }else if(type=="2"){
                 self.active=type;
             }else if(type=="3"){
-                self.$router.go(-1);
+                
+                self.$router.push({
+                    path:"/editorForm?isBack=1"
+                });
+               
             }
         }
     }

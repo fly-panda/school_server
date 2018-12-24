@@ -25,6 +25,7 @@
 
 <script>
 export default {
+    props:["tempId"],
     data() {
         return {
             // qrImg: qrImg,

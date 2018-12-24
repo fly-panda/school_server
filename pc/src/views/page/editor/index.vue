@@ -11,20 +11,50 @@
         发布设置
         </MenuItem>
     </Menu>
-    <router-view/>
+    <!-- <keep-alive>
+        <router-view v-if="$route.meta.keepAlive"></router-view>
+    </keep-alive>
+    <router-view v-if="!$route.meta.keepAlive"></router-view> -->
+    <div :style="{height:fullHeight.height}" style="overflow-y:scroll;">
+        <editorForm :tempId="tempId" @changeId="changeIdFun($event)" ref="editorFormObj" v-show="viewType=='editorForm'"/>
+        <publishForm :tempId="tempId" v-show="viewType=='publishForm'"/>
+        <settingEditorForm :tempId="tempId" v-show="viewType=='settingEditorForm'"/>
+    </div>
 </div>
 </template>
 
 <script>
+import editorForm from "./editorForm";
+import publishForm from "./publishForm";
+import settingEditorForm from "./settingEditorForm";
 export default {
     data() {
-        return {}
+        return {
+            viewType:'editorForm',
+            fullHeight:{// 动态获取屏幕高度
+                height: (document.documentElement.clientHeight-124)+"px"
+            },
+            tempId:""
+        }
+    },
+    components:{
+        editorForm,
+        publishForm,
+        settingEditorForm
     },
     methods: {
         changeRoure(name){
-            this.$router.push({
-                name
-            })
+            this.viewType=name;
+            // this.$router.push({
+            //     name
+            // })
+            if(name=="settingEditorForm"){
+               this.$refs.editorFormObj.saveSoltItem();
+            }
+        },
+        changeIdFun(msg){
+
+            this.tempId=msg;
         }
     }
 }

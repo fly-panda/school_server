@@ -430,6 +430,7 @@ import { VueEditor } from "vue2-editor";
 import {mapState,mapGetters,mapActions} from 'vuex'; //先要引入
 import datas from "_c/mock.js"
 export default {
+    props:["tempId"],
     data() {
         return {
             content: '<h1> 富文本编辑器</h1>',
@@ -539,6 +540,13 @@ export default {
         // console.log(this.sortable_item);
         // console.log("我获取的",this.departmentList);
         // this.sortable_item=datas.data.data;
+        if(this.$route.query.isBack==1){
+            let previewObj=this.$api.sGetObject("previewObj");
+            this.formTitle=previewObj.title;
+            this.content=previewObj.describe;
+            this.sortable_item=previewObj.data;
+
+        }
         console.log(this.sortable_item)
     },
     methods: {
@@ -598,12 +606,12 @@ export default {
         },
         saveSoltItem(){
             let formObj=this.formatData();
-            console.log(formObj)
+             
             // console.log(JSON.stringify(this.sortable_item))
             this.$api.post("/cform/addForm",
                 formObj,
                 r=>{
-
+                   this.$emit("changeId",r.data);
                    // this.$router.push({
                    //     path:"/settingEditorForm?ids="+r.data
                    // })
@@ -889,7 +897,7 @@ export default {
     }
     .slide {
         width: 256px;
-        height: 87%;
+        height: 100%;
         overflow-y: auto;
         background: #F1F1F1;
         padding-bottom:80px;

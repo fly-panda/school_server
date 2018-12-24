@@ -32,7 +32,10 @@
             <Modal v-model="modalStatus"  :title="madalTitle" footer-hide @on-cancel="cancelModal()">
                 <component v-bind:is="currentView"></component>
             </Modal>
-            <router-view />
+                <keep-alive>
+                    <router-view v-if="$route.meta.keepAlive"></router-view>
+                </keep-alive>
+                <router-view v-if="!$route.meta.keepAlive"></router-view>
         </Content>
         <!-- <Footer class="layout-footer-center">2011-2016 &copy; TalkingData</Footer> -->
     </Layout>

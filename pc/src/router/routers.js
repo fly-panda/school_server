@@ -17,6 +17,7 @@ export default [
         name: 'login',
         meta: {
             title: 'Login - 登录',
+            keepAlive: false // 不需要缓存
         },
         component:resolve=>require(["@/views/page/Login.vue"],resolve)
     },
@@ -26,6 +27,7 @@ export default [
         redirect: '/cardformList',
         meta: {
             title: 'Home - 主页',
+            keepAlive: false // 不需要缓存
         },
         component:resolve=>require(["@/views/page/Home.vue"],resolve),
         children: [
@@ -33,7 +35,8 @@ export default [
                 path: '/myPublish',
                 name: 'myPublish',
                 meta: {
-                    title: '我的发布'
+                    title: '我的发布',
+                    keepAlive: false // 不需要缓存
                 },
                 component:resolve=>require(['@/views/page/publish/MyPublish.vue'],resolve),
                 children: [
@@ -41,7 +44,8 @@ export default [
                         path: '/cardformList',
                         name: 'cardformList',
                         meta: {
-                            title: '表单列表'
+                            title: '表单列表',
+                            keepAlive: false // 不需要缓存
                         },
                         component:resolve=>require(['@/views/page/publish/cardformList.vue'],resolve)
                     },
@@ -49,7 +53,8 @@ export default [
                         path: '/allTemplate',
                         name: 'allTemplate',
                         meta: {
-                            title: '全部模板'
+                            title: '全部模板',
+                            keepAlive: false // 不需要缓存
                         },
                         component:resolve=>require(["@/views/page/publish/allTemplate.vue"],resolve)
                     }
@@ -61,6 +66,7 @@ export default [
                 redirect: '/allTask',
                 meta: {
                     title: '我的任务',
+                    keepAlive: false // 不需要缓存
                 },
                 component:resolve=>require(["@/views/page/myTask"],resolve),
                 children: [
@@ -68,7 +74,8 @@ export default [
                         path: '/allTask',
                         name: 'allTask',
                         meta: {
-                            title: '全部任务'
+                            title: '全部任务',
+                            keepAlive: false // 不需要缓存
                         },
                         component:resolve=>require(['@/views/page/myTask/allTask.vue'],resolve)
                     },
@@ -76,7 +83,8 @@ export default [
                         path: '/historyTask',
                         name: 'historyTask',
                         meta: {
-                            title: '历史任务'
+                            title: '历史任务',
+                            keepAlive: false // 不需要缓存
                         },
                         component:resolve=>require(["@/views/page/myTask/history.vue"],resolve)
                     }
@@ -87,6 +95,7 @@ export default [
                 name: 'publicTemp',
                 meta: {
                     title: '公共模板',
+                    keepAlive: false // 不需要缓存
                 },
                 component:resolve=>require(["@/views/page/publicTemp.vue"],resolve)
             },
@@ -95,6 +104,7 @@ export default [
                 name: 'taskDetail',
                 meta: {
                     title: '表单详情',
+                    keepAlive: false // 不需要缓存
                 },
                 component:resolve=>require(["@/views/page/myTask/taskDetail.vue"],resolve)
             },
@@ -103,6 +113,7 @@ export default [
                 name: 'record',
                 meta: {
                     title: '填写记录',
+                    keepAlive: false // 不需要缓存
                 },
                 component:resolve=>require(["@/views/page/myTask/record.vue"],resolve)
             },
@@ -112,6 +123,7 @@ export default [
                 name: 'myCc',
                 meta: {
                     title: '我的抄送',
+                    keepAlive: false // 不需要缓存
                 },
                 component:resolve=>require(["@/views/page/duplicate/myCc.vue"],resolve)
             },
@@ -121,6 +133,7 @@ export default [
                 redirect: '/editorForm',
                 meta: {
                     title: '创建表单',
+                    keepAlive: false // 不需要缓存
                 },
                 component:resolve=>require(["@/views/page/editor"],resolve),
                 children: [
@@ -128,7 +141,8 @@ export default [
                         path: '/editorForm',
                         name: 'editorForm',
                         meta: {
-                            title: '编写表单'
+                            title: '编写表单',
+                            keepAlive: false // 不需要缓存
                         },
                         component:resolve=>require(["@/views/page/editor/editorForm.vue"],resolve)
                     },
@@ -136,7 +150,8 @@ export default [
                         path: '/settingEditorForm',
                         name: 'settingEditorForm',
                         meta: {
-                            title: '设置表单规则'
+                            title: '设置表单规则',
+                            keepAlive: false // 不需要缓存
                         },
                         component:resolve=>require(["@/views/page/editor/settingEditorForm.vue"],resolve)
                     },
@@ -144,7 +159,8 @@ export default [
                         path: '/publishForm',
                         name: 'publishForm',
                         meta: {
-                            title: '发布设置'
+                            title: '发布设置',
+                            keepAlive: false // 不需要缓存
                         },
                         component:resolve=>require(["@/views/page/editor/publishForm.vue"],resolve)
                     }
@@ -155,6 +171,7 @@ export default [
                 name: 'duplicate',
                 meta: {
                     title: '表单详情',
+                    keepAlive: false // 不需要缓存
                 },
                 component:resolve=>require(["@/views/page/duplicate"],resolve)
             }
@@ -166,6 +183,7 @@ export default [
         name: 'preview',
         meta: {
             title: '预览',
+            keepAlive: false // 不需要缓存
         },
         component:resolve=>require(["@/views/page/editor/preview"],resolve)
     },
