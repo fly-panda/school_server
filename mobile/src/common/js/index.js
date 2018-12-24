@@ -1,8 +1,6 @@
 // import md5 from 'js-md5';
 // 配置API接口地址
 var baseUrlRoot = 'http://47.93.156.129:8848/api/'
-import {Message} from 'iview'
-import  { Toast, Loading } from 'vux'
 import Vue from 'vue'
 
 // 引用axios
@@ -24,7 +22,49 @@ function getParams(req){
     return params;
 }
 
-
+function download(url, params, success) {
+  axios({
+    method: 'GET',
+    url: baseUrlRoot + url,
+    responseType: 'blob',
+    params: params,
+    headers: {
+      "Content-Type": "application/x-download;charset=utf-8"
+    }
+  })
+    .then((res) => {
+      let data=res.data;
+      if(res.status==200){
+        if(data.state==0){
+          // Message.success(data.result);
+          Vue.$vux.toast.show({
+            text: data.result,
+            time: "2000",
+            type: "text",
+            position: "middle"
+          });
+          success(data);
+        }else{
+          // failure(data)
+          Vue.$vux.toast.show({
+            text: data.result,
+            time: "2000",
+            type: "text",
+            position: "middle"
+          });
+          // Message.error(data.result);
+        }   
+      }
+    })
+    .catch((res) => {
+      Vue.$vux.toast.show({
+        text: '服务异常，请刷新重试！',
+        time: "2000",
+        type: "text",
+        position: "middle"
+      });
+    })
+}
 
 function apiAxios(method, url, params, success, failure) {
   if (method=="POST") {
@@ -164,6 +204,9 @@ export default {
   },
   uploadFile:function(url,params, file, success){
     return uploadFile(url,params, file, success);
+  },
+  download: function(url, params, success) {
+    return download(url, params, success)
   },
   onver(limit){
     var size = "";

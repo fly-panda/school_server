@@ -17,66 +17,74 @@ const router = new Router({
     {
       path: '/',
       name: 'Home',
-      component: Home,
+      // component: Home,
       meta: {
         title: '我的任务'
-      }
+      },
+      component:resolve=>require(["@/pages/home/Home.vue"],resolve)
     },
     {
       path: '/task',
       name: 'Task',
-      component: Task,
+      // component: Task,
       meta: {
         title: '任务管理'
-      }
+      },
+      component:resolve=>require(["@/pages/task/Task"],resolve)
     },
     {
       path: '/copy',
       name: 'Copy',
-      component: Copy,
+      // component: Copy,
       meta: {
         title: '抄送'
-      }
+      },
+      component:resolve=>require(["@/pages/copy/Copy"],resolve)
     },
     {
       path: '/formPage',
       name: 'FormPage',
-      component: FormPage,
+      // component: FormPage,
       meta: {
         title: '我的任务'
-      }
+      },
+      component:resolve=>require(["@/pages/home/formPage/FormPage"],resolve)
     },
     {
       path: '/selectList',
       name: 'SelectList',
-      component: SelectList,
+      // component: SelectList,
       meta: {
         title: '选择年级'
-      }
+      },
+      component:resolve=>require(["@/pages/home/formPage/selectList/SelectList"],resolve)      
     },
     {
       path: '/selectStudent',
       name: 'SelectStudent',
-      component: SelectStudent,
+      // component: SelectStudent,
       meta: {
         title: '选择学生'
-      }
+      },
+      component:resolve=>require(["@/pages/home/formPage/selectStudent/SelectStudent"],resolve)
     },
     {
       path: '/submitFormData',
       name: 'SubmitFormData',
-      component: SubmitFormData,
+      // component: SubmitFormData,
       meta: {
         title: '提交的表单数据'
-      }
+      },
+      component:resolve=>require(["@/pages/task/submitFormData/SubmitFormData"],resolve)
     },
     {
       path: '/fillInHisory',
       name: 'FillInHisory',
-      component: FillInHisory,
+      // component: FillInHisory,
       meta: {
         title: '填写历史'
-      }
+      },
+      component:resolve=>require(["@/pages/task/fillInHisory/FillInHisory"],resolve)
     }
   ]
 })

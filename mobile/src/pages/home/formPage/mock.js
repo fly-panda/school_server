@@ -91,6 +91,32 @@ exports.data1 = [
         "modalTitle": "下拉框"
       }
     }, {
+      "ele": "select",
+      "obj": {
+        "type": "select",
+        "icons": "",
+        "config": true,
+        "label": "下拉框1",
+        "placeholder": "",
+        "inlineBlock": false,
+        "require": true,
+        "items": [{
+          "label_value": 1,
+          "label_name": "12312"
+        }, {
+          "label_value": 2,
+          "label_name": "324234"
+        }],
+        "value": "1",
+        "name": "default",
+        "ruleError": "请选择",
+        "relation": false,
+        "relation_name": "",
+        "relation_value": "",
+        "visibility": true,
+        "modalTitle": "下拉框"
+      }
+    }, {
       "ele": "truefalse",
       "obj": {
         "type": "trueFalse",
@@ -220,7 +246,7 @@ exports.data1 = [
         "require": true,
         "name": "default",
         "value": "",
-        "valueDate":'2016-01-01',
+        "valueDate":'',
         "valueTime":"",
         "ruleError": "选项不能为空",
         "relation": false,
@@ -254,6 +280,34 @@ exports.data1 = [
         "modalTitle": "时间选择"
       }
     }, {
+      "ele": "address",
+      "obj": {
+        "type": "address",
+        "chooseCheck": ["province", "city", "zone"],
+        "icons": "",
+        "config": true,
+        "label": "地址",
+        "placeholder": "请输入详细地址",
+        "inlineBlock": false,
+        "require": true,
+        "multiple": false,
+        "name": "default",
+        "value": "你坚实的发发斯蒂芬水电费水电费说的发送到",
+        "sheng": [],
+        "shi": [],
+        "qu": [],
+        "shengValue": "",
+        "shiValue": "",
+        "quValue": "",
+        "ruleError": "请选择并输入详细地址",
+        "relation": false,
+        "relation_name": "",
+        "relation_value": "",
+        "visibility": true,
+        "details_address": true,
+        "modalTitle": "地址"
+      }
+    },{
       "ele": "address",
       "obj": {
         "type": "address",
@@ -418,7 +472,7 @@ exports.data1 = [
         "high": 100,
         "step": 1,
         "verify": "none",
-        "value": "",
+        "value": [],
         "name": "default",
         "ruleError": "该字段不能为空",
         "relation": false,

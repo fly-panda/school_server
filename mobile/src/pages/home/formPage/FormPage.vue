@@ -63,10 +63,10 @@
               </div>
               <input
                 class="files"
-                id="files"
+                :id="'files' + idx"
                 type="file"
                 accept="image/*"
-                @change="fileImage(obj.obj)"
+                @change="fileImage(obj.obj, 'files' + idx)"
               >
             </div>
           </div>
@@ -115,7 +115,7 @@
               <popup-picker
                 :data="obj.obj.items | dropDownFilter"
                 :columns="1"
-                v-model="obj.obj.value" 
+                v-model="obj.obj.valueArr" 
                 placeholder="请选择"
                 show-name
               ></popup-picker>
@@ -159,7 +159,7 @@
             ></checklist>
             <input type="text" 
                     placeholder="输入文字" 
-                    style="border: 1px solid #eee;"  
+                    style="background: #FFFFFF;border: 1px solid #C3C9CF;padding: 10px;"  
                     v-model="obj.obj.otherValue"
                     v-if="obj.obj.hasOther && obj.obj.value.indexOf('other')>-1">
           </div>
@@ -169,7 +169,7 @@
           <div class="select-item-title" v-html="obj.obj.label"></div>
           <div class="range">
             <div class="rang-slider">
-              <div class="num">0</div>
+              <div class="num" v-html="obj.obj.low"></div>
               <vue-slider ref="slider" 
                         v-model="obj.obj.value"
                         :max='obj.obj.high'
@@ -181,32 +181,32 @@
               <div class="num" v-html="obj.obj.high"></div>
             </div>
             <div class="js-btn">
-              <img src="../../../assets/img/icon/icon-jian.png" alt @click="countRangeValue(-1, obj.obj.value, obj.obj.step)">
-              <img src="../../../assets/img/icon/icon-add.png" alt @click="countRangeValue(1, obj.obj.value, obj.obj.step)">
+              <img src="../../../assets/img/icon/icon-jian.png"  @click="countRangeValue(-1, obj.obj)">
+              <img src="../../../assets/img/icon/icon-add.png" @click="countRangeValue(1, obj.obj)">
             </div>
           </div>
         </div>
         <!-- 地址 -->
         <div class="select-item address-box" v-if="obj.ele == 'address'">
-          <div class="select-item-title" v-html="obj.obj.label"></div>
+          <!-- <div class="select-item-title" v-html="obj.obj.label"></div>
           <div class="select-address">
             <div class="sheng" v-if="obj.obj.chooseCheck.indexOf('province') == 0">
               <popup-picker
                 :data="obj.obj.sheng"
                 :columns="1"
-                v-model="obj.obj.shengValue"
+                v-model="obj.obj.shengValueArr"
                 placeholder="省/自治区/直辖市"
                 show-name
-                @on-show="getCity(obj.obj.sheng, 0)"
+                @on-show="getCity(obj.obj.sheng, ['0'])"
               ></popup-picker>
             </div>
             <div class="shi" v-if="obj.obj.chooseCheck.indexOf('city') > -1">
               <popup-picker
                 :data="obj.obj.shi"
                 :columns="1"
-                v-model="obj.obj.shiValue"
+                v-model="obj.obj.shiValueArr"
                 placeholder="市"
-                @on-show="getCity(obj.obj.shi, obj.obj.shengValue)"
+                @on-show="getCity(obj.obj.shi, obj.obj.shengValueArr)"
                 show-name
               ></popup-picker>
             </div>
@@ -214,10 +214,10 @@
               <popup-picker
                 :data="obj.obj.qu"
                 :columns="1"
-                v-model="obj.obj.quValue"
+                v-model="obj.obj.quValueArr"
                 placeholder="区/县"
                 show-name
-                @on-show="getCity(obj.obj.qu, obj.obj.shiValue)"
+                @on-show="getCity(obj.obj.qu, obj.obj.shiValueArr)"
               ></popup-picker>
             </div>
             <input
@@ -227,7 +227,8 @@
               v-model="obj.obj.value"
               style="padding: 0 12px;"
             >
-          </div>
+          </div> -->
+          <address-me :name.sync="obj"></address-me>
         </div>
         <!-- 日期/时间 -->
         <div
@@ -239,7 +240,7 @@
             <div class="calendar-box">
               <group>
                 <calendar
-                  :readonly="calendarReadonly"
+                  :readonly="formOnlyRead"
                   placeholder="选择日期"
                   v-model="obj.obj.valueDate"
                   :title="calendarTitle"
@@ -248,7 +249,7 @@
             </div>
             <div class="time-picker">
               <popup-picker :data="timesData" 
-                            v-model="obj.obj.valueTime" 
+                            v-model="obj.obj.valueTimeArr" 
                             placeholder="时间"
                             :display-format="timeFormat"></popup-picker>
             </div>
@@ -268,7 +269,6 @@
                   :placeholder="obj.obj.placeholder"
                   v-model="obj.obj.valueDate"
                   :title="calendarTitle"
-                  disable-past
                 ></calendar>
               </group>
             </div>
@@ -282,7 +282,7 @@
           <div class="select-item-title">时间</div>
           <div class="time">
             <popup-picker :data="timesData" 
-                            v-model="obj.obj.valueTime" 
+                            v-model="obj.obj.valueTimeArr" 
                             placeholder="时间"
                             :display-format="timeFormat"></popup-picker>
           </div>
@@ -303,7 +303,7 @@
             </div>
           </div>
           <div class="wj-upload-btn">
-            <input class="files" id="files" type="file" @change="addFile(obj.obj)">            
+            <input class="files" :id="'files' + idx" type="file" @change="addFile(obj.obj, 'files' + idx)">            
             <div>
               <span class="icon-add">+</span>
               <span>上传文件或压缩包</span>
@@ -315,7 +315,10 @@
           <div class="select-item-title" v-html="obj.obj.label"></div>
           <div class="radio-box-form">
             <mt-radio :options="obj.obj.items | radioFilter(obj.obj.hasOther)" v-model="obj.obj.value"></mt-radio>
-            <input type="text" v-if='obj.obj.hasOther && obj.obj.value=="other"' v-model="obj.obj.otherValue" style="border: 1px solid #eee;">
+            <input type="text" 
+                   v-if='obj.obj.hasOther && obj.obj.value=="other"' 
+                   v-model="obj.obj.otherValue" 
+                   style="background: #FFFFFF;border: 1px solid #C3C9CF;padding: 2px 5px;">
           </div>
         </div>
         <!-- 单选 勾选打分 -->
@@ -342,33 +345,33 @@
           <div class="select-item-title" v-html="obj.obj.label"></div>
           <div class="img-select-list">
             <div class="img-select-item" v-for="(item, index) of obj.obj.imgArr" :key="index">
-              <img :src="baseUrl + item.url" @click="previewerImg(index)">
+              <img :src="baseUrl + item.url" @click="previewerImg(index, 'imgShow'+idx)">
             </div>
           </div>
           <div v-transfer-dom>
             <previewer
-              :list="obj.obj.imgArr | imgFilter"
-              ref="previewer"
+              :list="obj.obj.imgArr | imgFilter(baseUrl)"
+              :ref="'imgShow'+idx"
               :options="previewerOptions"
             ></previewer>
           </div>
         </div>
         <!-- 图片选择 -->
-        <div class="select-item img-select" v-if="obj.ele == 'imgcheck'">
+        <div class="select-item img-select img-check" v-if="obj.ele == 'imgcheck'">
           <div class="select-item-title" v-html="obj.obj.label"></div>
           <div class="img-select-list">
-            <div class="img-select-item" v-for="(item, index) of obj.obj.imgArr" :key="index">
-              <img :src="baseUrl + item.url" @click="previewerImg1(index)">
-              <label>
-                <input name="img" type="checkbox" value>
-                {{ item.labels }}
-              </label>
-            </div>
+            <el-checkbox-group v-model="obj.obj.value">
+              <div class="img-select-item" v-for="(item, i) of obj.obj.imgArr" :key='i'>
+                <img :src="baseUrl + item.url" @click="previewerImg1(index, 'imgcheck'+idx)">
+                <el-checkbox :label="i">{{ item.labels }}</el-checkbox>
+              </div>
+            </el-checkbox-group>
           </div>
+          <!-- 图片预览 -->
           <div v-transfer-dom>
             <previewer
-              :list="obj.obj.imgArr | imgFilter"
-              ref="previewer1"
+              :list="obj.obj.imgArr | imgFilter(baseUrl)"
+              :ref="'imgcheck'+idx"
               :options="previewerOptions"
             ></previewer>
           </div>
@@ -432,6 +435,7 @@
 
 <script>
 import vueSlider from 'vue-slider-component';
+import addressMe from '../../../components/address/Address';
 import {
   Tab,
   TabItem,
@@ -479,14 +483,16 @@ export default {
     Calendar,
     Previewer,
     Datetime,
-    vueSlider
+    vueSlider,
+    addressMe
   },
   filters: {
-    imgFilter(r) {
+    // 图片预览格式化
+    imgFilter(r, url) {
       let list = [];
       r.map((v, i) => {
         let item = {
-          src: + v.url
+          src: url + v.url
         };
         list.push(item);
       });
@@ -560,6 +566,7 @@ export default {
   },
   data() {
     return {
+      test: [],
       baseUrl: "http://47.93.156.129:8848/",
 
       formOnlyRead: false, // 表单状态
@@ -592,78 +599,16 @@ export default {
         ["00", "01", "02", "03", "04", "05", "06", "07", "08", "09", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "20", "21", "22", "23"],
         ["00", "01", "02", "03", "04", "05", "06", "07", "08", "09", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "20", "21", "22", "23", "24", "25", "26", "27", "28", "29", "30", "31", "32", "33", "34", "35", "36", "37", "38", "39", "40", "41", "42", "43", "44", "45", "46", "47", "48", "49", "50", "51", "52", "53", "54", "55", "56", "57", "58", "59"]
       ],
+      // 时间格式化
       timeFormat: function (value, name) {
         return `${value[0]}:${value[1]}`
       },
 
-      // 地址信息
-      province: [],
-      city: [],
-      zone: [],
-      selectAddress: [],
-
-      zoneDisabled: true,
-      cityDisabled: true,
-
-      // 上传图片
-      uoloadImgArr: [
-        "http://ww1.sinaimg.cn/large/663d3650gy1fplwu9ze86j20m80b40t2.jpg",
-        "http://ww1.sinaimg.cn/large/663d3650gy1fplwu9ze86j20m80b40t2.jpg",
-        "http://ww1.sinaimg.cn/large/663d3650gy1fplwu9ze86j20m80b40t2.jpg"
-      ],
-
       previewerOptions: {},
-      imgArr: [
-        {
-          msrc:
-            "http://ww1.sinaimg.cn/thumbnail/663d3650gy1fplwu9ze86j20m80b40t2.jpg",
-          src:
-            "http://ww1.sinaimg.cn/large/663d3650gy1fplwu9ze86j20m80b40t2.jpg",
-          w: 800,
-          h: 400
-        },
-        {
-          msrc:
-            "http://ww1.sinaimg.cn/thumbnail/663d3650gy1fplwvqwuoaj20xc0p0t9s.jpg",
-          src:
-            "http://ww1.sinaimg.cn/large/663d3650gy1fplwvqwuoaj20xc0p0t9s.jpg",
-          w: 1200,
-          h: 900
-        },
-        {
-          msrc:
-            "http://ww1.sinaimg.cn/thumbnail/663d3650gy1fplwwcynw2j20p00b4js9.jpg",
-          src:
-            "http://ww1.sinaimg.cn/large/663d3650gy1fplwwcynw2j20p00b4js9.jpg"
-        }
-      ],
-
-      sortable_item: [],
-      hour: [],
-      minute: [],
-      hour1: [],
-      minute1: [],
-      hoursData: [[]],
-      minuteData: [[]],
-      dropDownBoxValue: [],
-      dropDownBoxValue1: [],
-      dropDownBoxValue2: [],
-
-      // dropDownBoxData: [["一年级", "二年级", "三年级"]],
 
       calendarTitle: "TODAY",
-      calendarValue: "", // 日历时间
-      calendarValue1: "", // 日历时间
-      calendarReadonly: false,
 
-      textareaValue: "", // 多行文本
-      radioValueOnlyOne: "1",
-      radioValue: "China", // 单选选中的值
-      checkboxRequired: true, //多选是否为必选
-      commonList: ["China", "Japan", "America"],
-      radioDataList: ["China", "Japan", "America"],
       isShowMenu: false, //是否显示悬浮菜单
-      addressInfo: "", // 详细地址
       historyRecord: [
         {
           title: "我是一个标题",
@@ -683,66 +628,33 @@ export default {
         }
       ],
       lishH: "-53",
-      rangeValue: 5,
       pullupDefaultConfig: pullupDefaultConfig,
-      rangeValueMax: 10,
       tabData: ["表单", "历史记录"],
       selectTabIndex: 0 // tab选中的下标
     };
   },
   computed: {},
   methods: {
-    // 数据格式化
-    dataFormat(data) {
-      // console.log(data)
-      let allData = data
-      allData.map((a, b) => {
-        a.data.map((c, d) => {
-          if(c.ele == 'select') {
-            c.obj.value = []
-          }
-          if(c.ele == 'address') {
-            c.obj.shengValue = []
-            c.obj.shiValue = []
-            c.obj.quValue = []
-          }
-          if(c.ele == 'datepicker') {
-            c.obj.valueTime = []
-          }
-        })
-      })
-      this.allListData = allData
-    },
     // 二级下拉
     pickerValueChange(obj, value) {
       obj.two_arr = obj.items[value[0]].arrs
     },
     // 文件下载
     downloadInfo(item) {
-      let baseUrl = this.baseUrl;
-      let path = baseUrl + item.url;
-      this.$api.get(
-        `/file/download`,
-        { path: path },
-        r => {
-          console.log(r);
-        },
-        r => {
-          console.log(r);
-        }
-      );
+      window.location.href = this.baseUrl+"api/file/download?path="+item.url;
     },
-    // 图片预览
-    previewerImg(index) {
-      this.$refs.previewer[0].show(index);
+    // 图片预览 
+    previewerImg(index, ref) {
+      this.$refs[ref][0].show(index);
     },
-    previewerImg1(index) {
-      this.$refs.previewer1[0].show(index);
+    // 图片选择预览
+    previewerImg1(index, ref) {
+      this.$refs[ref][0].show(index);
     },
     // 上传图片
-    fileImage(obj) {
+    fileImage(obj, id) {
       let self = this;
-      let fileObj = document.getElementById("files").files[0];
+      let fileObj = document.getElementById(id).files[0];
       // let sizes=self.$api.onver(fileObj.size);
       console.log(fileObj);
       self.$api.uploadFile("file/upload ", {}, fileObj, r => {
@@ -773,9 +685,9 @@ export default {
       });
     },
     // 上传文件
-    addFile(res){
+    addFile(res, id){
       let self=this;
-      let fileObj=document.getElementById("files").files[0];
+      let fileObj=document.getElementById(id).files[0];
       let sizes=self.$api.onver(fileObj.size);
       self.$api.uploadFile("file/upload ", {},fileObj, (r) => {
         res.value.push({
@@ -865,62 +777,83 @@ export default {
       });
     },
     change() {},
-    touchstartRange(e) {
-      console.log(e);
-    },
-    countRangeValue(type, value, step) {
-      // console.log(type);
-      // console.log(value)
-      // console.log(step)
-
-      if (type == -1) {
-        value = parseInt(value) - parseInt(step);
+    // 滑动打分
+    countRangeValue(type, obj) {
+      if (type == -1 && parseInt(obj.value) > parseInt(obj.low) && parseInt(obj.value) <= parseInt(obj.high)) {
+        obj.value = parseInt(obj.value) - parseInt(obj.step);
       }
-      if (type == 1) {
-        value  = parseInt(value) + parseInt(step)
-        console.log(value)
+      if (type == 1 && parseInt(obj.value) >= parseInt(obj.low) && parseInt(obj.value) < parseInt(obj.high)) {
+        obj.value  = parseInt(obj.value) + parseInt(obj.step)
       }
     },
     loadMore() {},
+    // 数据格式化
+    dataFormat(data) {
+      let allData = data
+      allData.map((a, b) => {
+        a.data.map((c, d) => {
+          if(c.ele == 'select') {
+            c.obj.valueArr = []
+          }
+          if(c.ele == 'address') {
+            c.obj.shengValueArr =  []
+            c.obj.shiValueArr =  []
+            c.obj.quValueArr =  []
+          }
+          if(c.ele == 'datepicker') {
+            c.obj.valueTimeArr = []
+          }
+        })
+      })
+      this.allListData = allData
+    },
+    // 提交表单
     submitForm() {
-      console.log(this.allListData[0])
+      console.log(this.allListData)
+
+      this.allListData[0].data.map((v, i) => {
+        if(v.ele == 'select') {
+          v.obj.value = v.obj.valueArr[0]
+        }
+        if(v.ele == 'address') {
+          v.obj.shengValue = v.obj.shengValueArr[0]
+          v.obj.shiValue = v.obj.shiValueArr[1]
+          v.obj.quValue = v.obj.quValueArr[2]
+        }          
+        if(v.ele == 'datepicker') {
+          v.obj.valueTime = v.obj.valueTimeArr.join(':')
+        }
+      })
+
+      console.log(this.allListData)
+
     },
     // 获取表单数据
-    getFormData() {
-      this.$api.get(
-        "/cform/tempDetail",
-        { tempid: "5c189861d725d24950b66849" },
-        r => {
+    getFormData(ids) {
+      this.$api.get("/cform/tempDetail", { tempid: ids }, r => {
           // console.log(2,r);
         }
       );
     },
     // 选择城市
-    getCity(list, model) {
-      model = model == 0 ? model : model[0];
-      // if (this.cityPid == model) {
-      //   return;
-      // }
-      this.cityPid = model;
-      let pid = model;
-      if(list.length) {
-        list = []
-      }
+    // getCity(list, model) {
+      
+    //   console.log(model)
 
-        this.$api.get(`/city/getCity`, { pid: model }, r => {
-          let data = JSON.parse(r.data);
-          // list = data
-          data.map((v, i) => {
-            let item = {
-              value: v.id,
-              name: v.name
-            };
-            list.push(item);
-          });
-        });
+    //   let pid = model[0]
 
-
-    }
+    //   this.$api.get(`/city/getCity`, { pid: pid }, r => {
+    //     let data = JSON.parse(r.data);
+    //     // list = []
+    //     data.map((v, i) => {
+    //       let item = {
+    //         value: v.id,
+    //         name: v.name
+    //       };
+    //       list.push(item);
+    //     });
+    //   });
+    // }
   },
   mounted() {
     // console.log(this);
@@ -930,9 +863,10 @@ export default {
 
     // 判断页面是不是预览
     this.preview = this.$route.query.preview ? this.$route.query.preview : "";
+    let ids = this.$route.query.ids ? this.$route.query.ids : '5c20acb4d725d257ac33f3b0'
 
 
-    this.$api.get('/cform/getpreview', {tempid: '5c20400bd725d257ac33f3a2'}, r=> {
+    this.$api.get('/cform/getpreview', {tempid: ids}, r=> {
       console.log('预览')
       console.log(r)
     })
@@ -940,19 +874,17 @@ export default {
     // 预览
     if(this.preview == 1) {
       // 模板ID
-      let ids = this.$route.query.ids ? this.$route.query.ids : ''
-
       this.$api.get('/cform/getpreview', {tempid: ids}, r=> {
         console.log(r)
         let allData = JSON.parse(r.data)
         this.dataFormat(allData)
       })
 
-      // return false
+      return false
     }
 
 
-    this.getFormData();
+    this.getFormData(ids);
 
 
 
@@ -1018,6 +950,11 @@ export default {
     border-color: #fff !important;
   }
 }
+.picker {
+  .weui-cell__ft {
+    display: none;
+  }
+}
 .time-picker,
 .address-box,
 .drop-down-box,
@@ -1050,6 +987,8 @@ export default {
     border-color: #505050 transparent transparent transparent;
     transform: none;
     margin-top: -2px;
+    width: 0;
+    height: 0;
   }
   .weui-cell {
     padding: 0;
@@ -1146,6 +1085,9 @@ a:hover {
   background: #fff !important;
 }
 .form-page {
+  input, textarea {
+    font-size: 14px;
+  }
   padding-bottom: 53px;
   padding-top: 44px;
   textarea {
@@ -1406,6 +1348,10 @@ a:hover {
       .select-item-title {
         margin-bottom: 12px;
       }
+      .weui-cell_access .weui-cell__ft:after {
+        width: 0;
+        height: 0;
+      }
       .date-time {
         align-items: center;
         display: flex;
@@ -1498,6 +1444,24 @@ a:hover {
             height: px2rem(70);
             background: #eee;
             margin-bottom: 7px;
+          }
+        }
+      }
+    }
+    .img-check {
+      .img-select-list {
+        display: block;
+        .el-checkbox-group {
+          display: flex;
+          .el-checkbox__input.is-checked .el-checkbox__inner {
+            background: #5DB75D;
+            border-color: #5DB75D;
+          }
+          .el-checkbox__input.is-checked+.el-checkbox__label {
+            color: #535353;
+          }
+          .is-focus,.el-checkbox__inner {
+            border-color: #dcdfe6;
           }
         }
       }

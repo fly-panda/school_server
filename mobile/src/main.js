@@ -5,12 +5,13 @@ import App from './App'
 import router from './router'
 // import fastClick from 'fastclick'
 import MintUI from 'mint-ui'
-// import iView from 'iview'
+
+import ElementUI from 'element-ui';
+import 'element-ui/lib/theme-chalk/index.css';
 
 import 'mint-ui/lib/style.css'
 import './assets/styles/border.css'
 import './assets/styles/reset.css'
-import 'iview/dist/styles/iview.css'
 
 import { ToastPlugin,ConfirmPlugin,AlertPlugin, LoadingPlugin} from 'vux'
 
@@ -22,6 +23,7 @@ Vue.use(ConfirmPlugin)
 Vue.use(AlertPlugin)
 Vue.use(LoadingPlugin)
 Vue.use(MintUI)
+Vue.use(ElementUI)
 
 // fastClick.attach(document.body)
 
