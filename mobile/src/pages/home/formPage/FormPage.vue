@@ -51,9 +51,9 @@
           <div class="select-item-txt" v-html="obj.obj.describe"></div>
           <div class="img-box">
             <div class="upload-list">
-              <div class="img-box-item" v-for="(item, index) of obj.obj.value" :key="index">
+              <div class="img-box-item" v-for="(item, index) of obj.obj.uploadList" :key="index">
                 <img :src="item.src">
-                <div class="del-img" @click="delImg(obj.obj.value, index)">X</div>
+                <div class="del-img" @click="delImg(obj.obj.uploadList, index)">X</div>
               </div>
             </div>
             <div class="upload">
@@ -66,7 +66,7 @@
                 id="files"
                 type="file"
                 accept="image/*"
-                @change="fileImage(obj.obj.value)"
+                @change="fileImage(obj.obj)"
               >
             </div>
           </div>
@@ -133,13 +133,14 @@
                 v-model="obj.obj.value"
                 placeholder="请选择"
                 show-name
+                @on-change='pickerValueChange(obj.obj, obj.obj.value)'
               ></popup-picker>
             </div>
             <div class="picker-btn">
               <popup-picker
-                :data="obj.obj.items | dropDownFilter"
+                :data="obj.obj.two_arr | dropDownFilter"
                 :columns="1"
-                v-model="obj.obj.value"
+                v-model="obj.obj.value1"
                 placeholder="请选择"
                 show-name
               ></popup-picker>
@@ -242,15 +243,14 @@
                   placeholder="选择日期"
                   v-model="obj.obj.valueDate"
                   :title="calendarTitle"
-                  disable-past
                 ></calendar>
               </group>
             </div>
-            <div class="time-picker hour">
-              <popup-picker :data="hoursData" v-model="hour" placeholder="时"></popup-picker>
-            </div>
             <div class="time-picker">
-              <popup-picker :data="minuteData" v-model="minute" placeholder="分"></popup-picker>
+              <popup-picker :data="timesData" 
+                            v-model="obj.obj.valueTime" 
+                            placeholder="时间"
+                            :display-format="timeFormat"></popup-picker>
             </div>
           </div>
         </div>
@@ -281,28 +281,29 @@
         >
           <div class="select-item-title">时间</div>
           <div class="time">
-            <div class="time-picker">
-              <popup-picker :data="hoursData" v-model="hour1" placeholder="时"></popup-picker>
-            </div>
-            <div class="time-picker">
-              <popup-picker :data="minuteData" v-model="minute1" placeholder="分"></popup-picker>
-            </div>
+            <popup-picker :data="timesData" 
+                            v-model="obj.obj.valueTime" 
+                            placeholder="时间"
+                            :display-format="timeFormat"></popup-picker>
           </div>
         </div>
         <!-- 文件上传 -->
         <div class="select-item wj-upload" v-if="obj.ele == 'uploads'">
           <div class="select-item-title" v-html="obj.obj.label"></div>
           <div class="wj-upload-list">
-            <div class="wj-upload-item">
+            <div class="wj-upload-item"
+                 v-for="(item, i) of obj.obj.value"
+                 :key="i">
               <div class="top">
-                <div class="wjm">名字.doc</div>
-                <div class="del">X</div>
+                <div class="wjm" style="overflow:hidden;text-overflow:ellipsis;white-space:nowrap"  v-html="item.name"></div>
+                <div class="del" @click="delFile(obj.obj.value, i)">X</div>
               </div>
-              <div class="jdt"></div>
-              <div class="wj-size">10.8M</div>
+              <!-- <div class="jdt"></div> -->
+              <div class="wj-size" v-html="item.size"></div>
             </div>
           </div>
           <div class="wj-upload-btn">
+            <input class="files" id="files" type="file" @change="addFile(obj.obj)">            
             <div>
               <span class="icon-add">+</span>
               <span>上传文件或压缩包</span>
@@ -481,16 +482,6 @@ export default {
     vueSlider
   },
   filters: {
-    arrHash(r) {
-      console.log(r)
-      let item = [
-        {
-          name: '1',
-          value: '01'
-        }
-      ]
-      return item
-    },
     imgFilter(r) {
       let list = [];
       r.map((v, i) => {
@@ -521,7 +512,7 @@ export default {
       let list = [];
       r.map((v, i) => {
         let item = {
-          key: i,
+          key: i + '',
           value: v.label_name
         };
         list.push(item);
@@ -552,18 +543,6 @@ export default {
           value: 'other'
         })
       }
-      return list;
-    },
-    filtersData(r) {
-      // console.log(r)
-      let list = [];
-      r.map((v, i) => {
-        let item = {
-          key: v.name,
-          value: v.value
-        };
-        list.push(item);
-      });
       return list;
     },
     cityDatafilter(r) {
@@ -599,7 +578,7 @@ export default {
 
       cityPid: -100,
 
-      allListData: mockData.data1,
+      allListData: [],
 
       preview: "", // 值为1时，为预览页面
 
@@ -608,6 +587,14 @@ export default {
       selectTeacherValue: "点击选择老师范围",
       selectClassValue: "点击选择班级范围",
       selectDepartmentValue: "点击选择部门范围",
+
+      timesData:[
+        ["00", "01", "02", "03", "04", "05", "06", "07", "08", "09", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "20", "21", "22", "23"],
+        ["00", "01", "02", "03", "04", "05", "06", "07", "08", "09", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "20", "21", "22", "23", "24", "25", "26", "27", "28", "29", "30", "31", "32", "33", "34", "35", "36", "37", "38", "39", "40", "41", "42", "43", "44", "45", "46", "47", "48", "49", "50", "51", "52", "53", "54", "55", "56", "57", "58", "59"]
+      ],
+      timeFormat: function (value, name) {
+        return `${value[0]}:${value[1]}`
+      },
 
       // 地址信息
       province: [],
@@ -719,11 +706,16 @@ export default {
             c.obj.shiValue = []
             c.obj.quValue = []
           }
-          if(c.ele == 'selectcontact') {
-
+          if(c.ele == 'datepicker') {
+            c.obj.valueTime = []
           }
         })
       })
+      this.allListData = allData
+    },
+    // 二级下拉
+    pickerValueChange(obj, value) {
+      obj.two_arr = obj.items[value[0]].arrs
     },
     // 文件下载
     downloadInfo(item) {
@@ -748,23 +740,67 @@ export default {
       this.$refs.previewer1[0].show(index);
     },
     // 上传图片
-    fileImage(list) {
+    fileImage(obj) {
       let self = this;
       let fileObj = document.getElementById("files").files[0];
+      // let sizes=self.$api.onver(fileObj.size);
       console.log(fileObj);
       self.$api.uploadFile("file/upload ", {}, fileObj, r => {
         console.log(r);
-        list.push({
-          src: this.baseUrl + r.data
+        obj.uploadList.push({
+          src: this.baseUrl + r.data,
+          // size: sizes,
+          name: fileObj.name,
         });
       });
     },
     delImg(list, idx) {
-      console.log(list[idx].src);
+      console.log(list);
       let path = list[idx].src;
+      this.$vux.loading.show({
+        text: '删除中'
+      })
       this.$api.get("/file/deleteFile", { path: path }, r => {
         console.log(r);
         list.splice(idx, 1);
+        this.$vux.loading.hide()
+        this.$vux.toast.show({
+          text: r.result,
+          time: "2000",
+          type: "text",
+          position: "middle"
+        })
+      });
+    },
+    // 上传文件
+    addFile(res){
+      let self=this;
+      let fileObj=document.getElementById("files").files[0];
+      let sizes=self.$api.onver(fileObj.size);
+      self.$api.uploadFile("file/upload ", {},fileObj, (r) => {
+        res.value.push({
+          name:fileObj.name,
+          url:r.data,
+          size:sizes
+        })            
+             
+      });
+    },
+    delFile(res,i){
+      let path = res[i].url;
+      this.$vux.loading.show({
+        text: '删除中'
+      })
+      this.$api.get("/file/deleteFile", { path: path }, r => {
+        console.log(r);
+        res.splice(i,1)        
+        this.$vux.loading.hide()
+        this.$vux.toast.show({
+          text: r.result,
+          time: "2000",
+          type: "text",
+          position: "middle"
+        })
       });
     },
     // 多选按钮
@@ -887,46 +923,38 @@ export default {
     }
   },
   mounted() {
-    console.log(this);
+    // console.log(this);
 
-    this.dataFormat(this.allListData)
+    this.dataFormat(mockData.data1)
 
 
     // 判断页面是不是预览
     this.preview = this.$route.query.preview ? this.$route.query.preview : "";
 
 
-    this.$api.get('/cform/getpreview', {tempid: '5c1f6a47d725d257ac33f392'}, r=> {
-        console.log(r)
+    this.$api.get('/cform/getpreview', {tempid: '5c20400bd725d257ac33f3a2'}, r=> {
+      console.log('预览')
+      console.log(r)
     })
 
     // 预览
     if(this.preview == 1) {
       // 模板ID
-      let ids = this.$route.query.ids ? this.$route.query.ids : '5c1f6a47d725d257ac33f392'
+      let ids = this.$route.query.ids ? this.$route.query.ids : ''
 
       this.$api.get('/cform/getpreview', {tempid: ids}, r=> {
         console.log(r)
+        let allData = JSON.parse(r.data)
+        this.dataFormat(allData)
       })
 
-      return false
+      // return false
     }
 
 
     this.getFormData();
 
-    for (let i = 0; i < 24; i++) {
-      this.hoursData[0].push(i + "");
-    }
-    for (let j = 0; j < 60; j++) {
-      this.minuteData[0].push(j + "");
-    }
 
-    let previewObj = sessionStorage.getItem("previewObj");
-    console.log("session值：" + previewObj);
-    if (previewObj) {
-      this.allListData = previewObj;
-    }
 
     this.selectStudentValue = sessionStorage.getItem("selectStudentValue")
       ? sessionStorage.getItem("selectStudentValue")
@@ -946,6 +974,11 @@ export default {
 
 <style scope lang="scss">
 @import "../../../assets/styles/mixins.scss";
+.time-picker {
+  .weui-cell__ft {
+    display: none;
+  }
+}
 // 重置样式选择日期
 .calendar-box,
 .time-picker,
@@ -1384,15 +1417,7 @@ a:hover {
           line-height: 40px;
           background: #ffffff;
           border: 1px solid #c3c9cf;
-          &:nth-child(1) {
-            width: px2rem(130);
-          }
-          &:nth-child(2) {
-            width: px2rem(80);
-          }
-          &:nth-child(3) {
-            width: px2rem(80);
-          }
+          width: px2rem(150);
         }
       }
     }
@@ -1421,11 +1446,22 @@ a:hover {
         margin-bottom: 12px;
       }
       .time {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
+        .weui-cell {
+          padding: 0;
+          text-align: center;
+        }
+        .vux-popup-picker-select {
+          text-align: center !important;
+          color: #535353;
+        }
+        .vux-cell-placeholder,.vux-cell-value {
+          color: #535353;
+        }
+        .weui-cell__ft {
+          display: none;
+        }
         > div {
-          width: px2rem(150);
+          width: 100%;
           height: 40px;
           text-align: center;
           line-height: 40px;
@@ -1509,6 +1545,15 @@ a:hover {
         }
       }
       .wj-upload-btn {
+        position: relative;
+        input {
+          position: absolute;
+          top: 0;
+          left: 0;
+          opacity: 0;
+          width: px2rem(171);
+          height: 100%;
+        }
         div {
           display: flex;
           align-items: center;
