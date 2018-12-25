@@ -153,7 +153,7 @@ export default {
 
         submit(){
             let self=this;
-            if(this.tempId){
+            if(!this.tempId){
                 
                 self.$Message.warning('请选择表单');
                 // return
@@ -200,7 +200,6 @@ export default {
             if(self.settingForm.resultCopy){
                  settingObj.resultObj=self.$refs.resultList.selStudentList
             }
-            console.log(settingObj)
             self.submitAjax(settingObj)
         },
         submitAjax(obj){

@@ -100,7 +100,7 @@
             <!-- 图片选择 控件设置 -->
             <div class="pad-cls" v-if="settingFormItem.type =='imgCheck'">
                 <p class="label-cls">选项内容</p>
-                 <draggable element="div" v-model="settingFormItem.imgArr">
+                 <draggable element="div" v-model="settingFormItem.imgArr" @update="datadragEndSlide" >
                     <transition-group name="no" tag="div">
                         <FormItem style="border: none;padding:3px 0;" v-for="(SelectItem, index) in settingFormItem.imgArr" :key="index">
                             <p>{{SelectItem.titles}}{{index+1}}</p>
@@ -208,7 +208,7 @@
             <!-- 下拉配置 -->
             <div v-if="settingFormItem.type =='select' || settingFormItem.type == 'radio' || settingFormItem.type == 'checkbox'">
                 <span style="display:block;margin:15px 0 0 15px;">选项配置</span>
-                <draggable element="div" v-model="settingFormItem.items">
+                <draggable element="div" v-model="settingFormItem.items" @update="datadragEnd">
                     <transition-group name="no" tag="div">
                         <FormItem style="border: none;padding: 3px 15px;" v-for="(SelectItem, index) in settingFormItem.items" :key="index">
                             <Row class="sel-cls">
@@ -744,6 +744,7 @@ export default {
             //     (!relatedElement || !relatedElement.fixed) && !draggedElement.fixed
             // );
         },
+
         delImgFun(r){
             console.log(r)
             console.log(this.settingFormItem);
@@ -831,7 +832,16 @@ export default {
             let self=this;
             // this.$api.delFile(self.settingFormItem.items[i].url);
             self.settingFormItem.items.splice(i,1)
+        },
+        datadragEnd(evt){
+            evt.preventDefault();
+                // console.log(this.colors);
+        },
+        datadragEndSlide(evt){
+            evt.preventDefault();
+                // console.log(this.colors);
         }
+
 
     }
 }
