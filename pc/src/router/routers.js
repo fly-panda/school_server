@@ -133,6 +133,7 @@ export default [
                 redirect: '/editorForm',
                 meta: {
                     title: '创建表单',
+                    disableds:true,
                     keepAlive: false // 不需要缓存
                 },
                 component:resolve=>require(["@/views/page/editor"],resolve),

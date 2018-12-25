@@ -246,7 +246,7 @@ export default {
 <style lang="less" scoped>
 .settingContainer {
     width: 905px;
-    height: 80%;
+    height: 95%;
     background: #fff;
     margin:20px auto;
     overflow-y: auto;

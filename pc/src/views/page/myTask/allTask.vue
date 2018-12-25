@@ -1,6 +1,13 @@
 <template>
-<div class="publish-content">
-    <CardForm v-for="item in cardList" :key="item.id" :cardItem="item" :status="status"/>
+<div>
+    <div class="publish-content">
+        <CardForm v-for="item in cardList" :key="item.id" :cardItem="item" :status="status"/>
+        <div class="page-view">
+            <Page prev-text="上一页" next-text="下一页" :current="currentPage" :total="totals" @on-change="changeFun"/>
+        </div>
+    </div>
+    
+    
 </div>
 </template>
 
@@ -13,6 +20,9 @@ export default {
     data() {
         return {
             status:0,
+            userId:"",
+            currentPage:1,
+            totals:104,
             // status 0 结束 1为开启
             // type 0 simple 1week
             cardList: [{
@@ -137,11 +147,39 @@ export default {
                 allSubmitNum: 50
             }]
         }
+    },
+    created(){
+        this.userId=this.$api.sGetObject("userObj").userId;
+    },
+    mounted(){
+        
+        this.getData();
+        
+    },
+    methods: {
+        getData(){
+            let self=this;
+            self.$api.get("/task/participate",{
+                userId:this.userId,
+                state:0
+            },r=>{
+                 // self.cardList=JSON.parse(r.data);
+                console.log(r)
+            })
+        },
     }
 }
 </script>
 
 <style lang="less" scoped>
+.list-view{
+    width:100%;
+}
+.page-view{
+    width:100%;
+    padding: 10px;
+    text-align:center;
+}
 .publish-content {
     width: 100%;
     height: 100%;

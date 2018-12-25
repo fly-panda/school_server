@@ -536,10 +536,7 @@ export default {
             return this.sortable_item[this.curIndex] && this.sortable_item[this.curIndex]['obj']['modal']?this.sortable_item[this.curIndex]['obj']['modal']: 'Input'
         }
     },
-    mounted(){
-        // console.log(this.sortable_item);
-        // console.log("我获取的",this.departmentList);
-        // this.sortable_item=datas.data.data;
+    created(){
         if(this.$route.query.isBack==1){
             let previewObj=this.$api.sGetObject("previewObj");
             this.formTitle=previewObj.title;
@@ -547,6 +544,12 @@ export default {
             this.sortable_item=previewObj.data;
 
         }
+    },
+    mounted(){
+        // console.log(this.sortable_item);
+        // console.log("我获取的",this.departmentList);
+        // this.sortable_item=datas.data.data;
+        
         console.log(this.sortable_item)
     },
     methods: {
@@ -600,22 +603,27 @@ export default {
                 }
             }
             let formObj = {}
-            formObj.title = this.formTitle
+            formObj.id = (this.tempId?this.tempId:"0");
+            formObj.title = this.formTitle;
             formObj.data = this.sortable_item;
             formObj.describe = this.content;
             return formObj;
         },
         saveSoltItem(){
             let formObj=this.formatData();
-             
             // console.log(JSON.stringify(this.sortable_item))
             this.$api.post("/cform/addForm",
                 formObj,
                 r=>{
                    this.$emit("changeId",r.data);
+                   this.$api.sSetObject("previewObj",formObj);
                    // this.$router.push({
                    //     path:"/settingEditorForm?ids="+r.data
                    // })
+                },
+                e=>{
+                    this.$emit("changeId",e.data);
+                   // this.$emit("changeId",r.data); 
                 }
             )
         },

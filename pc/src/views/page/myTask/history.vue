@@ -1,6 +1,13 @@
 <template>
-<div class="publish-content" :style="{height:fullHeight.height}">
-    <CardForm v-for="item in cardList" :key="item.id" :cardItem="item" :status="status"/>
+<div :style="{height:fullHeight.height}">
+    
+    <div class="publish-content">
+        <CardForm v-for="item in cardList" :key="item.id" :cardItem="item" :status="status"/> 
+        <div class="page-view">
+            <Page prev-text="上一页" next-text="下一页" :current="currentPage" :total="totals" @on-change="changeFun"/>
+        </div>
+    </div>
+    
 </div>
 </template>
 
@@ -13,9 +20,12 @@ export default {
     data() {
         return {
             status:3,
+            userId:"",
             fullHeight:{// 动态获取屏幕高度
                 height: (document.documentElement.clientHeight-124)+"px"
             },
+            currentPage:1,
+            totals:104,
             // status 0 结束 1为开启
             // type 0 simple 1week
             cardList: [
@@ -39,14 +49,120 @@ export default {
                     id: 5,
                     status: 3,
                     tempname: '纪律检查'
+                }, {
+                    id: 1,
+                    status: 3,
+                    tempname: '纪律检查'
+                }, {
+                    id: 2,
+                    status: 3,
+                    tempname: '卫生检查'
+                },{
+                    id: 3,
+                    status: 3,
+                    tempname: '纪律检查'
+                }, {
+                    id: 4,
+                    status: 3,
+                    tempname: '卫生检查'
+                },{
+                    id: 5,
+                    status: 3,
+                    tempname: '纪律检查'
+                }, {
+                    id: 1,
+                    status: 3,
+                    tempname: '纪律检查'
+                }, {
+                    id: 2,
+                    status: 3,
+                    tempname: '卫生检查'
+                },{
+                    id: 3,
+                    status: 3,
+                    tempname: '纪律检查'
+                }, {
+                    id: 4,
+                    status: 3,
+                    tempname: '卫生检查'
+                },{
+                    id: 5,
+                    status: 3,
+                    tempname: '纪律检查'
+                }, {
+                    id: 1,
+                    status: 3,
+                    tempname: '纪律检查'
+                }, {
+                    id: 2,
+                    status: 3,
+                    tempname: '卫生检查'
+                },{
+                    id: 3,
+                    status: 3,
+                    tempname: '纪律检查'
+                }, {
+                    id: 4,
+                    status: 3,
+                    tempname: '卫生检查'
+                },{
+                    id: 5,
+                    status: 3,
+                    tempname: '纪律检查'
+                }, {
+                    id: 1,
+                    status: 3,
+                    tempname: '纪律检查'
+                }, {
+                    id: 2,
+                    status: 3,
+                    tempname: '卫生检查'
+                },{
+                    id: 3,
+                    status: 3,
+                    tempname: '纪律检查'
+                }, {
+                    id: 4,
+                    status: 3,
+                    tempname: '卫生检查'
+                },{
+                    id: 5,
+                    status: 3,
+                    tempname: '纪律检查'
                 }
             ]
         }
+    },
+    created(){
+        this.userId=this.$api.sGetObject("userObj").userId;
+    },
+    mounted(){
+        this.getData();
+    },
+    methods: {
+        getData(){
+            let self=this;
+            self.$api.get("/task/participate",{
+                userId:self.userId,
+                state:1
+            },r=>{
+                 self.cardList=JSON.parse(r.data);
+                console.log(r)
+            })
+        },
     }
 }
 </script>
 
 <style lang="less" scoped>
+.list-view{
+    width:100%;
+}
+.page-view{
+    width:100%;
+    padding: 10px;
+    text-align:center;
+}
 .publish-content {
     width: 100%;
     height: 100%;

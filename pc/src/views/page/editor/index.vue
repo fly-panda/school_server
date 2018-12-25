@@ -15,7 +15,7 @@
         <router-view v-if="$route.meta.keepAlive"></router-view>
     </keep-alive>
     <router-view v-if="!$route.meta.keepAlive"></router-view> -->
-    <div :style="{height:fullHeight.height}" style="overflow-y:scroll;">
+    <div :style="{height:fullHeight.height}">
         <editorForm :tempId="tempId" @changeId="changeIdFun($event)" ref="editorFormObj" v-show="viewType=='editorForm'"/>
         <publishForm :tempId="tempId" v-show="viewType=='publishForm'"/>
         <settingEditorForm :tempId="tempId" v-show="viewType=='settingEditorForm'"/>
@@ -45,6 +45,7 @@ export default {
     methods: {
         changeRoure(name){
             this.viewType=name;
+            
             // this.$router.push({
             //     name
             // })

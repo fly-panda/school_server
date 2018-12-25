@@ -21,9 +21,11 @@
                     <!-- <Icon type="ios-paper"></Icon> -->
                     公共模板
                     </MenuItem>
+
                     <MenuItem name="editor">
                     <!-- <Icon type="ios-paper"></Icon> -->
-                        <button class="add-cls">新建任务</button>    
+                        <button class="add-cls">新建任务</button>
+                        <!-- <button class="add-cls disabled-cls" v-if="!$route.meta.disableds" disabled>正在编辑</button>     -->
                     </MenuItem>
                 </div>
             </Menu>
@@ -54,6 +56,11 @@ export default {
             modalStatus: false,
             currentView: 'Input'
         }
+    },
+    mounted(){
+        this.$api.sSetObject("userObj",{
+            userId:"nHoIlS9HDYodone"
+        })
     },
     methods: {
         changeRoure(name) {
@@ -145,5 +152,10 @@ export default {
     margin-top: 13px;
     outline: none;
     cursor: pointer;
+}
+.disabled-cls{
+    background: #8195AD;
+    border: 1px solid #8195AD;
+    color: #FFFFFF;
 }
 </style>

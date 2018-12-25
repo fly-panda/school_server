@@ -1,8 +1,14 @@
 <template>
-<div class="publish-content">
-    <!-- <div class="addTemp" @click="addTempFun()">+</div> -->
-    <CardForm v-for="(item,i) in cardList" :key="item.id" :cardItem="item" :status="status"/>
-</div>
+    <div>
+        <div class="publish-content">
+            <CardForm v-for="(item,i) in cardList" :key="item.id" :cardItem="item" :status="status"/>
+            <div class="page-view">
+                <Page prev-text="上一页" next-text="下一页" :current="currentPage" :total="totals" @on-change="changeFun"/>
+            </div>
+        </div>
+        
+    </div>
+
 </template>
 
 <script>
@@ -16,24 +22,38 @@ export default {
             // status 0 结束 1为开启
             // type 0 simple 1week
             cardList: [
-                // {
-                //     id: 1,
-                //     status: 1,
-                //     title: '纪律检查'
-                // }
+                {
+                    id: 1,
+                    status: 1,
+                    title: '纪律检查'
+                },
+                {
+                    id: 1,
+                    status: 1,
+                    title: '纪律检查'
+                },
+                {
+                    id: 1,
+                    status: 1,
+                    title: '纪律检查'
+                }
             ],
-            status:1
+            status:1,
+            userId:"",
+            currentPage:1,
+            totals:104,
         }
     },
     mounted(){
         this.getData();
+        this.userId=this.$api.sGetObject("userObj").userId;
     },
     methods: {
         getData(){
             let self=this;
             self.$api.post("/cform/myForm",{},r=>{
                  console.log(r)
-                self.cardList=JSON.parse(r.data);
+                // self.cardList=JSON.parse(r.data);
                 // console.log(self.data3);
             },e=>{
                 console.log(e)
@@ -57,6 +77,14 @@ export default {
 </script>
 
 <style lang="less" scoped>
+.list-view{
+    width:100%;
+}
+.page-view{
+    width:100%;
+    padding: 10px;
+    text-align:center;
+}
 .publish-content {
     width: 100%;
     height: 100%;

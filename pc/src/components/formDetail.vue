@@ -459,12 +459,19 @@ export default {
         // this.previewObj=datas.data;
         this.getData();
         this.getSheng();
-        let arr=this.previewObj.data;
+        // let arr=this.previewObj.data;
 
 
 
     },
     methods: {
+        getTaskDetail(){
+            self.$api.get("/task/taskdetail",{
+                taskid:""
+            },r=>{
+                // console.log(JSON.parse(r.data));
+            })
+        },
         selS(){
             let self=this;
             self.$api.post("/campus/getDepartmentInfoList",{
@@ -645,7 +652,8 @@ export default {
 
         },
         saveForm(){
-            console.log(JSON.stringify(this.previewObj));
+            let self=this;
+            console.log(JSON.stringify(self.previewObj));
             
            
             // this.previewObj.data.forEach(item => {
@@ -657,6 +665,18 @@ export default {
                     
             //     }
             // });
+            self.$api.post("/task/submitTask",{
+                id:"",
+                title:self.previewObj.title,
+                data:self.previewObj.data,
+                describe:self.previewObj.describe,
+            },r=>{
+                 console.log(r)
+                // self.cardList=JSON.parse(r.data);
+                // console.log(self.data3);
+            },e=>{
+                console.log(e)
+            })
         },
         downloadFun(res){
             let self=this;
