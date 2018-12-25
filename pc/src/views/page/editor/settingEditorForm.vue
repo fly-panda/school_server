@@ -156,7 +156,7 @@ export default {
             if(!this.tempId){
                 
                 self.$Message.warning('请选择表单');
-                // return
+                return
             }
             // console.log(self.settingForm)
             let arr=[];
