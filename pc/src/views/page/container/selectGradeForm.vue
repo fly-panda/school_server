@@ -37,7 +37,8 @@ export default {
             })
         },
         submitResut() {
-            let selectNode = this.$refs.tree.getCheckedNodes()
+            let selectNode = this.$api.formatTreeData(this.$refs.tree.getCheckedNodes(),"children");
+            console.log(selectNode)
             this.setGrades(selectNode);
             this.$emit('handleselect', selectNode);
         }

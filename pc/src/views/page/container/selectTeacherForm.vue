@@ -32,7 +32,7 @@
                    </li>
                </ul>
             </div>
-            <div class="flexCenter">
+            <div class="flexCenter" style="text-align:center;width:32%;padding:0;">
                 <Button type="primary" @click="submitResut">确定</Button>
             </div>
         </div>

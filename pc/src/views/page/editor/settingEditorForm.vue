@@ -150,12 +150,13 @@ export default {
         this.getData();
     },
     methods: {
+
         submit(){
             let self=this;
-            if(self.$route.query.ids==undefined){
+            if(this.tempId){
                 
                 self.$Message.warning('请选择表单');
-                return
+                // return
             }
             // console.log(self.settingForm)
             let arr=[];
@@ -178,7 +179,7 @@ export default {
                 self.$Message.warning('请选择填写人');
                 return
             }else if(self.checkStatus=="0"){
-                settingObj.writes=self.$refs.grade.getCheckedNodes();
+                settingObj.writes=self.$api.formatTreeData(self.$refs.grade.getCheckedNodes(),"children");
                 
             }else if(self.checkStatus=="1"){
                 settingObj.writes=self.$refs.studentList.selStudentList
@@ -199,6 +200,7 @@ export default {
             if(self.settingForm.resultCopy){
                  settingObj.resultObj=self.$refs.resultList.selStudentList
             }
+            console.log(settingObj)
             self.submitAjax(settingObj)
         },
         submitAjax(obj){

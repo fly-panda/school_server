@@ -589,6 +589,7 @@ export default {
                     this.sortable_item[i].obj.items = this.teacherList;
                 }
                 if(this.sortable_item[i].ele=="selectstudent"){
+                    console.log(JSON.stringify(this.studentList))
                     this.sortable_item[i].obj.items = this.studentList;
                 }
                 if(this.sortable_item[i].ele=="selectgrade"){

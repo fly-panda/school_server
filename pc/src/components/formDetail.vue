@@ -12,10 +12,10 @@
             <div class="selectStudentContainer" v-if="cont.ele=='selectstudent'">
                 <div class="title" :class="{'require-cls':cont.obj.require}">选择学生</div>
                 <div class="point">提示内容</div>
-                <!-- {{cont.obj.selArr}} -->
-                <div class="selectBtn" v-if="!type_student" @click="selS">       
-                    <span v-show="cont.obj.selArr.length==0">点击选择学生范围</span>
-                    <span v-for="item in cont.obj.selArr">{{item.name}}、</span>
+                <!-- {{cont.obj.selArr}} --> 
+                <div class="selectBtn" v-if="!type_student" @click="selS">    
+                
+                    <span v-text="cont.obj.selObj.name?cont.obj.selObj.name:'点击选择学生范围'"></span>
                 </div>
                 <div class="student-view" v-if="type_student">
                     <div class="title-cls flex-cls">
@@ -24,7 +24,7 @@
                             <input type="text" placeholder="请输入姓名"> 
                             <img src="@/assets/search_ico.png" alt="">
                         </p>
-                        <p class="btns" @click="saveStudent(cont.obj.selArr)">确认</p>
+                        <p class="btns" @click="saveStudent(cont.obj)">确认</p>
                     </div>
                     <div class="view-list">
                         <div style="border-right:1px solid #C3C9D0;">
@@ -44,7 +44,7 @@
                                    <li v-for="(item,index) in studentList" @click="selClick(item,index)">
                                        
                                        <span class="name-cls">{{item.name}}</span>
-                                       <span class="check-cls" :class="{'active-cls':item.checked}"></span>
+                                       <span class="check-cls" :class="{'active-cls':item.userid==studentObj.userid}"></span>
                                    </li>
                                </ul>
                             </div>
@@ -113,7 +113,7 @@
                             <div class='cont center-cls'>
                                 <div>
                                     <!-- :data="departmentData" -->
-                                    <Tree style="margin-left: 15px" ref="students" :data="cont.obj.items" show-checkbox></Tree>
+                                    <Tree style="margin-left: 15px" ref="students" :data="cont.obj.items" show-checkbox :multiple="departmentMultiple"></Tree>
                                 </div>
                             </div>
                         </div>
@@ -141,7 +141,7 @@
                             <div class='cont center-cls'>
                                 <div>
                                      <!-- :data="gradeData" -->
-                                    <Tree style="margin-left: 15px" ref="students" :data="cont.obj.items" show-checkbox></Tree>
+                                    <Tree style="margin-left: 15px" ref="students" :data="cont.obj.items" show-checkbox multiple="false"></Tree>
                                 </div>
                             </div>
                         </div>
@@ -444,6 +444,9 @@ export default {
             departmentList:[],
             gradeData:[],
             gradeList:[],
+            departmentMultiple:false,
+            studentObj:{},
+
         }
     },
     filter:{
@@ -451,7 +454,7 @@ export default {
     },
     mounted(){
         this.previewObj=this.$api.sGetObject("previewObj");
-        console.log("asd",this.previewObj)
+        // console.log("asd",this.previewObj)
         // this.previewObj=datas.data;
         this.getData();
         this.getSheng();
@@ -515,13 +518,14 @@ export default {
         },
         saveStudent(res){
             let self=this;
+            res.selObj=self.studentObj;
             console.log(res)
-            res=[];
-            self.studentList.forEach(item => {
-                 if(item.checked){
-                        res.push(item);
-                    }
-            });
+            // res=[];
+            // self.studentList.forEach(item => {
+            //      if(item.checked){
+            //             res.push(item);
+            //         }
+            // });
             
           
             this.type_student=!this.type_student;
@@ -582,7 +586,7 @@ export default {
                 let arr=JSON.parse(r.data);
                 for(let i=0;i<arr.length;i++){
                     self.teacherList.push({
-                        checked: false,
+                        // checked: false,
                         departid: arr[i].departid,
                         gender: arr[i].gender,
                         is_subscribe: arr[i].is_subscribe,
@@ -606,7 +610,9 @@ export default {
         }, 
         selClick(item,index){
             let self=this;
-            item.checked=!item.checked;
+            self.studentObj=item;
+            console.log(self.studentObj)
+            // item.checked=!item.checked;
         },
         selsClick(item,index){
             let self=this;
@@ -985,7 +991,7 @@ export default {
                 .check-cls{
                     width: 15px;
                     height: 15px;
-
+                    border-radius: 50%;
                     background:url("../assets/choix_nor.png");
                 }
                 .active-cls{
