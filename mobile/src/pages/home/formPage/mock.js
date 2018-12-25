@@ -1,5 +1,7 @@
-exports.data1 = [
-  {
+exports.data1 = {
+  state: 0,
+  result: '查询成功',
+  data: {
     "title": "新建表单1",
     "describe": "<p class=\"ql-align-center\">这是我新创建的表单</p>",
     'data': [{
@@ -212,7 +214,7 @@ exports.data1 = [
           // "url":"asdadsa",
           // "size":"1kb"
           // }
-          
+
         ],
         "updateType": "",
         "updateTypeList": [{
@@ -246,8 +248,8 @@ exports.data1 = [
         "require": true,
         "name": "default",
         "value": "",
-        "valueDate":'',
-        "valueTime":"",
+        "valueDate": '',
+        "valueTime": "",
         "ruleError": "选项不能为空",
         "relation": false,
         "relation_name": "",
@@ -269,8 +271,8 @@ exports.data1 = [
         "require": true,
         "name": "default",
         "value": "",
-        "valueDate":'2016-01-01',
-        "valueTime":"",
+        "valueDate": '2016-01-01',
+        "valueTime": "",
         "ruleError": "选项不能为空",
         "relation": false,
         "relation_name": "",
@@ -283,7 +285,7 @@ exports.data1 = [
       "ele": "address",
       "obj": {
         "type": "address",
-        "chooseCheck": ["province", "city", "zone"],
+        "chooseCheck": ["province", "city", "zone", 'address'],
         "icons": "",
         "config": true,
         "label": "地址",
@@ -307,7 +309,7 @@ exports.data1 = [
         "details_address": true,
         "modalTitle": "地址"
       }
-    },{
+    }, {
       "ele": "address",
       "obj": {
         "type": "address",
@@ -571,7 +573,7 @@ exports.data1 = [
         }],
         "verify": "none",
         "value": "",
-        "selArr":[],
+        "selArr": [],
         "name": "default",
         "ruleError": "该字段不能为空",
         "relation": false,
@@ -937,7 +939,7 @@ exports.data1 = [
         "describe": "",
         "gradesType": "add",
         "low": 0,
-        "high":10,
+        "high": 10,
         "step": 1,
         "verify": "none",
         "value": 0,
@@ -980,5 +982,129 @@ exports.data1 = [
       }
     }]
   }
-]
+}
 
+// 预览数据
+exports.data2 = {
+  state: 0,
+  result: '查询成功',
+  data: {
+    id: {},
+    "data": [{
+      "ele": "imgshow",
+      "obj": {
+        "config": true,
+        "describe": "",
+        "gradesType": "add",
+        "high": 100,
+        "icons": "",
+        "imgArr": [{
+          "name": "QQ浏览器截图20180904203100.png",
+          "percentage": 100,
+          "size": "25.44KB",
+          "status": "finished",
+          "titles": "图片",
+          "uid": 1545714915274,
+          "url": "/files/2018/12/25/QQ浏览器截图20180904203100.png"
+        }, {
+          "name": "QQ浏览器截图20181010171429.png",
+          "percentage": 100,
+          "size": "43.45KB",
+          "status": "finished",
+          "titles": "图片",
+          "uid": 1545714915275,
+          "url": "/files/2018/12/25/QQ浏览器截图20181010171429.png"
+        }],
+        "inlineBlock": false,
+        "label": "图片展示",
+        "low": 0,
+        "modalTitle": "图片展示",
+        "name": "default",
+        "placeholder": "",
+        "relation": false,
+        "relation_name": "",
+        "relation_value": "",
+        "require": false,
+        "ruleError": "该字段不能为空",
+        "step": 1,
+        "type": "imgShow",
+        "value": "",
+        "verify": "none",
+        "visibility": true
+      }
+    }, {
+      "ele": "selectstudent",
+      "obj": {
+        "config": true,
+        "describe": "",
+        "icons": "",
+        "inlineBlock": false,
+        "items": [{
+          "checked": true,
+          "departid": "hHuccJElV5kdone",
+          "indeterminate": false,
+          "join_year": "2017",
+          "level": "6",
+          "nodeKey": 9,
+          "title": "测试班级2",
+          "wxdepartid": "79"
+        }, {
+          "checked": true,
+          "departid": "tAgvjune2h4BgUdone",
+          "indeterminate": false,
+          "join_year": "2017",
+          "level": "6",
+          "nodeKey": 10,
+          "title": "测试班级3",
+          "wxdepartid": "81"
+        }],
+        "label": "选择学生",
+        "maxLength": 2000,
+        "modal": "selectStudentForm",
+        "modalTitle": "选择学生",
+        "name": "default",
+        "placeholder": "",
+        "relation": false,
+        "relation_name": "",
+        "relation_value": "",
+        "require": true,
+        "ruleError": "该字段不能为空",
+        "selArr": [],
+        "selObj": {},
+        "type": "selectstudent",
+        "value": "",
+        "valueArr": [],
+        "verify": "none",
+        "visibility": true
+      }
+    }, {
+      "ele": "selectteacher",
+      "obj": {
+        "config": true,
+        "describe": "",
+        "icons": "",
+        "inlineBlock": false,
+        "items": [],
+        "label": "选择老师",
+        "maxLength": 2000,
+        "modal": "selectTeacherForm",
+        "modalTitle": "选择老师",
+        "name": "default",
+        "placeholder": "",
+        "relation": false,
+        "relation_name": "",
+        "relation_value": "",
+        "require": true,
+        "ruleError": "该字段不能为空",
+        "selObj": {},
+        "type": "selectteacher",
+        "value": "",
+        "valueArr": [],
+        "verify": "none",
+        "visibility": true
+      }
+    }],
+    "describe": "这个是一个表单描述",
+    "title": "这是一个表单标题"
+  }
+}

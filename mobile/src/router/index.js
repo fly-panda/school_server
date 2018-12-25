@@ -46,7 +46,8 @@ const router = new Router({
       name: 'FormPage',
       // component: FormPage,
       meta: {
-        title: '我的任务'
+        title: '我的任务',
+        keepAlive: true
       },
       component:resolve=>require(["@/pages/home/formPage/FormPage"],resolve)
     },

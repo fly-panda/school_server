@@ -7,8 +7,11 @@
       </div>
     </div>
     <ul class="list">
-      <li v-for="(item, index) of listData" :key="index" :class="{ 'active' : item.active }" @click="selectItem(item)">
-        <div>{{ item.val }}</div>
+      <li v-for="(item, index) of listData" 
+          :key="index" 
+          :class="{ 'active' : item.active }" 
+          @click="selectItem(item, index)">
+        <div v-html="item.title"></div>
         <icon v-if="item.active" type="success-no-circle"></icon>
       </li>
     </ul>
@@ -27,46 +30,50 @@ export default {
   data() {
     return {
       keyType: '',
-      listData: [
-        {
-          val: '张三',
-          active: false
-        },
-        {
-          val: '李四1',
-          active: false
-        },
-        {
-          val: '李四2',
-          active: false
-        },
-        {
-          val: '李四3',
-          active: false
-        }
-      ]
+      listData: []
     };
   },
   methods: {
-    selectItem(data) {
-      let val = data.val
-      console.log(val)
+    selectItem(data, index) {
+      let val = JSON.stringify(data)
 
-      console.log(this.keyType)
+      // this.listData.map((v, i) => {
+      //   v.active = i == index ? true : false
+      // })
+
       sessionStorage.setItem(this.keyType, val)
       this.$router.go(-1)
     }
   },
+  beforeRouteLeave(to, from, next) {
+    // to.meta.keepAlive = true
+    console.log(to)
+    // next()
+
+    if(to.name == 'FormPage') {
+      to.meta.keepAlive = true
+      next()
+    } else {
+      from.meta.keepAlive = false
+      to.meta.keepAlive = false
+      this.$destroy()
+      next()
+    }
+  },
   created() {
     let options = this.$route.query
+    let selectItem = JSON.parse(options.selectItem)
+    console.log(selectItem)
     //动态设置标题
     document.title = options.title   
     this.keyType = options.type
 
-    this.listData.map((v, i) => {
-      v.active = v.val == options.value
-    })
+    // 列表数据
+    this.listData = JSON.parse(options.items)
 
+    this.listData.map((v, i) => {
+      v.active = v.wxdepartid == selectItem.wxdepartid ? true : false
+    })
 
   },
   mounted() {

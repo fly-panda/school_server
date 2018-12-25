@@ -2,7 +2,7 @@
   <div class="address-components">
     <div class="select-item-title" v-html="obj.obj.label"></div>
     <div class="select-address">
-      <div class="sheng" v-if="obj.obj.chooseCheck.indexOf('province') == 0">
+      <div class="sheng">
         <popup-picker
           :data="shengArr"
           :columns="1"
@@ -12,7 +12,7 @@
           @on-change="getShi"
         ></popup-picker>
       </div>
-      <div class="shi" v-if="obj.obj.chooseCheck.indexOf('city') > -1">
+      <div class="shi">
         <popup-picker
           :data="shiArr"
           :columns="1"
@@ -22,7 +22,7 @@
           show-name
         ></popup-picker>
       </div>
-      <div class="qu" v-if="obj.obj.chooseCheck.indexOf('zone') > -1">
+      <div class="qu">
         <popup-picker
           :data="quArr"
           :columns="1"
@@ -87,7 +87,7 @@ export default {
       );
     },
     getShi(value) {
-      console.log(value)
+      // console.log(value)
       this.obj.obj.shiValueArr = []
       this.obj.obj.quValueArr = []
 
@@ -119,7 +119,7 @@ export default {
   },
   created() {},
   mounted() {
-    console.log(this.obj);
+    // console.log(this.obj);
     this.getSheng();
     if (this.obj.obj.shengValue) {
       this.getShi(this.obj.obj.shengValue);

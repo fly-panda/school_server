@@ -13,17 +13,18 @@ import 'mint-ui/lib/style.css'
 import './assets/styles/border.css'
 import './assets/styles/reset.css'
 
-import { ToastPlugin,ConfirmPlugin,AlertPlugin, LoadingPlugin} from 'vux'
+// import { ToastPlugin,ConfirmPlugin,AlertPlugin, LoadingPlugin} from 'vux'
+
+import { Toast } from 'mint-ui'
 
 import api from './common/js/index'
 Vue.prototype.$api = api;
 
-Vue.use(ToastPlugin)
-Vue.use(ConfirmPlugin)
-Vue.use(AlertPlugin)
-Vue.use(LoadingPlugin)
 Vue.use(MintUI)
 Vue.use(ElementUI)
+// Vue.use(ConfirmPlugin)
+// Vue.use(AlertPlugin)
+// Vue.use(LoadingPlugin)
 
 // fastClick.attach(document.body)
 

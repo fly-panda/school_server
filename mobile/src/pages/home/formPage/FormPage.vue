@@ -1,49 +1,46 @@
 <template>
-  <div class="form-page">
+  <div :class="[{ 'pt-0': preview == '1' }, 'form-page']">
+    <!-- tab切换 -->
     <tab :line-width="1" custom-bar-width="60px" v-if="preview != '1'">
       <tab-item
-        :selected="selectTabIndex === index"
         v-for="(item, index) in tabData"
+        :selected="selectTabIndex === index"
         :key="index"
         @on-item-click="tabItemClick(index)"
       >{{ item }}</tab-item>
-      <!-- <tab-item>历史记录</tab-item> -->
     </tab>
     <!-- 表单 -->
-    <div
-      class="form-wrapper"
-      v-if="selectTabIndex == 0"
-      v-for="(allList, index) of allListData"
-      :key="index"
-    >
-      <!-- 标题&描述 -->
-      <div class="title" v-html="allList.title"></div>
-      <div class="des" v-html="allList.describe"></div>
+    <div class="form-wrapper" v-if="selectTabIndex == 0">
 
-      <div v-for="(obj, idx) of allList.data" :key="idx">
+      <!-- 标题&描述 -->
+      <div class="title" v-html="allListData.title"></div>
+      <div class="des" v-html="allListData.describe"></div>
+
+      <!-- 表单列表 -->
+      <div v-for="(obj, idx) of allListData.data" :key="idx">
         <!-- 选择学生 -->
         <div class="select-item" v-if="obj.ele == 'selectstudent'">
           <div class="select-item-title" v-html="obj.obj.label"></div>
           <div class="select-item-txt" v-html="obj.obj.describe"></div>
-          <button @click="selectList(0)">{{ selectStudentValue }}</button>
+          <button @click="selectList(0, obj.obj.items, selectStudentItem)">{{ selectStudentItem.title ? selectStudentItem.title : '点击选择学生范围' }}</button>
         </div>
         <!-- 选择老师 -->
         <div class="select-item" v-if="obj.ele == 'selectteacher'">
           <div class="select-item-title" v-html="obj.obj.label"></div>
           <div class="select-item-txt" v-html="obj.obj.describe"></div>
-          <button @click="selectList(1)">{{ selectTeacherValue }}</button>
+          <button @click="selectList(1, obj.obj.items, selectTeacherItem)">{{ selectTeacherItem.title ? selectTeacherItem.title : '点击选择老师范围' }}</button>
         </div>
         <!-- 选择班级 -->
         <div class="select-item" v-if="obj.ele == 'selectgrade'">
           <div class="select-item-title" v-html="obj.obj.label"></div>
           <div class="select-item-txt" v-html="obj.obj.describe"></div>
-          <button @click="selectList(2)">{{ selectClassValue }}</button>
+          <button @click="selectList(2, obj.obj.items, selectClassItem)">{{ selectClassItem.title ? selectClassItem.title : '点击选择班级范围'  }}</button>
         </div>
         <!-- 选择部门 -->
         <div class="select-item" v-if="obj.ele == 'selectdepartment'">
           <div class="select-item-title" v-html="obj.obj.label"></div>
           <div class="select-item-txt" v-html="obj.obj.describe"></div>
-          <button @click="selectList(3)">{{ selectDepartmentValue }}</button>
+          <button @click="selectList(3, obj.obj.items, selectDepartmentItem)">{{ selectDepartmentItem.title ? selectDepartmentItem.title : '点击选择部门范围' }}</button>
         </div>
         <!-- 图片上传 -->
         <div class="select-item upload-img" v-if="obj.ele == 'uploadimg'">
@@ -159,7 +156,7 @@
             ></checklist>
             <input type="text" 
                     placeholder="输入文字" 
-                    style="background: #FFFFFF;border: 1px solid #C3C9CF;padding: 10px;"  
+                    class="other-input"  
                     v-model="obj.obj.otherValue"
                     v-if="obj.obj.hasOther && obj.obj.value.indexOf('other')>-1">
           </div>
@@ -318,7 +315,7 @@
             <input type="text" 
                    v-if='obj.obj.hasOther && obj.obj.value=="other"' 
                    v-model="obj.obj.otherValue" 
-                   style="background: #FFFFFF;border: 1px solid #C3C9CF;padding: 2px 5px;">
+                   class="other-input">
           </div>
         </div>
         <!-- 单选 勾选打分 -->
@@ -362,7 +359,7 @@
           <div class="img-select-list">
             <el-checkbox-group v-model="obj.obj.value">
               <div class="img-select-item" v-for="(item, i) of obj.obj.imgArr" :key='i'>
-                <img :src="baseUrl + item.url" @click="previewerImg1(index, 'imgcheck'+idx)">
+                <img :src="baseUrl + item.url" @click="previewerImg1(i, 'imgcheck'+idx)">
                 <el-checkbox :label="i">{{ item.labels }}</el-checkbox>
               </div>
             </el-checkbox-group>
@@ -398,7 +395,9 @@
           ></textarea>
         </div>
       </div>
-      <button v-if="preview != '1'" class="submit" @click="submitForm">提交</button>
+      <button :disabled="preview == '1'" 
+              :class="[preview == '1' ? 'btn-disabled' : '','submit']" 
+              @click="submitForm">提交</button>
     </div>
     <!-- 历史记录 -->
     <div class="history-record" v-if="selectTabIndex == 1">
@@ -436,7 +435,8 @@
 <script>
 import vueSlider from 'vue-slider-component';
 import addressMe from '../../../components/address/Address';
-import {
+import { Toast, Indicator } from 'mint-ui'
+import { 
   Tab,
   TabItem,
   Scroller,
@@ -589,11 +589,10 @@ export default {
 
       preview: "", // 值为1时，为预览页面
 
-      oneLineValue: "", // 单行文字
-      selectStudentValue: "点击选择学生范围",
-      selectTeacherValue: "点击选择老师范围",
-      selectClassValue: "点击选择班级范围",
-      selectDepartmentValue: "点击选择部门范围",
+      selectStudentItem: {},
+      selectTeacherItem: {},
+      selectClassItem: {},
+      selectDepartmentItem: {},
 
       timesData:[
         ["00", "01", "02", "03", "04", "05", "06", "07", "08", "09", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "20", "21", "22", "23"],
@@ -634,6 +633,59 @@ export default {
     };
   },
   computed: {},
+  mounted() {
+    // console.log(this);
+    console.log(mockData.data1)
+
+    let dataArr = mockData.data1
+
+    console.log(this.allListData)
+
+
+    this.dataFormat(dataArr)
+
+
+    // 判断页面是不是预览 preview == '1'为预览
+    this.preview = this.$route.query.preview ? this.$route.query.preview : "";
+    let ids = this.$route.query.ids ? this.$route.query.ids : ''
+
+    // 预览
+    if(this.preview == 1) {
+      console.log('预览模式！！！')
+
+      this.dataFormat(mockData.data2)
+
+      if(!ids) { return }
+
+      // 获取预览数据
+      this.$api.get('/cform/getpreview', {tempid: ids}, r=> {
+
+        let allData = JSON.parse(r.data)
+        this.dataFormat(allData)
+
+      })
+
+    }
+
+
+    this.getFormData(ids);
+
+
+
+    this.selectStudentItem = JSON.parse(sessionStorage.getItem("selectStudentItem"))
+      ? JSON.parse(sessionStorage.getItem("selectStudentItem"))
+      : this.selectStudentItem;
+    this.selectTeacherItem = JSON.parse(sessionStorage.getItem("selectTeacherItem"))
+      ? JSON.parse(sessionStorage.getItem("selectTeacherItem"))
+      : this.selectTeacherItem;
+    this.selectClassItem = JSON.parse(sessionStorage.getItem("selectClassItem"))
+      ? JSON.parse(sessionStorage.getItem("selectClassItem"))
+      : this.selectClassItem;
+    this.selectDepartmentItem = JSON.parse(sessionStorage.getItem("selectDepartmentItem"))
+      ? JSON.parse(sessionStorage.getItem("selectDepartmentItem"))
+      : this.selectDepartmentItem
+
+  },
   methods: {
     // 二级下拉
     pickerValueChange(obj, value) {
@@ -666,22 +718,19 @@ export default {
         });
       });
     },
+    // 删除上传的图片
     delImg(list, idx) {
-      console.log(list);
+      // console.log(list);
       let path = list[idx].src;
-      this.$vux.loading.show({
-        text: '删除中'
-      })
+      Indicator.open({
+        text: '删除中',
+        spinnerType: 'fading-circle'
+      });
       this.$api.get("/file/deleteFile", { path: path }, r => {
         console.log(r);
+        Indicator.close()
         list.splice(idx, 1);
-        this.$vux.loading.hide()
-        this.$vux.toast.show({
-          text: r.result,
-          time: "2000",
-          type: "text",
-          position: "middle"
-        })
+        Toast(r.result)
       });
     },
     // 上传文件
@@ -694,34 +743,23 @@ export default {
           name:fileObj.name,
           url:r.data,
           size:sizes
-        })            
-             
-      });
-    },
-    delFile(res,i){
-      let path = res[i].url;
-      this.$vux.loading.show({
-        text: '删除中'
-      })
-      this.$api.get("/file/deleteFile", { path: path }, r => {
-        console.log(r);
-        res.splice(i,1)        
-        this.$vux.loading.hide()
-        this.$vux.toast.show({
-          text: r.result,
-          time: "2000",
-          type: "text",
-          position: "middle"
         })
       });
     },
-    // 多选按钮
-    checkboxChange(val, label) {
-      // console.log(val);
-      // console.log(label);
+    // 删除上传的文件
+    delFile(res,i){
+      let path = res[i].url;
+      Indicator.open({
+        text: '删除中',
+        spinnerType: 'fading-circle'
+      });
+      this.$api.get("/file/deleteFile", { path: path }, r => {
+        console.log(r);
+        res.splice(i,1)        
+        Indicator.close()
+        Toast(r.result)
+      });
     },
-    // 单选按钮
-    radioChange() {},
     // tab切换
     tabItemClick(index) {
       this.selectTabIndex = index;
@@ -734,7 +772,8 @@ export default {
     menuHandleClick(type) {
       console.log(type);
     },
-    selectList(type) {
+    selectList(type, items, selectItem) {
+      // console.log(items)
       let title = "";
       let value = "";
       let typeValue = "";
@@ -744,7 +783,7 @@ export default {
           this.selectStudentValue == "点击选择学生范围"
             ? ""
             : this.selectStudentValue;
-        typeValue = "selectStudentValue";
+        typeValue = "selectStudentItem";
       }
       if (type == 1) {
         title = "选择老师范围";
@@ -752,7 +791,7 @@ export default {
           this.selectTeacherValue == "点击选择老师范围"
             ? ""
             : this.selectTeacherValue;
-        typeValue = "selectTeacherValue";
+        typeValue = "selectTeacherItem";
       }
       if (type == 2) {
         title = "选择班级";
@@ -760,7 +799,7 @@ export default {
           this.selectClassValue == "点击选择班级范围"
             ? ""
             : this.selectClassValue;
-        typeValue = "selectClassValue";
+        typeValue = "selectClassItem";
       }
       if (type == 3) {
         title = "选择分部";
@@ -768,15 +807,15 @@ export default {
           this.selectDepartmentValue == "点击选择部门范围"
             ? ""
             : this.selectDepartmentValue;
-        typeValue = "selectDepartmentValue";
+        typeValue = "selectDepartmentItem";
       }
-
+      selectItem = JSON.stringify(selectItem)
+      items = JSON.stringify(items)
       this.$router.push({
         path: "/selectList",
-        query: { title: title, type: typeValue, value: value }
+        query: { title: title, type: typeValue, value: value, items: items,selectItem: selectItem }
       });
     },
-    change() {},
     // 滑动打分
     countRangeValue(type, obj) {
       if (type == -1 && parseInt(obj.value) > parseInt(obj.low) && parseInt(obj.value) <= parseInt(obj.high)) {
@@ -788,30 +827,31 @@ export default {
     },
     loadMore() {},
     // 数据格式化
-    dataFormat(data) {
-      let allData = data
-      allData.map((a, b) => {
-        a.data.map((c, d) => {
-          if(c.ele == 'select') {
-            c.obj.valueArr = []
-          }
-          if(c.ele == 'address') {
-            c.obj.shengValueArr =  []
-            c.obj.shiValueArr =  []
-            c.obj.quValueArr =  []
-          }
-          if(c.ele == 'datepicker') {
-            c.obj.valueTimeArr = []
-          }
-        })
+    dataFormat(allData) {
+
+      let bigData = allData.data
+
+      bigData.data.map((c, d) => {
+        if(c.ele == 'select') {
+          c.obj.valueArr = []
+        }
+        if(c.ele == 'address') {
+          c.obj.shengValueArr =  []
+          c.obj.shiValueArr =  []
+          c.obj.quValueArr =  []
+        }
+        if(c.ele == 'datepicker') {
+          c.obj.valueTimeArr = []
+        }
       })
-      this.allListData = allData
+
+      this.allListData = bigData
     },
     // 提交表单
     submitForm() {
-      console.log(this.allListData)
+      // console.log(this.allListData)
 
-      this.allListData[0].data.map((v, i) => {
+      this.allListData.data.map((v, i) => {
         if(v.ele == 'select') {
           v.obj.value = v.obj.valueArr[0]
         }
@@ -825,7 +865,7 @@ export default {
         }
       })
 
-      console.log(this.allListData)
+      alert(this.allListData.data[0].obj.placeholder)
 
     },
     // 获取表单数据
@@ -835,71 +875,6 @@ export default {
         }
       );
     },
-    // 选择城市
-    // getCity(list, model) {
-      
-    //   console.log(model)
-
-    //   let pid = model[0]
-
-    //   this.$api.get(`/city/getCity`, { pid: pid }, r => {
-    //     let data = JSON.parse(r.data);
-    //     // list = []
-    //     data.map((v, i) => {
-    //       let item = {
-    //         value: v.id,
-    //         name: v.name
-    //       };
-    //       list.push(item);
-    //     });
-    //   });
-    // }
-  },
-  mounted() {
-    // console.log(this);
-
-    this.dataFormat(mockData.data1)
-
-
-    // 判断页面是不是预览
-    this.preview = this.$route.query.preview ? this.$route.query.preview : "";
-    let ids = this.$route.query.ids ? this.$route.query.ids : '5c20acb4d725d257ac33f3b0'
-
-
-    this.$api.get('/cform/getpreview', {tempid: ids}, r=> {
-      console.log('预览')
-      console.log(r)
-    })
-
-    // 预览
-    if(this.preview == 1) {
-      // 模板ID
-      this.$api.get('/cform/getpreview', {tempid: ids}, r=> {
-        console.log(r)
-        let allData = JSON.parse(r.data)
-        this.dataFormat(allData)
-      })
-
-      return false
-    }
-
-
-    this.getFormData(ids);
-
-
-
-    this.selectStudentValue = sessionStorage.getItem("selectStudentValue")
-      ? sessionStorage.getItem("selectStudentValue")
-      : this.selectStudentValue;
-    this.selectTeacherValue = sessionStorage.getItem("selectTeacherValue")
-      ? sessionStorage.getItem("selectTeacherValue")
-      : this.selectTeacherValue;
-    this.selectClassValue = sessionStorage.getItem("selectClassValue")
-      ? sessionStorage.getItem("selectClassValue")
-      : this.selectClassValue;
-    this.selectDepartmentValue = sessionStorage.getItem("selectDepartmentValue")
-      ? sessionStorage.getItem("selectDepartmentValue")
-      : this.selectDepartmentValue;
   }
 };
 </script>
@@ -910,6 +885,13 @@ export default {
   .weui-cell__ft {
     display: none;
   }
+}
+thead {
+  font-size: 14px;
+  text-align: center;
+}
+.calendar-header {
+  font-size: 14px !important;
 }
 // 重置样式选择日期
 .calendar-box,
@@ -1085,11 +1067,12 @@ a:hover {
   background: #fff !important;
 }
 .form-page {
+  padding-bottom: 53px;
+  padding-top: 44px;
+  font-size: 14px;
   input, textarea {
     font-size: 14px;
   }
-  padding-bottom: 53px;
-  padding-top: 44px;
   textarea {
     border: 1px solid #c3c9cf;
     width: 100%;
@@ -1570,6 +1553,21 @@ a:hover {
     }
   }
 }
+
+.other-input {
+  background: #FFFFFF;
+  border: 1px solid #C3C9CF;
+  height: 30px;
+  padding: 0 10px;
+}
+
+.pt-0 {
+  padding-top: 0;
+}
+.btn-disabled {
+  opacity: .4;
+}
+
 
 // 滚动条样式
 ::-webkit-scrollbar {

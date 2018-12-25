@@ -160,6 +160,10 @@ export default {
     };
   },
   computed: {},
+  beforeRouteLeave(to, from, next) {
+    to.meta.keepAlive = false; 
+    next();
+  },
   methods: {
     // 调用子组件tab切换的事件
     toogleTab(...data) {
@@ -178,9 +182,19 @@ export default {
     // 详情
     currentTask() {
       this.$router.push({ path: "/formPage", query: {} });
+    },
+    // 获取列表数据
+    getListData() {
+      this.$api.get('task/participate', { state: '0' }, r => {
+        console.log(r)
+      }, r => {
+        console.log(r)
+      })
     }
   },
-  mounted() {}
+  mounted() {
+    this.getListData()
+  }
 };
 </script>
 
@@ -188,6 +202,7 @@ export default {
 @import "../../assets/styles/mixins.scss";
 .home {
   padding-bottom: 53px;
+  font-size: 14px;
   .list {
     padding: 0 px2rem(20);
     margin-top: 70px;

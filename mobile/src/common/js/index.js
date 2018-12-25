@@ -2,7 +2,7 @@
 // 配置API接口地址
 var baseUrlRoot = 'http://47.93.156.129:8848/api/'
 import Vue from 'vue'
-
+import { Toast, Indicator } from 'mint-ui';
 // 引用axios
 import axios from 'axios'
 
@@ -85,36 +85,15 @@ function apiAxios(method, url, params, success, failure) {
         let data=res.data;
         if(res.status==200){
           if(data.state==0){
-            // Message.success(data.result);
-            Vue.$vux.toast.show({
-              text: data.result,
-              time: "2000",
-              type: "text",
-              position: "middle"
-            });
             success(data);
           }else{
-            // failure(data)
-            Vue.$vux.toast.show({
-              text: data.result,
-              time: "2000",
-              type: "text",
-              position: "middle"
-            });
-            // Message.error(data.result);
+            Toast(data.result)
           }   
         }
         
     })
     .catch(function (err) {
-      // failure(err)
-      Vue.$vux.toast.show({
-        text: '服务异常，请刷新重试！',
-        time: "2000",
-        type: "text",
-        position: "middle"
-      });
-      // Message.error("服务异常，请刷新重试！");
+      Toast('服务异常，请刷新重试！');
     })
 }
 
@@ -136,17 +115,14 @@ function uploadFile(url,params, file, success){
     if (file != null) {
       fd.append("file", file);
     } else {
-      Vue.$vux.toast.show({
-        text: '请选择一个文件',
-        time: "2000",
-        type: "text",
-        position: "middle"
-      });
+      Toast('请选择一个文件')
+
       return;
     }
-    Vue.$vux.loading.show({
-      text: '上传中'
-    })
+    Indicator.open({
+      text: '上传中',
+      spinnerType: 'fading-circle'
+    });
    axios({
       method: 'post',
       url: baseUrlRoot + url,
@@ -159,31 +135,20 @@ function uploadFile(url,params, file, success){
 
     })
     .then(function (res) {
-      Vue.$vux.loading.hide()
+      Indicator.close()
       let data=res.data;
       if(res.status==200){
         if(data.state==0){
-          Vue.$vux.toast.show({
-            text: data.result,
-            time: "2000",
-            type: "text",
-            position: "middle"
-          });
+          Toast(data.result)
           success(data);
         }else{
-          Vue.$vux.toast.show({
-            text: data.result,
-            time: "2000",
-            type: "text",
-            position: "middle"
-          });
+          Toast(data.result)
         }   
       }
     })
     .catch(function (err) {
-      Vue.$vux.loading.hide()
-        // Message.error("服务异常，请刷新重试！");
-
+      Indicator.close()
+      Toast('服务异常，请刷新重试！')
     })
 }
 
