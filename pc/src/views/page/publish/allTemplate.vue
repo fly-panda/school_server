@@ -22,21 +22,21 @@ export default {
             // status 0 结束 1为开启
             // type 0 simple 1week
             cardList: [
-                {
-                    id: 1,
-                    status: 1,
-                    title: '纪律检查'
-                },
-                {
-                    id: 1,
-                    status: 1,
-                    title: '纪律检查'
-                },
-                {
-                    id: 1,
-                    status: 1,
-                    title: '纪律检查'
-                }
+                // {
+                //     id: 1,
+                //     status: 1,
+                //     title: '纪律检查'
+                // },
+                // {
+                //     id: 1,
+                //     status: 1,
+                //     title: '纪律检查'
+                // },
+                // {
+                //     id: 1,
+                //     status: 1,
+                //     title: '纪律检查'
+                // }
             ],
             status:1,
             userId:"",
@@ -53,7 +53,7 @@ export default {
             let self=this;
             self.$api.post("/cform/myForm",{},r=>{
                  console.log(r)
-                // self.cardList=JSON.parse(r.data);
+                self.cardList=JSON.parse(r.data);
                 // console.log(self.data3);
             },e=>{
                 console.log(e)
@@ -71,7 +71,10 @@ export default {
             //         title: '卫生检查'
             //     }
             // )
-        }
+        },
+        changeFun(page){
+                console.log(page)
+            }
     }
 }
 </script>

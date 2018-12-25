@@ -205,10 +205,10 @@ export default {
         submitAjax(obj){
             let self=this;
             self.$api.post("/task/addRule",obj,r=>{
-                // self.$Message.warning(r.result); 
-                self.$router.push(
-                    "/publishForm"
-                );
+                // self.$Message.success(r.result); 
+                self.$router.push({
+                    path:"/publishForm"
+                });
             },e=>{
                 console.log(e)
             })
@@ -246,7 +246,7 @@ export default {
 <style lang="less" scoped>
 .settingContainer {
     width: 905px;
-    height: 95%;
+    height: 90%;
     background: #fff;
     margin:20px auto;
     overflow-y: auto;

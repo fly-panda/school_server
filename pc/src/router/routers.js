@@ -155,15 +155,6 @@ export default [
                             keepAlive: false // 不需要缓存
                         },
                         component:resolve=>require(["@/views/page/editor/settingEditorForm.vue"],resolve)
-                    },
-                    {
-                        path: '/publishForm',
-                        name: 'publishForm',
-                        meta: {
-                            title: '发布设置',
-                            keepAlive: false // 不需要缓存
-                        },
-                        component:resolve=>require(["@/views/page/editor/publishForm.vue"],resolve)
                     }
                 ]
             },
@@ -175,6 +166,15 @@ export default [
                     keepAlive: false // 不需要缓存
                 },
                 component:resolve=>require(["@/views/page/duplicate"],resolve)
+            },
+            {
+                path: '/publishForm',
+                name: 'publishForm',
+                meta: {
+                    title: '发布设置',
+                    keepAlive: false // 不需要缓存
+                },
+                component:resolve=>require(["@/views/page/editor/publishForm.vue"],resolve)
             }
             
         ]

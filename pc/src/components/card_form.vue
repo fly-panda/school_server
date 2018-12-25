@@ -1,4 +1,5 @@
 <template>
+<!-- status  :1 我的任务 -->
 <div>
     <div class="cardform" v-if="status==0" @click="jumpDetails(cardItem)">
 
@@ -30,6 +31,7 @@
         </div>
     </div>
     <div class="cardform" v-if="status == 1" @click="jumpDetails(cardItem)">
+
         <div class="cardform-title">{{cardItem.tempname}}</div>
         <img v-if="temp" class="cardform-img" src='@/assets/moban_ico.png'/>
         <img v-if="!temp" class="cardform-img" src='@/assets/dancirenwu_ico.png'/>
@@ -65,14 +67,16 @@ export default {
             let self=this;
             if(self.status==0){
                 self.$router.push({
-                    name:"taskDetail"
+                    path:"/duplicate"
                 })
             }else if(self.status==1){
                 self.$router.push({
-                    name:"duplicate"
+                    path:"/editorForm?tempid="+cardItem.tempid
                 })
             }
-            
+            // self.$router.push({
+                //     name:"taskDetail"
+                // })
             console.log(cardItem);
             
 

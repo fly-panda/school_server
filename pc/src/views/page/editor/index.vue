@@ -7,9 +7,6 @@
         <MenuItem name="settingEditorForm">
         设置表单规则
         </MenuItem>
-        <MenuItem name="publishForm">
-        发布设置
-        </MenuItem>
     </Menu>
     <!-- <keep-alive>
         <router-view v-if="$route.meta.keepAlive"></router-view>
@@ -17,7 +14,6 @@
     <router-view v-if="!$route.meta.keepAlive"></router-view> -->
     <div :style="{height:fullHeight.height}">
         <editorForm :tempId="tempId" @changeId="changeIdFun($event)" ref="editorFormObj" v-show="viewType=='editorForm'"/>
-        <publishForm :tempId="tempId" v-show="viewType=='publishForm'"/>
         <settingEditorForm :tempId="tempId" v-show="viewType=='settingEditorForm'"/>
     </div>
 </div>

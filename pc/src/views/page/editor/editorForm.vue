@@ -487,7 +487,8 @@ export default {
             fullHeight:{// 动态获取屏幕高度
                 height: (document.documentElement.clientHeight-184)+"px"
             },
-            getBase:this.$api.getBase()
+            getBase:this.$api.getBase(),
+            tempid:"",//编辑 模板id
         }
     },
     components: {
@@ -550,9 +551,28 @@ export default {
         // console.log("我获取的",this.departmentList);
         // this.sortable_item=datas.data.data;
         
-        console.log(this.sortable_item)
+        // console.log(this.sortable_item);
+        this.tempid=this.$route.query.tempid;
+        if(this.tempid){
+            this.getEditForm();
+        }
+        console.log(111,)
     },
     methods: {
+        getEditForm(){
+            this.$api.get("cform/tempDetail",{
+                tempid:this.$route.query.tempid
+            },r=>{
+                let datas=JSON.parse(r.data);
+                this.formTitle=datas.title;
+                this.sortable_item=datas.data;
+                this.content=datas.describe;
+
+                    console.log(r)
+                
+                }
+            )
+        },
                 // 预览效果
         previewForm(){
             let formObj=this.formatData();
@@ -640,6 +660,7 @@ export default {
             this.modalStatus = true
         },
         getResult(curObj) {
+            console.log(curObj)
             // this.curIndex = curObj.newIndex
         },
         handleRemoveSelectItem(index) {

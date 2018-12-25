@@ -167,6 +167,9 @@ export default {
                 console.log(r)
             })
         },
+        changeFun(page){
+                console.log(page)
+            }
     }
 }
 </script>

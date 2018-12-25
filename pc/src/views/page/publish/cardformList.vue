@@ -22,6 +22,9 @@ export default {
         return {
             status:0,
             userId:"",
+            
+            currentPage:1,
+            totals:104,
             // status 0 结束 1为开启
             // type 0 simple 1week
             cardList: [{
@@ -148,8 +151,9 @@ export default {
         }
     },
     created(){
-        this.getData();
         this.userId=this.$api.sGetObject("userObj").userId;
+        this.getData();
+        
     },
     methods:{
         getData(){
@@ -159,7 +163,10 @@ export default {
             },r=>{
                 console.log(r)
             })
-        }
+        },
+        changeFun(page){
+                console.log(page)
+            }
     }
 }
 </script>
