@@ -11,7 +11,8 @@ export default (_self, h) => {
         },_self.obj.low),
         h("vueSlider", {
             style: {
-                display: 'inline-block'
+                display: 'inline-block',
+                'margin-left': '21px'
             },
             props: {
                 value: _self.obj.value,// 值

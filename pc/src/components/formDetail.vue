@@ -56,7 +56,8 @@
                 <div class="title" :class="{'require-cls':cont.obj.require}">选择老师</div>
                 <div class="point">提示内容</div>
                 <div class="selectBtn" v-if="!type_teacher" @click="selT">    
-                    点击选择老师范围
+                    
+                    <span v-text="cont.obj.selObj.name?cont.obj.selObj.name:'点击选择老师范围'"></span>
                 </div>
                 <div class="teacher-view" v-if="type_teacher">
                      <div class="title-cls flex-cls">
@@ -65,7 +66,7 @@
                             <input type="text" placeholder="请输入老师"> 
                             <img src="@/assets/search_ico.png" alt="">
                         </p>
-                        <p class="btns">确认</p>
+                        <p class="btns" @click="saveTeacher(cont.obj)">确认</p>
                     </div>
                      <div class="view-list">
                         <div style="border-right:1px solid #C3C9D0;">
@@ -84,7 +85,7 @@
                                    <li v-for="(item,index) in teacherList" @click="selsClick(item,index)">
                                        
                                        <span class="name-cls">{{item.name}}</span>
-                                       <span class="check-cls" :class="{'active-cls':item.checked}"></span>
+                                       <span class="check-cls" :class="{'active-cls':item.userid==teacherObj.userid}"></span>
                                    </li>
                                </ul>
                             </div>
@@ -446,7 +447,7 @@ export default {
             gradeList:[],
             departmentMultiple:false,
             studentObj:{},
-
+            teacherObj:{}
         }
     },
     filter:{
@@ -460,15 +461,7 @@ export default {
         this.getSheng();
         let arr=this.previewObj.data;
 
-        if(this.types=='edits'){
-            for(let i=0;i<arr.length;i++){
-                
-                if(arr[i].ele=="address"){
-                    this.getShi(arr[i].obj.shengValue);
-                    this.getQu(arr[i].obj.shiValue);
-                }
-            }
-        }
+
 
     },
     methods: {
@@ -520,16 +513,15 @@ export default {
             let self=this;
             res.selObj=self.studentObj;
             console.log(res)
-            // res=[];
-            // self.studentList.forEach(item => {
-            //      if(item.checked){
-            //             res.push(item);
-            //         }
-            // });
-            
           
             this.type_student=!this.type_student;
 
+        },
+        saveTeacher(res){
+            let self=this;
+            res.selObj=self.teacherObj;
+            console.log(res)
+            this.type_teacher=!this.type_teacher;
         },
         getData(arr,ids){
             let self=this;
@@ -578,7 +570,7 @@ export default {
             }
             self.teacherList=[];
             self.$api.post("/campus/searchUser",{
-                usertype:1,
+                usertype:2,
                 departid:r[0].departid,
                 level:r[0].level
             },r=>{
@@ -616,7 +608,9 @@ export default {
         },
         selsClick(item,index){
             let self=this;
-            item.checked=!item.checked;
+            self.teacherObj=item;
+            console.log(self.teacherObj)
+            // item.checked=!item.checked;
         },
         getSheng(){
 
@@ -684,6 +678,7 @@ export default {
         },
         delFile(res,i){
             let self=this;
+            this.$api.delFile(res[i].url);
             res.splice(i,1)
         },
         addFileImg(res){

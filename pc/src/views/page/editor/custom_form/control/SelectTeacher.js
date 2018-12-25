@@ -60,6 +60,7 @@ export let selectTeacherConf = {
     verify: 'none',
     value: '',
     valueArr:[],
+    selObj:{},
     // 表单name
     name: 'default',
     // 验证错误提示信息

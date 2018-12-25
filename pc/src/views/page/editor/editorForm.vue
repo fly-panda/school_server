@@ -677,7 +677,7 @@ export default {
         
         // 点击更改
         setIndexFun(index) {
-            console.log(index);
+            // console.log(index);
             if (this.curIndex === index) return;
             this.curIndex = index
             let curClickItem = this.sortable_item[index]
@@ -830,6 +830,7 @@ export default {
         },
         jianFile(i){
             let self=this;
+            this.$api.delFile(self.settingFormItem.items[i].url);
             // this.$api.delFile(self.settingFormItem.items[i].url);
             self.settingFormItem.items.splice(i,1)
         },

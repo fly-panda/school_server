@@ -4,7 +4,7 @@
         <div class="point">{{cont.obj.describe}}</div>
         <Row>
             <Col span="7">
-                <Select placeholder="省/市/区/直辖市" v-model="cont.obj.shengValue" @on-change="getShi" style="width:10rem;">
+                <Select placeholder="省/市/区/直辖市" v-model="cont.obj.shengValue" @on-change="getShi(cont.obj.shengValue)" style="width:10rem;">
                     <Option v-for="item in shengArr" :value="item.id" :key="item.id">{{ item.name }}</Option>
                 </Select>
             </Col>
@@ -65,14 +65,20 @@ export default {
             }) 
         },
         getShi(res){
-
-            this.$api.get("/city/getCity",{
-                pid:res
-            },r=>{
-                this.shiArr=JSON.parse(r.data);
-            })
+            console.log(res)
+            // this.shiArr=[];
+            // this.quArr=[];
+            // this.cont.obj.shiValue="";
+            // this.cont.obj.quValue="";
+            // this.$api.get("/city/getCity",{
+            //     pid:res
+            // },r=>{
+            //     this.shiArr=JSON.parse(r.data);
+            // })
         },
         getQu(item){
+            this.quArr=[];
+            this.cont.obj.quValue="";
             this.$api.get("/city/getCity",{
                 pid:item
             },r=>{

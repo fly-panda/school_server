@@ -1,5 +1,7 @@
 <template>
 <div>
+    <p v-show="false">{{defaultList}}</p>
+    
     <div style="paddding-bottom:20px;display: inline-block;" v-for="item in defaultList" :key="item.name">
         <div class="demo-upload-list">
 
