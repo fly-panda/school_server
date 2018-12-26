@@ -311,13 +311,17 @@
                 <div class="point">{{cont.obj.describe}}</div>
                 <!-- <DatePicker type="date" placeholder="请选择日期" style="width: 200px"></DatePicker> -->
                  <row>
-                    <i-col span="8" v-for="(item,ind) in cont.obj.chooseCheck" :key="ind">
-                        <!-- {{cont.obj.valueDate}} -->
-                        <DatePicker v-show="item=='date'" format="yyyy-MM-dd" :value="cont.obj.valueDate" type="date" placeholder="选择日期" style="width: 200px" @on-change="cont.obj.valueDate=$event"></DatePicker>
-                        <Time-picker v-show="item=='time'" format="HH:mm:ss" :value="cont.obj.valueTime" type="time" placeholder="选择时间" style="width: 200px" @on-change="cont.obj.valueTime=$event"></Time-picker>
+                     <!-- v-for="(item,ind) in cont.obj.chooseCheck" :key="ind" -->
+                    <i-col span="8">
+                        <DatePicker v-show="cont.obj.chooseCheck[0]=='date'" format="yyyy-MM-dd" :value="cont.obj.valueDate" type="date" placeholder="选择日期" style="width: 200px" @on-change="cont.obj.valueDate=$event"></DatePicker>
+                    </i-col>
+                    <i-col span="8">
+                        <TimePicker v-show="cont.obj.chooseCheck[0]=='time'||cont.obj.chooseCheck[1]=='time'" :value="cont.obj.valueTime" type="time" placeholder="选择时间" style="width: 200px" @on-change="cont.obj.valueTime=$event"></TimePicker>
                     </i-col>
                 </row>
-                 
+                
+                  
+                
             </div>
             <!-- 详细地址 -->
 <!--             <div class="selectStudentContainer" v-if="cont.ele=='address'">
@@ -404,7 +408,6 @@
             
 </div>
             <Row style="display: flex; justify-content: center">
-                 <!--  -->
                 <Button type="primary" style="margin: 2rem auto; width: 8rem" @click="saveForm" :disabled="!isSave">提  交</Button>
             </Row>
         </div>
@@ -670,7 +673,7 @@ export default {
             },r=>{
                  console.log(r)
                 // self.cardList=JSON.parse(r.data);
-                // console.log(self.data3);
+                self.$Message.error("提交成功");
             },e=>{
                 console.log(e)
             })

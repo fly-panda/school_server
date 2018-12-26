@@ -59,11 +59,15 @@
             <Row>
                 <Col span="8">
                     <p class="time-cls">开始时间</p>
-                    <DatePicker format="yyyy-MM-dd HH:mm:ss" v-model="settingForm.startTime" type="datetime" placeholder="请选择日期/时间" class="time-cls" @on-change="settingForm.startTime=$event"></DatePicker>
+                    <i-select v-model="settingForm.startWeek" style="width:200px">
+                        <i-option v-for="(item,i) in weekList" :value="item.id">{{ item.name }}</i-option>
+                    </i-select>
                 </Col>
                 <Col span="12">
                     <p class="time-cls">结束时间</p> 
-                    <DatePicker format="yyyy-MM-dd HH:mm:ss" v-model="settingForm.endTime" type="datetime" placeholder="请选择日期/时间" class="time-cls" @on-change="settingForm.endTime=$event"></DatePicker>
+                    <i-select v-model="settingForm.endWeek" style="width:200px">
+                        <i-option v-for="(item,i) in weekList" :value="item.id">{{ item.name }}</i-option>
+                    </i-select>
                 </Col>
             </Row>
         </FormItem>
@@ -127,7 +131,9 @@ export default {
                 resultCopy: false,
                 classRelationTeacher: false,
                 startTime:"",
-                endTime:""
+                endTime:"",
+                startWeek:"",
+                endWeek:""
             },
             ruleValidate: {
                 submitTimes: [{
@@ -163,11 +169,14 @@ export default {
 
         submit(){
             let self=this;
+            console.log(self.settingForm.startWeek)
+            console.log(self.settingForm.endWeek)
             if(!this.tempId){
                 
                 self.$Message.warning('请选择表单');
                 return
             }
+
             // console.log(self.settingForm)
             let arr=[];
             let settingObj={
@@ -210,7 +219,7 @@ export default {
             if(self.settingForm.resultCopy){
                  settingObj.resultObj=self.$refs.resultList.selStudentList
             }
-            self.submitAjax(settingObj)
+            // self.submitAjax(settingObj)
         },
         submitAjax(obj){
             let self=this;
