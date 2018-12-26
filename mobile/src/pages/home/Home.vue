@@ -11,7 +11,7 @@
       :height="viewH"
     >
       <ul class="list current-list" v-if="tabIndex == 0">
-        <li class="li-item" v-for="(item, index) of listData" :key="index" @click="currentTask">
+        <li class="li-item" v-for="(item, index) of listData" :key="index" @click="currentTask(item)">
           <div class="yuan">
             <img v-if="item.statu == 2" src="../../assets/img/icon/yuan-timeout.png" alt>
             <div v-else>
@@ -192,8 +192,9 @@ export default {
       });
     },
     // 详情
-    currentTask() {
-      this.$router.push({ path: "/formPage", query: {} });
+    currentTask(item) {
+      let ids = item.id
+      this.$router.push({ path: "/formPage", query: {ids: ids} });
     }
   },
   created() {

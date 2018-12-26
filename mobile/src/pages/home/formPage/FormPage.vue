@@ -734,13 +734,13 @@ export default {
   computed: {},
   mounted() {
     // console.log(this);
-    console.log(mockData.data1);
+    // console.log(mockData.data1);
 
-    let dataArr = mockData.data1;
+    // let dataArr = mockData.data1;
 
-    console.log(this.allListData);
+    // console.log(this.allListData);
 
-    this.dataFormat(dataArr);
+    // this.dataFormat(dataArr);
 
     // 判断页面是不是预览 preview == '1'为预览
     this.preview = this.$route.query.preview ? this.$route.query.preview : "";
@@ -761,6 +761,7 @@ export default {
         let allData = JSON.parse(r.data);
         this.dataFormat(allData);
       });
+      return
     }
 
     this.getFormData(ids);
@@ -881,7 +882,7 @@ export default {
     loadMore() {},
     // 数据格式化
     dataFormat(allData) {
-      let bigData = allData.data;
+      let bigData = allData
 
       bigData.data.map((c, d) => {
         if (c.ele == "select") {
@@ -902,8 +903,9 @@ export default {
         }
 
       });
-
       this.allListData = bigData;
+      console.log(this.allListData)
+
     },
     // 提交表单
     submitForm() {
@@ -927,31 +929,25 @@ export default {
         // }
       });
 
-      this.allListData.data.every((v, i) => {
+      console.log(this.allListData)
+
+      this.allListData.data.some((v, i) => {
         // 校验input和textarea
-        if (v.ele == "input") {
+        if (v.ele == "input" || v.ele == "text") {
           if (v.obj.require) {
             if (!v.obj.placeholder) {
               Toast(v.obj.ruleError);
-              return;
+              return true
             }
           }
         }
-        if (v.ele == "text") {
-          if (v.obj.require) {
-            if (!v.obj.placeholder) {
-              Toast(v.obj.ruleError);
-              return;
-            }
-          }
-        }
-        console.log(1111)
+
         // 判断单下拉框、单选按钮（truefalse）、单选
         if (v.ele == "select" || v.ele == "truefalse" || v.ele == "radio") {
           if (v.obj.require) {
             if (!v.obj.value) {
               Toast(v.obj.ruleError);
-              return;
+              return true
             }
           }
         }
@@ -960,7 +956,7 @@ export default {
           if (v.obj.require) {
             if (!v.obj.value.length) {
               Toast(v.obj.ruleError);
-              return;
+              return true
             }
           }
         }
@@ -970,20 +966,20 @@ export default {
             if (v.obj.chooseCheck.length == 2) {
               if (!v.obj.valueDate || !v.obj.valueTime) {
                 Toast(v.obj.ruleError);
-                return;
+                return true
               }
             }
             if (v.obj.chooseCheck.length == 1) {
               if (v.obj.chooseCheck[0] == "date") {
                 if (!v.obj.valueDate) {
                   Toast(v.obj.ruleError);
-                  return;
+                  return true
                 }
               }
               if (v.obj.chooseCheck[0] == "time") {
                 if (!v.obj.valueTime) {
                   Toast(v.obj.ruleError);
-                  return;
+                  return true
                 }
               }
             }
@@ -995,13 +991,13 @@ export default {
             if (v.obj.chooseCheck.length == 3) {
               if(!v.obj.shengValue || !v.obj.shiValue || !v.obj.quValue) {
                 Toast(v.obj.ruleError);
-                return;
+                return true
               }
             }
             if (v.obj.chooseCheck.length == 4) {
               if(!v.obj.shengValue || !v.obj.shiValue || !v.obj.quValue || !value) {
                 Toast(v.obj.ruleError);
-                return;
+                return true
               }
             }
           }
@@ -1011,7 +1007,7 @@ export default {
           if (v.obj.require) {
             if(!v.obj.value.length) {
               Toast(v.obj.ruleError);
-              return;
+              return true
             }
           }
         }
@@ -1020,7 +1016,7 @@ export default {
           if(v.obj.require) {
             if(!v.obj.value || !v.obj.value1) {
               Toast(v.obj.ruleError);
-              return;
+              return true
             }
           }
         }
@@ -1029,7 +1025,7 @@ export default {
           if(v.obj.require) {
             if(JSON.stringify(v.obj.selObj)=="{}") {
               Toast(v.obj.ruleError);
-              return;
+              return true
             }
           }
         }
@@ -1038,7 +1034,7 @@ export default {
           if(v.obj.require) {
             if(!v.obj.value || !v.obj.valueArr) {
               Toast(v.obj.ruleError);
-              return;
+              return true
             }
           }
         }
@@ -1049,8 +1045,9 @@ export default {
     },
     // 获取表单数据
     getFormData(ids) {
-      this.$api.get("/cform/tempDetail", { tempid: ids }, r => {
-        // console.log(2,r);
+      this.$api.get("/task/taskdetail", { taskid: ids }, r => {
+        let datas = JSON.parse(r.data);
+        this.dataFormat(datas)
       });
     }
   }

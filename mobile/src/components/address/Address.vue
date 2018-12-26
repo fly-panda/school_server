@@ -32,7 +32,7 @@
         ></popup-picker>
       </div>
       <input
-        v-if="obj.obj.chooseCheck.indexOf('address') > -1"
+        v-if="obj.obj.chooseCheck.indexOf('detail') > -1"
         type="text"
         placeholder="详细地址"
         v-model="obj.obj.value"
