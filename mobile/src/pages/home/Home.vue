@@ -8,25 +8,29 @@
       :pullup-config="pullupDefaultConfig"
       @on-pullup-loading="loadMore"
       ref="scrollerBottom"
-      :height="lishH"
+      :height="viewH"
     >
       <ul class="list current-list" v-if="tabIndex == 0">
         <li class="li-item" v-for="(item, index) of listData" :key="index" @click="currentTask">
           <div class="yuan">
-            <img v-if="item.statu == '不合格'" src="../../assets/img/icon/yuan-timeout.png" alt>
+            <img v-if="item.statu == 2" src="../../assets/img/icon/yuan-timeout.png" alt>
             <div v-else>
-              <img v-if="item.type == '单次任务'" src="../../assets/img/icon/yuan-once.png" alt>
-              <img v-if="item.type == '周任务'" src="../../assets/img/icon/yuan-week.png" alt>
+              <img v-if="item.isloop == '1'" src="../../assets/img/icon/yuan-once.png" alt>
+              <img v-if="item.isloop == '0'" src="../../assets/img/icon/yuan-week.png" alt>
             </div>
           </div>
           <div class="top">
             <div class="title">{{ item.title }}</div>
-            <div class="type">{{ item.type }}</div>
+            <div class="type">{{ item.isloop == 0 ? '周任务' : '单次任务'}}</div>
           </div>
           <div class="user">发布人：{{ item.user }}</div>
           <div class="bottom">
-            <div class="date">截止时间：{{ item.date }}</div>
-            <div class="statu" :class="{ 'time-out' : item.statu == '不合格' }">{{ item.statu }}</div>
+            <div class="date">截止时间：{{ item.endtime }}</div>
+            <div class="statu" v-if="item.state == 1">进行中</div>
+            <div class="statu time-out" v-if="item.state == 2">超时未填写</div>
+            <!-- <div class="statu" :class="{ 'time-out' : item.statu == '不合格' }">
+              {{ item.state }}
+            </div>-->
           </div>
         </li>
       </ul>
@@ -38,7 +42,7 @@
           </div>
           <div class="user">创建人：{{ item.user }}</div>
           <div class="bottom">
-            <div class="date">截止时间：{{ item.date }}</div>
+            <div class="date">截止时间：{{ item.endtime }}</div>
             <div class="statu">{{ item.statu }}</div>
           </div>
         </li>
@@ -92,6 +96,10 @@ export default {
   },
   data() {
     return {
+      userid: "",
+      pagesize: 15, // 每页请求数量
+      page: 1, // 页码
+      pageCount: 0, // 总页数
       pullupConfig2: {
         content: "上拉加载更多",
         downContent: "松开进行加载",
@@ -99,7 +107,7 @@ export default {
         loadingContent: "加载中..."
       },
       tabIndex: 0,
-      lishH: "-53",
+      viewH: "",
       pullupDefaultConfig: pullupDefaultConfig,
       tab: [
         {
@@ -113,87 +121,83 @@ export default {
           type: 1
         }
       ],
-      listData: [
-        {
-          title: "卫生检查明细",
-          type: "单次任务",
-          user: "TOM",
-          date: "11/09 08:00",
-          statu: "不合格"
-        },
-        {
-          title: "卫生检查明细",
-          type: "周任务",
-          user: "TOM",
-          date: "11/09 08:00",
-          statu: "进行中"
-        },
-        {
-          title: "卫生检查明细",
-          type: "单次任务",
-          user: "TOM",
-          date: "11/09 08:00",
-          statu: "进行中"
-        },
-        {
-          title: "卫生检查明细",
-          type: "单次任务",
-          user: "TOM",
-          date: "11/09 08:00",
-          statu: "进行中"
-        },
-        {
-          title: "卫生检查明细",
-          type: "单次任务",
-          user: "TOM",
-          date: "11/09 08:00",
-          statu: "进行中"
-        },
-        {
-          title: "卫生检查明细",
-          type: "单次任务",
-          user: "TOM",
-          date: "11/09 08:00",
-          statu: "进行中"
-        }
-      ]
+      listData: []
     };
   },
   computed: {},
   beforeRouteLeave(to, from, next) {
-    to.meta.keepAlive = false; 
+    to.meta.keepAlive = false;
     next();
+  },
+  mounted() {
+
+    this.viewH = window.innerHeight - 90 + "px";
+
+    this.$nextTick(() => {
+      this.$refs.scrollerBottom.disablePullup();
+      this.$refs.scrollerBottom.reset({ top: 0 });
+    });
+
+    this.$api.sSetObject("userObj", {
+      userId: "nHoIlS9HDYodone"
+    });
+    this.userid = "nHoIlS9HDYodone";
+
   },
   methods: {
     // 调用子组件tab切换的事件
     toogleTab(...data) {
+      if (this.tabIndex == data[0]) {
+        return;
+      }
+      this.listData = [];
       this.tabIndex = data[0];
-      console.log(data[0]);
+      this.page = 1;
+
+      this.$nextTick(() => {
+        this.$refs.scrollerBottom.disablePullup();
+        this.$refs.scrollerBottom.reset({ top: 0 });
+      });
+
+      this.loadMore()
+
     },
     // 加载更多
     loadMore() {
-      console.log(222);
-      let data = this.listData;
-      this.listData = data.concat(data);
-      setTimeout(() => {
+      let obj = {
+        state: this.tabIndex,
+        userid: this.userid,
+        page: this.page,
+        pagesize: this.pagesize
+      };
+      this.$api.get("task/participate", obj, r => {
+        let data = JSON.parse(r.data);
+        this.page++;
+        this.pageCount = data.pageCount
+
+        this.$nextTick(() => {
+          this.$refs.scrollerBottom.reset();
+        });
+
+        if (this.page > data.pageCount) {
+          this.$refs.scrollerBottom.disablePullup();
+        } else {
+          this.$refs.scrollerBottom.enablePullup();
+        }
+
+        this.listData = this.listData.concat(data.result);
+        
         this.$refs.scrollerBottom.donePullup();
-      }, 2000);
+
+      });
     },
     // 详情
     currentTask() {
       this.$router.push({ path: "/formPage", query: {} });
-    },
-    // 获取列表数据
-    getListData() {
-      this.$api.get('task/participate', { state: '0' }, r => {
-        console.log(r)
-      }, r => {
-        console.log(r)
-      })
     }
   },
-  mounted() {
-    this.getListData()
+  created() {
+    this.loadMore()
   }
 };
 </script>
@@ -201,11 +205,11 @@ export default {
 <style scoped lang='scss'>
 @import "../../assets/styles/mixins.scss";
 .home {
-  padding-bottom: 53px;
+  // padding-bottom: 53px;
   font-size: 14px;
   .list {
     padding: 0 px2rem(20);
-    margin-top: 70px;
+    // padding-top: 70px;
     padding-bottom: 5px;
     .li-item {
       margin-left: px2rem(10);

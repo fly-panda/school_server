@@ -88,6 +88,13 @@ export default {
 <style scoped lang="scss">
 @import "../../../../assets/styles/mixins.scss";
 .select-student {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: #fff;
+  z-index: 15;
   padding-top: 66px;
   .search-box {
     position: fixed;

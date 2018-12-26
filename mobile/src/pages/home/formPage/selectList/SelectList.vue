@@ -9,10 +9,11 @@
     <ul class="list">
       <li v-for="(item, index) of listData" 
           :key="index" 
-          :class="{ 'active' : item.active }" 
-          @click="selectItem(item, index)">
-        <div v-html="item.title"></div>
-        <icon v-if="item.active" type="success-no-circle"></icon>
+          :class="{ 'active' : item.departid == obj.obj.selObj.departid }" 
+          @click="selectItem(item)">
+        <div v-html="item.title ? item.title : item.name"></div>
+        <icon v-if="item.departid == obj.obj.selObj.departid" 
+              type="success-no-circle"></icon>
       </li>
     </ul>
   </div>
@@ -27,57 +28,33 @@ export default {
     Search,
     Icon
   },
+  props: ["name"],
   data() {
     return {
+      obj: this.name,
       keyType: '',
       listData: []
     };
   },
   methods: {
-    selectItem(data, index) {
-      let val = JSON.stringify(data)
-
-      // this.listData.map((v, i) => {
-      //   v.active = i == index ? true : false
-      // })
-
-      sessionStorage.setItem(this.keyType, val)
-      this.$router.go(-1)
-    }
-  },
-  beforeRouteLeave(to, from, next) {
-    // to.meta.keepAlive = true
-    console.log(to)
-    // next()
-
-    if(to.name == 'FormPage') {
-      to.meta.keepAlive = true
-      next()
-    } else {
-      from.meta.keepAlive = false
-      to.meta.keepAlive = false
-      this.$destroy()
-      next()
+    selectItem(item) {
+      console.log(item)
+      this.obj.obj.selObj = item
+      this.$emit("hideSelectList", this.obj.ele)
     }
   },
   created() {
-    let options = this.$route.query
-    let selectItem = JSON.parse(options.selectItem)
-    console.log(selectItem)
-    //动态设置标题
-    document.title = options.title   
-    this.keyType = options.type
 
-    // 列表数据
-    this.listData = JSON.parse(options.items)
-
-    this.listData.map((v, i) => {
-      v.active = v.wxdepartid == selectItem.wxdepartid ? true : false
-    })
 
   },
   mounted() {
-
+    console.log(this.obj)
+    this.listData = this.obj.obj.items
+    // if(this.obj.ele = 'selectteacher') {
+    //   this.listData.map((v, i) => {
+    //     v.wxdepartid = v.userid
+    //   })
+    // }
   }
 };
 </script>
@@ -86,8 +63,15 @@ export default {
 <style scoped lang="scss">
 @import "../../../../assets/styles/mixins.scss";
 .select-list {
+  position: fixed;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
   padding-top: 66px;
   padding-bottom: 53px;
+  z-index: 12;
+  background: #fff;
   .list {
     background: #fff;
     font-size: 17px;

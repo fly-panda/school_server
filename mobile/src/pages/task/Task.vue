@@ -1,48 +1,57 @@
 <template>
   <div class="task">
-    <div class="no-data" v-if="listData.length == 0">
-      <img src="../../assets/img/task/nodata.png" alt>
-      <div>暂无任务！</div>
-    </div>
     <scroller
-      v-else
       lock-x
       scrollbar-y
       use-pullup
       :pullup-config="pullupDefaultConfig"
       @on-pullup-loading="loadMore"
       ref="scrollerBottom"
-      :height="lishH"
+      :height="viewH"
     >
+      <!-- <div class="no-data" v-if="!listData.length">
+        <img src="../../assets/img/task/nodata.png" alt>
+        <div>暂无任务！</div>
+      </div> -->
       <ul class="list">
         <li class="item" v-for="(item, index) of listData" :key="index">
           <div class="top">
             <div class="title">
+              <!-- 单次 -->
               <img
-                v-if="item.type == '单次任务'"
+                v-if="item.isloop == 0"
                 class="icon1"
                 src="../../assets/img/task/icon1.png"
                 alt
               >
+              <!-- 循环 -->
               <img
-                v-if="item.type == '周任务'"
+                v-if="item.isloop == 1"
                 class="icon2"
                 src="../../assets/img/task/icon2.png"
                 alt
               >
               <span class="txt">{{ item.title }}</span>
             </div>
-            <div class="statu">{{ item.statu }}</div>
+            <div class="statu" v-if="item.state == '1'">进行中</div>
           </div>
           <div class="mid">
-            <div class="mid-item" v-for="(item, index) of item.data" :key="index">
-              <div class="mid-txt">{{ item.title }}</div>
-              <div class="number">{{ item.number }}</div>
+            <div class="mid-item">
+              <div class="mid-txt">应交人</div>
+              <div class="number">{{ item.submitpeople }}</div>
+            </div>
+            <div class="mid-item">
+              <div class="mid-txt">已交人</div>
+              <div class="number">{{ item.submitpeople }}</div>
+            </div>
+            <div class="mid-item">
+              <div class="mid-txt">已交数据</div>
+              <div class="number">{{ item.submitpeople }}</div>
             </div>
           </div>
           <div class="bottom">
-            <div class="date">截止时间：{{ item.date }}</div>
-            <div class="type">{{ item.type }}</div>
+            <div class="date">截止时间：{{ item.endtime }}</div>
+            <div class="type">{{ item.isloop == 0 ? '单次任务' : '周任务' }}</div>
           </div>
         </li>
       </ul>
@@ -69,11 +78,7 @@
 </template>
 
 <script>
-import {
-  Scroller,
-  Tabbar,
-  TabbarItem
-} from "vux";
+import { Scroller, Tabbar, TabbarItem } from "vux";
 
 const pullupDefaultConfig = {
   content: "上拉加载更多",
@@ -96,80 +101,56 @@ export default {
   data() {
     return {
       pullupDefaultConfig: pullupDefaultConfig,
-      lishH: "-53",
-      listData1: [],
-      listData: [
-        {
-          title: "卫生检查明细",
-          type: "单次任务",
-          date: "11/09 08:00",
-          statu: "进行中",
-          data: [
-            {
-              title: "成交人",
-              number: "200"
-            },
-            {
-              title: "已交人",
-              number: "220"
-            },
-            {
-              title: "已交数据",
-              number: "230"
-            }
-          ]
-        },
-        {
-          title: "卫生检查明细",
-          type: "周任务",
-          date: "11/09 08:00",
-          statu: "进行中",
-          data: [
-            {
-              title: "成交人",
-              number: "200"
-            },
-            {
-              title: "已交人",
-              number: "220"
-            },
-            {
-              title: "已交数据",
-              number: "230"
-            }
-          ]
-        },
-        {
-          title: "卫生检查明细",
-          type: "单次任务",
-          date: "11/09 08:00",
-          statu: "进行中",
-          data: [
-            {
-              title: "成交人",
-              number: "200"
-            },
-            {
-              title: "已交人",
-              number: "220"
-            },
-            {
-              title: "已交数据",
-              number: "230"
-            }
-          ]
-        }
-      ]
+      pagesize: 15, // 每页请求数量
+      page: 1, // 页码
+      pageCount: 0, // 总页数
+      viewH: "",
+      userid: "",
+      listData: []
     };
   },
   computed: {},
+  mounted() {
+    this.viewH = window.innerHeight - 53 + "px";
+
+    this.$nextTick(() => {
+      this.$refs.scrollerBottom.disablePullup();
+      this.$refs.scrollerBottom.reset({ top: 0 });
+    });
+  },
   methods: {
     loadMore() {
-      console.log(222);
-      this.$refs.scrollerBottom.donePullup();
+      let obj = {
+        userid: this.userid,
+        page: this.page,
+        pagesize: this.pagesize
+      };
+      this.$api.get("task/getMyTask", obj, r => {
+        let data = JSON.parse(r.data);
+        this.page++;
+        this.pageCount = data.pageCount;
+
+        this.$nextTick(() => {
+          this.$refs.scrollerBottom.reset();
+        });
+
+        if (this.page > data.pageCount) {
+          this.$refs.scrollerBottom.disablePullup();
+        } else {
+          this.$refs.scrollerBottom.enablePullup();
+        }
+        console.log(data.result)
+
+        this.listData = this.listData.concat(data.result);
+
+        this.$refs.scrollerBottom.donePullup();
+      });
     }
   },
-  mounted() {}
+  created() {
+    this.userid = "nHoIlS9HDYodone";
+    this.loadMore();
+  }
 };
 </script>
 

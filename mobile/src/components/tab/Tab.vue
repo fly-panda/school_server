@@ -38,10 +38,10 @@ export default {
 <style scope lang="scss">
 @import "../../assets/styles/mixins.scss";
 .tab-wrapper {
-  position: fixed;
+  position: relative;
   z-index: 10;
-  top: 0;
-  left: 0;
+  // top: 0;
+  // left: 0;
   width: 100%;
   font-size: 14px;
   color: #9b9b9b;

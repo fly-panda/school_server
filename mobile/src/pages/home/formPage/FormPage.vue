@@ -11,7 +11,6 @@
     </tab>
     <!-- 表单 -->
     <div class="form-wrapper" v-if="selectTabIndex == 0">
-
       <!-- 标题&描述 -->
       <div class="title" v-html="allListData.title"></div>
       <div class="des" v-html="allListData.describe"></div>
@@ -22,25 +21,46 @@
         <div class="select-item" v-if="obj.ele == 'selectstudent'">
           <div class="select-item-title" v-html="obj.obj.label"></div>
           <div class="select-item-txt" v-html="obj.obj.describe"></div>
-          <button @click="selectList(0, obj.obj.items, selectStudentItem)">{{ selectStudentItem.title ? selectStudentItem.title : '点击选择学生范围' }}</button>
+          <button @click="selectList()" v-html="obj.obj.label"></button>
+          <select-student v-if="toogleSelectStudent"></select-student>
         </div>
         <!-- 选择老师 -->
         <div class="select-item" v-if="obj.ele == 'selectteacher'">
           <div class="select-item-title" v-html="obj.obj.label"></div>
           <div class="select-item-txt" v-html="obj.obj.describe"></div>
-          <button @click="selectList(1, obj.obj.items, selectTeacherItem)">{{ selectTeacherItem.title ? selectTeacherItem.title : '点击选择老师范围' }}</button>
+          <button
+            @click="selectList('toogleselectteacher')"
+            v-html="obj.obj.selObj.name ? obj.obj.selObj.name : '点击选择老师范围'"
+          ></button>
+          <select-list
+            :name.sync="obj"
+            v-show="toogleselectteacher"
+            @hideSelectList="hideSelectList"
+          ></select-list>
         </div>
         <!-- 选择班级 -->
         <div class="select-item" v-if="obj.ele == 'selectgrade'">
           <div class="select-item-title" v-html="obj.obj.label"></div>
           <div class="select-item-txt" v-html="obj.obj.describe"></div>
-          <button @click="selectList(2, obj.obj.items, selectClassItem)">{{ selectClassItem.title ? selectClassItem.title : '点击选择班级范围'  }}</button>
+          <button
+            @click="selectList('toogleselectgrade')"
+            v-html="obj.obj.selObj.title ? obj.obj.selObj.title : '点击选择班级范围'"
+          ></button>
+          <select-list :name.sync="obj" v-show="toogleselectgrade" @hideSelectList="hideSelectList"></select-list>
         </div>
         <!-- 选择部门 -->
         <div class="select-item" v-if="obj.ele == 'selectdepartment'">
           <div class="select-item-title" v-html="obj.obj.label"></div>
           <div class="select-item-txt" v-html="obj.obj.describe"></div>
-          <button @click="selectList(3, obj.obj.items, selectDepartmentItem)">{{ selectDepartmentItem.title ? selectDepartmentItem.title : '点击选择部门范围' }}</button>
+          <button
+            @click="selectList('toogleselectdepartment')"
+            v-html="obj.obj.selObj.title ? obj.obj.selObj.title : '点击选择部门范围'"
+          ></button>
+          <select-list
+            :name.sync="obj"
+            v-show="toogleselectdepartment"
+            @hideSelectList="hideSelectList"
+          ></select-list>
         </div>
         <!-- 图片上传 -->
         <div class="select-item upload-img" v-if="obj.ele == 'uploadimg'">
@@ -112,7 +132,7 @@
               <popup-picker
                 :data="obj.obj.items | dropDownFilter"
                 :columns="1"
-                v-model="obj.obj.valueArr" 
+                v-model="obj.obj.valueArr"
                 placeholder="请选择"
                 show-name
               ></popup-picker>
@@ -130,7 +150,7 @@
                 v-model="obj.obj.value"
                 placeholder="请选择"
                 show-name
-                @on-change='pickerValueChange(obj.obj, obj.obj.value)'
+                @on-change="pickerValueChange(obj.obj, obj.obj.value)"
               ></popup-picker>
             </div>
             <div class="picker-btn">
@@ -154,11 +174,13 @@
               v-model="obj.obj.value"
               @on-change="checkboxChange"
             ></checklist>
-            <input type="text" 
-                    placeholder="输入文字" 
-                    class="other-input"  
-                    v-model="obj.obj.otherValue"
-                    v-if="obj.obj.hasOther && obj.obj.value.indexOf('other')>-1">
+            <input
+              type="text"
+              placeholder="输入文字"
+              class="other-input"
+              v-model="obj.obj.otherValue"
+              v-if="obj.obj.hasOther && obj.obj.value.indexOf('other')>-1"
+            >
           </div>
         </div>
         <!-- 手动填写分数 -->
@@ -167,64 +189,28 @@
           <div class="range">
             <div class="rang-slider">
               <div class="num" v-html="obj.obj.low"></div>
-              <vue-slider ref="slider" 
-                        v-model="obj.obj.value"
-                        :max='obj.obj.high'
-                        width='80%'
-                        :dotSize="sliderDotSize"
-                        :processStyle='siliderProcessStyle'
-                        :tooltipStyle='sliderTooltipStyle'
-                        ></vue-slider>
+              <vue-slider
+                ref="slider"
+                v-model="obj.obj.value"
+                :max="obj.obj.high"
+                width="80%"
+                :dotSize="sliderDotSize"
+                :processStyle="siliderProcessStyle"
+                :tooltipStyle="sliderTooltipStyle"
+              ></vue-slider>
               <div class="num" v-html="obj.obj.high"></div>
             </div>
             <div class="js-btn">
-              <img src="../../../assets/img/icon/icon-jian.png"  @click="countRangeValue(-1, obj.obj)">
+              <img
+                src="../../../assets/img/icon/icon-jian.png"
+                @click="countRangeValue(-1, obj.obj)"
+              >
               <img src="../../../assets/img/icon/icon-add.png" @click="countRangeValue(1, obj.obj)">
             </div>
           </div>
         </div>
         <!-- 地址 -->
         <div class="select-item address-box" v-if="obj.ele == 'address'">
-          <!-- <div class="select-item-title" v-html="obj.obj.label"></div>
-          <div class="select-address">
-            <div class="sheng" v-if="obj.obj.chooseCheck.indexOf('province') == 0">
-              <popup-picker
-                :data="obj.obj.sheng"
-                :columns="1"
-                v-model="obj.obj.shengValueArr"
-                placeholder="省/自治区/直辖市"
-                show-name
-                @on-show="getCity(obj.obj.sheng, ['0'])"
-              ></popup-picker>
-            </div>
-            <div class="shi" v-if="obj.obj.chooseCheck.indexOf('city') > -1">
-              <popup-picker
-                :data="obj.obj.shi"
-                :columns="1"
-                v-model="obj.obj.shiValueArr"
-                placeholder="市"
-                @on-show="getCity(obj.obj.shi, obj.obj.shengValueArr)"
-                show-name
-              ></popup-picker>
-            </div>
-            <div class="qu" v-if="obj.obj.chooseCheck.indexOf('zone') > -1">
-              <popup-picker
-                :data="obj.obj.qu"
-                :columns="1"
-                v-model="obj.obj.quValueArr"
-                placeholder="区/县"
-                show-name
-                @on-show="getCity(obj.obj.qu, obj.obj.shiValueArr)"
-              ></popup-picker>
-            </div>
-            <input
-              v-if="obj.obj.chooseCheck.indexOf('address') > -1"
-              type="text"
-              placeholder="详细地址"
-              v-model="obj.obj.value"
-              style="padding: 0 12px;"
-            >
-          </div> -->
           <address-me :name.sync="obj"></address-me>
         </div>
         <!-- 日期/时间 -->
@@ -245,10 +231,12 @@
               </group>
             </div>
             <div class="time-picker">
-              <popup-picker :data="timesData" 
-                            v-model="obj.obj.valueTimeArr" 
-                            placeholder="时间"
-                            :display-format="timeFormat"></popup-picker>
+              <popup-picker
+                :data="timesData"
+                v-model="obj.obj.valueTimeArr"
+                placeholder="时间"
+                :display-format="timeFormat"
+              ></popup-picker>
             </div>
           </div>
         </div>
@@ -278,21 +266,25 @@
         >
           <div class="select-item-title">时间</div>
           <div class="time">
-            <popup-picker :data="timesData" 
-                            v-model="obj.obj.valueTimeArr" 
-                            placeholder="时间"
-                            :display-format="timeFormat"></popup-picker>
+            <popup-picker
+              :data="timesData"
+              v-model="obj.obj.valueTimeArr"
+              placeholder="时间"
+              :display-format="timeFormat"
+            ></popup-picker>
           </div>
         </div>
         <!-- 文件上传 -->
         <div class="select-item wj-upload" v-if="obj.ele == 'uploads'">
           <div class="select-item-title" v-html="obj.obj.label"></div>
           <div class="wj-upload-list">
-            <div class="wj-upload-item"
-                 v-for="(item, i) of obj.obj.value"
-                 :key="i">
+            <div class="wj-upload-item" v-for="(item, i) of obj.obj.value" :key="i">
               <div class="top">
-                <div class="wjm" style="overflow:hidden;text-overflow:ellipsis;white-space:nowrap"  v-html="item.name"></div>
+                <div
+                  class="wjm"
+                  style="overflow:hidden;text-overflow:ellipsis;white-space:nowrap"
+                  v-html="item.name"
+                ></div>
                 <div class="del" @click="delFile(obj.obj.value, i)">X</div>
               </div>
               <!-- <div class="jdt"></div> -->
@@ -300,7 +292,12 @@
             </div>
           </div>
           <div class="wj-upload-btn">
-            <input class="files" :id="'files' + idx" type="file" @change="addFile(obj.obj, 'files' + idx)">            
+            <input
+              class="files"
+              :id="'files' + idx"
+              type="file"
+              @change="addFile(obj.obj, 'files' + idx)"
+            >
             <div>
               <span class="icon-add">+</span>
               <span>上传文件或压缩包</span>
@@ -311,11 +308,16 @@
         <div class="select-item radio" v-if="obj.ele == 'radio'">
           <div class="select-item-title" v-html="obj.obj.label"></div>
           <div class="radio-box-form">
-            <mt-radio :options="obj.obj.items | radioFilter(obj.obj.hasOther)" v-model="obj.obj.value"></mt-radio>
-            <input type="text" 
-                   v-if='obj.obj.hasOther && obj.obj.value=="other"' 
-                   v-model="obj.obj.otherValue" 
-                   class="other-input">
+            <mt-radio
+              :options="obj.obj.items | radioFilter(obj.obj.hasOther)"
+              v-model="obj.obj.value"
+            ></mt-radio>
+            <input
+              type="text"
+              v-if="obj.obj.hasOther && obj.obj.value=='other'"
+              v-model="obj.obj.otherValue"
+              class="other-input"
+            >
           </div>
         </div>
         <!-- 单选 勾选打分 -->
@@ -358,7 +360,7 @@
           <div class="select-item-title" v-html="obj.obj.label"></div>
           <div class="img-select-list">
             <el-checkbox-group v-model="obj.obj.value">
-              <div class="img-select-item" v-for="(item, i) of obj.obj.imgArr" :key='i'>
+              <div class="img-select-item" v-for="(item, i) of obj.obj.imgArr" :key="i">
                 <img :src="baseUrl + item.url" @click="previewerImg1(i, 'imgcheck'+idx)">
                 <el-checkbox :label="i">{{ item.labels }}</el-checkbox>
               </div>
@@ -395,9 +397,11 @@
           ></textarea>
         </div>
       </div>
-      <button :disabled="preview == '1'" 
-              :class="[preview == '1' ? 'btn-disabled' : '','submit']" 
-              @click="submitForm">提交</button>
+      <button
+        :disabled="preview == '1'"
+        :class="[preview == '1' ? 'btn-disabled' : '','submit']"
+        @click="submitForm"
+      >提交</button>
     </div>
     <!-- 历史记录 -->
     <div class="history-record" v-if="selectTabIndex == 1">
@@ -433,10 +437,12 @@
 </template>
 
 <script>
-import vueSlider from 'vue-slider-component';
-import addressMe from '../../../components/address/Address';
-import { Toast, Indicator } from 'mint-ui'
-import { 
+import vueSlider from "vue-slider-component";
+import addressMe from "../../../components/address/Address";
+import selectList from "./selectList/SelectList";
+import selectStudent from "./selectStudent/SelectStudent";
+import { Toast, Indicator } from "mint-ui";
+import {
   Tab,
   TabItem,
   Scroller,
@@ -451,7 +457,7 @@ import {
   Datetime
 } from "vux";
 import Uploader from "vux-uploader";
-import SuspendBtn from "../../../components/suspendBtn/SuspendBtn";
+import SuspendBtn from "../../../components/suspendBtn/SuspendBtn"; // 悬浮按钮
 import mockData from "./mock.js"; // 本地模拟数据
 
 const pullupDefaultConfig = {
@@ -484,7 +490,9 @@ export default {
     Previewer,
     Datetime,
     vueSlider,
-    addressMe
+    addressMe,
+    selectStudent,
+    selectList
   },
   filters: {
     // 图片预览格式化
@@ -518,17 +526,17 @@ export default {
       let list = [];
       r.map((v, i) => {
         let item = {
-          key: i + '',
+          key: i + "",
           value: v.label_name
         };
         list.push(item);
       });
 
-      if(hasOther) {
+      if (hasOther) {
         list.push({
-          key: 'other',
-          value: '其他'
-        })
+          key: "other",
+          value: "其他"
+        });
       }
       return list;
     },
@@ -538,21 +546,21 @@ export default {
       r.map((v, i) => {
         let item = {
           label: v.label_name,
-          value: i + '',
+          value: i + ""
         };
         list.push(item);
       });
 
-      if(otherValue) {
+      if (otherValue) {
         list.push({
-          label: '其他',
-          value: 'other'
-        })
+          label: "其他",
+          value: "other"
+        });
       }
       return list;
     },
     cityDatafilter(r) {
-      console.log(r)
+      console.log(r);
       let list = [];
       r.map((v, i) => {
         let item = {
@@ -571,14 +579,19 @@ export default {
 
       formOnlyRead: false, // 表单状态
 
+      toogleselectstudent: false, // 选择学生
+      toogleselectgrade: false,
+      toogleselectdepartment: false,
+      toogleselectteacher: false,
+
       siliderProcessStyle: {
-        "backgroundColor": "#5DB75D"
+        backgroundColor: "#5DB75D"
       },
       sliderTooltipStyle: {
-        "backgroundColor": "#fff",
-        "color": "#aab2bd",
-        "font-size": '14px',
-        "borderColor": '#fff',
+        backgroundColor: "#fff",
+        color: "#aab2bd",
+        "font-size": "14px",
+        borderColor: "#fff",
         "box-shadow": "0 1px 11px 0 rgba(0,0,0,0.20)"
       },
       sliderDotSize: 25,
@@ -594,13 +607,99 @@ export default {
       selectClassItem: {},
       selectDepartmentItem: {},
 
-      timesData:[
-        ["00", "01", "02", "03", "04", "05", "06", "07", "08", "09", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "20", "21", "22", "23"],
-        ["00", "01", "02", "03", "04", "05", "06", "07", "08", "09", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "20", "21", "22", "23", "24", "25", "26", "27", "28", "29", "30", "31", "32", "33", "34", "35", "36", "37", "38", "39", "40", "41", "42", "43", "44", "45", "46", "47", "48", "49", "50", "51", "52", "53", "54", "55", "56", "57", "58", "59"]
+      timesData: [
+        [
+          "00",
+          "01",
+          "02",
+          "03",
+          "04",
+          "05",
+          "06",
+          "07",
+          "08",
+          "09",
+          "10",
+          "11",
+          "12",
+          "13",
+          "14",
+          "15",
+          "16",
+          "17",
+          "18",
+          "19",
+          "20",
+          "21",
+          "22",
+          "23"
+        ],
+        [
+          "00",
+          "01",
+          "02",
+          "03",
+          "04",
+          "05",
+          "06",
+          "07",
+          "08",
+          "09",
+          "10",
+          "11",
+          "12",
+          "13",
+          "14",
+          "15",
+          "16",
+          "17",
+          "18",
+          "19",
+          "20",
+          "21",
+          "22",
+          "23",
+          "24",
+          "25",
+          "26",
+          "27",
+          "28",
+          "29",
+          "30",
+          "31",
+          "32",
+          "33",
+          "34",
+          "35",
+          "36",
+          "37",
+          "38",
+          "39",
+          "40",
+          "41",
+          "42",
+          "43",
+          "44",
+          "45",
+          "46",
+          "47",
+          "48",
+          "49",
+          "50",
+          "51",
+          "52",
+          "53",
+          "54",
+          "55",
+          "56",
+          "57",
+          "58",
+          "59"
+        ]
       ],
       // 时间格式化
-      timeFormat: function (value, name) {
-        return `${value[0]}:${value[1]}`
+      timeFormat: function(value, name) {
+        return `${value[0]}:${value[1]}`;
       },
 
       previewerOptions: {},
@@ -635,67 +734,48 @@ export default {
   computed: {},
   mounted() {
     // console.log(this);
-    console.log(mockData.data1)
+    console.log(mockData.data1);
 
-    let dataArr = mockData.data1
+    let dataArr = mockData.data1;
 
-    console.log(this.allListData)
+    console.log(this.allListData);
 
-
-    this.dataFormat(dataArr)
-
+    this.dataFormat(dataArr);
 
     // 判断页面是不是预览 preview == '1'为预览
     this.preview = this.$route.query.preview ? this.$route.query.preview : "";
-    let ids = this.$route.query.ids ? this.$route.query.ids : ''
+    let ids = this.$route.query.ids ? this.$route.query.ids : "";
 
     // 预览
-    if(this.preview == 1) {
-      console.log('预览模式！！！')
+    if (this.preview == 1) {
+      console.log("预览模式！！！");
 
-      this.dataFormat(mockData.data2)
+      this.dataFormat(mockData.data2);
 
-      if(!ids) { return }
+      if (!ids) {
+        return;
+      }
 
       // 获取预览数据
-      this.$api.get('/cform/getpreview', {tempid: ids}, r=> {
-
-        let allData = JSON.parse(r.data)
-        this.dataFormat(allData)
-
-      })
-
+      this.$api.get("/cform/getpreview", { tempid: ids }, r => {
+        let allData = JSON.parse(r.data);
+        this.dataFormat(allData);
+      });
     }
 
-
     this.getFormData(ids);
-
-
-
-    this.selectStudentItem = JSON.parse(sessionStorage.getItem("selectStudentItem"))
-      ? JSON.parse(sessionStorage.getItem("selectStudentItem"))
-      : this.selectStudentItem;
-    this.selectTeacherItem = JSON.parse(sessionStorage.getItem("selectTeacherItem"))
-      ? JSON.parse(sessionStorage.getItem("selectTeacherItem"))
-      : this.selectTeacherItem;
-    this.selectClassItem = JSON.parse(sessionStorage.getItem("selectClassItem"))
-      ? JSON.parse(sessionStorage.getItem("selectClassItem"))
-      : this.selectClassItem;
-    this.selectDepartmentItem = JSON.parse(sessionStorage.getItem("selectDepartmentItem"))
-      ? JSON.parse(sessionStorage.getItem("selectDepartmentItem"))
-      : this.selectDepartmentItem
-
   },
   methods: {
     // 二级下拉
     pickerValueChange(obj, value) {
-      obj.two_arr = obj.items[value[0]].arrs
+      obj.two_arr = obj.items[value[0]].arrs;
     },
     // 文件下载
     downloadInfo(item) {
-      window.location.href = this.baseUrl+"api/file/download?path="+item.url;
+      window.location.href =
+        this.baseUrl + "api/file/download?path=" + item.url;
     },
-    // 图片预览 
+    // 图片预览
     previewerImg(index, ref) {
       this.$refs[ref][0].show(index);
     },
@@ -714,7 +794,7 @@ export default {
         obj.uploadList.push({
           src: this.baseUrl + r.data,
           // size: sizes,
-          name: fileObj.name,
+          name: fileObj.name
         });
       });
     },
@@ -723,41 +803,41 @@ export default {
       // console.log(list);
       let path = list[idx].src;
       Indicator.open({
-        text: '删除中',
-        spinnerType: 'fading-circle'
+        text: "删除中",
+        spinnerType: "fading-circle"
       });
       this.$api.get("/file/deleteFile", { path: path }, r => {
         console.log(r);
-        Indicator.close()
+        Indicator.close();
         list.splice(idx, 1);
-        Toast(r.result)
+        Toast(r.result);
       });
     },
     // 上传文件
-    addFile(res, id){
-      let self=this;
-      let fileObj=document.getElementById(id).files[0];
-      let sizes=self.$api.onver(fileObj.size);
-      self.$api.uploadFile("file/upload ", {},fileObj, (r) => {
+    addFile(res, id) {
+      let self = this;
+      let fileObj = document.getElementById(id).files[0];
+      let sizes = self.$api.onver(fileObj.size);
+      self.$api.uploadFile("file/upload ", {}, fileObj, r => {
         res.value.push({
-          name:fileObj.name,
-          url:r.data,
-          size:sizes
-        })
+          name: fileObj.name,
+          url: r.data,
+          size: sizes
+        });
       });
     },
     // 删除上传的文件
-    delFile(res,i){
+    delFile(res, i) {
       let path = res[i].url;
       Indicator.open({
-        text: '删除中',
-        spinnerType: 'fading-circle'
+        text: "删除中",
+        spinnerType: "fading-circle"
       });
       this.$api.get("/file/deleteFile", { path: path }, r => {
         console.log(r);
-        res.splice(i,1)        
-        Indicator.close()
-        Toast(r.result)
+        res.splice(i, 1);
+        Indicator.close();
+        Toast(r.result);
       });
     },
     // tab切换
@@ -772,109 +852,198 @@ export default {
     menuHandleClick(type) {
       console.log(type);
     },
-    selectList(type, items, selectItem) {
-      // console.log(items)
-      let title = "";
-      let value = "";
-      let typeValue = "";
-      if (type == 0) {
-        title = "选择学生范围";
-        value =
-          this.selectStudentValue == "点击选择学生范围"
-            ? ""
-            : this.selectStudentValue;
-        typeValue = "selectStudentItem";
-      }
-      if (type == 1) {
-        title = "选择老师范围";
-        value =
-          this.selectTeacherValue == "点击选择老师范围"
-            ? ""
-            : this.selectTeacherValue;
-        typeValue = "selectTeacherItem";
-      }
-      if (type == 2) {
-        title = "选择班级";
-        value =
-          this.selectClassValue == "点击选择班级范围"
-            ? ""
-            : this.selectClassValue;
-        typeValue = "selectClassItem";
-      }
-      if (type == 3) {
-        title = "选择分部";
-        value =
-          this.selectDepartmentValue == "点击选择部门范围"
-            ? ""
-            : this.selectDepartmentValue;
-        typeValue = "selectDepartmentItem";
-      }
-      selectItem = JSON.stringify(selectItem)
-      items = JSON.stringify(items)
-      this.$router.push({
-        path: "/selectList",
-        query: { title: title, type: typeValue, value: value, items: items,selectItem: selectItem }
-      });
+    // 隐藏选项菜单
+    hideSelectList(...data) {
+      console.log(data);
+      this["toogle" + data[0]] = false;
+    },
+    // 展示选项菜单
+    selectList(type) {
+      this[type] = true;
     },
     // 滑动打分
     countRangeValue(type, obj) {
-      if (type == -1 && parseInt(obj.value) > parseInt(obj.low) && parseInt(obj.value) <= parseInt(obj.high)) {
+      if (
+        type == -1 &&
+        parseInt(obj.value) > parseInt(obj.low) &&
+        parseInt(obj.value) <= parseInt(obj.high)
+      ) {
         obj.value = parseInt(obj.value) - parseInt(obj.step);
       }
-      if (type == 1 && parseInt(obj.value) >= parseInt(obj.low) && parseInt(obj.value) < parseInt(obj.high)) {
-        obj.value  = parseInt(obj.value) + parseInt(obj.step)
+      if (
+        type == 1 &&
+        parseInt(obj.value) >= parseInt(obj.low) &&
+        parseInt(obj.value) < parseInt(obj.high)
+      ) {
+        obj.value = parseInt(obj.value) + parseInt(obj.step);
       }
     },
     loadMore() {},
     // 数据格式化
     dataFormat(allData) {
-
-      let bigData = allData.data
+      let bigData = allData.data;
 
       bigData.data.map((c, d) => {
-        if(c.ele == 'select') {
-          c.obj.valueArr = []
+        if (c.ele == "select") {
+          c.obj.valueArr = [];
         }
-        if(c.ele == 'address') {
-          c.obj.shengValueArr =  []
-          c.obj.shiValueArr =  []
-          c.obj.quValueArr =  []
+        if (c.ele == "address") {
+          c.obj.shengValueArr = [];
+          c.obj.shiValueArr = [];
+          c.obj.quValueArr = [];
         }
-        if(c.ele == 'datepicker') {
-          c.obj.valueTimeArr = []
+        if (c.ele == "datepicker") {
+          c.obj.valueTimeArr = [];
         }
-      })
 
-      this.allListData = bigData
+        if (c.ele == "selectcontact") {
+          c.obj.valueArr = [];
+          c.obj.valueArr1 = [];
+        }
+
+      });
+
+      this.allListData = bigData;
     },
     // 提交表单
     submitForm() {
       // console.log(this.allListData)
 
       this.allListData.data.map((v, i) => {
-        if(v.ele == 'select') {
+        if (v.ele == "select") {
+          v.obj.value = v.obj.valueArr[0];
+        }
+        if (v.ele == "address") {
+          v.obj.shengValue = v.obj.shengValueArr[0];
+          v.obj.shiValue = v.obj.shiValueArr[1];
+          v.obj.quValue = v.obj.quValueArr[2];
+        }
+        if (v.ele == "datepicker") {
+          v.obj.valueTime = v.obj.valueTimeArr.join(":");
+        }
+        if (v.ele == "selectcontact") {
           v.obj.value = v.obj.valueArr[0]
+          v.obj.value1 = v.obj.valueArr1[0]
         }
-        if(v.ele == 'address') {
-          v.obj.shengValue = v.obj.shengValueArr[0]
-          v.obj.shiValue = v.obj.shiValueArr[1]
-          v.obj.quValue = v.obj.quValueArr[2]
-        }          
-        if(v.ele == 'datepicker') {
-          v.obj.valueTime = v.obj.valueTimeArr.join(':')
+      });
+
+      this.allListData.data.map((v, i) => {
+        // 校验input和textarea
+        if (v.ele == "input" || v.ele == "text") {
+          if (v.obj.require) {
+            if (!v.obj.placeholder) {
+              Toast(v.obj.ruleError);
+              return;
+            }
+          }
         }
-      })
+        // 判断单下拉框、单选按钮（truefalse）、单选
+        if (v.ele == "select" || v.ele == "truefalse" || v.ele == "radio") {
+          if (v.obj.require) {
+            if (!v.obj.value) {
+              Toast(v.obj.ruleError);
+              return;
+            }
+          }
+        }
+        // 多选
+        if (v.ele == "checkbox") {
+          if (v.obj.require) {
+            if (!v.obj.value.length) {
+              Toast(v.obj.ruleError);
+              return;
+            }
+          }
+        }
+        // 日期校验
+        if (v.ele == "datepicker") {
+          if (v.obj.require) {
+            if (v.obj.chooseCheck.length == 2) {
+              if (!v.obj.valueDate || !v.obj.valueTime) {
+                Toast(v.obj.ruleError);
+                return;
+              }
+            }
+            if (v.obj.chooseCheck.length == 1) {
+              if (v.obj.chooseCheck[0] == "date") {
+                if (!v.obj.valueDate) {
+                  Toast(v.obj.ruleError);
+                  return;
+                }
+              }
+              if (v.obj.chooseCheck[0] == "time") {
+                if (!v.obj.valueTime) {
+                  Toast(v.obj.ruleError);
+                  return;
+                }
+              }
+            }
+          }
+        }
+        // 地址校验
+        if (v.ele == "address") {
+          if (v.obj.require) {
+            if (v.obj.chooseCheck.length == 3) {
+              if(!v.obj.shengValue || !v.obj.shiValue || !v.obj.quValue) {
+                Toast(v.obj.ruleError);
+                return;
+              }
+            }
+            if (v.obj.chooseCheck.length == 4) {
+              if(!v.obj.shengValue || !v.obj.shiValue || !v.obj.quValue || !value) {
+                Toast(v.obj.ruleError);
+                return;
+              }
+            }
+          }
+        }
+        // 图片选择校验
+        if(v.ele == 'imgcheck') {
+          if (v.obj.require) {
+            if(!v.obj.value.length) {
+              Toast(v.obj.ruleError);
+              return;
+            }
+          }
+        }
+        // 二级下拉
+        if(v.ele == 'selectcontact') {
+          if(v.obj.require) {
+            if(!v.obj.value || !v.obj.value1) {
+              Toast(v.obj.ruleError);
+              return;
+            }
+          }
+        }
+        // 选择老师、学生、班级、部门
+        if(v.ele == 'selectteacher' || v.ele == 'selectgrade' || v.ele == 'selectdepartment' || v.ele == 'selectstudent') {
+          if(v.obj.require) {
+            if(JSON.stringify(v.obj.selObj)=="{}") {
+              Toast(v.obj.ruleError);
+              return;
+            }
+          }
+        }
+        // 勾选打分
+        if(v.ele == 'score') {
+          if(v.obj.require) {
+            if(!v.obj.value || !v.obj.valueArr) {
+              Toast(v.obj.ruleError);
+              return;
+            }
+          }
+        }
 
-      alert(this.allListData.data[0].obj.placeholder)
+      });
 
+      // alert(this.allListData.data[0].obj.placeholder)
     },
     // 获取表单数据
     getFormData(ids) {
       this.$api.get("/cform/tempDetail", { tempid: ids }, r => {
-          // console.log(2,r);
-        }
-      );
-    },
+        // console.log(2,r);
+      });
+    }
   }
 };
 </script>
@@ -1070,7 +1239,8 @@ a:hover {
   padding-bottom: 53px;
   padding-top: 44px;
   font-size: 14px;
-  input, textarea {
+  input,
+  textarea {
     font-size: 14px;
   }
   textarea {
@@ -1383,7 +1553,8 @@ a:hover {
           text-align: center !important;
           color: #535353;
         }
-        .vux-cell-placeholder,.vux-cell-value {
+        .vux-cell-placeholder,
+        .vux-cell-value {
           color: #535353;
         }
         .weui-cell__ft {
@@ -1437,13 +1608,14 @@ a:hover {
         .el-checkbox-group {
           display: flex;
           .el-checkbox__input.is-checked .el-checkbox__inner {
-            background: #5DB75D;
-            border-color: #5DB75D;
+            background: #5db75d;
+            border-color: #5db75d;
           }
-          .el-checkbox__input.is-checked+.el-checkbox__label {
+          .el-checkbox__input.is-checked + .el-checkbox__label {
             color: #535353;
           }
-          .is-focus,.el-checkbox__inner {
+          .is-focus,
+          .el-checkbox__inner {
             border-color: #dcdfe6;
           }
         }
@@ -1555,8 +1727,8 @@ a:hover {
 }
 
 .other-input {
-  background: #FFFFFF;
-  border: 1px solid #C3C9CF;
+  background: #ffffff;
+  border: 1px solid #c3c9cf;
   height: 30px;
   padding: 0 10px;
 }
@@ -1565,9 +1737,8 @@ a:hover {
   padding-top: 0;
 }
 .btn-disabled {
-  opacity: .4;
+  opacity: 0.4;
 }
-
 
 // 滚动条样式
 ::-webkit-scrollbar {
