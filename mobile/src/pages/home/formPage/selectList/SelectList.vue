@@ -48,7 +48,7 @@ export default {
 
   },
   mounted() {
-    console.log(this.obj)
+    // console.log(this.obj)
     this.listData = this.obj.obj.items
     // if(this.obj.ele = 'selectteacher') {
     //   this.listData.map((v, i) => {
