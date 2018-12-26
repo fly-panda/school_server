@@ -921,15 +921,15 @@ export default {
         if (v.ele == "datepicker") {
           v.obj.valueTime = v.obj.valueTimeArr.join(":");
         }
-        if (v.ele == "selectcontact") {
-          v.obj.value = v.obj.valueArr[0]
-          v.obj.value1 = v.obj.valueArr1[0]
-        }
+        // if (v.ele == "selectcontact") {
+        //   v.obj.value = v.obj.valueArr[0] ? v.obj.valueArr[0] : ''
+        //   v.obj.value1 = v.obj.valueArr1[0] ? v.obj.valueArr1[0] : ''
+        // }
       });
 
-      this.allListData.data.map((v, i) => {
+      this.allListData.data.every((v, i) => {
         // 校验input和textarea
-        if (v.ele == "input" || v.ele == "text") {
+        if (v.ele == "input") {
           if (v.obj.require) {
             if (!v.obj.placeholder) {
               Toast(v.obj.ruleError);
@@ -937,6 +937,15 @@ export default {
             }
           }
         }
+        if (v.ele == "text") {
+          if (v.obj.require) {
+            if (!v.obj.placeholder) {
+              Toast(v.obj.ruleError);
+              return;
+            }
+          }
+        }
+        console.log(1111)
         // 判断单下拉框、单选按钮（truefalse）、单选
         if (v.ele == "select" || v.ele == "truefalse" || v.ele == "radio") {
           if (v.obj.require) {
