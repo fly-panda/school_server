@@ -43,7 +43,7 @@
             <div class="setTitle" style="padding: 15px" v-if="setTitleStatus" ><Input @input="changeTitle" @on-blur="setFormTitle" type="text" v-model="formTitle"></Input></div>
             <div style="padding: 15px"  @dblclick="setFormTitle" v-if="!setTitleStatus" class="setTitle">{{formTitle}}<span style="color:#979797">(双击修改)</span></div>
             <!-- 富文本 -->
-            <VueEditor style="width: 90%;margin:0 auto;height:160px;"
+            <VueEditor style="width: 90%;margin:0 auto;height:200px;"
             @imageAdded="handleImageAdded"
             :editorToolbar="customToolbar"
             v-model="content"></VueEditor>
@@ -1178,6 +1178,9 @@ export default {
     .move-cls{
         cursor: move;
     }
+}
+.ql-editor{
+    height: auto!important;
 }
 </style>
 

@@ -59,7 +59,10 @@ export default {
     },
     mounted(){
         this.$api.sSetObject("userObj",{
-            userId:"nHoIlS9HDYodone"
+            userId:"nHoIlS9HDYodone",
+            objType:"2",
+            openAppID:"315492154052",
+            objectid:"EzQ319HuHN8done"
         })
     },
     methods: {

@@ -53,9 +53,19 @@
             </Row>
         </FormItem>
         <FormItem v-if="settingForm.isCycle == 1" label="设置每周执行时间段" style="font-weight: 400">
-            <ul class="week-cls">
+<!--             <ul class="week-cls">
                 <li v-for="(item,i) in weekList" v-text="item.name" :class="{'active-wek':item.check}" @click="selweek(item,i)" :key="i"></li>
-            </ul>
+            </ul> -->
+            <Row>
+                <Col span="8">
+                    <p class="time-cls">开始时间</p>
+                    <DatePicker format="yyyy-MM-dd HH:mm:ss" v-model="settingForm.startTime" type="datetime" placeholder="请选择日期/时间" class="time-cls" @on-change="settingForm.startTime=$event"></DatePicker>
+                </Col>
+                <Col span="12">
+                    <p class="time-cls">结束时间</p> 
+                    <DatePicker format="yyyy-MM-dd HH:mm:ss" v-model="settingForm.endTime" type="datetime" placeholder="请选择日期/时间" class="time-cls" @on-change="settingForm.endTime=$event"></DatePicker>
+                </Col>
+            </Row>
         </FormItem>
         <FormItem label="能否重复提交" style="font-weight: 400" prop="submitTimes">
             <RadioGroup v-model="settingForm.isRepeat">

@@ -1,7 +1,13 @@
 <template>
-<div class="publish-content" :style="{height:fullHeight.height}">
-    <CardForm v-for="item in cardList" :key="item.id" :cardItem="item" :status="status"/>
-</div>
+    <div>
+        <div class="publish-content" :style="{height:fullHeight.height}">
+            <CardForm v-for="item in cardList" :key="item.id" :cardItem="item" :status="status"/>
+            <div class="page-view">
+                <Page prev-text="上一页" next-text="下一页" :current="currentPage" :total="totals" @on-change="changeFun"/>
+            </div>
+        </div>    
+    </div>
+
 </template>
 
 <script>
@@ -13,6 +19,8 @@ export default {
     data() {
         return {
             status:0,
+            currentPage:1,
+            totals:104,
             fullHeight:{// 动态获取屏幕高度
                 height: (document.documentElement.clientHeight-64)+"px"
             },
@@ -62,11 +70,42 @@ export default {
             }
             ]
         }
+    },
+    created(){
+        
+    },
+    mounted(){
+        this.userId=this.$api.sGetObject("userObj").userId;
+        this.getData();
+        
+    },
+    methods: {
+        getData(){
+            let self=this;
+            self.$api.get("/task/participate",{
+                userId:this.userId,
+                state:0
+            },r=>{
+                 // self.cardList=JSON.parse(r.data);
+                console.log(r)
+            })
+        },
+        changeFun(page){
+                console.log(page)
+            }
     }
 }
 </script>
 
 <style lang="less" scoped>
+.list-view{
+    width:100%;
+}
+.page-view{
+    width:100%;
+    padding: 10px;
+    text-align:center;
+}
 .publish-content {
     width: 100%;
     height: 100%;

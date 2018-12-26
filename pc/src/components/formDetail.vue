@@ -1,7 +1,7 @@
 <template>
 <div>
     <div class="previewContents">
-       
+
         <div class="header">{{previewObj.title}}</div>
         <div class="content">
             <div class="discribe" v-html="previewObj.describe">
@@ -314,7 +314,7 @@
                     <i-col span="8" v-for="(item,ind) in cont.obj.chooseCheck" :key="ind">
                         <!-- {{cont.obj.valueDate}} -->
                         <DatePicker v-show="item=='date'" format="yyyy-MM-dd" :value="cont.obj.valueDate" type="date" placeholder="选择日期" style="width: 200px" @on-change="cont.obj.valueDate=$event"></DatePicker>
-                        <Time-picker v-show="item=='time'" format="HH:mm:ss" :value="cont.obj.valueTime" type="time" placeholder="选择时间" style="width: 200px"></Time-picker>
+                        <Time-picker v-show="item=='time'" format="HH:mm:ss" :value="cont.obj.valueTime" type="time" placeholder="选择时间" style="width: 200px" @on-change="cont.obj.valueTime=$event"></Time-picker>
                     </i-col>
                 </row>
                  
@@ -404,8 +404,8 @@
             
 </div>
             <Row style="display: flex; justify-content: center">
-                 <!-- :disabled="!isSave" -->
-                <Button type="primary" style="margin: 2rem auto; width: 8rem" @click="saveForm">提  交</Button>
+                 <!--  -->
+                <Button type="primary" style="margin: 2rem auto; width: 8rem" @click="saveForm" :disabled="!isSave">提  交</Button>
             </Row>
         </div>
     </div>
@@ -418,14 +418,13 @@ import datas from "_c/mock.js"
 import address_com from "_c/address.vue"
 export default {
 // 'previewObj',
-    props: ['isSave','types'],
+    props: ['isSave','types','id','previewObj'],
     components:{
         address_com
     },
     data() {
         return {
             checkAllGroup: [],
-            previewObj:{},
             twoArrs:[],
             a:"",
             baseImg:this.$api.getBase(),
@@ -454,24 +453,22 @@ export default {
         
     },
     mounted(){
-        this.previewObj=this.$api.sGetObject("previewObj");
+        
         // console.log("asd",this.previewObj)
         // this.previewObj=datas.data;
         this.getData();
-        this.getSheng();
-        // let arr=this.previewObj.data;
+        // this.getSheng();
 
+        if(this.id){
+
+        }else{
+            // this.previewObj=this.$api.sGetObject("previewObj");
+        }
 
 
     },
     methods: {
-        getTaskDetail(){
-            self.$api.get("/task/taskdetail",{
-                taskid:""
-            },r=>{
-                // console.log(JSON.parse(r.data));
-            })
-        },
+    
         selS(){
             let self=this;
             self.$api.post("/campus/getDepartmentInfoList",{
@@ -619,29 +616,29 @@ export default {
             console.log(self.teacherObj)
             // item.checked=!item.checked;
         },
-        getSheng(){
+        // getSheng(){
 
-            this.$api.get("/city/getCity",{
-                pid:0
-            },r=>{
-                this.shengArr=JSON.parse(r.data);
-            }) 
-        },
-        getShi(res){
+        //     this.$api.get("/city/getCity",{
+        //         pid:0
+        //     },r=>{
+        //         this.shengArr=JSON.parse(r.data);
+        //     }) 
+        // },
+        // getShi(res){
 
-            this.$api.get("/city/getCity",{
-                pid:res
-            },r=>{
-                this.shiArr=JSON.parse(r.data);
-            })
-        },
-        getQu(item){
-            this.$api.get("/city/getCity",{
-                pid:item
-            },r=>{
-                this.quArr=JSON.parse(r.data);
-            })
-        },
+        //     this.$api.get("/city/getCity",{
+        //         pid:res
+        //     },r=>{
+        //         this.shiArr=JSON.parse(r.data);
+        //     })
+        // },
+        // getQu(item){
+        //     this.$api.get("/city/getCity",{
+        //         pid:item
+        //     },r=>{
+        //         this.quArr=JSON.parse(r.data);
+        //     })
+        // },
         //二级下拉方法
         changeSel(cont,i){
             cont.two_arr=cont.items[i].arrs;
@@ -666,7 +663,7 @@ export default {
             //     }
             // });
             self.$api.post("/task/submitTask",{
-                id:"",
+                id:this.id,
                 title:self.previewObj.title,
                 data:self.previewObj.data,
                 describe:self.previewObj.describe,

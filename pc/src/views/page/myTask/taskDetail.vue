@@ -14,7 +14,7 @@
             <p>请按正确格式填写所有信息，请及时修改尽快提交。</p>
         </div>
         <div class="previewContent">
-            <formDetail :previewObj="previewObj" :types="'edits'" :isSave="false"/>
+            <formDetail :previewObj="previewObj" :types="'edits'" :isSave="true" :id="id"/>
         </div>
     </div>
 </div>
@@ -37,16 +37,33 @@ export default {
                 height: (document.documentElement.clientHeight-124)+"px"
             },
             title: '一年级校服尺寸收集表',
-            previewObj:{}
+            previewObj:{
+                title:"",
+                describe:"",
+                data:[]
+            },
+            id:this.$route.query.id
           
         }
     },
     mounted(){
         // this.previewObj=this.$api.sGetObject("previewObj");
-
-        this.previewObj=datas.data;
+        console.log(this.$route.query.id)
+        this.getTaskDetail()
     },
     methods: {
+         getTaskDetail(){
+            let self=this;
+            self.$api.get("/task/taskdetail",{
+                taskid:self.id
+            },r=>{
+                let datas=JSON.parse(r.data);
+                self.previewObj.title=datas.title;
+                self.previewObj.describe=datas.describe;
+                self.previewObj.data=datas.data;
+                console.log(1,self.previewObj)
+            })
+        },
         del () {
             this.$Modal.confirm({
                 title: '确认要删除？',

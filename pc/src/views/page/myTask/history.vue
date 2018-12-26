@@ -1,8 +1,7 @@
 <template>
 <div :style="{height:fullHeight.height}">
-    
     <div class="publish-content">
-        <CardForm v-for="item in cardList" :key="item.id" :cardItem="item" :status="status"/> 
+        <!-- <CardForm v-for="item in cardList" :key="item.id" :cardItem="item" :status="status"/>  -->
         <div class="page-view">
             <Page prev-text="上一页" next-text="下一页" :current="currentPage" :total="totals" @on-change="changeFun"/>
         </div>
@@ -49,86 +48,6 @@ export default {
                     id: 5,
                     status: 3,
                     tempname: '纪律检查'
-                }, {
-                    id: 1,
-                    status: 3,
-                    tempname: '纪律检查'
-                }, {
-                    id: 2,
-                    status: 3,
-                    tempname: '卫生检查'
-                },{
-                    id: 3,
-                    status: 3,
-                    tempname: '纪律检查'
-                }, {
-                    id: 4,
-                    status: 3,
-                    tempname: '卫生检查'
-                },{
-                    id: 5,
-                    status: 3,
-                    tempname: '纪律检查'
-                }, {
-                    id: 1,
-                    status: 3,
-                    tempname: '纪律检查'
-                }, {
-                    id: 2,
-                    status: 3,
-                    tempname: '卫生检查'
-                },{
-                    id: 3,
-                    status: 3,
-                    tempname: '纪律检查'
-                }, {
-                    id: 4,
-                    status: 3,
-                    tempname: '卫生检查'
-                },{
-                    id: 5,
-                    status: 3,
-                    tempname: '纪律检查'
-                }, {
-                    id: 1,
-                    status: 3,
-                    tempname: '纪律检查'
-                }, {
-                    id: 2,
-                    status: 3,
-                    tempname: '卫生检查'
-                },{
-                    id: 3,
-                    status: 3,
-                    tempname: '纪律检查'
-                }, {
-                    id: 4,
-                    status: 3,
-                    tempname: '卫生检查'
-                },{
-                    id: 5,
-                    status: 3,
-                    tempname: '纪律检查'
-                }, {
-                    id: 1,
-                    status: 3,
-                    tempname: '纪律检查'
-                }, {
-                    id: 2,
-                    status: 3,
-                    tempname: '卫生检查'
-                },{
-                    id: 3,
-                    status: 3,
-                    tempname: '纪律检查'
-                }, {
-                    id: 4,
-                    status: 3,
-                    tempname: '卫生检查'
-                },{
-                    id: 5,
-                    status: 3,
-                    tempname: '纪律检查'
                 }
             ]
         }
@@ -143,7 +62,7 @@ export default {
         getData(){
             let self=this;
             self.$api.get("/task/participate",{
-                userId:self.userId,
+                userid:self.userId,
                 state:1
             },r=>{
                  self.cardList=JSON.parse(r.data);
