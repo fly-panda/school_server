@@ -45,7 +45,7 @@ const actions = {
       context.commit('updateStudents',arrs);
   },
   setTeachers(context,arrs){ 
-      context.commit('updateStudents',arrs)
+      context.commit('updateTeachers',arrs)
   },
   setGrades(context,arrs){ 
       context.commit('updateGrades',arrs)

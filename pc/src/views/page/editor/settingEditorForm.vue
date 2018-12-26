@@ -153,7 +153,7 @@ export default {
                 {name:"周四",id:4,check:false},
                 {name:"周五",id:5,check:false},
                 {name:"周六",id:6,check:false},
-                {name:"周日",id:7,check:false}
+                {name:"周日",id:0,check:false}
             ],
         }
     },
@@ -169,16 +169,12 @@ export default {
 
         submit(){
             let self=this;
-            console.log(self.settingForm.startWeek)
-            console.log(self.settingForm.endWeek)
             if(!this.tempId){
                 
                 self.$Message.warning('请选择表单');
                 return
             }
 
-            // console.log(self.settingForm)
-            let arr=[];
             let settingObj={
                 checkStatus:self.checkStatus,
                 isCycle:self.settingForm.isCycle,
@@ -188,11 +184,6 @@ export default {
                 resultCopy:self.settingForm.resultCopy,
                 id:this.tempId
             };
-            for(let i=0;i<self.weekList.length;i++){
-                if(self.weekList[i].check){
-                    arr.push(self.weekList[i]);
-                }
-            }
 
             if(self.checkStatus=="-1"){
                 self.$Message.warning('请选择填写人');
@@ -203,12 +194,18 @@ export default {
             }else if(self.checkStatus=="1"){
                 settingObj.writes=self.$refs.studentList.selStudentList
             }
-            if(self.settingForm.isCycle==1&&arr.length==0){
-                self.$Message.warning('请设置每周执行时间段');
-                return
+            if(self.settingForm.isCycle==1){
+                if(self.settingForm.startWeek==""&&self.settingForm.startWeek!=0){
+                    self.$Message.warning('请设置每周开始时间');
+                    return
+                }
+                if(self.settingForm.endWeek==""&&self.settingForm.endWeek!=0){
+                    self.$Message.warning('请设置每周结束时间');
+                    return
+                } 
             }
             
-            settingObj.weekList=arr;
+            settingObj.weekList=[self.settingForm.startWeek,self.settingForm.endWeek];
             settingObj.startTime=self.settingForm.startTime;
             settingObj.endTime=self.settingForm.endTime;
             if(self.settingForm.isRepeat==0&&self.settingForm.submitTimes==""){
@@ -219,7 +216,7 @@ export default {
             if(self.settingForm.resultCopy){
                  settingObj.resultObj=self.$refs.resultList.selStudentList
             }
-            // self.submitAjax(settingObj)
+            self.submitAjax(settingObj)
         },
         submitAjax(obj){
             let self=this;

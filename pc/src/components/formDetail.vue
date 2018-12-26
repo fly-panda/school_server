@@ -69,20 +69,21 @@
                         <p class="btns" @click="saveTeacher(cont.obj)">确认</p>
                     </div>
                      <div class="view-list">
-                        <div style="border-right:1px solid #C3C9D0;">
+<!--                         <div style="border-right:1px solid #C3C9D0;">
                             <p>部门</p>
                             <div class='cont'>
                                 <div>
                                     <Tree style="margin-left: 15px" ref="students" :data="teacherData" @on-select-change="changeFuns" ></Tree>
                                 </div>
                             </div>
-                        </div>
+                        </div> -->
                         <div>
                             <p>人员</p>
                             <div class='cont'>
                                 <!-- {{studentList}} -->
                                  <ul class="peo-list">
-                                   <li v-for="(item,index) in teacherList" @click="selsClick(item,index)">
+                                   <li v-for="(item,index) in 
+                                   cont.obj.items" @click="selsClick(item,index)">
                                        
                                        <span class="name-cls">{{item.name}}</span>
                                        <span class="check-cls" :class="{'active-cls':item.userid==teacherObj.userid}"></span>

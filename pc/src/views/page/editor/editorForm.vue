@@ -559,6 +559,7 @@ export default {
         console.log(111,)
     },
     methods: {
+        ...mapActions(['setStudents','setTeachers','setGrades','setDepartments']),
         getEditForm(){
             this.$api.get("cform/tempDetail",{
                 tempid:this.$route.query.tempid
@@ -567,11 +568,23 @@ export default {
                 this.formTitle=datas.title;
                 this.sortable_item=datas.data;
                 this.content=datas.describe;
-
-                    console.log(r)
-                
+                for(let i=0;i<this.sortable_item.length;i++){
+                    if(this.sortable_item[i].ele=="selectteacher"){
+                        this.sortable_item[i].obj.items = this.teacherList;
+                        this.setTeachers(this.setStudents[i].obj.items);
+                    }
+                    if(this.sortable_item[i].ele=="selectstudent"){
+                        this.setDepartments(this.setStudents[i].obj.items);
+                    }
+                    if(this.sortable_item[i].ele=="selectgrade"){
+                        this.setGrades(this.sortable_item[i].obj.items);
+                    }
+                    if(this.sortable_item[i].ele=="selectdepartment"){
+                        this.setDepartments(this.sortable_item[i].obj.items);
+                    }
                 }
-            )
+                
+            })
         },
                 // 预览效果
         previewForm(){
@@ -610,9 +623,12 @@ export default {
                 this.sortable_item[i].obj.icons="";
                 if(this.sortable_item[i].ele=="selectteacher"){
                     this.sortable_item[i].obj.items = this.teacherList;
+                    for(let j=0;j<this.sortable_item[i].obj.items.length;j++){
+                        this.sortable_item[i].obj.items[j].checked=false;
+                    }
                 }
                 if(this.sortable_item[i].ele=="selectstudent"){
-                    console.log(JSON.stringify(this.studentList))
+                    
                     this.sortable_item[i].obj.items = this.studentList;
                 }
                 if(this.sortable_item[i].ele=="selectgrade"){
@@ -1099,7 +1115,7 @@ export default {
         letter-spacing: 0.72px;
         padding-left:4px;
         flex:1;
-        overflow: hidden; white-space: nowrap; text-overflow: ellipsis
+        overflow: hidden; white-space: nowrap; text-overflow: ellipsis;
     } 
     .size-cls{
         font-family: PingFang-SC-Medium;

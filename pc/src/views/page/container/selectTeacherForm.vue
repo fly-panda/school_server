@@ -36,7 +36,7 @@
                 <Button type="primary" @click="submitResut">确定</Button>
             </div>
         </div>
-        <div class="clum" style="padding-top: 17px">
+        <div class="clum" style="padding-top: 17px;height:483px;overflow-y: auto; ">
             <div>
                 <div class="studentItem" v-for="(item,index) in selStudentList">
                     <div>{{item.name}}</div>
@@ -162,6 +162,7 @@ export default {
         
         saveFun(){
             this.$emit('handleselect', this.selStudentList);
+            console.log(this.selStudentList)
             this.setTeachers(this.selStudentList)
         },
         seearchPeople() {
