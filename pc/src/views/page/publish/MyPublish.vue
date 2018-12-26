@@ -8,9 +8,9 @@
     mode="horizontal" 
     style="padding:0 215px;" 
     theme="light" 
-    active-name="cardformList"
+    :active-name="$route.name"
     @on-select="changeRoure">
-        <MenuItem  name="cardformList">
+        <MenuItem name="cardformList">
         全部
         </MenuItem>
         <MenuItem name="allTemplate">
@@ -19,9 +19,9 @@
     </Menu>
     <div :style="{height:fullHeight.height}" style="overflow-y:scroll;">
         <keep-alive>
-                    <router-view v-if="$route.meta.keepAlive"></router-view>
-                </keep-alive>
-                <router-view v-if="!$route.meta.keepAlive"></router-view>
+            <router-view v-if="$route.meta.keepAlive"></router-view>
+        </keep-alive>
+        <router-view v-if="!$route.meta.keepAlive"></router-view>
     </div>
    
 </div>

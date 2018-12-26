@@ -54,8 +54,9 @@ export default {
             })
         },
         changeFun(page){
-                console.log(page)
-            }
+            this.currentPage=page;
+            this.getData();
+        }
     }
 }
 </script>

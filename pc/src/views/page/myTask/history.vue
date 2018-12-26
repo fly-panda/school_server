@@ -3,7 +3,7 @@
     <div class="publish-content">
         <!-- <CardForm v-for="item in cardList" :key="item.id" :cardItem="item" :status="status"/>  -->
         <div class="page-view">
-            <Page prev-text="上一页" next-text="下一页" :current="currentPage" :total="totals" @on-change="changeFun"/>
+            <Page prev-text="上一页" next-text="下一页" :current="currentPage" :total="totals" @on-change="changeFun" :show-total="showTotal"/>
         </div>
     </div>
     
@@ -24,7 +24,9 @@ export default {
                 height: (document.documentElement.clientHeight-124)+"px"
             },
             currentPage:1,
-            totals:104,
+            totals:0,
+            showTotal:true,
+            pagesize:10,
             // status 0 结束 1为开启
             // type 0 simple 1week
             cardList: [
@@ -63,15 +65,18 @@ export default {
             let self=this;
             self.$api.get("/task/participate",{
                 userid:self.userId,
-                state:1
+                state:1,
+                page:this.currentPage,
+                pagesize:this.pagesize
             },r=>{
                  self.cardList=JSON.parse(r.data);
                 console.log(r)
             })
         },
         changeFun(page){
-                console.log(page)
-            }
+            this.currentPage=page;
+            this.getData();
+        }
     }
 }
 </script>

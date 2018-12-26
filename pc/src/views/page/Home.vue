@@ -2,7 +2,7 @@
 <div class="layout">
     <Layout style="height: 100%;">
         <Header style="background: #272A34; padding: 0 215px;">
-            <Menu mode="horizontal" theme="dark" @on-select="changeRoure" active-name="1">
+            <Menu mode="horizontal" theme="dark" @on-select="changeRoure" :active-name="$route.name">
                 <div class="layout-logo"></div>
                 <div class="layout-nav">
                     <MenuItem name="home">

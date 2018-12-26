@@ -115,6 +115,7 @@ export default {
             
 
         },
+        
         jumpForms(item){
 
             let self=this;

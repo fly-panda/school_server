@@ -98,7 +98,8 @@
                 <div class="title" :class="{'require-cls':cont.obj.require}">选择部门</div>
                 <div class="point">提示内容</div>
                 <div class="selectBtn" v-if="!type_department" @click="selD">
-                    点击选择部门范围
+                    
+                     <span v-text="cont.obj.selObj.title?cont.obj.selObj.title:'点击选择部门范围'"></span>
                 </div>
                 <div class="department-view" v-if="type_department">
                      <div class="title-cls flex-cls">
@@ -107,7 +108,7 @@
                             <input type="text" placeholder="请输入部门"> 
                             <img src="@/assets/search_ico.png" alt="">
                         </p>
-                        <p class="btns">确认</p>
+                        <p class="btns" @click="saveDepartment(cont.obj)">确认</p>
                     </div>
                     <div class="view-list">
                         <div style="border-right:1px solid #C3C9D0;">
@@ -115,7 +116,12 @@
                             <div class='cont center-cls'>
                                 <div>
                                     <!-- :data="departmentData" -->
-                                    <Tree style="margin-left: 15px" ref="students" :data="cont.obj.items" show-checkbox :multiple="departmentMultiple"></Tree>
+                                    <!-- <Tree style="margin-left: 15px" ref="departmentTree" :data="cont.obj.items" show-checkbox :multiple="departmentMultiple"></Tree> -->
+                                    <RadioGroup v-model="cont.obj.value">
+                                        <Row v-for="(item,ind) in cont.obj.items" :key="ind">
+                                            <Radio class="checkboxItem" :label="item.departid"><span>{{item.title}}</span> </Radio>
+                                        </Row>
+                                    </RadioGroup>
                                 </div>
                             </div>
                         </div>
@@ -126,7 +132,8 @@
                 <div class="title" :class="{'require-cls':cont.obj.require}">选择班级</div>
                 <div class="point">提示内容</div>
                 <div class="selectBtn" v-if="!type_grade" @click="selG">
-                    点击选择班级范围
+                    
+                    <span v-text="cont.obj.selObj.title?cont.obj.selObj.title:'点击选择班级范围'"></span>
                 </div>
                 <div class="grade-view" v-if="type_grade">
                     <div class="title-cls flex-cls">
@@ -135,7 +142,7 @@
                             <input type="text" placeholder="请输入班级"> 
                             <img src="@/assets/search_ico.png" alt="">
                         </p>
-                        <p class="btns">确认</p>
+                        <p class="btns" @click="saveGrade(cont.obj)">确认</p>
                     </div>
                     <div class="view-list">
                         <div style="border-right:1px solid #C3C9D0;">
@@ -143,7 +150,12 @@
                             <div class='cont center-cls'>
                                 <div>
                                      <!-- :data="gradeData" -->
-                                    <Tree style="margin-left: 15px" ref="students" :data="cont.obj.items" show-checkbox multiple="false"></Tree>
+                                    <!-- <Tree style="margin-left: 15px" ref="grades" :data="cont.obj.items" show-checkbox multiple="false"></Tree> -->
+                                     <RadioGroup v-model="cont.obj.value">
+                                        <Row v-for="(item,ind) in cont.obj.items" :key="ind">
+                                            <Radio class="checkboxItem" :label="item.departid"><span>{{item.title}}</span> </Radio>
+                                        </Row>
+                                    </RadioGroup>
                                 </div>
                             </div>
                         </div>
@@ -395,14 +407,17 @@
                 <div class="title" :class="{'require-cls':cont.obj.require}">{{cont.obj.label}}</div>
                 <div class="point">{{cont.obj.describe}}</div>
                 <div class="imgCheckPreview">
-                    <div v-for="(item,ind) in cont.obj.imgArr">
-                        <CheckboxGroup v-model="cont.obj.value">
-                            <img :src="baseImg+item.url" alt="">
-                            <Checkbox class="checkboxItem" :label="item.labels"></Checkbox>
-                        </CheckboxGroup>
-                       
-                    </div>
-                    
+                    <CheckboxGroup v-model="cont.obj.value" style="width: 100%;display:flex;flex-direction: row;justify-content:left;">
+                        <div v-for="(item,ind) in cont.obj.imgArr" style="text-align: center;">
+                            
+                                <img :src="baseImg+item.url" alt="">
+                                <Checkbox class="checkboxItem" :label="ind">
+                                    <span>{{item.labels}}</span>
+                                </Checkbox>
+                            
+                           
+                        </div>
+                    </CheckboxGroup>
                 </div>
             </div>
             
@@ -528,8 +543,26 @@ export default {
         saveTeacher(res){
             let self=this;
             res.selObj=self.teacherObj;
-            console.log(res)
             this.type_teacher=!this.type_teacher;
+        },
+        saveDepartment(res){
+            let self=this;
+            console.log(res)
+            for(let i=0;i<res.items.length;i++){
+                if(res.items[i].departid==res.value){
+                    res.selObj=res.items[i];
+                }
+            }
+            this.type_department=!this.type_department;
+        },
+        saveGrade(res){
+            let self=this;
+            for(let i=0;i<res.items.length;i++){
+                if(res.items[i].departid==res.value){
+                    res.selObj=res.items[i];
+                }
+            }
+            this.type_grade=!this.type_grade;
         },
         getData(arr,ids){
             let self=this;
@@ -652,25 +685,124 @@ export default {
         checkAllGroupChange() {
 
         },
+        requireCheck(){
+            let msg="";
+            this.previewObj.data.some((item,i) => {
+                msg="";
+                if(item.obj.require){
+                    if(item.ele=="input"&&item.obj.placeholder==""){
+                        // this.$Message.warning(item.obj.label+"为必填项，请填写后提交!");
+                        msg=item.obj.label
+                        return true;
+                    }
+                    
+                    if(item.ele=="text"&&item.obj.placeholder==""){
+                        // this.$Message.warning(item.obj.label+"为必填项，请填写后提交!");
+                        msg=item.obj.label
+                        return true;
+                    }
+                    
+                    if(item.ele=="select"&&(item.obj.value==""&&item.obj.value!=0)){
+                        // this.$Message.warning(item.obj.label+"为必填项，请填写后提交!");
+                        msg=item.obj.label
+                        return true;
+                    }
+                    if(item.ele=="checkbox"&&item.obj.value.length==0){
+                        // this.$Message.warning(item.obj.label+"为必填项，请填写后提交!");
+                        msg=item.obj.label
+                        return true;
+                    }
+                    if(item.ele=="truefalse"&&item.obj.value==""){
+                        // this.$Message.warning(item.obj.label+"为必填项，请填写后提交!");
+                        msg=item.obj.label
+                        return true;
+                    }
+                    if(item.ele=="radio"&&(item.obj.value==""&&item.obj.value!=0)){
+                        // this.$Message.warning(item.obj.label+"为必填项，请填写后提交!");
+                        msg=item.obj.label
+                        return true;
+                    }
+                    if(item.ele=="uploads"&&item.obj.value.length==0){
+                        // this.$Message.warning(item.obj.label+"为必填项，请填写后提交!");
+                        msg=item.obj.label
+                        return true;
+                    }
+                    if(item.ele=="datepicker"&&(item.obj.valueDate==""&&item.obj.valueTime=="")){
+                        // this.$Message.warning(item.obj.label+"为必填项，请填写后提交!");
+                        msg=item.obj.label
+                        return true;
+                    }
+
+                    if(item.ele=="address"&&(item.obj.shengValue==""&&item.obj.shiValue==""&&item.obj.quValue=="")){
+                        // this.$Message.warning(item.obj.label+"为必填项，请填写后提交!");
+                        msg=item.obj.label
+                        return true;
+                    }
+                    if(item.ele=="imgcheck"&&item.obj.value.length==0){
+                        // this.$Message.warning(item.obj.label+"为必填项，请填写后提交!");
+                        msg=item.obj.label
+                        return true;
+                    }
+                    if(item.ele=="selectcontact"&&((item.obj.value==""&&item.obj.value!=0)&&(item.obj.value1==""&&item.obj.value1!=0))){
+                        // this.$Message.warning(item.obj.label+"为必填项，请填写后提交!");
+                        msg=item.obj.label
+                       return true;
+                    }
+                    if(item.ele=="slider"&&item.obj.value==""){
+                        // this.$Message.warning(item.obj.label+"为必填项，请填写后提交!");
+                        msg=item.obj.label
+                        return true;
+                    }
+                    if(item.ele=="score"&&((item.obj.value==""&&item.obj.value!=0)&&item.obj.valueArr.length==0)){
+                        // this.$Message.warning(item.obj.label+"为必填项，请填写后提交!");
+                        msg=item.obj.label
+                        return true;
+                    }
+                    if(item.ele=="selectstudent"&&(JSON.stringify(item.obj.selObj)=="{}")){
+                        // this.$Message.warning(item.obj.label+"为必填项，请填写后提交!");
+                        msg=item.obj.label
+                        return true;
+                    }
+                    if(item.ele=="selectgrade"&&(JSON.stringify(item.obj.selObj)=="{}")){
+                        // this.$Message.warning(item.obj.label+"为必填项，请填写后提交!");
+                        msg=item.obj.label
+                        return true;
+                    }
+                    if(item.ele=="selectteacher"&&(JSON.stringify(item.obj.selObj)=="{}")){
+                        // this.$Message.warning(item.obj.label+"为必填项，请填写后提交!");
+                        msg=item.obj.label
+                        return true;
+                    }
+                    if(item.ele=="selectgrade"&&(JSON.stringify(item.obj.selObj)=="{}")){
+                        // this.$Message.warning(item.obj.label+"为必填项，请填写后提交!");
+                        msg=item.obj.label
+                        return true;
+                    }
+                }
+            });
+
+            if(msg==""){
+                return true
+            }else{
+                return msg
+            }
+        },
         saveForm(){
             let self=this;
-            console.log(JSON.stringify(self.previewObj));
+            // console.log(JSON.stringify(self.previewObj));
+           //  console.log(this.requireCheck())
+           // if(this.requireCheck()){
+           //  console.log(self.previewObj.data)
+
+           // }else{
+           //      this.$Message.warning(item.obj.label+"为必填项，请填写后提交!");
+           // }
             
-           
-            // this.previewObj.data.forEach(item => {
-            //     if(item.obj.require){
-            //         console.log(23213)
-            //         if(item.obj.value==""||item.obj.valueArr.length==0){
-            //             this.$Message.error("请填写"+item.obj.label)
-            //         }
-                    
-            //     }
-            // });
             self.$api.post("/task/submitTask",{
                 id:this.id,
                 title:self.previewObj.title,
                 data:self.previewObj.data,
-                describe:self.previewObj.describe,
+                describe:self.previewObj.describe
             },r=>{
                  console.log(r)
                 // self.cardList=JSON.parse(r.data);

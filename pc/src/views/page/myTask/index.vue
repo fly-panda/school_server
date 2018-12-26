@@ -4,7 +4,7 @@
     mode="horizontal" 
     style="padding:0 215px;" 
     theme="light" 
-    active-name="allTask"
+    :active-name="$route.name"
     @on-select="changeRoure">
         <MenuItem  name="allTask">
         全部任务

@@ -66,15 +66,15 @@ export default {
         },
         getShi(res){
             console.log(res)
-            // this.shiArr=[];
-            // this.quArr=[];
-            // this.cont.obj.shiValue="";
-            // this.cont.obj.quValue="";
-            // this.$api.get("/city/getCity",{
-            //     pid:res
-            // },r=>{
-            //     this.shiArr=JSON.parse(r.data);
-            // })
+            this.shiArr=[];
+            this.quArr=[];
+            this.cont.obj.shiValue="";
+            this.cont.obj.quValue="";
+            this.$api.get("/city/getCity",{
+                pid:res
+            },r=>{
+                this.shiArr=JSON.parse(r.data);
+            })
         },
         getQu(item){
             this.quArr=[];

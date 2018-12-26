@@ -3,7 +3,7 @@
         <div class="publish-content">
             <CardForm v-for="(item,i) in cardList" :key="item.id" :cardItem="item" :status="status"/>
             <div class="page-view">
-                <Page prev-text="上一页" next-text="下一页" :current="currentPage" :total="totals" @on-change="changeFun"/>
+                <Page prev-text="上一页" next-text="下一页" :current="currentPage" :total="totals" @on-change="changeFun" :show-total="showTotal"/>
             </div>
         </div>
         
@@ -22,39 +22,32 @@ export default {
             // status 0 结束 1为开启
             // type 0 simple 1week
             cardList: [
-                // {
-                //     id: 1,
-                //     status: 1,
-                //     title: '纪律检查'
-                // },
-                // {
-                //     id: 1,
-                //     status: 1,
-                //     title: '纪律检查'
-                // },
-                // {
-                //     id: 1,
-                //     status: 1,
-                //     title: '纪律检查'
-                // }
             ],
             status:1,
             userId:"",
             currentPage:1,
-            totals:104,
+            totals:0,
+            showTotal:true,
+            pagesize:10
         }
     },
     mounted(){
-        this.getData();
         this.userId=this.$api.sGetObject("userObj").userId;
+        this.getData();
+        
     },
     methods: {
         getData(){
             let self=this;
-            self.$api.post("/cform/myForm",{},r=>{
-                 console.log(r)
-                self.cardList=JSON.parse(r.data);
-                // console.log(self.data3);
+            self.$api.get("/cform/myForm",{
+                userid:this.userId,
+                page:this.currentPage,
+                pagesize:this.pagesize
+            },r=>{
+                let datas=JSON.parse(r.data);
+                self.cardList=datas.result;
+                self.totals=datas.count;
+                console.log(r)
             },e=>{
                 console.log(e)
             })
@@ -73,8 +66,9 @@ export default {
             // )
         },
         changeFun(page){
-                console.log(page)
-            }
+            this.currentPage=page;
+            this.getData();
+        }
     }
 }
 </script>
