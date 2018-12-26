@@ -57,13 +57,16 @@ export default {
             currentView: 'Input'
         }
     },
-    mounted(){
+    created(){
         this.$api.sSetObject("userObj",{
             userId:"nHoIlS9HDYodone",
             objType:"2",
             openAppID:"315492154052",
             objectid:"EzQ319HuHN8done"
         })
+    },
+    mounted(){
+        
     },
     methods: {
         changeRoure(name) {

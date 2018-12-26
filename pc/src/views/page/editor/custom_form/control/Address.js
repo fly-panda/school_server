@@ -149,7 +149,7 @@ export let addressConf = {
     name: 'default',
 
     // 绑定的值
-    value: [],
+    value: "",
     sheng: [],
     shi:[],
     qu:[],

@@ -60,13 +60,13 @@
                 <Col span="8">
                     <p class="time-cls">开始时间</p>
                     <i-select v-model="settingForm.startWeek" style="width:200px">
-                        <i-option v-for="(item,i) in weekList" :value="item.id">{{ item.name }}</i-option>
+                        <i-option v-for="(item,i) in weekList" :value="item.id" :key="i">{{ item.name }}</i-option>
                     </i-select>
                 </Col>
                 <Col span="12">
                     <p class="time-cls">结束时间</p> 
                     <i-select v-model="settingForm.endWeek" style="width:200px">
-                        <i-option v-for="(item,i) in weekList" :value="item.id">{{ item.name }}</i-option>
+                        <i-option v-for="(item,i) in weekList" :value="item.id" :key="i">{{ item.name }}</i-option>
                     </i-select>
                 </Col>
             </Row>

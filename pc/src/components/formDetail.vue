@@ -219,6 +219,7 @@
             <div class="selectStudentContainer" v-if="cont.ele=='select'">
                 <div class="title" :class="{'require-cls':cont.obj.require}">{{cont.obj.label}}</div>
                 <div class="point">{{cont.obj.describe}}</div>
+                {{cont.obj.value}}
                 <Select  v-model="cont.obj.value" style="width:250px;">
                     <Option v-for="(item,ind) in cont.obj.items" :value="ind" :key="item.label_value">{{ item.label_name }}</Option>
                 </Select>
@@ -690,19 +691,19 @@ export default {
             this.previewObj.data.some((item,i) => {
                 msg="";
                 if(item.obj.require){
-                    if(item.ele=="input"&&item.obj.placeholder==""){
+                    if(item.ele=="input"&&!item.obj.placeholder){
                         // this.$Message.warning(item.obj.label+"为必填项，请填写后提交!");
                         msg=item.obj.label
                         return true;
                     }
                     
-                    if(item.ele=="text"&&item.obj.placeholder==""){
+                    if(item.ele=="text"&&!item.obj.placeholder){
                         // this.$Message.warning(item.obj.label+"为必填项，请填写后提交!");
                         msg=item.obj.label
                         return true;
                     }
-                    
-                    if(item.ele=="select"&&(item.obj.value==""&&item.obj.value!=0)){
+                    console.log(item.ele=="select"&&(!toString(item.obj.value)))
+                    if(item.ele=="select"&&(!toString(item.obj.value))){
                         // this.$Message.warning(item.obj.label+"为必填项，请填写后提交!");
                         msg=item.obj.label
                         return true;
@@ -712,12 +713,12 @@ export default {
                         msg=item.obj.label
                         return true;
                     }
-                    if(item.ele=="truefalse"&&item.obj.value==""){
+                    if(item.ele=="truefalse"&&!item.obj.value){
                         // this.$Message.warning(item.obj.label+"为必填项，请填写后提交!");
                         msg=item.obj.label
                         return true;
                     }
-                    if(item.ele=="radio"&&(item.obj.value==""&&item.obj.value!=0)){
+                    if(item.ele=="radio"&&(!toString(item.obj.value))){
                         // this.$Message.warning(item.obj.label+"为必填项，请填写后提交!");
                         msg=item.obj.label
                         return true;
@@ -727,13 +728,13 @@ export default {
                         msg=item.obj.label
                         return true;
                     }
-                    if(item.ele=="datepicker"&&(item.obj.valueDate==""&&item.obj.valueTime=="")){
+                    if(item.ele=="datepicker"&&(!item.obj.valueDate&&!item.obj.valueTime)){
                         // this.$Message.warning(item.obj.label+"为必填项，请填写后提交!");
                         msg=item.obj.label
                         return true;
                     }
 
-                    if(item.ele=="address"&&(item.obj.shengValue==""&&item.obj.shiValue==""&&item.obj.quValue=="")){
+                    if(item.ele=="address"&&(!item.obj.shengValue&&!item.obj.shiValue&&!item.obj.quValue)){
                         // this.$Message.warning(item.obj.label+"为必填项，请填写后提交!");
                         msg=item.obj.label
                         return true;
@@ -743,17 +744,17 @@ export default {
                         msg=item.obj.label
                         return true;
                     }
-                    if(item.ele=="selectcontact"&&((item.obj.value==""&&item.obj.value!=0)&&(item.obj.value1==""&&item.obj.value1!=0))){
+                    if(item.ele=="selectcontact"&&((!toString(item.obj.value))&&(!toString(item.obj.value1)))){
                         // this.$Message.warning(item.obj.label+"为必填项，请填写后提交!");
                         msg=item.obj.label
                        return true;
                     }
-                    if(item.ele=="slider"&&item.obj.value==""){
+                    if(item.ele=="slider"&&(!toString(item.obj.value))){
                         // this.$Message.warning(item.obj.label+"为必填项，请填写后提交!");
                         msg=item.obj.label
                         return true;
                     }
-                    if(item.ele=="score"&&((item.obj.value==""&&item.obj.value!=0)&&item.obj.valueArr.length==0)){
+                    if(item.ele=="score"&&(!item.obj.value&&item.obj.valueArr.length==0)){
                         // this.$Message.warning(item.obj.label+"为必填项，请填写后提交!");
                         msg=item.obj.label
                         return true;
@@ -782,34 +783,34 @@ export default {
             });
 
             if(msg==""){
-                return true
+                return 'success'
             }else{
                 return msg
             }
         },
         saveForm(){
             let self=this;
+            let msg=this.requireCheck();
             // console.log(JSON.stringify(self.previewObj));
-           //  console.log(this.requireCheck())
-           // if(this.requireCheck()){
-           //  console.log(self.previewObj.data)
+            if(msg=="success"){
+                self.$api.post("/task/submitTask",{
+                    id:this.id,
+                    title:self.previewObj.title,
+                    data:self.previewObj.data,
+                    describe:self.previewObj.describe
+                },r=>{
+                    console.log(r)
+                    // self.cardList=JSON.parse(r.data);
+                    self.$Message.success("提交成功");
+                },e=>{
+                    console.log(e)
+                })
 
-           // }else{
-           //      this.$Message.warning(item.obj.label+"为必填项，请填写后提交!");
-           // }
+            }else{
+                this.$Message.warning(msg+"为必填项，请填写后提交!");
+            }
             
-            self.$api.post("/task/submitTask",{
-                id:this.id,
-                title:self.previewObj.title,
-                data:self.previewObj.data,
-                describe:self.previewObj.describe
-            },r=>{
-                 console.log(r)
-                // self.cardList=JSON.parse(r.data);
-                self.$Message.error("提交成功");
-            },e=>{
-                console.log(e)
-            })
+           
         },
         downloadFun(res){
             let self=this;
