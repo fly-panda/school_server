@@ -555,12 +555,18 @@ export default {
         this.tempid=this.$route.query.tempid;
         if(this.tempid){
             this.getEditForm();
+            
         }
-        console.log(111,)
+        
+        console.log('studentList',this.studentList);
+        console.log('teacherList',this.teacherList);
+        console.log('gradeList',this.gradeList);
+        console.log('departmentList',this.departmentList);
     },
     methods: {
         ...mapActions(['setStudents','setTeachers','setGrades','setDepartments']),
         getEditForm(){
+
             this.$api.get("cform/tempDetail",{
                 tempid:this.$route.query.tempid
             },r=>{
@@ -568,20 +574,27 @@ export default {
                 this.formTitle=datas.title;
                 this.sortable_item=datas.data;
                 this.content=datas.describe;
-                for(let i=0;i<this.sortable_item.length;i++){
-                    if(this.sortable_item[i].ele=="selectteacher"){
-                        this.sortable_item[i].obj.items = this.teacherList;
-                        this.setTeachers(this.setStudents[i].obj.items);
+                console.log(this.sortable_item)
+                for(let i=0;i<datas.data.length;i++){
+                    console.log(datas.data[i].ele)
+                    if(datas.data[i].ele=="selectstudent"){
+                        console.log(datas.data[i].obj.items)
+                        this.studentList=datas.data[i].obj.items;
+                        this.setStudents(datas.data[i].obj.items);
+                    }else if(datas.data[i].ele=="selectteacher"){
+                        console.log(datas.data[i].obj.items)
+                        this.teacherList=datas.data[i].obj.items;
+                        this.setTeachers(datas.data[i].obj.items);
+                    }else if(datas.data[i].ele=="selectdepartment"){
+                        console.log(datas.data[i].obj.items)
+                        this.departmentList=datas.data[i].obj.items;
+                        this.setDepartments(datas.data[i].obj.items);
+                    }else if(datas.data[i].ele=="selectgrade"){
+                        console.log(datas.data[i].obj.items)
+                        this.gradeList=datas.data[i].obj.items;
+                        this.setGrades(datas.data[i].obj.items);
                     }
-                    if(this.sortable_item[i].ele=="selectstudent"){
-                        this.setDepartments(this.setStudents[i].obj.items);
-                    }
-                    if(this.sortable_item[i].ele=="selectgrade"){
-                        this.setGrades(this.sortable_item[i].obj.items);
-                    }
-                    if(this.sortable_item[i].ele=="selectdepartment"){
-                        this.setDepartments(this.sortable_item[i].obj.items);
-                    }
+
                 }
                 
             })

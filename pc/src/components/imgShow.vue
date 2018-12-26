@@ -100,7 +100,7 @@ export default {
     },
     mounted() {
         this.uploadList = this.$refs.upload.fileList;
-        console.log(this.uploadList)
+        // console.log(this.uploadList)
     }
 }
 </script>
