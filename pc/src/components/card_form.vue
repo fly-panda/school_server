@@ -131,7 +131,7 @@ export default {
 
 <style lang="less" scoped>
 .cardform {
-    width: 150px;
+    width: 175px;
     height: 220px;
     background: #fff;
     margin: 10px;
@@ -142,8 +142,8 @@ export default {
     align-items: center;
     background: #FFFFFF;
     border: 1px solid #C3C9CF;
-    border-radius: 5px;
     cursor: pointer;
+    border-radius: 5px;
     .card-tag {
         background: #90e1ce;
         color: #fff;

@@ -1,8 +1,8 @@
 <template>
 <div class="layout">
     <Layout style="height: 100%;">
-        <Header style="background: #272A34; padding: 0 215px;">
-            <Menu mode="horizontal" theme="dark" @on-select="changeRoure" :active-name="$route.name">
+        <Header style="background: #272A34;">
+            <Menu style="width: 1170px;margin:0 auto;" mode="horizontal" theme="dark" @on-select="changeRoure" :active-name="$route.name">
                 <div class="layout-logo"></div>
                 <div class="layout-nav">
                     <MenuItem name="home">
@@ -17,10 +17,10 @@
                     <!-- <Icon type="ios-analytics"></Icon> -->
                     我的抄送
                     </MenuItem>
-                    <MenuItem name="publicTemp">
-                    <!-- <Icon type="ios-paper"></Icon> -->
+<!--                     <MenuItem name="publicTemp">
+                    <Icon type="ios-paper"></Icon>
                     公共模板
-                    </MenuItem>
+                    </MenuItem> -->
 
                     <MenuItem name="editor">
                     <!-- <Icon type="ios-paper"></Icon> -->
@@ -34,10 +34,10 @@
             <Modal v-model="modalStatus"  :title="madalTitle" footer-hide @on-cancel="cancelModal()">
                 <component v-bind:is="currentView"></component>
             </Modal>
-                <keep-alive>
-                    <router-view v-if="$route.meta.keepAlive"></router-view>
-                </keep-alive>
-                <router-view v-if="!$route.meta.keepAlive"></router-view>
+            <keep-alive>
+                <router-view v-if="$route.meta.keepAlive"></router-view>
+            </keep-alive>
+            <router-view v-if="!$route.meta.keepAlive"></router-view>
         </Content>
         <!-- <Footer class="layout-footer-center">2011-2016 &copy; TalkingData</Footer> -->
     </Layout>

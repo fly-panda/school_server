@@ -702,7 +702,6 @@ export default {
                         msg=item.obj.label
                         return true;
                     }
-                    console.log(item.ele=="select"&&(!toString(item.obj.value)))
                     if(item.ele=="select"&&(!toString(item.obj.value))){
                         // this.$Message.warning(item.obj.label+"为必填项，请填写后提交!");
                         msg=item.obj.label
@@ -744,7 +743,7 @@ export default {
                         msg=item.obj.label
                         return true;
                     }
-                    if(item.ele=="selectcontact"&&((!toString(item.obj.value))&&(!toString(item.obj.value1)))){
+                    if(item.ele=="selectcontact"&&((item.obj.value<"-1")&&(item.obj.value1<"-1"))){
                         // this.$Message.warning(item.obj.label+"为必填项，请填写后提交!");
                         msg=item.obj.label
                        return true;

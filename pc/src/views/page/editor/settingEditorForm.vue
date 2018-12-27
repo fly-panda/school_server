@@ -2,15 +2,16 @@
 <div class="settingContainer">
     <Form style="padding: 15px;" ref="formCustom" class="settingForm" :rules="ruleValidate"  :model="settingForm" label-position="top">
         <div class="title">配置填写人</div>
-        <FormItem label="">
+        <FormItem label="" v-if="isTeacher">
             <Checkbox @on-change="(status)=>{
                 changeCheck(status ,0, 'classTeacher')
                 }" class="checkboxItem" v-model="settingForm.classTeacher" label=""><span>由相关班级的班主任来填写</span>
             </Checkbox>
             <div class="class-view" v-if="checkStatus == 0">
-                <div class="title-cls padding-cls">本表单将有以下班主任填写</div>
+                <div class="title-cls padding-cls" style="border-bottom: 1px solid #C3C9D0;">本表单将有以下班主任填写</div>
                 <div class="padding-cls">
-                    <Tree ref="grade" :data="gradeList"  show-checkbox check-strictly="true"></Tree>
+                    <Tree ref="grade" :data="treeList" check-strictly="true"></Tree>
+                     <!-- show-checkbox -->
                 </div>
                 
             </div>
@@ -92,7 +93,7 @@
                 <selList ref="resultList"></selList>    
             </div>
         </FormItem>
-        <FormItem>
+        <FormItem v-if="checkStatus != 0 && isTeacher && settingForm.isCycle == 1">
             <Checkbox v-model="settingForm.classRelationTeacher">结果抄送相关班主任</Checkbox>
         </FormItem>
        
@@ -155,6 +156,10 @@ export default {
                 {name:"周六",id:6,check:false},
                 {name:"周日",id:0,check:false}
             ],
+            teacherToggle:false,
+            objs:{},
+            isTeacher:false,
+            treeList:[]
         }
     },
     components: {
@@ -163,10 +168,21 @@ export default {
         selList
     },
     mounted(){
-        this.getData();
+        // this.getData();
+        this.getStatus();
     },
     methods: {
-
+        getStatus(){
+            this.isTeacher=false;
+            this.objs=this.$api.sGetObject("previewObj");
+            for(let i=0;i<this.objs.sortable_item.length;i++){
+                if(this.objs.sortable_item[i].ele=="selectstudent"||this.objs.sortable_item[i].ele=="selectgrade"){
+                    this.isTeacher=true;
+                    this.treeList=this.objs.sortable_item[i].obj.items;
+                }
+            }
+        console.log(1,this.objs)
+        },
         submit(){
             let self=this;
             if(!this.tempId){

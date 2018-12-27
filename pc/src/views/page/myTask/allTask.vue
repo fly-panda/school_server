@@ -2,8 +2,11 @@
 <div>
     <div class="publish-content">
         <CardForm v-for="item in cardList" :key="item.id" :cardItem="item" :status="status"/>
+        <div class='no-cont' v-if="cardList.length==0">
+            暂无数据
+        </div>
         <div class="page-view">
-            <Page prev-text="上一页" next-text="下一页" :current="currentPage" :total="totals" @on-change="changeFun" :show-total="showTotal"/>
+            <Page prev-text="上一页" next-text="下一页" :page-size="pagesize" :current="currentPage" :total="totals" @on-change="changeFun" :show-total="showTotal"/>
         </div>
     </div>
     
@@ -27,7 +30,7 @@ export default {
             // status 0 结束 1为开启
             // type 0 simple 1week
             cardList: [],
-            pagesize:10
+            pagesize:18
         }
     },
     created(){
@@ -62,6 +65,12 @@ export default {
 </script>
 
 <style lang="less" scoped>
+.no-cont{
+    font-size: 18px;
+    width: 100%;
+    text-align:center;
+    color:#ccc;
+}
 .list-view{
     width:100%;
 }
@@ -71,9 +80,10 @@ export default {
     text-align:center;
 }
 .publish-content {
-    width: 100%;
+    width: 1170px;
+    margin: 0 auto;
     height: 100%;
-    padding: 10px 215px;
+    padding: 10px 0;
     display: flex;
     flex-wrap: wrap;
     align-items: flex-start;

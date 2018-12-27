@@ -1,9 +1,12 @@
 <template>
-    <div>
-        <div class="publish-content" :style="{height:fullHeight.height}">
+    <div :style="{height:fullHeight.height}" class="cont">
+        <div class="publish-content">
             <CardForm v-for="item in cardList" :key="item.id" :cardItem="item" :status="status"/>
+            <div class='no-cont' v-if="cardList.length==0">
+                暂无数据
+            </div>
             <div class="page-view">
-                <Page prev-text="上一页" next-text="下一页" :current="currentPage" :total="totals" @on-change="changeFun"/>
+                <Page prev-text="上一页" next-text="下一页" :page-size="pagesize" :current="currentPage" :total="totals" @on-change="changeFun" :show-total="showTotal"/>
             </div>
         </div>    
     </div>
@@ -20,54 +23,16 @@ export default {
         return {
             status:0,
             currentPage:1,
-            totals:104,
+            totals:0,
+            pagesize:18,
             fullHeight:{// 动态获取屏幕高度
                 height: (document.documentElement.clientHeight-64)+"px"
             },
+            showTotal:true,
             // status 0 结束 1为开启
             // type 0 simple 1week
             cardList: [
-            {
-                id: 1,
-                status: 0,
-                type: 0,
-                tag_text: '单次任务',
-                tempname: '关于《两学一做》班会的感想',
-                endDate: '11/09 18:00',
-                expectSubmit: 100,
-                hasSubmitNum: 10,
-                allSubmitNum: 50
-            }, {
-                id: 2,
-                status: 0,
-                type: 0,
-                tag_text: '单次任务',
-                tempname: '卫生检查',
-                endDate: '11/09 18:00',
-                expectSubmit: 100,
-                hasSubmitNum: 10,
-                allSubmitNum: 50
-            }, {
-                id: 3,
-                status: 0,
-                type: 0,
-                tag_text: '单次任务',
-                tempname: '卫生检查',
-                endDate: '任务已结束',
-                expectSubmit: 100,
-                hasSubmitNum: 10,
-                allSubmitNum: 50
-            }, {
-                id: 4,
-                status: 0,
-                type: 0,
-                tag_text: '单次任务',
-                tempname: '卫生检查',
-                endDate: '11/09 18:00',
-                expectSubmit: 100,
-                hasSubmitNum: 10,
-                allSubmitNum: 50
-            }
+
             ]
         }
     },
@@ -82,22 +47,37 @@ export default {
     methods: {
         getData(){
             let self=this;
-            self.$api.get("/task/participate",{
-                userId:this.userId,
-                state:0
+            self.$api.get("/task/getMyTask",{
+                userid:this.userId,
+                state:2,
+                page:this.currentPage,
+                pagesize:this.pagesize
             },r=>{
-                 // self.cardList=JSON.parse(r.data);
+                let datas =JSON.parse(r.data);
+                self.cardList=datas.result;
+                self.totals=datas.count;
                 console.log(r)
             })
         },
         changeFun(page){
-                console.log(page)
-            }
+            this.currentPage=page;
+            this.getData();
+            console.log(page)
+        }
     }
 }
 </script>
 
 <style lang="less" scoped>
+.no-cont{
+    font-size: 18px;
+    width: 100%;
+    text-align:center;
+    color:#ccc;
+}
+.cont{
+    overflow-y:auto;
+}
 .list-view{
     width:100%;
 }
@@ -107,14 +87,15 @@ export default {
     text-align:center;
 }
 .publish-content {
-    width: 100%;
+    width: 1170px;
+    margin: 0 auto;
     height: 100%;
-    padding: 10px 215px;
+    padding: 10px 0;
     display: flex;
     flex-wrap: wrap;
     align-items: flex-start;
     align-content: flex-start;
     flex-grow: 20px;
-    overflow-y:auto;
+    
 }
 </style>

@@ -558,13 +558,21 @@ export default {
             
         }
         
-        console.log('studentList',this.studentList);
-        console.log('teacherList',this.teacherList);
-        console.log('gradeList',this.gradeList);
-        console.log('departmentList',this.departmentList);
+        // console.log('studentList',this.studentList);
+        // console.log('teacherList',this.teacherList);
+        // console.log('gradeList',this.gradeList);
+        // console.log('departmentList',this.departmentList);
     },
     methods: {
         ...mapActions(['setStudents','setTeachers','setGrades','setDepartments']),
+        saveObjs(){
+            let objs={
+                title:this.formTitle,
+                sortable_item:this.sortable_item,
+                content:this.content
+            };
+            this.$api.sSetObject("previewObj",objs);
+        },
         getEditForm(){
 
             this.$api.get("cform/tempDetail",{
@@ -574,23 +582,23 @@ export default {
                 this.formTitle=datas.title;
                 this.sortable_item=datas.data;
                 this.content=datas.describe;
-                console.log(this.sortable_item)
+                // console.log(this.sortable_item)
                 for(let i=0;i<datas.data.length;i++){
-                    console.log(datas.data[i].ele)
+                    // console.log(datas.data[i].ele)
                     if(datas.data[i].ele=="selectstudent"){
-                        console.log(datas.data[i].obj.items)
+                        // console.log(datas.data[i].obj.items)
                         this.studentList=datas.data[i].obj.items;
                         this.setStudents(datas.data[i].obj.items);
                     }else if(datas.data[i].ele=="selectteacher"){
-                        console.log(datas.data[i].obj.items)
+                        // console.log(datas.data[i].obj.items)
                         this.teacherList=datas.data[i].obj.items;
                         this.setTeachers(datas.data[i].obj.items);
                     }else if(datas.data[i].ele=="selectdepartment"){
-                        console.log(datas.data[i].obj.items)
+                        // console.log(datas.data[i].obj.items)
                         this.departmentList=datas.data[i].obj.items;
                         this.setDepartments(datas.data[i].obj.items);
                     }else if(datas.data[i].ele=="selectgrade"){
-                        console.log(datas.data[i].obj.items)
+                        // console.log(datas.data[i].obj.items)
                         this.gradeList=datas.data[i].obj.items;
                         this.setGrades(datas.data[i].obj.items);
                     }
@@ -659,6 +667,7 @@ export default {
             return formObj;
         },
         saveSoltItem(){
+            this.saveObjs();
             let formObj=this.formatData();
             // console.log(JSON.stringify(this.sortable_item))
             this.$api.post("/cform/addForm",
@@ -873,7 +882,7 @@ export default {
                 label_value: curRemoveObj.length+1,
                 label_name: fileObj.name,
                 url:"",
-                size:fileObj.size,
+                size:self.$api.onver(fileObj.size),
                 status:"finishedss"
             })
             self.$api.uploadFile("file/upload ", {},fileObj, (r) => {
@@ -902,6 +911,9 @@ export default {
         }
 
 
+    },
+    destoryed(){
+        this.$api.sSetObject("previewObj",{});
     }
 }
 </script>
