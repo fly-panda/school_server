@@ -174,14 +174,17 @@ export default {
     methods: {
         getStatus(){
             this.isTeacher=false;
-            this.objs=this.$api.sGetObject("previewObj");
-            for(let i=0;i<this.objs.sortable_item.length;i++){
-                if(this.objs.sortable_item[i].ele=="selectstudent"||this.objs.sortable_item[i].ele=="selectgrade"){
-                    this.isTeacher=true;
-                    this.treeList=this.objs.sortable_item[i].obj.items;
+            if(this.tempId!=""){
+                this.objs=this.$api.sGetObject("previewObj");
+                for(let i=0;i<this.objs.sortable_item.length;i++){
+                    if(this.objs.sortable_item[i].ele=="selectstudent"||this.objs.sortable_item[i].ele=="selectgrade"){
+                        this.isTeacher=true;
+                        this.treeList=this.objs.sortable_item[i].obj.items;
+                    }
                 }
             }
-        console.log(1,this.objs)
+            
+        // console.log(1,this.objs)
         },
         submit(){
             let self=this;

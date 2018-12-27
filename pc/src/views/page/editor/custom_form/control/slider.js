@@ -1,4 +1,5 @@
-
+import add from "@/assets/icon-add.png";
+import jian from "@/assets/icon-jian.png";
 export default (_self, h) => {
     
    let control = [
@@ -46,7 +47,6 @@ export default (_self, h) => {
             },
             on: {
                 "on-change": function (val) {
-                    alert(1)
                     if (!_self.obj.name) {
                         return false;
                     }
@@ -72,12 +72,51 @@ export default (_self, h) => {
                 position: 'absolute',
                 top: '-5px'
             }
-        },_self.obj.high)
+        },_self.obj.high),
+        h("div", {
+            style: {
+                position: 'absolute',
+                width:"40px",
+                height:"40px",
+                'background-image':`url(${jian})`,
+                'background-size':"100%",
+                'background-repeat':"no-repeat",
+                "font-size":"30px",
+                bottom: '0',
+                left:"40%"
+            },
+            on: {
+                "click": function (val) {
+                   console.log("-",_self.obj.step)
+                },
+               
+            }
+        },""),
+        h("div", {
+            style: {
+                position: 'absolute',
+                width:"40px",
+                height:"40px",
+                'background-image':`url(${add})`,
+                'background-size':"100%",
+                'background-repeat':"no-repeat",
+                "font-size":"30px",
+                bottom: '0',
+                right:"40%"
+            },
+            on: {
+                "click": function (val) {
+                   console.log("+",_self.obj.step)
+                },
+               
+            }
+        },""),
     ];
 
     return  [ h("div", {
         style: {
-            position: 'relative'
+            position: 'relative',
+            height:"100px"
         }
     },control)]
     

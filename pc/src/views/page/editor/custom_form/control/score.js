@@ -6,7 +6,7 @@ export default (_self, h) => {
                 props: {
                     label: v.label_value
                 }
-            }, v.label_name)
+            }, v.label_name+"("+(v.scoreType=='add'?'+':'-')+v.label_value+")")
         })
         return [
             h("CheckboxGroup", {
@@ -33,7 +33,7 @@ export default (_self, h) => {
                 props: {
                     label: v.label_value
                 }
-            }, v.label_name)
+            }, v.label_name+"("+(v.scoreType=='add'?'+':'-')+v.label_value+")")
         })
         return [
             h("RadioGroup", {
@@ -64,7 +64,7 @@ export let scoreConf = {
     // 对应数据库内类型
     type: 'score',
         //  图标
-  icons:require("@/assets/gouxuandafen_nor.png"),
+    icons:require("@/assets/gouxuandafen_nor.png"),
     // 是否可配置
     config: true,
     // 控件左侧label内容

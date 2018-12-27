@@ -401,7 +401,14 @@
                         <span>{{cont.obj.high}}</span>
                     </Col>
                 </Row>
-              
+                <Row style="margin-top:40px;">
+                     <Col span="16" class="slider-img">
+                        <img src="@/assets/icon-jian.png" @click="countRangeValue(-1, cont.obj)" width="40px" height="40px" alt="">
+                        <img src="@/assets/icon-add.png" @click="countRangeValue(1, cont.obj)" width="40px" height="40px" alt="">
+                    </Col>
+                    
+                    
+                </Row>
             </div>
             <!-- 图片选择 -->
             <div class="selectStudentContainer" v-if="cont.ele=='imgcheck'">
@@ -488,7 +495,23 @@ export default {
 
     },
     methods: {
-    
+        // 滑动打分
+        countRangeValue(type, obj) {
+            if (
+                type == -1 &&
+                parseInt(obj.value) > parseInt(obj.low) &&
+                parseInt(obj.value) <= parseInt(obj.high)
+            ) {
+                obj.value = parseInt(obj.value) - parseInt(obj.step);
+            }
+            if (
+                type == 1 &&
+                parseInt(obj.value) >= parseInt(obj.low) &&
+                parseInt(obj.value) < parseInt(obj.high)
+            ) {
+                obj.value = parseInt(obj.value) + parseInt(obj.step);
+            }
+        },
         selS(){
             let self=this;
             self.$api.post("/campus/getDepartmentInfoList",{
@@ -1088,7 +1111,6 @@ export default {
             cursor: pointer;
         }
     }
-
 .flex-cls{
     width:100%;
     display:flex;
@@ -1151,4 +1173,13 @@ export default {
         .center-cls{
             margin-left: 30%;
         }
+        
+.slider-img{
+    text-align: center;
+    img{
+        display: inline-block;
+        margin:2px 20px;
+        cursor: pointer;
+    }
+}
 </style>

@@ -61,6 +61,7 @@
     </Form>
     <div class="slide">
         <div class="title">控件设置</div>
+        <!-- &&sortable_item.length!=0 -->
         <Form v-if="curIndex !== -1" ref="formCustom" class="settingForm" :model="settingFormItem" label-position="top">
             <FormItem v-if="!(settingFormItem.type == 'describe'||settingFormItem.type == 'imgShow')" label="控件名称" prop="label">
                 <Input type="text" v-model="settingFormItem.label"></Input>
@@ -744,8 +745,8 @@ export default {
         
         // 点击更改
         setIndexFun(index) {
-            // console.log(index);
-            if (this.curIndex === index) return;
+            
+            // if (this.curIndex === index) return;
             this.curIndex = index
             let curClickItem = this.sortable_item[index]
             if (curClickItem === undefined) return
@@ -765,7 +766,7 @@ export default {
             this.$refs[name].resetFields();
         },
         cloneData(original) {
-            console.log("clone",original)
+            // console.log("clone",original)
             // 添加一个modal标题
             original.obj.modalTitle = original.obj.label || "";
             // 深拷贝对象，防止默认空对象被更改
@@ -779,11 +780,22 @@ export default {
             //   this.sortable_item.splice(index, index+1)
             //   return
             // }
-            // this.curIndex = -1
-            console.log(this.curIndex == index)
+            
+            
+            // console.log("len",this.sortable_item.length)
+            // console.log(this.sortable_item.length==1)
+            //  console.log(222,this.settingFormItem)
+            if(this.sortable_item.length==1){
+                // this.settingFormItem={};
+                this.curIndex = -1  
+                // for(var key in this.settingFormItem){
+                //     delete this.settingFormItem[key];
+                // }
+                
+            }
+            // console.log(111,this.settingFormItem)
             if(this.curIndex == index){
                 this.curIndex = -1  
-                console.log(this.curIndex)
             }
             this.sortable_item.splice(index, 1)
         },
