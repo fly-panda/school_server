@@ -10,14 +10,18 @@ function getParams(req){
     // let objType = sGetObject("_objType");
     // let objectid=sGetObject("_objectid");
     // let userid=sGetObject("_userid");
-    let objType = "2";
-    let objectid="EzQ319HuHN8done";
-    let userid="nHoIlS9HDYodone";
+    // let objType = "2";
+    // let objectid="EzQ319HuHN8done";
+    // let userid="nHoIlS9HDYodone";
+
+    let userObj = sGetObject("userObj");
+
     let params={
-        objType:objType,
-        objectid:objectid,
-        userid:userid,
-        reqData:req
+      objType:userObj.objType,
+      objectid:userObj.objectid,
+      userid:userObj.userId,
+      openAppID:userObj.openAppID,
+      reqData:req
     };
     return params;
 }
@@ -63,6 +67,41 @@ function download(url, params, success) {
         type: "text",
         position: "middle"
       });
+    })
+}
+
+function apiAxios(method, url, params, success, failure) {
+  if (method=="POST") {
+    params = getParams(params)
+  }
+  axios({
+    method: method,
+    url: url,
+    data: method === 'POST'? params : null,
+    params: method === 'GET'? params : null,
+    baseURL: baseUrlRoot+"api/",
+    withCredentials: false,
+    timeout: 10000
+  })
+    .then(function (res) {
+        let data=res.data;
+        if(res.status==200){
+          if(data.state==0){
+            // Message.success(data.result);
+            success(data);
+          }else{
+            failure(err);
+            Toast(data.result)
+          }   
+        }
+        
+    })
+    .catch(function (err) {
+      // Toast(err)
+
+      failure(err);
+        // Message.error("服务异常，请刷新重试！");
+
     })
 }
 

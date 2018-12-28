@@ -11,7 +11,12 @@
       :height="viewH"
     >
       <ul class="list current-list" v-if="tabIndex == 0">
-        <li class="li-item" v-for="(item, index) of listData" :key="index" @click="currentTask(item)">
+        <li
+          class="li-item"
+          v-for="(item, index) of listData"
+          :key="index"
+          @click="currentTask(item)"
+        >
           <div class="yuan">
             <img v-if="item.statu == 2" src="../../assets/img/icon/yuan-timeout.png" alt>
             <div v-else>
@@ -130,18 +135,12 @@ export default {
     next();
   },
   mounted() {
-
-    this.viewH = window.innerHeight - 90 + "px";
+    this.viewH = window.innerHeight - 110 + "px";
 
     this.$nextTick(() => {
       this.$refs.scrollerBottom.disablePullup();
       this.$refs.scrollerBottom.reset({ top: 0 });
     });
-
-    this.$api.sSetObject("userObj", {
-      userId: "nHoIlS9HDYodone"
-    });
-    this.userid = "nHoIlS9HDYodone";
 
   },
   methods: {
@@ -159,8 +158,7 @@ export default {
         this.$refs.scrollerBottom.reset({ top: 0 });
       });
 
-      this.loadMore()
-
+      this.loadMore();
     },
     // 加载更多
     loadMore() {
@@ -173,7 +171,7 @@ export default {
       this.$api.get("task/participate", obj, r => {
         let data = JSON.parse(r.data);
         this.page++;
-        this.pageCount = data.pageCount
+        this.pageCount = data.pageCount;
 
         this.$nextTick(() => {
           this.$refs.scrollerBottom.reset();
@@ -186,19 +184,24 @@ export default {
         }
 
         this.listData = this.listData.concat(data.result);
-        
-        this.$refs.scrollerBottom.donePullup();
 
+        this.$refs.scrollerBottom.donePullup();
       });
     },
     // 详情
     currentTask(item) {
-      let ids = item.id
-      this.$router.push({ path: "/formPage", query: {ids: ids} });
+      let ids = item.id;
+      this.$router.push({ path: "/formPage", query: { ids: ids } });
     }
   },
   created() {
-    this.loadMore()
+    this.$api.sSetObject("userObj", {
+      userId: "nHoIlS9HDYodone",
+      objType: "2",
+      openAppID: "315492154052",
+      objectid: "EzQ319HuHN8done"
+    });
+    this.loadMore();
   }
 };
 </script>

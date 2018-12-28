@@ -11,6 +11,7 @@
       ref="scrollerBottom"
       :height="lishH"
     >
+      <!-- 班级日常 -->
       <ul class="list list1" v-if="tabIndex == 0">
         <li class="item" v-for="(item, index) of listData" :key="index">
           <div class="top">
@@ -21,11 +22,12 @@
             <!-- <div class="statu">{{ item.statu }}</div> -->
           </div>
           <div class="bottom">
-            <div class="date">填写时间：{{ item.date }}</div>
+            <div class="date">填写时间：{{ item.endtime }}</div>
             <div class="type">填写人：{{ item.type }}</div>
           </div>
         </li>
       </ul>
+      <!-- 任务抄送 -->
       <ul class="list" v-if="tabIndex == 1">
         <li class="item" v-for="(item, index) of listData" :key="index">
           <div class="top">
@@ -42,7 +44,7 @@
             </div>
           </div>
           <div class="bottom">
-            <div class="date">截止时间：{{ item.date }}</div>
+            <div class="date">截止时间：{{ item.endtime }}</div>
             <div class="type" style="font-size: 14px;color: #5B5B5B;">创建人：{{ item.type }}</div>
           </div>
         </li>
@@ -94,9 +96,12 @@ export default {
   },
   data() {
     return {
-      lishH: "-53",
+      lishH: "",
       pullupDefaultConfig: pullupDefaultConfig,
       tabIndex: 0,
+      state: 1,
+      pagesize: 15,
+      page: 1,
       tab: [
         {
           title: "班级日常",
@@ -109,92 +114,77 @@ export default {
           type: 1
         }
       ],
-      listData: [
-        {
-          title: "卫生检查明细",
-          type: "单次任务",
-          date: "11/09 08:00",
-          statu: "进行中",
-          data: [
-            {
-              title: "成交人",
-              number: "200"
-            },
-            {
-              title: "已交人",
-              number: "220"
-            },
-            {
-              title: "已交数据",
-              number: "230"
-            }
-          ]
-        },
-        {
-          title: "卫生检查明细",
-          type: "单次任务",
-          date: "11/09 08:00",
-          statu: "进行中",
-          data: [
-            {
-              title: "成交人",
-              number: "200"
-            },
-            {
-              title: "已交人",
-              number: "220"
-            },
-            {
-              title: "已交数据",
-              number: "230"
-            }
-          ]
-        },
-        {
-          title: "卫生检查明细",
-          type: "单次任务",
-          date: "11/09 08:00",
-          statu: "进行中",
-          data: [
-            {
-              title: "成交人",
-              number: "200"
-            },
-            {
-              title: "已交人",
-              number: "220"
-            },
-            {
-              title: "已交数据",
-              number: "230"
-            }
-          ]
-        }
-      ]
+      listData: []
     };
   },
   computed: {},
+  mounted() {
+    this.lishH = window.innerHeight - 110 + "px";
+    this.$nextTick(() => {
+      this.$refs.scrollerBottom.disablePullup();
+      this.$refs.scrollerBottom.reset({ top: 0 });
+    });
+  },
   methods: {
     // 调用子组件tab切换的事件
     toogleTab(...data) {
-      console.log(data[0]);
-      this.tabIndex = data[0];
+      if (this.tabIndex == data[0]) {
+        return;
+      }
+      this.tabIndex = data[0]
+      this.listData = []
+      this.page = 1
+      this.state = data[0] + 1
+
+      this.$nextTick(() => {
+        this.$refs.scrollerBottom.disablePullup();
+        this.$refs.scrollerBottom.reset({ top: 0 });
+      })
+
+      this.loadMore();
+      
     },
     loadMore() {
-      console.log(222);
-      this.$refs.scrollerBottom.donePullup();
+      let obj = {
+        state: this.state,
+        userid: this.$api.sGetObject("userObj").userId,
+        page: this.page,
+        pagesize: this.pagesize
+      }
+      this.$api.get('task/getMyTask', obj, r => {
+
+        let data = JSON.parse(r.data);
+        this.page++;
+        this.pageCount = data.pageCount;
+
+        this.$nextTick(() => {
+          this.$refs.scrollerBottom.reset();
+        });
+
+        if (this.page > data.pageCount) {
+          this.$refs.scrollerBottom.disablePullup();
+        } else {
+          this.$refs.scrollerBottom.enablePullup();
+        }
+        console.log(data.result);
+
+        this.listData = this.listData.concat(data.result);
+
+        this.$refs.scrollerBottom.donePullup();
+
+      })
     }
   },
-  mounted() {}
+  created() {
+    this.loadMore()
+  },
 };
 </script>
 
 <style scope lang="scss">
 @import "../../assets/styles/mixins.scss";
 .copy {
-  padding-bottom: 53px;
   .list {
-    margin-top: px2rem(70);
     padding: 0 px2rem(25);
     padding-bottom: 5px;
     .item {

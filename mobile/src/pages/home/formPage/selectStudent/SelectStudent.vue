@@ -9,7 +9,10 @@
     <div class="wrapper">
       <div class="left">
         <ul>
-          <li>一年一班</li>
+          <li v-for="(item, idx) of classLlist" 
+              :key="idx"
+              @click="selectClass(item, idx)"
+              :class="{ 'active' : item.active }">{{ item.title }}</li>
         </ul>
       </div>
       <div class="right">
@@ -23,9 +26,12 @@
           :height="lishH"
         >
           <ul>
-            <li v-for="(item, index) of studentList" :class="{ 'active' : index == 0 }" :key="index">
-              <span>{{ item }}</span>
-              <icon v-if="index == 0" type="success-no-circle"></icon>
+            <li v-for="(item, index) of studentList" 
+                :class="{ 'active' : item.wxuserid == obj.obj.selObj.wxuserid }" 
+                :key="index"
+                @click="selectStudent(item)">
+              <span>{{ item.name }}</span>
+              <icon v-if="item.wxuserid == obj.obj.selObj.wxuserid" type="success-no-circle"></icon>
             </li>
           </ul>
         </scroller>
@@ -54,32 +60,65 @@ export default {
     Icon,
     Scroller
   },
+  props: ["name"],
   data() {
     return {
       pullupDefaultConfig: pullupDefaultConfig,
-      studentList: [
-        "张三",
-        "张三",
-        "张三",
-        "张三",
-        "张三",
-        "张三",
-        "张三",
-        "张三",
-        "张三",
-        "张三"
-      ],
+      obj: this.name,
+      classLlist: this.name.obj.items,
+      studentList: [],
       results: [],
       value: "test",
       lishH: "-80"
     };
   },
+  mounted() {
+    this.$nextTick(() => {
+      this.$refs.scrollerBottom.disablePullup();
+      this.$refs.scrollerBottom.reset({ top: 0 });
+    });
+  },
   methods: {
-    loadMore() {
-      let data = this.studentList;
-      this.studentList = data.concat(this.studentList);
-      this.$refs.scrollerBottom.donePullup();
+    loadMore(item) {
+      let obj = {
+        usertype: 1,
+        departid: item.departid,
+        level: item.level
+      }
+      this.$api.post('/campus/searchUser', obj, r => {
+        let datas = JSON.parse(r.data)
+        // console.log(datas)
+        this.studentList = datas
+      })
+    },
+    selectClass(item, index) {
+
+      this.$nextTick(() => {
+        // this.$refs.scrollerBottom.disablePullup();
+        this.$refs.scrollerBottom.reset({ top: 0 });
+      });
+
+      this.classLlist.map((v, i) => {
+        v.active = i == index ? true : false
+      })
+        
+      this.loadMore(item)
+
+      if(item.checked) { return }
+      this.obj.obj.selObj = {}
+    },
+    selectStudent(item) {
+      console.log(item)
+      this.obj.obj.selObj = item
+      this.$emit("hideSelectList", 'toogleSelectStudent')
     }
+  },
+  created () {
+    this.classLlist.map((v, i) => {
+      if(v.active) {
+        this.loadMore(v)
+      }
+    })
   }
 };
 </script>
@@ -136,13 +175,18 @@ export default {
       ul {
         li {
           position: relative;
-          background: #fff;
           width: 100%;
           height: 38px;
           line-height: 38px;
           padding-left: px2rem(23);
           box-sizing: border-box;
           font-size: 15px;
+          overflow: hidden;
+          text-overflow: ellipsis;
+          white-space: nowrap;
+        }
+        .active {
+          background: #fff;
           color: #5db75d;
           &::after {
             position: absolute;

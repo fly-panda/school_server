@@ -21,8 +21,11 @@
         <div class="select-item" v-if="obj.ele == 'selectstudent'">
           <div class="select-item-title" v-html="obj.obj.label"></div>
           <div class="select-item-txt" v-html="obj.obj.describe"></div>
-          <button @click="selectList()" v-html="obj.obj.label"></button>
-          <select-student v-if="toogleSelectStudent"></select-student>
+          <button @click="selectListStudent('toogleSelectStudent')"
+                  v-html="obj.obj.selObj.name ? obj.obj.selObj.name : '点击选择学生范围'"></button>
+          <select-student :name.sync="obj" 
+                          v-if="toogleSelectStudent"
+                          @hideSelectList="hideSelectStudentList"></select-student>
         </div>
         <!-- 选择老师 -->
         <div class="select-item" v-if="obj.ele == 'selectteacher'">
@@ -31,6 +34,7 @@
           <button
             @click="selectList('toogleselectteacher')"
             v-html="obj.obj.selObj.name ? obj.obj.selObj.name : '点击选择老师范围'"
+            @hideSelectList="hideSelectList"
           ></button>
           <select-list
             :name.sync="obj"
@@ -579,7 +583,7 @@ export default {
 
       formOnlyRead: false, // 表单状态
 
-      toogleselectstudent: false, // 选择学生
+      toogleSelectStudent: false, // 选择学生
       toogleselectgrade: false,
       toogleselectdepartment: false,
       toogleselectteacher: false,
@@ -733,14 +737,6 @@ export default {
   },
   computed: {},
   mounted() {
-    // console.log(this);
-    // console.log(mockData.data1);
-
-    // let dataArr = mockData.data1;
-
-    // console.log(this.allListData);
-
-    // this.dataFormat(dataArr);
 
     // 判断页面是不是预览 preview == '1'为预览
     this.preview = this.$route.query.preview ? this.$route.query.preview : "";
@@ -858,9 +854,15 @@ export default {
       console.log(data);
       this["toogle" + data[0]] = false;
     },
+    hideSelectStudentList(...data) {
+      this[data[0]] = false;
+    },
     // 展示选项菜单
     selectList(type) {
       this[type] = true;
+    },
+    selectListStudent(type) {
+      this[type] = true
     },
     // 滑动打分
     countRangeValue(type, obj) {
@@ -900,6 +902,10 @@ export default {
         if (c.ele == "selectcontact") {
           c.obj.valueArr = [];
           c.obj.valueArr1 = [];
+        }
+
+        if (c.ele == 'selectstudent') {
+          c.obj.items[0].active = true
         }
 
       });

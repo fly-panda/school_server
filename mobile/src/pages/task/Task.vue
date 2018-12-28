@@ -1,36 +1,29 @@
 <template>
   <div class="task">
+    <div class="no-data" v-if="!listData.length">
+      <img src="../../assets/img/task/nodata.png" alt>
+      <div>暂无任务！</div>
+    </div>
     <scroller
+      v-show="listData.length"
       lock-x
       scrollbar-y
       use-pullup
       :pullup-config="pullupDefaultConfig"
       @on-pullup-loading="loadMore"
       ref="scrollerBottom"
-      :height="viewH"
-    >
-      <!-- <div class="no-data" v-if="!listData.length">
-        <img src="../../assets/img/task/nodata.png" alt>
-        <div>暂无任务！</div>
-      </div> -->
+      :height="viewH">
       <ul class="list">
-        <li class="item" v-for="(item, index) of listData" :key="index">
+        <li class="item" 
+            v-for="(item, index) of listData" 
+            :key="index"
+            @click="taskDetail(item)">
           <div class="top">
             <div class="title">
               <!-- 单次 -->
-              <img
-                v-if="item.isloop == 0"
-                class="icon1"
-                src="../../assets/img/task/icon1.png"
-                alt
-              >
+              <img v-if="item.isloop == 0" class="icon1" src="../../assets/img/task/icon1.png" alt>
               <!-- 循环 -->
-              <img
-                v-if="item.isloop == 1"
-                class="icon2"
-                src="../../assets/img/task/icon2.png"
-                alt
-              >
+              <img v-if="item.isloop == 1" class="icon2" src="../../assets/img/task/icon2.png" alt>
               <span class="txt">{{ item.title }}</span>
             </div>
             <div class="statu" v-if="item.state == '1'">进行中</div>
@@ -139,7 +132,7 @@ export default {
         } else {
           this.$refs.scrollerBottom.enablePullup();
         }
-        console.log(data.result)
+        console.log(data.result);
 
         this.listData = this.listData.concat(data.result);
 
@@ -148,7 +141,7 @@ export default {
     }
   },
   created() {
-    this.userid = "nHoIlS9HDYodone";
+    this.userid = this.$api.sGetObject("userObj").userId;
     this.loadMore();
   }
 };
