@@ -10,7 +10,7 @@
       ref="scrollerBottom"
       :height="viewH"
     >
-      <ul class="list current-list" v-if="tabIndex == 0">
+      <ul class="list current-list" v-show="tabIndex == 0 && listData.length">
         <li
           class="li-item"
           v-for="(item, index) of listData"
@@ -39,7 +39,7 @@
           </div>
         </li>
       </ul>
-      <ul class="list history-list" v-if="tabIndex == 1">
+      <ul class="list history-list" v-show="tabIndex == 1 && listData.length">
         <li class="li-item" v-for="(item, index) of listData" :key="index">
           <div class="top">
             <div class="title">{{ item.title }}</div>
@@ -52,6 +52,9 @@
           </div>
         </li>
       </ul>
+
+      <div class="no-data" v-show="!listData.length">木有数据</div>
+
     </scroller>
 
     <tabbar>
@@ -101,6 +104,7 @@ export default {
   },
   data() {
     return {
+      pageLoading: true,
       userid: "",
       pagesize: 15, // 每页请求数量
       page: 1, // 页码
@@ -208,6 +212,11 @@ export default {
 
 <style scoped lang='scss'>
 @import "../../assets/styles/mixins.scss";
+.no-data {
+  text-align: center;
+  padding-top: 50px;
+  color:#939393;
+}
 .home {
   // padding-bottom: 53px;
   font-size: 14px;

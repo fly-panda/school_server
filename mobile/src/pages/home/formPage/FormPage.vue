@@ -21,11 +21,15 @@
         <div class="select-item" v-if="obj.ele == 'selectstudent'">
           <div class="select-item-title" v-html="obj.obj.label"></div>
           <div class="select-item-txt" v-html="obj.obj.describe"></div>
-          <button @click="selectListStudent('toogleSelectStudent')"
-                  v-html="obj.obj.selObj.name ? obj.obj.selObj.name : '点击选择学生范围'"></button>
-          <select-student :name.sync="obj" 
-                          v-if="toogleSelectStudent"
-                          @hideSelectList="hideSelectStudentList"></select-student>
+          <button
+            @click="selectListStudent('toogleSelectStudent')"
+            v-html="obj.obj.selObj.name ? obj.obj.selObj.name : '点击选择学生范围'"
+          ></button>
+          <select-student
+            :name.sync="obj"
+            v-if="toogleSelectStudent"
+            @hideSelectList="hideSelectStudentList"
+          ></select-student>
         </div>
         <!-- 选择老师 -->
         <div class="select-item" v-if="obj.ele == 'selectteacher'">
@@ -151,17 +155,17 @@
               <popup-picker
                 :data="obj.obj.items | dropDownFilter"
                 :columns="1"
-                v-model="obj.obj.value"
+                v-model="obj.obj.valueArr"
                 placeholder="请选择"
                 show-name
-                @on-change="pickerValueChange(obj.obj, obj.obj.value)"
+                @on-change="pickerValueChange(obj.obj, obj.obj.valueArr, obj.obj)"
               ></popup-picker>
             </div>
             <div class="picker-btn">
               <popup-picker
                 :data="obj.obj.two_arr | dropDownFilter"
                 :columns="1"
-                v-model="obj.obj.value1"
+                v-model="obj.obj.valueArr1"
                 placeholder="请选择"
                 show-name
               ></popup-picker>
@@ -737,7 +741,6 @@ export default {
   },
   computed: {},
   mounted() {
-
     // 判断页面是不是预览 preview == '1'为预览
     this.preview = this.$route.query.preview ? this.$route.query.preview : "";
     let ids = this.$route.query.ids ? this.$route.query.ids : "";
@@ -757,14 +760,15 @@ export default {
         let allData = JSON.parse(r.data);
         this.dataFormat(allData);
       });
-      return
+      return;
     }
 
     this.getFormData(ids);
   },
   methods: {
     // 二级下拉
-    pickerValueChange(obj, value) {
+    pickerValueChange(obj, value, obj1) {
+      obj1.valueArr1 = [];
       obj.two_arr = obj.items[value[0]].arrs;
     },
     // 文件下载
@@ -862,7 +866,7 @@ export default {
       this[type] = true;
     },
     selectListStudent(type) {
-      this[type] = true
+      this[type] = true;
     },
     // 滑动打分
     countRangeValue(type, obj) {
@@ -884,7 +888,7 @@ export default {
     loadMore() {},
     // 数据格式化
     dataFormat(allData) {
-      let bigData = allData
+      let bigData = allData;
 
       bigData.data.map((c, d) => {
         if (c.ele == "select") {
@@ -904,156 +908,194 @@ export default {
           c.obj.valueArr1 = [];
         }
 
-        if (c.ele == 'selectstudent') {
-          c.obj.items[0].active = true
+        if (c.ele == "selectstudent") {
+          c.obj.items[0].active = true;
         }
-
       });
       this.allListData = bigData;
-      console.log(this.allListData)
-
+      console.log(this.allListData);
     },
-    // 提交表单
-    submitForm() {
-      // console.log(this.allListData)
-
+    requireCheck() {
+      let msg = "";
+      // 格式化数据结构和PC端保持一致
       this.allListData.data.map((v, i) => {
         if (v.ele == "select") {
           v.obj.value = v.obj.valueArr[0];
         }
         if (v.ele == "address") {
           v.obj.shengValue = v.obj.shengValueArr[0];
-          v.obj.shiValue = v.obj.shiValueArr[1];
-          v.obj.quValue = v.obj.quValueArr[2];
+          v.obj.shiValue = v.obj.shiValueArr[0];
+          v.obj.quValue = v.obj.quValueArr[0];
         }
         if (v.ele == "datepicker") {
           v.obj.valueTime = v.obj.valueTimeArr.join(":");
         }
-        // if (v.ele == "selectcontact") {
-        //   v.obj.value = v.obj.valueArr[0] ? v.obj.valueArr[0] : ''
-        //   v.obj.value1 = v.obj.valueArr1[0] ? v.obj.valueArr1[0] : ''
-        // }
+        if (v.ele == "selectcontact") {
+          v.obj.value = v.obj.valueArr[0];
+          v.obj.value1 = v.obj.valueArr1[0];
+        }
       });
-
-      console.log(this.allListData)
 
       this.allListData.data.some((v, i) => {
-        // 校验input和textarea
-        if (v.ele == "input" || v.ele == "text") {
-          if (v.obj.require) {
-            if (!v.obj.placeholder) {
-              Toast(v.obj.ruleError);
-              return true
-            }
+        if (v.obj.require) {
+          msg = "";
+          if (v.ele == "input" && !v.obj.placeholder) {
+            msg = v.obj.label;
+            return true;
+          }
+          if (v.ele == "text" && !v.obj.placeholder) {
+            msg = v.obj.label;
+            return true;
+          }
+          if (v.ele == "select" && !v.obj.value) {
+            msg = v.obj.label;
+            return true;
+          }
+          if (v.ele == "checkbox" && !v.obj.value.length) {
+            msg = v.obj.label;
+            return true;
+          }
+          if (v.ele == "truefalse" && !v.obj.value) {
+            msg = v.obj.label;
+            return true;
+          }
+          if (v.ele == "radio" && !v.obj.value) {
+            msg = v.obj.label;
+            return true;
+          }
+          if (v.ele == "uploads" && !v.obj.value.length) {
+            msg = v.obj.label;
+            return true;
+          }
+          if (
+            v.ele == "datepicker" &&
+            (!v.obj.valueDate || !v.obj.valueTime) &&
+            v.obj.chooseCheck.length == 2
+          ) {
+            console.log('all')
+            msg = v.obj.label;
+            return true;
+          }
+          if (
+            v.ele == "datepicker" &&
+            !v.obj.valueDate &&
+            v.obj.chooseCheck.length == 1 &&
+            v.obj.chooseCheck[0] == "date"
+          ) {
+            console.log('date')
+            msg = v.obj.label;
+            return true;
+          }
+          if (
+            v.ele == "datepicker" &&
+            !v.obj.valueTime &&
+            v.obj.chooseCheck.length == 1 &&
+            v.obj.chooseCheck[0] == "time"
+          ) {
+            console.log('time')
+            msg = v.obj.label;
+            return true;
+          }
+          if (
+            v.ele == "address" &&
+            (!v.obj.shengValue || !v.obj.shiValue || !v.obj.quValue) && 
+            v.obj.chooseCheck.length == 3
+          ) {
+            msg = v.obj.label;
+            return true;
+          }
+          if (
+            v.ele == "address" &&
+            (!v.obj.shengValue ||
+              !v.obj.shiValue ||
+              !v.obj.quValue ||
+              !v.obj.value) &&
+            v.obj.chooseCheck.length == 4
+          ) {
+            msg = v.obj.label;
+            return true;
+          }
+          if (v.ele == "imgcheck" && !v.obj.value.length) {
+            msg = v.obj.label;
+            return true;
+          }
+          if (v.ele == "selectcontact" && !v.obj.value && v.obj.value1) {
+            msg = v.obj.label;
+            return true;
+          }
+          if (v.ele == "slider" && !v.obj.value) {
+            msg = v.obj.label;
+            return true;
+          }
+          if (v.ele == "score" && !v.obj.value && !v.obj.isCheck) {
+            msg = v.obj.label;
+            return true;
+          }
+          if (v.ele == "score" && !v.obj.valueArr.length && v.obj.isCheck) {
+            msg = v.obj.label;
+            return true;
+          }
+          if (
+            v.ele == "selectstudent" &&
+            JSON.stringify(v.obj.selObj) == "{}"
+          ) {
+            msg = v.obj.label;
+            return true;
+          }
+          if (v.ele == "selectgrade" && JSON.stringify(v.obj.selObj) == "{}") {
+            msg = v.obj.label;
+            return true;
+          }
+          if (
+            v.ele == "selectteacher" &&
+            JSON.stringify(v.obj.selObj) == "{}"
+          ) {
+            msg = v.obj.label;
+            return true;
+          }
+          if (v.ele == "selectgrade" && JSON.stringify(v.obj.selObj) == "{}") {
+            msg = v.obj.label;
+            return true;
           }
         }
-
-        // 判断单下拉框、单选按钮（truefalse）、单选
-        if (v.ele == "select" || v.ele == "truefalse" || v.ele == "radio") {
-          if (v.obj.require) {
-            if (!v.obj.value) {
-              Toast(v.obj.ruleError);
-              return true
-            }
-          }
-        }
-        // 多选
-        if (v.ele == "checkbox") {
-          if (v.obj.require) {
-            if (!v.obj.value.length) {
-              Toast(v.obj.ruleError);
-              return true
-            }
-          }
-        }
-        // 日期校验
-        if (v.ele == "datepicker") {
-          if (v.obj.require) {
-            if (v.obj.chooseCheck.length == 2) {
-              if (!v.obj.valueDate || !v.obj.valueTime) {
-                Toast(v.obj.ruleError);
-                return true
-              }
-            }
-            if (v.obj.chooseCheck.length == 1) {
-              if (v.obj.chooseCheck[0] == "date") {
-                if (!v.obj.valueDate) {
-                  Toast(v.obj.ruleError);
-                  return true
-                }
-              }
-              if (v.obj.chooseCheck[0] == "time") {
-                if (!v.obj.valueTime) {
-                  Toast(v.obj.ruleError);
-                  return true
-                }
-              }
-            }
-          }
-        }
-        // 地址校验
-        if (v.ele == "address") {
-          if (v.obj.require) {
-            if (v.obj.chooseCheck.length == 3) {
-              if(!v.obj.shengValue || !v.obj.shiValue || !v.obj.quValue) {
-                Toast(v.obj.ruleError);
-                return true
-              }
-            }
-            if (v.obj.chooseCheck.length == 4) {
-              if(!v.obj.shengValue || !v.obj.shiValue || !v.obj.quValue || !value) {
-                Toast(v.obj.ruleError);
-                return true
-              }
-            }
-          }
-        }
-        // 图片选择校验
-        if(v.ele == 'imgcheck') {
-          if (v.obj.require) {
-            if(!v.obj.value.length) {
-              Toast(v.obj.ruleError);
-              return true
-            }
-          }
-        }
-        // 二级下拉
-        if(v.ele == 'selectcontact') {
-          if(v.obj.require) {
-            if(!v.obj.value || !v.obj.value1) {
-              Toast(v.obj.ruleError);
-              return true
-            }
-          }
-        }
-        // 选择老师、学生、班级、部门
-        if(v.ele == 'selectteacher' || v.ele == 'selectgrade' || v.ele == 'selectdepartment' || v.ele == 'selectstudent') {
-          if(v.obj.require) {
-            if(JSON.stringify(v.obj.selObj)=="{}") {
-              Toast(v.obj.ruleError);
-              return true
-            }
-          }
-        }
-        // 勾选打分
-        if(v.ele == 'score') {
-          if(v.obj.require) {
-            if(!v.obj.value || !v.obj.valueArr) {
-              Toast(v.obj.ruleError);
-              return true
-            }
-          }
-        }
-
       });
 
-      // alert(this.allListData.data[0].obj.placeholder)
+      if (msg == "") {
+        return "success";
+      } else {
+        return msg;
+      }
+    },
+    // 提交表单
+    submitForm() {
+      console.log(this.allListData)
+      let msg = this.requireCheck();
+      console.log(msg)
+      if (msg == "success") {
+        this.$api.post(
+          "/task/submitTask",
+          {
+            id: this.id,
+            title: this.allListData.title,
+            data: this.allListData.data,
+            describe: this.allListData.describe
+          },
+          r => {
+            Toast("提交成功");
+          },
+          e => {
+            console.log(e);
+          }
+        );
+      } else {
+        Toast(msg + "为必填项，请填写后提交!");
+      }
     },
     // 获取表单数据
     getFormData(ids) {
       this.$api.get("/task/taskdetail", { taskid: ids }, r => {
         let datas = JSON.parse(r.data);
-        this.dataFormat(datas)
+        this.dataFormat(datas);
       });
     }
   }
