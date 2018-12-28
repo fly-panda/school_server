@@ -2,10 +2,8 @@
     <div :style="{height:fullHeight.height}" class="cont">
         <div class="publish-content">
             <CardForm v-for="item in cardList" :key="item.id" :cardItem="item" :status="status"/>
-            <div class='no-cont' v-if="cardList.length==0">
-                暂无数据
-            </div>
-            <div class="page-view">
+            <NoData v-if="cardList.length==0"/>
+            <div class="page-view" v-if="cardList.length!=0">
                 <Page prev-text="上一页" next-text="下一页" :page-size="pagesize" :current="currentPage" :total="totals" @on-change="changeFun" :show-total="showTotal"/>
             </div>
         </div>    
@@ -15,9 +13,11 @@
 
 <script>
 import CardForm from '_c/card_form'
+import NoData from '_c/no_data'
 export default {
     components: {
-        CardForm
+        CardForm,
+        NoData
     },
     data() {
         return {

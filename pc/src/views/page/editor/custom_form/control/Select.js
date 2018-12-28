@@ -35,6 +35,7 @@ export let selectConf = {
   type: 'select',
       //  图标
   icons:require("@/assets/xialakuang_nor.png"),
+  activeIcons:require("@/assets/xialakuang_ico_pre.png"),
   // 是否可配置
   config: true,
   // 控件左侧label内容

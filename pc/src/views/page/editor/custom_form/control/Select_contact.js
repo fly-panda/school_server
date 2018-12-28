@@ -76,6 +76,7 @@ export let selectContactConf = {
     type: 'selectcontact',
         //  图标
     icons:require("@/assets/erjixiala_nor.png"),
+    activeIcons:require("@/assets/erjixiala_pre.png"),
     // 是否可配置
     config: true,
     // 控件左侧label内容

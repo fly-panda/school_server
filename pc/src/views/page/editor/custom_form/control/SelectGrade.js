@@ -41,6 +41,7 @@ export let selectGradeConf = {
     type: 'selectgrade',
             //  图标
     icons:require("@/assets/nianji_nor.png"),
+    activeIcons:require("@/assets/xuanzenianji_pre.png"),
     modal: 'selectGradeForm',
     // 是否可配置
     config: true,

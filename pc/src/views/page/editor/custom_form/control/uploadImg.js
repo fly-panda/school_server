@@ -43,6 +43,7 @@ export let uploadImgConf = {
     type: 'uploadimg',
                 //  图标
     icons:require("@/assets/tupianshangchuan_nor.png"),
+    activeIcons:require("@/assets/tupianshangchuan_pre.png"),
     lessNum: 1,
     lessImgRequire: false,
     // 是否可配置

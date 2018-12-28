@@ -59,6 +59,8 @@
         <img v-if="cardItem.state==1&&cardItem.isloop==0" class="cardform-img" src='@/assets/zhourenwu_ico.png'/>
         <img v-if="cardItem.state==2" class="cardform-img" src='@/assets/jieshurenwu_ico.png'/>
         <img v-if="cardItem.state==1&&cardItem.isloop==1" class="cardform-img" src='@/assets/dancirenwu_ico.png'/>
+        <!-- <img class="cardform-img" src='@/assets/buhege_ico.png'/> -->
+        <!-- <img class="cardform-img" src='@/assets/buhegeyijieshu_ico.png'/> -->
         <!-- 根据状态可显示不同的图片 -->
         <div class="no-start" v-if="cardItem.state==0">
             <p class="title">开始时间</p>

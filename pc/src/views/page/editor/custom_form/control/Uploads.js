@@ -63,6 +63,7 @@ export const uploadsConf = {
     type: 'uploads',
                     //  图标
     icons:require("@/assets/wenjianshangchuan_nor.png"),
+    activeIcons:require("@/assets/wenjiansgangchuan_pre.png"),
     // 是否可配置
     config: true,
     // 上传地址

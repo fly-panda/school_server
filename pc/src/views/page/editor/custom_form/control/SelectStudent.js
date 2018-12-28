@@ -41,6 +41,7 @@ export let selectStudentConf = {
     type: 'selectstudent',
             //  图标
     icons:require("@/assets/student_nor.png"),
+    activeIcons:require("@/assets/student_pre.png"),
     modal: 'selectStudentForm',
     // 是否可配置
     config: true,

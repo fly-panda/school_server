@@ -45,6 +45,7 @@ export let checkBoxConf = {
     type: 'checkbox',
     //  图标
     icons:require("@/assets/duoxuan_nor.png"),
+    activeIcons:require("@/assets/danxuan_pre.png"),
     // 是否可配置
     config: true,
     // 控件左侧label内容

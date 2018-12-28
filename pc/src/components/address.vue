@@ -39,11 +39,11 @@ export default {
     },
     mounted(){
         this.getSheng();
-        if(this.cont.data.shengValue){
-            this.getShi(this.cont.data.shengValue);
+        if(this.cont.obj.shengValue){
+            this.getShi(this.cont.obj.shengValue);
         }
-        if(this.cont.data.shiValue){
-            this.getQu(this.cont.data.shiValue);
+        if(this.cont.obj.shiValue){
+            this.getQu(this.cont.obj.shiValue);
         }
         
     },

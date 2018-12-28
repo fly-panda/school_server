@@ -49,6 +49,7 @@ export let downloadConf = {
     type: 'download',
       //  图标
     icons:require("@/assets/wenjianxiazai_nor.png"),
+    activeIcons:require("@/assets/wenjianxiazai_pre.png"),
     // 是否可配置
     config: true,
     // 控件左侧label内容

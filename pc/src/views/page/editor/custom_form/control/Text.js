@@ -29,6 +29,7 @@ export let textConf = {
     type: 'textarea',
     //  图标
     icons:require("@/assets/duohangwenzi_nor.png"),
+    activeIcons:require("@/assets/danhangwenzi_pre.png"),
     // 是否可配置
     config: true,
     // 控件左侧label内容

@@ -2,8 +2,11 @@
 <div class="checkContainer">
     <div class="title-cls">选择班级范围</div>
     <!-- :load-data="loadData" -->
-    <Tree ref="tree" :data="data3"  show-checkbox></Tree>
-    <div class="flexCenter">
+    <div style="height:300px;overflow-y: auto;">
+        <Tree ref="tree" :data="data3"  show-checkbox></Tree>
+    </div>
+    
+    <div class="flexCenter" style="padding: 5px;">
         <Button type="primary" @click="submitResut">确定</Button>
     </div>
 </div>
