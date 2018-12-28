@@ -208,7 +208,8 @@ export default {
                 self.$Message.warning('请选择填写人');
                 return
             }else if(self.checkStatus=="0"){
-                settingObj.writes=self.$api.formatTreeData(self.$refs.grade.getCheckedNodes(),"children");
+                // settingObj.writes=self.$api.formatTreeData(self.$refs.grade.getCheckedNodes(),"children");
+                settingObj.writes=self.treeList;
                 
             }else if(self.checkStatus=="1"){
                 settingObj.writes=self.$refs.studentList.selStudentList

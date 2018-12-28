@@ -43,6 +43,15 @@ module.exports = {
             }
         }
     },
+    // performance: {
+    //     hints: "warning", // 枚举
+    //     maxAssetSize: 30000000, // 整数类型（以字节为单位）
+    //     maxEntrypointSize: 50000000, // 整数类型（以字节为单位）
+    //     assetFilter: function(assetFilename) {
+    //         // 提供资源文件名的断言函数
+    //         return assetFilename.endsWith('.css') || assetFilename.endsWith('.js');
+    //     }
+    // },
     // 打包时不生成.map文件
     productionSourceMap: true,
     // 这里写你调用接口的基础路径，来解决跨域，如果设置了代理，那你本地开发环境的axios的baseUrl要写为 '' ，即空字符串

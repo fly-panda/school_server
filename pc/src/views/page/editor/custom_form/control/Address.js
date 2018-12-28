@@ -134,6 +134,7 @@ export let addressConf = {
     chooseCheck: ['province', 'city', 'zone', 'detail'],
     //  图标
     icons:require("@/assets/address_ico_pre.png"),
+    activeIcons:require("@/assets/address_pre.png"),
     // 是否可配置
     config: true,
     // 控件左侧label内容

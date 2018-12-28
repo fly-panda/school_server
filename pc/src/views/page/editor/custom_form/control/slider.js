@@ -128,6 +128,7 @@ export let sliderConf = {
     type: 'slider',
                 //  图标
     icons:require("@/assets/shoudong_nor.png"),
+    activeIcons:require("@/assets/shoudongdafen_pre.png"),
     // 是否可配置
     config: true,
     // 控件左侧label内容

@@ -41,6 +41,7 @@ export let selectDepartmentConf = {
     type: 'selectdepartment',
         //  图标
     icons:require("@/assets/bumen_nor.png"),
+    activeIcons:require("@/assets/xuanzebumen_pre.png"),
     modal: 'selectDepartmentForm',
     // 是否可配置
     config: true,

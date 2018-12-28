@@ -19,7 +19,7 @@
         <p>已选</p>
     </Row>
     <Row style="height: 500px; " class="titleContainer">
-        <div>
+        <div style="height: 450px;overflow-y: auto;">
             <Tree style="margin-left: 15px" ref="tree" :data="data3" @on-select-change="changeFun"></Tree>
         </div>
         <div class="clum">

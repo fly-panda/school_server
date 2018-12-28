@@ -21,6 +21,7 @@ export let imgCheckConf = {
 type: 'imgCheck',
   //  图标
 icons:require("@/assets/tupianxuanze_nor.png"),
+activeIcons:require("@/assets/tupianxuanze.png"),
 // 是否可配置
 config: true,
 // 控件左侧label内容

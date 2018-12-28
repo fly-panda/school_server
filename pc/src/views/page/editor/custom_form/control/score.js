@@ -65,6 +65,7 @@ export let scoreConf = {
     type: 'score',
         //  图标
     icons:require("@/assets/gouxuandafen_nor.png"),
+    activeIcons:require("@/assets/gouxuandafen_pre.png"),
     // 是否可配置
     config: true,
     // 控件左侧label内容

@@ -12,19 +12,19 @@
         </Modal>
         <draggable element="ul" :clone="cloneData" v-model="formList" :options="dragOptions1" @end="getResult">
             <transition-group type="transition" class="baseContainer" tag="div" :name="'flip-list'">
-                <div v-for="item in formList" :key="item.obj.type" class="baseItem"><img :src="item.obj.icons" alt="">{{item.obj.label}}</div>
+                <div v-for="item in formList" :key="item.obj.type" :class="{'baseItem':true,'active-cls':item.obj.type==settingFormItem.type}"><img :src="item.obj.type==settingFormItem.type?item.obj.activeIcons:item.obj.icons" alt="">{{item.obj.label}}</div>
             </transition-group>
         </draggable>
         <div class="title">功能控件</div>
-         <draggable element="ul" :clone="cloneData" v-model="featureList" :options="dragOptions1" @end="getResult">
+         <draggable element="ul" :clone="cloneData" v-model="featureList" :options="dragOptions1" @start="setStart" @end="getResult">
             <transition-group type="transition" class="baseContainer" tag="div" :name="'flip-list'">
-                <div v-for="(item, index) in featureList" :key="index" class="featureItem"><img :src="item.obj.icons" alt="">{{item.obj.label}}</div>
+                <div v-for="(item, index) in featureList" :key="index" :class="{'featureItem':true,'active-cls':item.obj.type==settingFormItem.type}"><img :src="item.obj.type==settingFormItem.type?item.obj.activeIcons:item.obj.icons" alt="">{{item.obj.label}}</div>
             </transition-group>
         </draggable>
         <div class="title">打分控件</div>
          <draggable element="ul" :clone="cloneData" v-model="gradesList" :options="dragOptions1" @end="getResult">
             <transition-group type="transition" class="baseContainer" tag="div" :name="'flip-list'">
-                <div v-for="item in gradesList" :key="item.obj.type" class="featureItem"><img :src="item.obj.icons" alt="">{{item.obj.label}}</div>
+                <div v-for="item in gradesList" :key="item.obj.type" :class="{'featureItem':true,'active-cls':item.obj.type==settingFormItem.type}"><img :src="item.obj.type==settingFormItem.type?item.obj.activeIcons:item.obj.icons" alt="">{{item.obj.label}}</div>
             </transition-group>
         </draggable>
     </div>
@@ -49,7 +49,7 @@
             v-model="content"></VueEditor>
         </FormItem>
         
-        <draggable element="div" v-model="sortable_item" :options="dragOptions2"  @update="moveEnd">
+        <draggable element="div" v-model="sortable_item" :options="dragOptions2"  @update="moveEnd" @add="getEndFun">
             <transition-group name="no" class="editorArea" tag="div" style="margin-top: 60px;">
                 <renders @handleRemoveEle="removeEle"  :curIndex="curIndex" @setIndex="setIndexFun" v-for="(element,index) in sortable_item" :key="index" :index="index" :ele="element.ele" :obj="element.obj || {}" :sortableItem="sortable_item" :config-icon="true">
                 </renders>
@@ -643,6 +643,7 @@ export default {
         formatData(){
             for(let i=0;i<this.sortable_item.length;i++){
                 this.sortable_item[i].obj.icons="";
+                this.sortable_item[i].obj.activeIcons="";
                 if(this.sortable_item[i].ele=="selectteacher"){
                     this.sortable_item[i].obj.items = this.teacherList;
                     for(let j=0;j<this.sortable_item[i].obj.items.length;j++){
@@ -699,8 +700,20 @@ export default {
             this.modalStatus = true
         },
         getResult(curObj) {
-            console.log(curObj)
+            // console.log(curObj)
             // this.curIndex = curObj.newIndex
+        },
+        setStart(curObj){
+            // console.log("start",curObj.clone.innerText)
+            // console.log(this.sortable_item)
+            for(let i=0;i<this.sortable_item.length;i++){
+                         
+                let els=this.sortable_item[i].ele;
+                if(els=="selectstudent"||els=="selectteacher"||els=="selectgrade"||els=="selectdepartment"){
+                    console.log("选择学生、选择班级、选择老师、选择部门，只能存在一个哦。")
+                    return false;
+                }
+            }
         },
         handleRemoveSelectItem(index) {
             let curRemoveObj = this.sortable_item[this.curIndex].obj.items
@@ -803,12 +816,28 @@ export default {
         copyEle(index){
             let self=this;
             let objs=this.sortable_item[index];
-            console.log(this.sortable_item[index])
+            // console.log(this.sortable_item[index])
             self.sortable_item.push(objs);
-            console.log(index)
+            // console.log(index)
+        },
+        getEndFun(curObj){
+            console.log("curObj",curObj);
+            // console.log(this.sortable_item)
+            let index=curObj.newIndex;
+            for(let i=0;i<this.sortable_item.length;i++){
+                         
+                let els=this.sortable_item[i].ele;
+                // console.log(els)
+                if(els=="selectstudent"||els=="selectteacher"||els=="selectgrade"||els=="selectdepartment"){
+                    // this.sortable_item.splice(index,1)
+                    // console.log("选择学生、选择班级、选择老师、选择部门，只能存在一个哦。")
+                    // return false;
+                }
+            }
+            // console.log(this.sortable_item)
         },
         moveEnd(relatedContext) {
-            console.log("moveEnd",relatedContext)
+            // console.log("moveEnd",relatedContext)
             if(relatedContext.oldIndex == this.curIndex){
                 this.curIndex = relatedContext.newIndex
             }else if(relatedContext.newIndex == this.curIndex){
@@ -1029,6 +1058,9 @@ export default {
                     vertical-align: middle;
                     border:0;
                 }
+            }
+            .active-cls{
+                color:#63a854;
             }
             .featureItem{
                 margin:0 auto;

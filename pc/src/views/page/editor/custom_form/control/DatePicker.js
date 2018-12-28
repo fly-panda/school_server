@@ -85,6 +85,7 @@ export let datePickerConf = {
   type: 'datepicker',
   //  图标
   icons:require("@/assets/shoudong_nor.png"),
+  activeIcons:require("@/assets/shoudongdafen_pre.png"),
   chooseCheck: ['date', 'time'],
   // 是否可配置
   config: true,

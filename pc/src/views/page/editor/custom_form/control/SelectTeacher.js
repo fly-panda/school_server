@@ -41,6 +41,7 @@ export let selectTeacherConf = {
     type: 'selectteacher',
                 //  图标
     icons:require("@/assets/laoshi_nor.png"),
+    activeIcons:require("@/assets/xuanzelaoshi_pre.png"),
     modal: 'selectTeacherForm',
     // 是否可配置
     config: true,
