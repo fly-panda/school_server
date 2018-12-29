@@ -1,6 +1,6 @@
 <template>
 <div class="settingContainer">
-    <Form style="padding: 15px;" ref="formCustom" class="settingForm" :rules="ruleValidate"  :model="settingForm" label-position="top">
+    <Form style="padding: 15px;" ref="formCustom" class="settingForm" :model="settingForm" label-position="top">
         <div class="title">配置填写人</div>
         <FormItem label="" v-if="isTeacher">
             <Checkbox @on-change="(status)=>{
@@ -78,7 +78,7 @@
                 <Radio label="0">
                     限制 
                     <span v-show="settingForm.isRepeat==0">
-                        <Input style="width: 90px" type="number" size="small" v-model="settingForm.submitTimes" placeholder="限制次数"></Input>次
+                        <InputNumber style="width: 90px" size="small" v-model="settingForm.submitTimes" placeholder="限制次数"></InputNumber>次
                     </span>
                 </Radio>
             </RadioGroup>
@@ -127,7 +127,7 @@ export default {
                 isCycle: '1',
                 isRepeat: '1',
                 week: [],
-                submitTimes: '',
+                submitTimes: 0,
                 isTemplate: false,
                 resultCopy: false,
                 classRelationTeacher: false,

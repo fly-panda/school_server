@@ -43,7 +43,7 @@ function apiAxios(method, url, params, success, failure) {
             // Message.success(data.result);
             success(data);
           }else{
-            failure(err);
+            failure(data);
             Message.error(data.result);
           }   
         }

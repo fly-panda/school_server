@@ -628,6 +628,9 @@ export default {
                    this.$router.push({
                        path:"/preview?ids="+r.data
                    })
+                },e=>{
+                    console.log(e)
+                    // this.$Message.error(e.result)
                 }
             )
             

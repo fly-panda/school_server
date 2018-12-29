@@ -43,6 +43,12 @@ module.exports = {
             }
         }
     },
+    // externals: {
+    //     'vue': 'Vue',
+    //     'vue-router': 'VueRouter',
+    //     'vuex': 'Vuex',
+    //     'axios': 'axios'
+    // },
     // performance: {
     //     hints: "warning", // 枚举
     //     maxAssetSize: 30000000, // 整数类型（以字节为单位）
