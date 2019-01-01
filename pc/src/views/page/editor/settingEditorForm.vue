@@ -1,8 +1,9 @@
 <template>
 <div class="settingContainer">
+     {{isTeacher}}
     <Form style="padding: 15px;" ref="formCustom" class="settingForm" :model="settingForm" label-position="top">
         <div class="title">配置填写人</div>
-        <FormItem label="" v-if="isTeacher">
+        <FormItem label="" v-show="isTeacher">
             <Checkbox @on-change="(status)=>{
                 changeCheck(status ,0, 'classTeacher')
                 }" class="checkboxItem" v-model="settingForm.classTeacher" label=""><span>由相关班级的班主任来填写</span>
@@ -16,7 +17,7 @@
                 
             </div>
         </FormItem>
-        
+
         <FormItem label="">
             <Checkbox @on-change="(status)=>{
                 changeCheck(status ,1, 'teacher')
@@ -99,7 +100,7 @@
        
     </Form>
     <div class="flexCenter">
-        <Button style="width: 160px" size="small" type="primary" @click="submit">发布</Button>
+        <!-- <Button style="width: 160px" size="small" type="primary" @click="submit">发布</Button> -->
     </div>
 </div>
 </template>
@@ -116,7 +117,7 @@ const validateMobile = (rule, value, callback) => {
     }
 }
 export default {
-    props:["tempId"],
+    props:["tempId","isTeacher","treeList"],
     data() {
         return {
             checkStatus: -1,
@@ -158,8 +159,7 @@ export default {
             ],
             teacherToggle:false,
             objs:{},
-            isTeacher:false,
-            treeList:[]
+            // treeList:[]
         }
     },
     components: {
@@ -173,18 +173,11 @@ export default {
     },
     methods: {
         getStatus(){
-            this.isTeacher=false;
             if(this.tempId!=""){
                 this.objs=this.$api.sGetObject("previewObj");
-                for(let i=0;i<this.objs.sortable_item.length;i++){
-                    if(this.objs.sortable_item[i].ele=="selectstudent"||this.objs.sortable_item[i].ele=="selectgrade"){
-                        this.isTeacher=true;
-                        this.treeList=this.objs.sortable_item[i].obj.items;
-                    }
-                }
+                
             }
-            
-        // console.log(1,this.objs)
+            return Promise.resolve(/* 这里是需要返回的数据，如果没有就不用传 */)
         },
         submit(){
             let self=this;

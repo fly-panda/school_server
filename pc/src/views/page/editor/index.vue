@@ -17,7 +17,7 @@
     <router-view v-if="!$route.meta.keepAlive"></router-view> -->
     <div :style="{height:fullHeight.height}">
         <editorForm :tempId="tempId" @changeId="changeIdFun($event)" ref="editorFormObj" v-show="viewType=='editorForm'"/>
-        <settingEditorForm :tempId="tempId" ref="formSetting" v-show="viewType=='settingEditorForm'"/>
+        <settingEditorForm :tempId="tempId" ref="formSetting" :isTeacher="isTeacher" :treeList="treeList" v-show="viewType=='settingEditorForm'"/>
     </div>
 </div>
 </template>
@@ -33,7 +33,9 @@ export default {
             fullHeight:{// 动态获取屏幕高度
                 height: (document.documentElement.clientHeight-124)+"px"
             },
-            tempId:""
+            tempId:"",
+            isTeacher:false,
+            treeList:[]
         }
     },
     components:{
@@ -43,14 +45,31 @@ export default {
     },
     methods: {
         changeRoure(name){
+            let self=this;
             this.viewType=name;
             
             // this.$router.push({
             //     name
             // })
             if(name=="settingEditorForm"){
-               this.$refs.editorFormObj.saveSoltItem();
-               this.$refs.formSetting.getStatus();
+                // this.$refs.formSetting.getStatus();
+                this.isTeacher=false;
+                this.treeList=[];
+                this.$refs.editorFormObj.saveSoltItem();
+                let elArr=this.$refs.editorFormObj.sortable_item;
+                // this.$refs.formSetting.getStatus();
+                for(let i=0;i<elArr.length;i++){
+                    if(elArr[i].ele=="selectstudent"||elArr[i].ele=="selectgrade"){
+                        this.isTeacher=true;
+                        this.treeList=elArr[i].obj.items;
+                    }
+                }
+               
+                // this.$refs.editorFormObj.saveSoltItem().then(function(val){ 
+                //     this.$refs.formSetting.getStatus(); 
+                //     // 如果后面还有 fn4，5，6 就需要继续 return 
+                //     // return fn3() ..
+                // })
             }
         },
         changeIdFun(msg){
