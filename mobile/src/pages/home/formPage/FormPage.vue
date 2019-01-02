@@ -749,6 +749,13 @@ export default {
     if (this.preview == 1) {
       console.log("预览模式！！！");
 
+      this.$api.sSetObject("userObj", {
+        userId: this.$route.query.userId,
+        objType: this.$route.query.objType,
+        openAppID: this.$route.query.openAppID,
+        objectid: this.$route.query.objectid
+      });
+
       this.dataFormat(mockData.data2);
 
       if (!ids) {
