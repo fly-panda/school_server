@@ -6,9 +6,8 @@
     </div>
     <Table border @on-row-click="rowClick" :columns="columns8" :data="data7" size="small" ref="table"></Table>
     <div class="page-view">
-        <Page prev-text="上一页" next-text="下一页" :current="currentPage" :total="totals" @on-change="changeFun"/>
+        <Page prev-text="上一页" next-text="下一页" :page-size="pagesize" :current="currentPage" :total="totals" @on-change="changeFun" :show-total="showTotal"/>
     </div>
-    
     <!-- <Button type="primary" size="large" @click="exportData(1)"><Icon type="ios-download-outline"></Icon> Export source data</Button>
     <Button type="primary" size="large" @click="exportData(2)"><Icon type="ios-download-outline"></Icon> Export sorting and filtered data</Button>
     <Button type="primary" size="large" @click="exportData(3)"><Icon type="ios-download-outline"></Icon> Export custom data</Button> -->
@@ -69,39 +68,42 @@
         data () {
             return {
                 modals: false,
+                showTotal:true,
+                taskid:"",
                 reason:"",
+                status:0,
                 currentPage:1,
-                totals:104,
+                totals:0,
+                pagesize:10,
                 columns8: [
-                    {
-                        "title": "序号",
-                        "key": "name",
-                        width:100,
-                    },
-                    {
-                        "title": "提交人",
-                        "key": "weak"
-                    },
-                    {
-                        "title": "性别",
-                        "key": "signin"
-                    },
-                    {
-                        "title": "尺寸",
-                        "key": "click"
-                    },
-                    {
-                        "title": "图片选择",
-                        "key": "active"
-                    },
-                    {
-                        "title": "附件",
-                        "key": "day7"
-                    },
-                    {
-                        "title": "未命名",
-                        "key": "day30"
-                    },
+                    // {
+                    //     "title": "序号",
+                    //     "key": "value0"
+                    // },
+                    // {
+                    //     "title": "提交人",
+                    //     "key": "value1"
+                    // },
+                    // {
+                    //     "title": "性别",
+                    //     "key": "signin"
+                    // },
+                    // {
+                    //     "title": "尺寸",
+                    //     "key": "click"
+                    // },
+                    // {
+                    //     "title": "图片选择",
+                    //     "key": "active"
+                    // },
+                    // {
+                    //     "title": "附件",
+                    //     "key": "day7"
+                    // },
+                    // {
+                    //     "title": "未命名",
+                    //     "key": "day30"
+                    // },
                     // {
                     //     "title": "操作",
                     //     "key": "tomorrow",
@@ -139,103 +141,104 @@
                     
                 ],
                 data7: [
-                    {
-                        "name": "Name1",
-                        "fav": 0,
-                        "show": 7302,
-                        "weak": 5627,
-                        "signin": 1563,
-                        "click": 4254,
-                        "active": 1438,
-                        "day7": 274,
-                        "day30": 285,
-                        "tomorrow": 1727,
+                   
+                    // {
+                    //     "name": "Name1",
+                    //     "fav": 0,
+                    //     "show": 7302,
+                    //     "weak": 5627,
+                    //     "signin": 1563,
+                    //     "click": 4254,
+                    //     "active": 1438,
+                    //     "day7": 274,
+                    //     "day30": 285,
+                    //     "tomorrow": 1727,
                          
-                    },
-                    {
-                        "name": "Name2",
-                        "fav": 0,
-                        "show": 4720,
-                        "weak": 4086,
-                        "signin": 3792,
-                        "click": 8690,
-                        "active": 8470,
-                        "day7": 8172,
-                        "day30": 5197,
-                        "tomorrow": 1684,
-                    },
-                    {
-                        "name": "Name3",
-                        "fav": 0,
-                        "show": 7181,
-                        "weak": 8007,
-                        "signin": 8477,
-                        "click": 1879,
-                        "active": 16,
-                        "day7": 2249,
-                        "day30": 3450,
-                        "tomorrow": 377,
-                    },
-                    {
-                        "name": "Name4",
-                        "fav": 0,
-                        "show": 9911,
-                        "weak": 8976,
-                        "signin": 8807,
-                        "click": 8050,
-                        "active": 7668,
-                        "day7": 1547,
-                        "day30": 2357,
-                        "tomorrow": 7278,
-                    },
-                    {
-                        "name": "Name5",
-                        "fav": 0,
-                        "show": 934,
-                        "weak": 1394,
-                        "signin": 6463,
-                        "click": 5278,
-                        "active": 9256,
-                        "day7": 209,
-                        "day30": 3563,
-                        "tomorrow": 8285,
-                    },
-                    {
-                        "name": "Name6",
-                        "fav": 0,
-                        "show": 6856,
-                        "weak": 1608,
-                        "signin": 457,
-                        "click": 4949,
-                        "active": 2909,
-                        "day7": 4525,
-                        "day30": 6171,
-                        "tomorrow": 1920
-                    },
-                    {
-                        "name": "Name7",
-                        "fav": 0,
-                        "show": 5107,
-                        "weak": 6407,
-                        "signin": 4166,
-                        "click": 7970,
-                        "active": 1002,
-                        "day7": 8701,
-                        "day30": 9040,
-                        "tomorrow": 7632,
-                    },
-                    {
-                        "name": "Name8",
-                        "fav": 0,
-                        "show": 862,
-                        "weak": 6520,
-                        "signin": 6696,
-                        "click": 3209,
-                        "active": 6801,
-                        "day7": 6364,
-                        "day30": 6850,
-                        "tomorrow": 9408,
-                    }
+                    // },
+                    // {
+                    //     "name": "Name2",
+                    //     "fav": 0,
+                    //     "show": 4720,
+                    //     "weak": 4086,
+                    //     "signin": 3792,
+                    //     "click": 8690,
+                    //     "active": 8470,
+                    //     "day7": 8172,
+                    //     "day30": 5197,
+                    //     "tomorrow": 1684,
+                    // },
+                    // {
+                    //     "name": "Name3",
+                    //     "fav": 0,
+                    //     "show": 7181,
+                    //     "weak": 8007,
+                    //     "signin": 8477,
+                    //     "click": 1879,
+                    //     "active": 16,
+                    //     "day7": 2249,
+                    //     "day30": 3450,
+                    //     "tomorrow": 377,
+                    // },
+                    // {
+                    //     "name": "Name4",
+                    //     "fav": 0,
+                    //     "show": 9911,
+                    //     "weak": 8976,
+                    //     "signin": 8807,
+                    //     "click": 8050,
+                    //     "active": 7668,
+                    //     "day7": 1547,
+                    //     "day30": 2357,
+                    //     "tomorrow": 7278,
+                    // },
+                    // {
+                    //     "name": "Name5",
+                    //     "fav": 0,
+                    //     "show": 934,
+                    //     "weak": 1394,
+                    //     "signin": 6463,
+                    //     "click": 5278,
+                    //     "active": 9256,
+                    //     "day7": 209,
+                    //     "day30": 3563,
+                    //     "tomorrow": 8285,
+                    // },
+                    // {
+                    //     "name": "Name6",
+                    //     "fav": 0,
+                    //     "show": 6856,
+                    //     "weak": 1608,
+                    //     "signin": 457,
+                    //     "click": 4949,
+                    //     "active": 2909,
+                    //     "day7": 4525,
+                    //     "day30": 6171,
+                    //     "tomorrow": 1920
+                    // },
+                    // {
+                    //     "name": "Name7",
+                    //     "fav": 0,
+                    //     "show": 5107,
+                    //     "weak": 6407,
+                    //     "signin": 4166,
+                    //     "click": 7970,
+                    //     "active": 1002,
+                    //     "day7": 8701,
+                    //     "day30": 9040,
+                    //     "tomorrow": 7632,
+                    // },
+                    // {
+                    //     "name": "Name8",
+                    //     "fav": 0,
+                    //     "show": 862,
+                    //     "weak": 6520,
+                    //     "signin": 6696,
+                    //     "click": 3209,
+                    //     "active": 6801,
+                    //     "day7": 6364,
+                    //     "day30": 6850,
+                    //     "tomorrow": 9408,
+                    // }
                 ],
                 lists:[
                     {title:"尺寸",cont:"S码"},
@@ -259,10 +262,37 @@
                     {title:"尺寸",cont:"S码"},
                     {title:"尺寸",cont:"S码"},
                     {title:"尺寸",cont:"S码"},
-                ]
+                ],
+
             }
         },
+        mounted(){
+            this.userId=this.$api.sGetObject("userObj").userId;
+            this.taskid=this.$route.query.taskid;
+            this.getData();
+        },
         methods: {
+            getData(){
+                let self=this;
+                self.$api.get("/submit/taskSummary",{
+                    userid:this.userId,
+                    taskid:this.taskid,
+                    page:this.currentPage,
+                    pagesize:this.pagesize
+                },r=>{
+                    let datas =JSON.parse(r.data);
+                    let columnsArr=datas.title.split(",");
+                    for(let i=0;i<columnsArr.length;i++){
+                        self.columns8.push({
+                            title:columnsArr[i],
+                            key:"value"+i
+                        });
+                        
+                    };
+                    self.data7=datas.resultList;
+                  
+                })
+            },
             exportData (type) {
                 if (type === 1) {
                     this.$refs.table.exportCsv({

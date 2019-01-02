@@ -101,9 +101,10 @@ export default {
     methods:{
         jumpDetails(cardItem){
             let self=this;
+            console.log(cardItem)
             if(self.status==0){
                 self.$router.push({
-                    path:"/duplicate"
+                    path:"/duplicate?taskid="+cardItem.id
                 })
             }else if(self.status==1){
                 self.$router.push({

@@ -815,7 +815,7 @@ export default {
             let msg=this.requireCheck();
             // console.log(JSON.stringify(self.previewObj));
             if(msg=="success"){
-                self.$api.post("/task/submitTask",{
+                self.$api.post("/submit/submitTask",{
                     id:this.id,
                     title:self.previewObj.title,
                     data:self.previewObj.data,

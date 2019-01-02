@@ -1,8 +1,11 @@
 <template>
 <div class="my-duplicate-container">
    <div class="duplicate-title">
-        <span class="back-cls" @click="backFun"><Icon type="ios-arrow-back" /></span>{{title}}
-        <img class="new-form" @click="newFun" src="@/assets/bianji_ico.png" alt="">
+        <div>
+            <span class="back-cls" @click="backFun"><Icon type="ios-arrow-back" /></span>{{title}}
+            <img class="new-form" @click="newFun" src="@/assets/bianji_ico.png" alt="">
+        </div>
+        
     </div>
     <div class="duplicate-content" :style="{height:fullHeight.height}">
         <div class="contentTop">
@@ -173,15 +176,20 @@ export default {
 }
 .my-duplicate-container {
     height: 100%;
+
     .duplicate-title{
         height: 60px;
         background: #fff;
-        padding: 0 215px;
+
         line-height: 60px;
         font-family: PingFangSC-Semibold;
         font-size: 16px;
         color: #888888;
         letter-spacing: 0.95px;
+        >div{
+            width: 1170px;
+            margin:0 auto;
+        }
         .new-form{
             display:inline-block;
             height: 21px;
@@ -196,9 +204,10 @@ export default {
         }
     }
     .duplicate-content {
-        width: 100%;
+        width: 1170px;
+        margin:0 auto;
         height: 100%;
-        padding: 10px 215px;
+        padding: 10px 0;
         overflow-y: auto;
         .contentTop{
             height: 160px;
