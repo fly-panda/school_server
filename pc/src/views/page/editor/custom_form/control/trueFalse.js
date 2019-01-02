@@ -62,10 +62,10 @@ export let trueFalseConf = {
     value: '',
     // 选项内数据
     items: [{
-        "label_value": "1",
+        "label_value": "0",
         "label_name": "是"
     }, {
-        "label_value": "2",
+        "label_value": "1",
         "label_name": "否"
     }],
     // 表单name

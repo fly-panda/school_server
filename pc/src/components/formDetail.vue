@@ -315,8 +315,8 @@
                 <div class="title" :class="{'require-cls':cont.obj.require}">{{cont.obj.label}}</div>
                 <div class="point">{{cont.obj.describe}}</div>
                 <RadioGroup size="large" v-model="cont.obj.value">
-                    <Radio label="是"></Radio>
-                    <Radio style="margin-right: .8rem" label="否"></Radio>
+                    <Radio v-for="(item,ind) in cont.obj.items" :key="ind" :label="item.label_value"><span>{{item.label_name}}</span></Radio>
+                    <!-- <Radio style="margin-right: .8rem" label="1"><span>否</span></Radio> -->
                 </RadioGroup>
             </div>
             <!-- 日期时间 -->

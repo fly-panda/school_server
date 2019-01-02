@@ -64,13 +64,13 @@ module.exports = {
     devServer: {
         port: 8080,
         proxy: {
-            '/api': {
-                target: 'http://127.0.0.1:8848',
-                pathRewrite: {
-                  '^/api': '/api'
-                },
-                secure: false
-            }
+            // '/api': {
+            //     target: 'http://47.93.156.129:8848/',
+            //     pathRewrite: {
+            //       '^/api': '/api'
+            //     },
+            //     secure: false
+            // }
         }
     }
 }

@@ -1,6 +1,5 @@
 <template>
 <div class="settingContainer">
-     {{isTeacher}}
     <Form style="padding: 15px;" ref="formCustom" class="settingForm" :model="settingForm" label-position="top">
         <div class="title">配置填写人</div>
         <FormItem label="" v-show="isTeacher">
@@ -149,13 +148,13 @@ export default {
             },
             gradeList:[],// 班主任列表
             weekList:[
-                {name:"周一",id:1,check:false},
-                {name:"周二",id:2,check:false},
-                {name:"周三",id:3,check:false},
-                {name:"周四",id:4,check:false},
-                {name:"周五",id:5,check:false},
-                {name:"周六",id:6,check:false},
-                {name:"周日",id:0,check:false}
+                {name:"周一",id:"1",check:false},
+                {name:"周二",id:"2",check:false},
+                {name:"周三",id:"3",check:false},
+                {name:"周四",id:"4",check:false},
+                {name:"周五",id:"5",check:false},
+                {name:"周六",id:"6",check:false},
+                {name:"周日",id:"0",check:false}
             ],
             teacherToggle:false,
             objs:{},
@@ -206,13 +205,14 @@ export default {
                 
             }else if(self.checkStatus=="1"){
                 settingObj.writes=self.$refs.studentList.selStudentList
+            
             }
             if(self.settingForm.isCycle==1){
-                if(self.settingForm.startWeek==""&&self.settingForm.startWeek!=0){
+                if(!self.settingForm.startWeek){
                     self.$Message.warning('请设置每周开始时间');
                     return
                 }
-                if(self.settingForm.endWeek==""&&self.settingForm.endWeek!=0){
+                if(!self.settingForm.endWeek){
                     self.$Message.warning('请设置每周结束时间');
                     return
                 } 
@@ -229,6 +229,7 @@ export default {
             if(self.settingForm.resultCopy){
                  settingObj.resultObj=self.$refs.resultList.selStudentList
             }
+            // console.log(settingObj)
             self.submitAjax(settingObj)
         },
         submitAjax(obj){
