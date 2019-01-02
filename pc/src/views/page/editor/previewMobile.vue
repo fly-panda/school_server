@@ -1,7 +1,7 @@
 <template>
     <div  class="mobile-container">
         <div class="contents">
-            <iframe id="preview-html" name="preview-html" :src=srcs+ids></iframe>   
+            <iframe id="preview-html" name="preview-html" :src=srcs+ids+userId+objType+openAppID+objectid></iframe>   
         </div>
     </div>
 </template>
@@ -11,11 +11,22 @@ export default {
     props:["ids"],
     data() {
         return {
-            srcs:"http://47.93.156.129:8080/formPage?preview=1&ids="
+
+            srcs:"http://47.93.156.129:8080/formPage?preview=1&ids=",
+            userId:"",
+            objType:"",
+            openAppID:"",
+            objectid:"",
+            userObj:"&userObj="+this.$api.sGetObject("userObj"),
         }
     },
     mounted(){
-        console.log(this.ids)
+        let userObj=this.$api.sGetObject("userObj");
+        this.userId="&userId="+userObj.userId;
+        this.objType="&objType="+userObj.objType;
+        this.openAppID="&openAppID="+userObj.openAppID;
+        this.objectid="&objectid="+userObj.objectid;
+     
     },
     methods: {
 
