@@ -100,7 +100,7 @@
        
     </Form>
     <div class="flexCenter">
-        <!-- <Button style="width: 160px" size="small" type="primary" @click="submit">发布</Button> -->
+        <Button style="width: 160px" size="small" type="primary" @click="submit">发布</Button>
     </div>
 </div>
 </template>
