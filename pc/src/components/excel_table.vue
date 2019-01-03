@@ -20,9 +20,12 @@
                 <h3>{{formMsg.title}}</h3>
                 <p class='line-cls'></p>
                 <ul class="list-cls">
-                    <li v-for="(item,index) in lists">
+                    <li v-for="(item,index) in lists" :key="index">
                         <p class="num">{{index+1}}. {{item.title}}</p>
-                        <p class="cont">{{item.value}}</p>
+                        <p v-if="item.type=='uploadimg'" class="img-view">
+                            <img v-for="(cont,i) in item.value" :src="baseImg+cont" :key="i" alt=""/>
+                        </p>
+                        <p v-else class="cont">{{item.value}}</p>
                     </li>
                 </ul>
                 <div class="prev-next">
@@ -127,9 +130,61 @@
                     // }
                     
                 ],
-                data7: [],
+                data7: [
+                    
+        // {
+        //     "id":"5c2e03bae3d960a6049566c1",
+        //     "value0":"张三",
+        //     "value1":"选项1",
+        //     "value2":"你好萨达萨达的反攻倒算",
+        //     "value4":"单选框2",
+        //     "value5":["/files/campus/2019/01/03/logo.png"]
+        // },
+        // {
+        //     "id":"5c2e03d7e3d960a6049566c2",
+        //     "value0":"李四",
+        //     "value1":"选项1",
+        //     "value2":"萨梵蒂冈风格的",
+        //     "value4":"单选框1",
+        //     "value5":["/files/campus/2019/01/03/icon1.png"]
+        // },
+        // {
+        //     "id":"5c2e03ede3d960a6049566c3",
+        //     "value0":"王五",
+        //     "value1":"选项1",
+        //     "value2":"萨达法师法师股份",
+        //     "value4":"单选框2",
+        //     "value5":["/files/campus/2019/01/03/icon1.png","/files/campus/2019/01/03/icon2.png"]
+        // },
+        // {
+        //     "id":"5c2e0402e3d960a6049566c4",
+        //     "value0":"赵六",
+        //     "value1":"选项1",
+        //     "value2":"萨达法师法师股份",
+        //     "value4":"单选框1",
+        //     "value5":["/files/campus/2019/01/03/icon2.png","/files/campus/2019/01/03/nodata.png"]
+        // },
+        // {
+        //     "id":"5c2e04e3e3d960a6049566c5",
+        //     "value0":"你好啊",
+        //     "value1":"选项1",
+        //     "value2":"广东佛山的方式解决",
+        //     "value4":"单选框1",
+        //     "value5":["/files/campus/2019/01/03/nodata.png"]
+        // },
+        // {
+        //     "id":"5c2e0516e3d960a6049566c6",
+        //     "value0":"规范化",
+        //     "value1":"选项1",
+        //     "value2":"广东佛山的方式解决",
+        //     "value4":"单选框2",
+        //     "value5":["/files/campus/2019/01/03/nodata.png"]
+        // }
+    
+                ],
                 lists:[],
                 rowIndex:'',
+                baseImg:this.$api.getBase()
             }
         },
         mounted(){
@@ -158,35 +213,47 @@
                     self.formMsg.originator=datas.originator;
                     
                     let columnsArr=datas.tableTitle.split(",");
+                    
                     let typeArr=datas.valuetype.split(",");
                     if(columnsArr.length>0){
                         for(let i=0;i<columnsArr.length;i++){
                             let objs={};
                             if(typeArr[i]=="uploadimg"){
+                                // datas.resultList[i]["value"+i].split(",");
                                 objs={
                                     title:columnsArr[i],
                                     key:"value"+i,
-                                    // render: (row,column, index) => {
-                                        // return `<span>$(row)</span>`
-                                    //     console.log(params.row)
-                                    //     return h('div', {
-                                    //         attrs: {
-                                    //             style: 'width: 40px;height: 40px;'
+                                    // render: (h,params) => {
+                                    //     let keys="value"+i;
+                                    //     return h('img',{
+                                    //         attrs:{
+                                    //             src: this.baseImg+params.row[keys],
+                                    //             style: 'width: 40px;'
                                     //         },
-                                    //     }, [
-                                    //     h('img', {
-                                    //         props: {
-                                    //             type: 'primary',
-                                    //             size: 'small'
-                                    //         },
-                                    //         attrs: {
-                                    //             src: params.row['value'+index], style: 'width: 40px;height: 40px;'
-                                    //         },
-                                    //         style: {
-                                    //         },
-                                    //     }),
-                                    //     ]);
+                                    //     })
                                     // }
+                                    render: (h,params) => {
+                                        let keys="value"+i;
+                                        let arrs=params.row[keys].split(",");
+                                        // return h('p',{
+
+                                        // },params.row[keys]); 
+                                        // h("div",arrs.map(function(item,index){
+                                        //     return [
+                                        //         h("img",{
+                                        //             attrs:{
+                                        //                 src: self.baseImg+item,
+                                        //                 style: 'width: 40px;'
+                                        //             },
+                                        //         })
+                                        //     ]
+                                        // }))
+                                        return h("div",arrs.map(function(item,index){
+                                            return <img src={self.baseImg+item} width="40px" height="40px" style="display:inline-block;"/>
+                                        }))
+                                        
+                                    }
+                                    
                                 }
                             }else{
                                 objs={
@@ -198,12 +265,11 @@
                             
                         };
                     }
-                    console.log(self.columns8)
+                    
                     self.data7=datas.resultList;
                   
                 })
             },
-
             getModalData(ids){
                 
                 let self=this;
@@ -215,10 +281,15 @@
                     
                     for(let i=0;i<datas.content.length;i++){
                         datas.content[i].title=self.columns8[i].title;
-
+                        console.log(1,datas.content[i].type=="uploadimg")
+                        if(datas.content[i].type=="uploadimg"){
+                            datas.content[i].value=datas.content[i].value.split(",");
+                            console.log(2,datas.content[i].value)
+                            
+                        }
                     }
                     self.lists=datas.content;
-                    // console.log(1,self.lists)
+                    console.log(4324,self.lists)
                 })
             },
             exportData (type) {
@@ -241,7 +312,7 @@
             },
             rowClick(data, index, event){
                 this.rowIndex=index;
-                console.log(index);
+                // console.log(index);
                 this.modals=true;
                 this.getModalData(data.id);
                 // console.log(data)
@@ -285,6 +356,13 @@
 </script>
 
 <style lang='less' scoped >
+.img-view img{
+    width:50px;
+    height:50px;
+    display: inline-block;
+    margin: 2px 4px;
+}
+
 .page-view{
     padding: 10px;
     text-align:right;
