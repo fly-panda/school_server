@@ -219,7 +219,7 @@
             <div class="selectStudentContainer" v-if="cont.ele=='select'">
                 <div class="title" :class="{'require-cls':cont.obj.require}">{{cont.obj.label}}</div>
                 <div class="point">{{cont.obj.describe}}</div>
-                {{cont.obj.value}}
+
                 <Select  v-model="cont.obj.value" style="width:250px;">
                     <Option v-for="(item,ind) in cont.obj.items" :value="ind" :key="item.label_value">{{ item.label_name }}</Option>
                 </Select>

@@ -1,13 +1,16 @@
 <template>
 <div class="my-duplicate-container">
-
-   <div class="duplicate-title">
-        <p class='title-txt'><span class="back-cls" @click="backFun"><Icon type="ios-arrow-back" /></span>{{title}}</p>
-        <p class="btn-view">
-            <Button type="error" ghost @click="del">删除</Button>
-            <Button type="success" ghost @click="history">填写记录</Button>
-        </p>
+    
+    <div class="title-cont">
+        <div class="duplicate-title">
+            <p class='title-txt'><span class="back-cls" @click="backFun"><Icon type="ios-arrow-back" /></span>{{title}}</p>
+            <p class="btn-view">
+                <Button type="error" ghost @click="del">删除</Button>
+                <Button type="success" ghost @click="history">填写记录</Button>
+            </p>
+        </div>
     </div>
+    
     <div class="duplicate-content" :style="{height:fullHeight.height}">
         <div class="nopass">
             <h3>不合格理由</h3>
@@ -50,6 +53,7 @@ export default {
         // this.previewObj=this.$api.sGetObject("previewObj");
         console.log(this.$route.query.id)
         this.getTaskDetail()
+        
     },
     methods: {
          getTaskDetail(){
@@ -61,9 +65,10 @@ export default {
                 self.previewObj.title=datas.title;
                 self.previewObj.describe=datas.describe;
                 self.previewObj.data=datas.data;
-                console.log(1,self.previewObj)
+                // console.log(1,self.previewObj)
             })
         },
+
         del () {
             this.$Modal.confirm({
                 title: '确认要删除？',
@@ -102,41 +107,47 @@ export default {
 }
 .my-duplicate-container {
     height: 100%;
-    .duplicate-title{
-        display: flex;
-        height: 60px;
+    .title-cont{
+        width: 100%;
         background: #fff;
-        padding: 0 215px;
-        line-height: 60px;
-        font-family: PingFangSC-Semibold;
-        font-size: 16px;
-        color: #888888;
-        letter-spacing: 0.95px;
-        .title-txt{
-            flex:1;
-        }
-        .btn-view{
-            button{
-                margin:0 6px;
+        .duplicate-title{
+            display: flex;
+            height: 60px;
+            
+            margin:0 auto;
+            width: 1170px;
+            line-height: 60px;
+            font-family: PingFangSC-Semibold;
+            font-size: 16px;
+            color: #888888;
+            letter-spacing: 0.95px;
+            .title-txt{
+                flex:1;
             }
-        }
-        .new-form{
-            display:inline-block;
-            height: 21px;
-            vertical-align: middle;
-            cursor: pointer;
-        }
-        .back-cls{
-            color:#686868;
-            font-size: 24px;
-            margin-right: 10px;
-            cursor: pointer;
+            .btn-view{
+                button{
+                    margin:0 6px;
+                }
+            }
+            .new-form{
+                display:inline-block;
+                height: 21px;
+                vertical-align: middle;
+                cursor: pointer;
+            }
+            .back-cls{
+                color:#686868;
+                font-size: 24px;
+                margin-right: 10px;
+                cursor: pointer;
+            }
         }
     }
     .duplicate-content {
-        width: 100%;
+        width:1170px;
+        margin:0 auto;
         // height: 100%;
-        padding: 20px 215px;
+        padding: 20px 0;
         
         overflow-y: auto;
         .nopass{

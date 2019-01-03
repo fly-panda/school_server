@@ -120,7 +120,7 @@ export default {
         },
         
         jumpForms(item){
-
+            // console.log(item)
             let self=this;
             if(item.state!=0){
                 self.$router.push({
@@ -165,6 +165,7 @@ export default {
         font-weight: 700;
         margin-top: 10px;
         height: 40px;
+            width: 100%;
         padding: 0 10px;
         overflow: hidden; white-space: wrap; text-overflow: ellipsis;
     }

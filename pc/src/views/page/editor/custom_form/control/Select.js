@@ -47,8 +47,8 @@ export let selectConf = {
   require: true,
   // 选项内数据
   items: [{
-    "label_value": '',
-    "label_name": ''
+    "label_value": '1',
+    "label_name": '选项1'
     }],
   // 绑定的值
   value: '',

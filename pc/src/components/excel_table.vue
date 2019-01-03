@@ -1,7 +1,7 @@
 <template>
 <div style="height: 400px;">
     <div class="searchContainer">
-        <Input suffix="ios-search" placeholder="搜索" size="small" style="width: auto" />
+        <!-- <Input suffix="ios-search" placeholder="搜索" size="small" style="width: auto" /> -->
         <span  @click="exportData(1)">导出Excel</span>
     </div>
     <Table border @on-row-click="rowClick" :columns="columns8" :data="data7" size="small" ref="table"></Table>
@@ -17,12 +17,12 @@
         </p>
         <div class="model-content">
             <div class="left-cls">
-                <h3>一年级校服尺寸收集表</h3>
+                <h3>{{formMsg.title}}</h3>
                 <p class='line-cls'></p>
                 <ul class="list-cls">
                     <li v-for="(item,index) in lists">
                         <p class="num">{{index+1}}. {{item.title}}</p>
-                        <p class="cont">{{item.cont}}</p>
+                        <p class="cont">{{item.value}}</p>
                     </li>
                 </ul>
                 <div class="prev-next">
@@ -75,34 +75,21 @@
                 currentPage:1,
                 totals:0,
                 pagesize:10,
+                formMsg:{
+                    should:"",
+                    submitCount:"",
+                    tableTitle:"",
+                    taskCreateTime:"",
+                    taskEndTime:"",
+                    taskStartTime:"",
+                    tempid:"",
+                    title:"",
+                    originator:""
+                },
                 columns8: [
                     // {
                     //     "title": "序号",
                     //     "key": "value0"
-                    // },
-                    // {
-                    //     "title": "提交人",
-                    //     "key": "value1"
-                    // },
-                    // {
-                    //     "title": "性别",
-                    //     "key": "signin"
-                    // },
-                    // {
-                    //     "title": "尺寸",
-                    //     "key": "click"
-                    // },
-                    // {
-                    //     "title": "图片选择",
-                    //     "key": "active"
-                    // },
-                    // {
-                    //     "title": "附件",
-                    //     "key": "day7"
-                    // },
-                    // {
-                    //     "title": "未命名",
-                    //     "key": "day30"
                     // },
                     // {
                     //     "title": "操作",
@@ -140,130 +127,9 @@
                     // }
                     
                 ],
-                data7: [
-                   
-                    // {
-                    //     "name": "Name1",
-                    //     "fav": 0,
-                    //     "show": 7302,
-                    //     "weak": 5627,
-                    //     "signin": 1563,
-                    //     "click": 4254,
-                    //     "active": 1438,
-                    //     "day7": 274,
-                    //     "day30": 285,
-                    //     "tomorrow": 1727,
-                         
-                    // },
-                    // {
-                    //     "name": "Name2",
-                    //     "fav": 0,
-                    //     "show": 4720,
-                    //     "weak": 4086,
-                    //     "signin": 3792,
-                    //     "click": 8690,
-                    //     "active": 8470,
-                    //     "day7": 8172,
-                    //     "day30": 5197,
-                    //     "tomorrow": 1684,
-                    // },
-                    // {
-                    //     "name": "Name3",
-                    //     "fav": 0,
-                    //     "show": 7181,
-                    //     "weak": 8007,
-                    //     "signin": 8477,
-                    //     "click": 1879,
-                    //     "active": 16,
-                    //     "day7": 2249,
-                    //     "day30": 3450,
-                    //     "tomorrow": 377,
-                    // },
-                    // {
-                    //     "name": "Name4",
-                    //     "fav": 0,
-                    //     "show": 9911,
-                    //     "weak": 8976,
-                    //     "signin": 8807,
-                    //     "click": 8050,
-                    //     "active": 7668,
-                    //     "day7": 1547,
-                    //     "day30": 2357,
-                    //     "tomorrow": 7278,
-                    // },
-                    // {
-                    //     "name": "Name5",
-                    //     "fav": 0,
-                    //     "show": 934,
-                    //     "weak": 1394,
-                    //     "signin": 6463,
-                    //     "click": 5278,
-                    //     "active": 9256,
-                    //     "day7": 209,
-                    //     "day30": 3563,
-                    //     "tomorrow": 8285,
-                    // },
-                    // {
-                    //     "name": "Name6",
-                    //     "fav": 0,
-                    //     "show": 6856,
-                    //     "weak": 1608,
-                    //     "signin": 457,
-                    //     "click": 4949,
-                    //     "active": 2909,
-                    //     "day7": 4525,
-                    //     "day30": 6171,
-                    //     "tomorrow": 1920
-                    // },
-                    // {
-                    //     "name": "Name7",
-                    //     "fav": 0,
-                    //     "show": 5107,
-                    //     "weak": 6407,
-                    //     "signin": 4166,
-                    //     "click": 7970,
-                    //     "active": 1002,
-                    //     "day7": 8701,
-                    //     "day30": 9040,
-                    //     "tomorrow": 7632,
-                    // },
-                    // {
-                    //     "name": "Name8",
-                    //     "fav": 0,
-                    //     "show": 862,
-                    //     "weak": 6520,
-                    //     "signin": 6696,
-                    //     "click": 3209,
-                    //     "active": 6801,
-                    //     "day7": 6364,
-                    //     "day30": 6850,
-                    //     "tomorrow": 9408,
-                    // }
-                ],
-                lists:[
-                    {title:"尺寸",cont:"S码"},
-                    {title:"尺寸",cont:"S码"},
-                    {title:"尺寸",cont:"S码"},
-                    {title:"尺寸",cont:"S码"},
-                    {title:"尺寸",cont:"S码"},
-                    {title:"尺寸",cont:"S码"},
-                    {title:"尺寸",cont:"S码"},
-                    {title:"尺寸",cont:"S码"},
-                    {title:"尺寸",cont:"S码"},
-                    {title:"尺寸",cont:"S码"},
-                    {title:"尺寸",cont:"S码"},
-                    {title:"尺寸",cont:"S码"},
-                    {title:"尺寸",cont:"S码"},
-                    {title:"尺寸",cont:"S码"},
-                    {title:"尺寸",cont:"S码"},
-                    {title:"尺寸",cont:"S码"},
-                    {title:"尺寸",cont:"S码"},
-                    {title:"尺寸",cont:"S码"},
-                    {title:"尺寸",cont:"S码"},
-                    {title:"尺寸",cont:"S码"},
-                    {title:"尺寸",cont:"S码"},
-                ],
-
+                data7: [],
+                lists:[],
+                rowIndex:'',
             }
         },
         mounted(){
@@ -281,16 +147,78 @@
                     pagesize:this.pagesize
                 },r=>{
                     let datas =JSON.parse(r.data);
-                    let columnsArr=datas.title.split(",");
-                    for(let i=0;i<columnsArr.length;i++){
-                        self.columns8.push({
-                            title:columnsArr[i],
-                            key:"value"+i
-                        });
-                        
-                    };
+                    self.formMsg.should=datas.should;
+                    self.formMsg.submitCount=datas.submitCount;
+                    self.formMsg.tableTitle=datas.tableTitle;
+                    self.formMsg.taskCreateTime=datas.taskCreateTime;
+                    self.formMsg.taskEndTime=datas.taskEndTime;
+                    self.formMsg.taskStartTime=datas.taskStartTime;
+                    self.formMsg.tempid=datas.tempid;
+                    self.formMsg.title=datas.title;
+                    self.formMsg.originator=datas.originator;
+                    
+                    let columnsArr=datas.tableTitle.split(",");
+                    let typeArr=datas.valuetype.split(",");
+                    if(columnsArr.length>0){
+                        for(let i=0;i<columnsArr.length;i++){
+                            let objs={};
+                            if(typeArr[i]=="uploadimg"){
+                                objs={
+                                    title:columnsArr[i],
+                                    key:"value"+i,
+                                    // render: (row,column, index) => {
+                                        // return `<span>$(row)</span>`
+                                    //     console.log(params.row)
+                                    //     return h('div', {
+                                    //         attrs: {
+                                    //             style: 'width: 40px;height: 40px;'
+                                    //         },
+                                    //     }, [
+                                    //     h('img', {
+                                    //         props: {
+                                    //             type: 'primary',
+                                    //             size: 'small'
+                                    //         },
+                                    //         attrs: {
+                                    //             src: params.row['value'+index], style: 'width: 40px;height: 40px;'
+                                    //         },
+                                    //         style: {
+                                    //         },
+                                    //     }),
+                                    //     ]);
+                                    // }
+                                }
+                            }else{
+                                objs={
+                                    title:columnsArr[i],
+                                    key:"value"+i
+                                }
+                            }
+                            self.columns8.push(objs);
+                            
+                        };
+                    }
+                    console.log(self.columns8)
                     self.data7=datas.resultList;
                   
+                })
+            },
+
+            getModalData(ids){
+                
+                let self=this;
+                self.$api.get("/submit/submitDetails",{
+                    id:ids,
+                    taskid:this.taskid
+                },r=>{
+                    let datas=JSON.parse(r.data);
+                    
+                    for(let i=0;i<datas.content.length;i++){
+                        datas.content[i].title=self.columns8[i].title;
+
+                    }
+                    self.lists=datas.content;
+                    // console.log(1,self.lists)
                 })
             },
             exportData (type) {
@@ -312,8 +240,11 @@
                 }
             },
             rowClick(data, index, event){
+                this.rowIndex=index;
+                console.log(index);
                 this.modals=true;
-                console.log(data)
+                this.getModalData(data.id);
+                // console.log(data)
             },
             asyncOK () {
                 console.log("ok")
@@ -322,10 +253,23 @@
                 }, 2000);
             },
             prevFun () {
-                console.log("prev")
+                if(this.rowIndex==0){
+                    this.$Message.warning('已经是第一个了哦');
+                    return 
+                }
+                this.rowIndex--;
+                let ids=this.data7[this.rowIndex].id;
+                this.getModalData(ids);
             },
             nextFun () {
-                console.log("next")
+
+                if(this.rowIndex==(this.data7.length-1)){
+                    this.$Message.warning('已经是最后一个了哦');
+                    return 
+                }
+                this.rowIndex++;
+                let ids=this.data7[this.rowIndex].id;
+                this.getModalData(ids);
             },
             nopassFun(){
                 console.log("不通过");
