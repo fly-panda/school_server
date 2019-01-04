@@ -23,7 +23,7 @@
                     <li v-for="(item,index) in lists" :key="index">
                         <p class="num">{{index+1}}. {{item.title}}</p>
                         <p v-if="item.type=='uploadimg'" class="img-view">
-                            <img v-for="(cont,i) in item.value" :src="baseImg+cont" :key="i" alt=""/>
+                            <img v-for="(cont,i) in item.value" :src="baseImg+cont" :key="i" @click="viewImg(cont)" alt=""/>
                         </p>
                         <p v-else class="cont">{{item.value}}</p>
                     </li>
@@ -37,21 +37,21 @@
                 <ul>
                     <li>
                         <span>序号</span>
-                        <span>1</span>
+                        <span></span>
                     </li>
                     <li>
                         <span>提交时间</span>
-                        <span>2018-11-11 18:00:01</span>
+                        <span>：{{submitMsg.createtime}}</span>
                     </li>
                     <li>
                         <span>提交人</span>
-                        <span>田莎莎</span>
+                        <span>：{{submitMsg.submiter}}</span>
                     </li>
                 </ul>
                 <div class="form-view">
                     <p>
-                        <Button @click="passFun" type="success">合格</Button>
-                        <Button @click="nopassFun" type="primary" :disabled="reason.length==0">不合格</Button>
+                        <Button @click="audit(1)" type="success">合格</Button>
+                        <Button @click="audit(2)" type="error" :disabled="reason.length==0">不合格</Button>
                     </p>
                     <textarea class="txt-cls" placeholder="请输入驳回理由" v-model="reason"></textarea>    
                 </div>
@@ -62,6 +62,10 @@
             <Button type="error" size="large" long >footer</Button>
         </div>
     </Modal>
+
+    <Modal title="View Image" v-model="visible">
+        <img :src="baseImg+imgSrc" v-if="visible" style="width: 100%">
+    </Modal>
 </div>
 
 </template>
@@ -70,6 +74,8 @@
     export default {
         data () {
             return {
+                visible:false,
+                imgSrc:"",
                 modals: false,
                 showTotal:true,
                 taskid:"",
@@ -91,117 +97,44 @@
                 },
                 columns8: [
                     // {
-                    //     "title": "序号",
-                    //     "key": "value0"
-                    // },
-                    // {
-                    //     "title": "操作",
-                    //     "key": "tomorrow",
-                    //     width:160,
-                    //     render: (h, params) => {
-                    //         return h('div', [
-                    //             h('Button', {
-                    //                 props: {
-                    //                     type: 'primary',
-                    //                     size: 'small'
-                    //                 },
-                    //                 style: {
-                    //                     marginRight: '5px'
-                    //                 },
-                    //                 on: {
-                    //                     click: () => {
-                    //                         console.log(params)
-                    //                     }
-                    //                 }
-                    //             }, 'View'),
-                    //             h('Button', {
-                    //                 props: {
-                    //                     type: 'error',
-                    //                     size: 'small'
-                    //                 },
-                    //                 on: {
-                    //                     click: () => {
-                    //                         console.log(params)
-                    //                     }
-                    //                 }
-                    //             }, 'Delete')
-                    //         ]);
-                    //     }
+                    //     type: 'index',
+                    //     width: 60,
+                    //     title:"序号",
+                    //     align: 'center'
                     // }
-                    
                 ],
                 data7: [
-                    
-        // {
-        //     "id":"5c2e03bae3d960a6049566c1",
-        //     "value0":"张三",
-        //     "value1":"选项1",
-        //     "value2":"你好萨达萨达的反攻倒算",
-        //     "value4":"单选框2",
-        //     "value5":["/files/campus/2019/01/03/logo.png"]
-        // },
-        // {
-        //     "id":"5c2e03d7e3d960a6049566c2",
-        //     "value0":"李四",
-        //     "value1":"选项1",
-        //     "value2":"萨梵蒂冈风格的",
-        //     "value4":"单选框1",
-        //     "value5":["/files/campus/2019/01/03/icon1.png"]
-        // },
-        // {
-        //     "id":"5c2e03ede3d960a6049566c3",
-        //     "value0":"王五",
-        //     "value1":"选项1",
-        //     "value2":"萨达法师法师股份",
-        //     "value4":"单选框2",
-        //     "value5":["/files/campus/2019/01/03/icon1.png","/files/campus/2019/01/03/icon2.png"]
-        // },
-        // {
-        //     "id":"5c2e0402e3d960a6049566c4",
-        //     "value0":"赵六",
-        //     "value1":"选项1",
-        //     "value2":"萨达法师法师股份",
-        //     "value4":"单选框1",
-        //     "value5":["/files/campus/2019/01/03/icon2.png","/files/campus/2019/01/03/nodata.png"]
-        // },
-        // {
-        //     "id":"5c2e04e3e3d960a6049566c5",
-        //     "value0":"你好啊",
-        //     "value1":"选项1",
-        //     "value2":"广东佛山的方式解决",
-        //     "value4":"单选框1",
-        //     "value5":["/files/campus/2019/01/03/nodata.png"]
-        // },
-        // {
-        //     "id":"5c2e0516e3d960a6049566c6",
-        //     "value0":"规范化",
-        //     "value1":"选项1",
-        //     "value2":"广东佛山的方式解决",
-        //     "value4":"单选框2",
-        //     "value5":["/files/campus/2019/01/03/nodata.png"]
-        // }
     
                 ],
                 lists:[],
+                submitMsg:{
+                    createtime:"",
+                    submiter:""
+                },
                 rowIndex:'',
-                baseImg:this.$api.getBase()
+                baseImg:this.$api.getBase(),
+                ids:""
             }
         },
         mounted(){
             this.userId=this.$api.sGetObject("userObj").userId;
             this.taskid=this.$route.query.taskid;
             this.getData();
+
         },
         methods: {
             getData(){
                 let self=this;
+                self.columns8=[];
+                self.data7=[];
                 self.$api.get("/submit/taskSummary",{
-                    userid:this.userId,
+                    userid:"",
                     taskid:this.taskid,
                     page:this.currentPage,
                     pagesize:this.pagesize
                 },r=>{
                     let datas =JSON.parse(r.data);
+                    self.totals=datas.count;
                     self.formMsg.should=datas.should;
                     self.formMsg.submitCount=datas.submitCount;
                     self.formMsg.tableTitle=datas.tableTitle;
@@ -219,39 +152,34 @@
                         for(let i=0;i<columnsArr.length;i++){
                             let objs={};
                             if(typeArr[i]=="uploadimg"){
-                                // datas.resultList[i]["value"+i].split(",");
                                 objs={
                                     title:columnsArr[i],
                                     key:"value"+i,
-                                    // render: (h,params) => {
-                                    //     let keys="value"+i;
-                                    //     return h('img',{
-                                    //         attrs:{
-                                    //             src: this.baseImg+params.row[keys],
-                                    //             style: 'width: 40px;'
-                                    //         },
-                                    //     })
-                                    // }
                                     render: (h,params) => {
                                         let keys="value"+i;
-                                        let arrs=params.row[keys].split(",");
-                                        // return h('p',{
-
-                                        // },params.row[keys]); 
-                                        // h("div",arrs.map(function(item,index){
-                                        //     return [
-                                        //         h("img",{
-                                        //             attrs:{
-                                        //                 src: self.baseImg+item,
-                                        //                 style: 'width: 40px;'
-                                        //             },
-                                        //         })
-                                        //     ]
-                                        // }))
-                                        return h("div",arrs.map(function(item,index){
-                                            return <img src={self.baseImg+item} width="40px" height="40px" style="display:inline-block;"/>
-                                        }))
                                         
+                                        let arr=[];
+                                        if(params.row[keys]!=""){
+                                            let arrs=params.row[keys].split(",");
+                                            arrs.map((item,index)=>{
+                                                arr.push(h("img",{
+                                                    attrs:{
+                                                        src: self.baseImg+item,
+                                                        style: 'width: 40px;display:inline-block;'
+                                                    },
+                                                    on:{
+                                                        click:()=>{
+                                                            // console.log(event)
+                                                            // event.stopPropagetion();
+                                                            console.log(item)
+                                                        }
+                                                    }
+                                                }))
+                                            })
+                                        }
+                                        
+                                        return h("div",arr)
+                                       
                                     }
                                     
                                 }
@@ -273,6 +201,8 @@
             getModalData(ids){
                 
                 let self=this;
+                this.reason="";
+                self.ids=ids;
                 self.$api.get("/submit/submitDetails",{
                     id:ids,
                     taskid:this.taskid
@@ -281,21 +211,39 @@
                     
                     for(let i=0;i<datas.content.length;i++){
                         datas.content[i].title=self.columns8[i].title;
-                        console.log(1,datas.content[i].type=="uploadimg")
                         if(datas.content[i].type=="uploadimg"){
-                            datas.content[i].value=datas.content[i].value.split(",");
-                            console.log(2,datas.content[i].value)
-                            
+                            datas.content[i].value=datas.content[i].value.split(",");                         
                         }
                     }
+                    console.log(datas.createtime)
+                    self.submitMsg.submiter=datas.submiter;
+                    self.submitMsg.createtime=datas.createtime;
                     self.lists=datas.content;
-                    console.log(4324,self.lists)
                 })
+            },
+            audit(states){
+                let self=this;
+                self.$api.get("/submit/examine",{
+                    id:self.ids,
+                    taskid:this.taskid,
+                    state:states,
+                    reason:this.reason
+                },r=>{
+                    let datas=JSON.parse(r.data);
+                    self.$Message.info('成功');
+                    console.log(111,datas);
+                })
+            },
+            viewImg(srcs){
+                // console.log(srcs)
+                let self=this;
+                self.imgSrc=srcs;
+                this.visible=true;
             },
             exportData (type) {
                 if (type === 1) {
                     this.$refs.table.exportCsv({
-                        filename: 'The original data'
+                        filename: this.formMsg.title+'-提交表单数据'
                     });
                 } else if (type === 2) {
                     this.$refs.table.exportCsv({
@@ -314,6 +262,7 @@
                 this.rowIndex=index;
                 // console.log(index);
                 this.modals=true;
+                console.log(data);
                 this.getModalData(data.id);
                 // console.log(data)
             },
@@ -342,13 +291,10 @@
                 let ids=this.data7[this.rowIndex].id;
                 this.getModalData(ids);
             },
-            nopassFun(){
-                console.log("不通过");
-            },
-            passFun(){
-                console.log("通过");
-            },     
+   
             changeFun(page){
+                this.currentPage=page;
+                this.getData();
                 console.log(page)
             }
         }

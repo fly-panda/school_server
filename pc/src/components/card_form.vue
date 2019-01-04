@@ -124,7 +124,7 @@ export default {
             let self=this;
             if(item.state!=0){
                 self.$router.push({
-                    path:"/taskDetail?id="+item.id
+                    path:"/taskDetail?taskid="+item.id
                 })
             }
         }

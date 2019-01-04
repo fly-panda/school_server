@@ -3,21 +3,23 @@
     
     <div class="title-cont">
         <div class="duplicate-title">
-            <p class='title-txt'><span class="back-cls" @click="backFun"><Icon type="ios-arrow-back" /></span>{{title}}</p>
+            <p class='title-txt'><span class="back-cls" @click="backFun"><Icon type="ios-arrow-back" /></span>{{previewObj.title}}</p>
             <p class="btn-view">
-                <Button type="error" ghost @click="del">删除</Button>
+                <Button type="error" ghost @click="del" v-show="id&&state!=1">删除</Button>
                 <Button type="success" ghost @click="history">填写记录</Button>
             </p>
         </div>
     </div>
     
     <div class="duplicate-content" :style="{height:fullHeight.height}">
-        <div class="nopass">
-            <h3>不合格理由</h3>
-            <p>请按正确格式填写所有信息，请及时修改尽快提交。</p>
+        <div class="nopass" v-show="state==2">
+            <h3>不合格理由:</h3>
+            <p>{{reason}}</p>
         </div>
         <div class="previewContent">
-            <formDetail :previewObj="previewObj" :types="'edits'" :isSave="true" :id="id"/>
+            
+            <formDetail :previewObj="previewObj" :types="'edits'" :isSave="state!=1" :taskid="taskid" :id="id"/>
+            
         </div>
     </div>
 </div>
@@ -39,27 +41,34 @@ export default {
             fullHeight:{// 动态获取屏幕高度
                 height: (document.documentElement.clientHeight-124)+"px"
             },
-            title: '一年级校服尺寸收集表',
+            title: '',
             previewObj:{
                 title:"",
                 describe:"",
                 data:[]
             },
-            id:this.$route.query.id
-          
+            taskid:this.$route.query.taskid,
+            id:this.$route.query.id,
+            state:"",//审核状态 0未审核 1审核通过 2审核未通过
+            reason:""
         }
     },
     mounted(){
         // this.previewObj=this.$api.sGetObject("previewObj");
-        console.log(this.$route.query.id)
-        this.getTaskDetail()
+        // console.log("id:",!this.$route.query.id)
+        if(this.id){
+            this.getData();
+        }else{
+            this.getTaskDetail()
+        }
+        
         
     },
     methods: {
-         getTaskDetail(){
+        getTaskDetail(){
             let self=this;
             self.$api.get("/task/taskdetail",{
-                taskid:self.id
+                taskid:self.taskid
             },r=>{
                 let datas=JSON.parse(r.data);
                 self.previewObj.title=datas.title;
@@ -68,13 +77,44 @@ export default {
                 // console.log(1,self.previewObj)
             })
         },
+        getData(){
+                
+                let self=this;
+                self.$api.get("/task/taskdetail",{
+                    taskid:self.taskid
+                },r=>{
+                    let datas=JSON.parse(r.data);
+                    self.previewObj.title=datas.title;
+                    self.previewObj.describe=datas.describe;
+                    // console.log(1,self.previewObj)
+                });
+                self.$api.get("/submit/submitDetails",{
+                    id:this.id,
+                    taskid:this.taskid
+                },r=>{
+                    let datas=JSON.parse(r.data);
+                    self.previewObj.data=datas.data;
+                    self.reason=datas.reason;
+                    self.state=datas.state;
 
+                });
+            },
         del () {
-            this.$Modal.confirm({
+            let self=this;
+            self.$Modal.confirm({
                 title: '确认要删除？',
                 content: '',
                 onOk: () => {
-                    this.$Message.info('删除成功');
+
+                    self.$api.get("/task/taskdetail",{
+                        taskid:self.taskid,
+                        id:self.id
+                    },r=>{
+                        let datas=JSON.parse(r.data);
+                        self.$Message.info('删除成功');
+                        // console.log(1,self.previewObj)
+                    })
+                    
                 },
                 onCancel: () => {
                     // this.$Message.info('Clicked cancel');
@@ -83,7 +123,7 @@ export default {
         },
         history(){
             this.$router.push({
-                path:"/record"
+                path:"/record?taskid="+this.taskid
             })
         },
         backFun(){

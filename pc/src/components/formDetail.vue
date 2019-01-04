@@ -433,6 +433,8 @@
 </div>
             <Row style="display: flex; justify-content: center">
                 <Button type="primary" style="margin: 2rem auto; width: 8rem" @click="saveForm" :disabled="!isSave">提  交</Button>
+                
+                
             </Row>
         </div>
     </div>
@@ -445,7 +447,7 @@ import datas from "_c/mock.js"
 import address_com from "_c/address.vue"
 export default {
 // 'previewObj',
-    props: ['isSave','types','id','previewObj'],
+    props: ['isSave','types','taskid','previewObj','state','id'],
     components:{
         address_com
     },
@@ -486,7 +488,7 @@ export default {
         this.getData();
         // this.getSheng();
 
-        if(this.id){
+        if(this.taskid){
 
         }else{
             // this.previewObj=this.$api.sGetObject("previewObj");
@@ -815,18 +817,35 @@ export default {
             let msg=this.requireCheck();
             // console.log(JSON.stringify(self.previewObj));
             if(msg=="success"){
-                self.$api.post("/submit/submitTask",{
-                    id:this.id,
-                    title:self.previewObj.title,
-                    data:self.previewObj.data,
-                    describe:self.previewObj.describe
-                },r=>{
-                    console.log(r)
-                    // self.cardList=JSON.parse(r.data);
-                    self.$Message.success("提交成功");
-                },e=>{
-                    console.log(e)
-                })
+                if(this.id){
+                    self.$api.post("/submit/update",{
+                        id:this.id,
+                        taskid:this.taskid,
+                        title:self.previewObj.title,
+                        data:self.previewObj.data,
+                        describe:self.previewObj.describe
+                    },r=>{
+                        console.log(r)
+                        // self.cardList=JSON.parse(r.data);
+                        self.$Message.success("提交成功");
+                    },e=>{
+                        console.log(e)
+                    })
+                }else{
+                    self.$api.post("/submit/submitTask",{
+                        id:this.taskid,
+                        title:self.previewObj.title,
+                        data:self.previewObj.data,
+                        describe:self.previewObj.describe
+                    },r=>{
+                        console.log(r)
+                        // self.cardList=JSON.parse(r.data);
+                        self.$Message.success("提交成功");
+                    },e=>{
+                        console.log(e)
+                    })
+                }
+                
 
             }else{
                 this.$Message.warning(msg+"为必填项，请填写后提交!");
