@@ -215,7 +215,6 @@
                             datas.content[i].value=datas.content[i].value.split(",");                         
                         }
                     }
-                    console.log(datas.createtime)
                     self.submitMsg.submiter=datas.submiter;
                     self.submitMsg.createtime=datas.createtime;
                     self.lists=datas.content;
@@ -231,7 +230,6 @@
                 },r=>{
                     let datas=JSON.parse(r.data);
                     self.$Message.info('成功');
-                    console.log(111,datas);
                 })
             },
             viewImg(srcs){

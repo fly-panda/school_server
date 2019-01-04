@@ -17,7 +17,7 @@
             <p>{{reason}}</p>
         </div>
         <div class="previewContent">
-            
+
             <formDetail :previewObj="previewObj" :types="'edits'" :isSave="state!=1" :taskid="taskid" :id="id"/>
             
         </div>
@@ -106,12 +106,18 @@ export default {
                 content: '',
                 onOk: () => {
 
-                    self.$api.get("/task/taskdetail",{
+                    self.$api.get("/submit/delete",{
                         taskid:self.taskid,
                         id:self.id
                     },r=>{
                         let datas=JSON.parse(r.data);
                         self.$Message.info('删除成功');
+                        setTimeout(() => {
+                            self.$router.push({
+                                path:"/record?taskid="+self.taskid
+                            })
+                        }, 400)
+                        
                         // console.log(1,self.previewObj)
                     })
                     
