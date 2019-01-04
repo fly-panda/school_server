@@ -50,8 +50,8 @@
                 </ul>
                 <div class="form-view">
                     <p>
-                        <Button @click="audit(1)" type="success">合格</Button>
-                        <Button @click="audit(2)" type="error" :disabled="reason.length==0">不合格</Button>
+                        <Button @click="audit(1)" type="success":disabled="submitMsg.state==1">合格</Button>
+                        <Button @click="audit(2)" type="error" :disabled="(reason.length==0&&submitMsg.state!=1)||submitMsg.state==1">不合格</Button>
                     </p>
                     <textarea class="txt-cls" placeholder="请输入驳回理由" v-model="reason"></textarea>    
                 </div>
@@ -93,7 +93,8 @@
                     taskStartTime:"",
                     tempid:"",
                     title:"",
-                    originator:""
+                    originator:"",
+                    state:""
                 },
                 columns8: [
                     // {
@@ -208,7 +209,7 @@
                     taskid:this.taskid
                 },r=>{
                     let datas=JSON.parse(r.data);
-                    
+                    self.submitMsg.state=datas.state;
                     for(let i=0;i<datas.content.length;i++){
                         datas.content[i].title=self.columns8[i].title;
                         if(datas.content[i].type=="uploadimg"){
