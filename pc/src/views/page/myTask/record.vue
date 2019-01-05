@@ -142,7 +142,34 @@ export default {
                                 }
                                 
                             }
-                        }else{
+                        }else if(typeArr[i]=="uploads"){
+                                objs={
+                                    title:columnsArr[i],
+                                    key:"value"+i,
+                                    render: (h,params) => {
+                                        let keys="value"+i;                                        
+                                        let arr=[];
+                                        if(params.row[keys]!=""){
+                                            let arrs=params.row[keys].split(",");
+                                            arrs.map((item,index)=>{
+                                                arr.push(h("a",{
+                                                    attrs:{
+                                                        // src:self.baseImg+"api/file/download?path="+item,
+                                                        style: 'margin:0 2px;color:#5DB75D;cursor:pointer;'
+                                                    },
+                                                    on:{
+                                                        click:()=>{
+                                                            window.location.href=this.baseImg+"api/file/download?path="+item;
+                                                        }
+                                                    }
+                                                },"附件"+(index+1)))
+                                            })
+                                        }                                       
+                                        return h("div",arr)                                      
+                                    }
+                                    
+                                }
+                            }else{
                             objs={
                                 title:columnsArr[i],
                                 key:"value"+i
