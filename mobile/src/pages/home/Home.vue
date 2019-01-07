@@ -10,6 +10,7 @@
       ref="scrollerBottom"
       :height="viewH"
     >
+      <!-- state 任务状态(0 任务未开始 1 任务进行中 2 任务已结束) -->
       <ul class="list current-list" v-show="tabIndex == 0 && listData.length">
         <li
           class="li-item"
@@ -28,7 +29,7 @@
             <div class="title">{{ item.title }}</div>
             <div class="type">{{ item.isloop == 0 ? '周任务' : '单次任务'}}</div>
           </div>
-          <div class="user">发布人：{{ item.user }}</div>
+          <div class="user">发布人：{{ item.publisher }}</div>
           <div class="bottom">
             <div class="date">截止时间：{{ item.endtime }}</div>
             <div class="statu" v-if="item.state == 1">进行中</div>
@@ -45,7 +46,7 @@
             <div class="title">{{ item.title }}</div>
             <div class="type">{{ item.type }}</div>
           </div>
-          <div class="user">创建人：{{ item.user }}</div>
+          <div class="user">创建人：{{ item.publisher }}</div>
           <div class="bottom">
             <div class="date">截止时间：{{ item.endtime }}</div>
             <div class="statu">{{ item.statu }}</div>
@@ -53,7 +54,8 @@
         </li>
       </ul>
 
-      <div class="no-data" v-show="!listData.length">木有数据</div>
+      <!-- <div class="no-data" v-show="!listData.length">木有数据</div> -->
+      <no-data v-show="!listData.length"></no-data>
 
     </scroller>
 
@@ -82,6 +84,8 @@ import { Scroller, Tabbar, TabbarItem } from "vux";
 import { TransferDomDirective as TransferDom } from "vux";
 
 import Tab from "../../components/tab/Tab";
+import NoData from "../../components/noData/Nodata";
+
 
 const pullupDefaultConfig = {
   content: "上拉加载更多",
@@ -100,7 +104,8 @@ export default {
     Tab,
     Scroller,
     Tabbar,
-    TabbarItem
+    TabbarItem,
+    NoData
   },
   data() {
     return {
@@ -168,12 +173,13 @@ export default {
     loadMore() {
       let obj = {
         state: this.tabIndex,
-        userid: this.userid,
+        userid: this.$api.sGetObject('userObj').userId,
         page: this.page,
         pagesize: this.pagesize
       };
       this.$api.get("task/participate", obj, r => {
         let data = JSON.parse(r.data);
+        console.log(data)
         this.page++;
         this.pageCount = data.pageCount;
 

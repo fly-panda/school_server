@@ -23,7 +23,7 @@
           </div>
           <div class="bottom">
             <div class="date">填写时间：{{ item.endtime }}</div>
-            <div class="type">填写人：{{ item.type }}</div>
+            <div class="type">填写人：{{ item.publisher }}</div>
           </div>
         </li>
       </ul>
@@ -38,17 +38,28 @@
             <!-- <div class="statu">{{ item.statu }}</div> -->
           </div>
           <div class="mid">
-            <div class="mid-item" v-for="(item, index) of item.data" :key="index">
-              <div class="mid-txt">{{ item.title }}</div>
-              <div class="number">{{ item.number }}</div>
+            <div class="mid-item">
+              <div class="mid-txt">应交人</div>
+              <div class="number">{{ item.participants }}</div>
+            </div>
+            <div class="mid-item">
+              <div class="mid-txt">已交人</div>
+              <div class="number">{{ item.submitpeople }}</div>
+            </div>
+            <div class="mid-item">
+              <div class="mid-txt">已交数据</div>
+              <div class="number">{{ item.submitcount }}</div>
             </div>
           </div>
           <div class="bottom">
             <div class="date">截止时间：{{ item.endtime }}</div>
-            <div class="type" style="font-size: 14px;color: #5B5B5B;">创建人：{{ item.type }}</div>
+            <div class="type" style="font-size: 14px;color: #5B5B5B;">创建人：{{ item.publisher }}</div>
           </div>
         </li>
       </ul>
+
+      <no-data v-show="!listData.length"></no-data>
+
     </scroller>
 
     <tabbar>
@@ -74,6 +85,8 @@
 <script>
 import { Scroller, Tabbar, TabbarItem } from "vux";
 import Tab from "../../components/tab/Tab";
+import NoData from "../../components/noData/Nodata";
+
 
 const pullupDefaultConfig = {
   content: "上拉加载更多",
@@ -92,7 +105,8 @@ export default {
     Tab,
     Scroller,
     Tabbar,
-    TabbarItem
+    TabbarItem,
+    NoData
   },
   data() {
     return {

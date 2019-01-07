@@ -31,7 +31,7 @@
           <div class="mid">
             <div class="mid-item">
               <div class="mid-txt">应交人</div>
-              <div class="number">{{ item.submitpeople }}</div>
+              <div class="number">{{ item.participants }}</div>
             </div>
             <div class="mid-item">
               <div class="mid-txt">已交人</div>
@@ -39,7 +39,7 @@
             </div>
             <div class="mid-item">
               <div class="mid-txt">已交数据</div>
-              <div class="number">{{ item.submitpeople }}</div>
+              <div class="number">{{ item.submitcount }}</div>
             </div>
           </div>
           <div class="bottom">
@@ -112,6 +112,10 @@ export default {
     });
   },
   methods: {
+    taskDetail(item) {
+      let obj = JSON.stringify(item)
+      this.$router.push({ path: "/submitFormData", query: { item: obj } });
+    },
     loadMore() {
       let obj = {
         userid: this.userid,
@@ -132,7 +136,7 @@ export default {
         } else {
           this.$refs.scrollerBottom.enablePullup();
         }
-        console.log(data.result);
+        // console.log(data.result);
 
         this.listData = this.listData.concat(data.result);
 

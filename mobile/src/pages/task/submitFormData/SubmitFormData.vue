@@ -3,15 +3,15 @@
     <div class="wrapper">
       <div class="box">
         <div class="item">
-          <div class="num">122</div>
+          <div class="num">{{ datas.should }}</div>
           <div class="title">应交人</div>
         </div>
         <div class="item">
-          <div class="num">222</div>
+          <div class="num">{{ datas.should }}</div>
           <div class="title">未交人</div>
         </div>
         <div class="item">
-          <div class="num">312</div>
+          <div class="num">{{ datas.submitCount }}</div>
           <div class="title">已交数据</div>
         </div>
       </div>
@@ -23,16 +23,26 @@
       :pullup-config="pullupDefaultConfig"
       @on-pullup-loading="loadMore"
       ref="scrollerBottom"
-      :height="lishH">
+      :height="lishH"
+    >
       <ul class="list">
-        <li class="list-item" v-for="(item, index) of listData" :key="index">
+        <li
+          class="list-item"
+          v-for="(item, index) of listData"
+          :key="index"
+          @click="detail(item.id)"
+        >
           <div class="left">
-            <span class="name">{{ item.name }}</span>
-            <img v-if="item.statu" class="img-statu" src="../../../assets/img/icon/icon-tanhao.png" width="13" alt="">
+            <span class="name">{{ item.value0 }}</span>
+            <!-- <img
+              v-if="item.statu"
+              class="img-statu"
+              src="../../../assets/img/icon/icon-tanhao.png"
+              width="13"
+              alt
+            >-->
           </div>
-          <div class="right">
-            已交：{{ item.num }}
-          </div>
+          <div class="right">{{ datas.taskCreateTime | timeFifler }}</div>
         </li>
       </ul>
     </scroller>
@@ -59,42 +69,84 @@ export default {
     Scroller
   },
   props: {},
+  filters: {
+    timeFifler(r) {
+      let date = r.slice(0, 10)
+      return date
+      console.log(r);
+    }
+  },
   data() {
     return {
-      lishH: '',
+      pagesize: 15, // 每页请求数量
+      page: 1, // 页码
+      pageCount: 0, // 总页数
+      obj: {},
+      lishH: "",
       pullupDefaultConfig: pullupDefaultConfig,
-      listData: [
-        {
-          name: '张三',
-          num: '100',
-          statu: false
-        },
-        {
-          name: '张三',
-          num: '100',
-          statu: true
-        },{
-          name: '张三',
-          num: '100',
-          statu: false
-        }
-        ,{
-          name: '张三',
-          num: '10',
-          statu: false
-        }
-      ]
+      taskid: "",
+      datas: {},
+      listData: []
     };
   },
   watch: {},
   computed: {},
-  methods: {
-    loadMore() {
+  mounted() {
+    this.lishH = window.innerHeight - 100 + "px";
+    this.userId = this.$api.sGetObject("userObj").userId;
 
+    this.$nextTick(() => {
+      this.$refs.scrollerBottom.disablePullup();
+      this.$refs.scrollerBottom.reset({ top: 0 });
+    });
+  },
+  methods: {
+    detail(id) {
+      this.$router.push({
+        path: "/submitFormDataDetail",
+        query: { taskid: this.taskid, id: id }
+      });
+    },
+    loadMore() {
+      let obj = {
+        userid: "",
+        taskid: this.taskid,
+        page: this.page,
+        pagesize: this.pagesize
+      };
+      this.$api.get("/submit/taskSummary", obj, r => {
+        let data = JSON.parse(r.data);
+
+        this.datas = data;
+
+        console.log(data);
+
+        this.page++;
+        this.pageCount = data.count;
+
+        this.$nextTick(() => {
+          this.$refs.scrollerBottom.reset();
+        });
+
+        if (this.page > data.CurrentPage) {
+          this.$refs.scrollerBottom.disablePullup();
+        } else {
+          this.$refs.scrollerBottom.enablePullup();
+        }
+
+        this.listData = this.listData.concat(data.resultList);
+
+        this.$refs.scrollerBottom.donePullup();
+      });
     }
   },
-  created() {},
-  mounted() {}
+  created() {
+    let options = this.$route.query;
+    this.obj = JSON.parse(options.item);
+    this.taskid = this.obj.id;
+
+    this.loadMore();
+  }
 };
 </script>
 <style lang="scss" scoped>
@@ -146,6 +198,11 @@ export default {
         color: #333;
         font-size: 17px;
         margin-right: 5px;
+        display: block;
+        width: px2rem(150);
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
       }
       .right {
         font-size: 15px;

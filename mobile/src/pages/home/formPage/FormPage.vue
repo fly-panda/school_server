@@ -77,11 +77,13 @@
           <div class="img-box">
             <div class="upload-list">
               <div class="img-box-item" v-for="(item, index) of obj.obj.uploadList" :key="index">
-                <img :src="item.src">
-                <div class="del-img" @click="delImg(obj.obj.uploadList, index)">X</div>
+                <img :src="baseUrl + item.url">
+                <div class="del-img" 
+                     @click="delImg(obj.obj.uploadList, index)"
+                     v-show="openType != 0">X</div>
               </div>
             </div>
-            <div class="upload">
+            <div class="upload" v-show="openType != 0">
               <div>
                 <span>+</span>
                 <span>点击上传</span>
@@ -408,8 +410,15 @@
       <button
         :disabled="preview == '1'"
         :class="[preview == '1' ? 'btn-disabled' : '','submit']"
+        v-show="openType != 0"
         @click="submitForm"
       >提交</button>
+
+      <div class="btn-box" v-show="openType == 0">
+        <div class="hg" @click="caozuoForm(1)">合格</div>
+        <div class="bhg" @click="caozuoForm(2)">不合格</div>
+      </div>
+
     </div>
     <!-- 历史记录 -->
     <div class="history-record" v-if="selectTabIndex == 1">
@@ -583,6 +592,9 @@ export default {
   data() {
     return {
       test: [],
+
+      openType: "",
+
       baseUrl: "http://47.93.156.129:8848/",
 
       formOnlyRead: false, // 表单状态
@@ -741,9 +753,14 @@ export default {
   },
   computed: {},
   mounted() {
+    let options = this.$route.query
+
     // 判断页面是不是预览 preview == '1'为预览
     this.preview = this.$route.query.preview ? this.$route.query.preview : "";
     let ids = this.$route.query.ids ? this.$route.query.ids : "";
+    this.ids = ids
+
+    this.openType = this.$route.query.openType;
 
     // 预览
     if (this.preview == 1) {
@@ -766,6 +783,23 @@ export default {
       this.$api.get("/cform/getpreview", { tempid: ids }, r => {
         let allData = JSON.parse(r.data);
         this.dataFormat(allData);
+      });
+      return;
+    }
+
+
+    //任务管理里面过来
+    if (this.openType == 0) {
+
+      let obj = {
+        id: options.id,
+        taskid: options.taskid
+      };
+
+      this.$api.get("/submit/submitDetails", obj, r => {
+        let datas = JSON.parse(r.data);
+        console.log(datas);
+        this.dataFormat(datas);
       });
       return;
     }
@@ -800,7 +834,7 @@ export default {
       self.$api.uploadFile("file/upload ", {}, fileObj, r => {
         console.log(r);
         obj.uploadList.push({
-          src: this.baseUrl + r.data,
+          url: r.data,
           // size: sizes,
           name: fileObj.name
         });
@@ -979,7 +1013,7 @@ export default {
             (!v.obj.valueDate || !v.obj.valueTime) &&
             v.obj.chooseCheck.length == 2
           ) {
-            console.log('all')
+            console.log("all");
             msg = v.obj.label;
             return true;
           }
@@ -989,7 +1023,7 @@ export default {
             v.obj.chooseCheck.length == 1 &&
             v.obj.chooseCheck[0] == "date"
           ) {
-            console.log('date')
+            console.log("date");
             msg = v.obj.label;
             return true;
           }
@@ -999,13 +1033,13 @@ export default {
             v.obj.chooseCheck.length == 1 &&
             v.obj.chooseCheck[0] == "time"
           ) {
-            console.log('time')
+            console.log("time");
             msg = v.obj.label;
             return true;
           }
           if (
             v.ele == "address" &&
-            (!v.obj.shengValue || !v.obj.shiValue || !v.obj.quValue) && 
+            (!v.obj.shengValue || !v.obj.shiValue || !v.obj.quValue) &&
             v.obj.chooseCheck.length == 3
           ) {
             msg = v.obj.label;
@@ -1075,14 +1109,24 @@ export default {
     },
     // 提交表单
     submitForm() {
-      console.log(this.allListData)
+      console.log(this.allListData);
       let msg = this.requireCheck();
-      console.log(msg)
+      console.log(msg);
+
+      // let obj = {
+      //   id: this.id,
+      //   title: this.allListData.title,
+      //   data: this.allListData.data,
+      //   describe: this.allListData.describe
+      // };
+
+      console.log(this.ids)
+
       if (msg == "success") {
         this.$api.post(
-          "/task/submitTask",
+          "/submit/submitTask",
           {
-            id: this.id,
+            id: this.ids,
             title: this.allListData.title,
             data: this.allListData.data,
             describe: this.allListData.describe
@@ -1116,6 +1160,27 @@ export default {
     display: none;
   }
 }
+  .btn-box {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: px2rem(30);
+    div {
+      width: px2rem(130);
+      height: px2rem(35);
+      text-align: center;
+      line-height: px2rem(35);
+      border-radius: 1px;
+      color: #fff;
+    }
+    .hg {
+      background: #5db75d;
+      margin-right: px2rem(25);
+    }
+    .bhg {
+      background: #C3C9CF;
+    }
+  }
 thead {
   font-size: 14px;
   text-align: center;
