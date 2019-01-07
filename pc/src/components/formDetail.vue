@@ -12,7 +12,7 @@
             <div class="selectStudentContainer" v-if="cont.ele=='selectstudent'">
                 <div class="title" :class="{'require-cls':cont.obj.require}">选择学生</div>
                 <div class="point">提示内容</div>
-                <!-- {{cont.obj.selArr}} --> 
+                <!-- {{cont.obj.selObj}}  -->
                 <div class="selectBtn" v-if="!type_student" @click="selS">    
                 
                     <span v-text="cont.obj.selObj.name?cont.obj.selObj.name:'点击选择学生范围'"></span>
@@ -438,7 +438,25 @@
             </Row>
         </div>
     </div>
-    
+    <Modal v-model="modalAdd" width="360" >
+        <p slot="close"></p>
+        <p slot="header" style="color:#f60;text-align:center">
+            <!-- <Icon type="information-circled"></Icon> -->
+            <!-- <span>删除确认</span> -->
+        </p>
+        <div style="text-align:center">
+            <p>
+                <img src="@/assets/tijiaochanggong_picture@.png" alt="" style="display:inline-block;height: 79px;width:79px;">
+            </p>
+            <p class="titlecls">提交成功</p>
+            <p class="titlecont" style="margin-bottom: 50px;">修改表单请到“我的提交”中修改</p>
+        </div>
+        <div slot="footer" style="text-align: center;">
+            <i-button type="success" @click="continueFun">继续填写</i-button>
+            <i-button @click="jumpBack">返回</i-button>
+            
+        </div>
+    </Modal>
 </div>
 </template>
 
@@ -475,7 +493,8 @@ export default {
             gradeList:[],
             departmentMultiple:false,
             studentObj:{},
-            teacherObj:{}
+            teacherObj:{},
+            modalAdd:false
         }
     },
     filter:{
@@ -670,13 +689,13 @@ export default {
         selClick(item,index){
             let self=this;
             self.studentObj=item;
-            console.log(self.studentObj)
+            // console.log(self.studentObj)
             // item.checked=!item.checked;
         },
         selsClick(item,index){
             let self=this;
             self.teacherObj=item;
-            console.log(self.teacherObj)
+            // console.log(self.teacherObj)
             // item.checked=!item.checked;
         },
         // getSheng(){
@@ -814,8 +833,9 @@ export default {
         },
         saveForm(){
             let self=this;
+            
             let msg=this.requireCheck();
-            // console.log(JSON.stringify(self.previewObj));
+            console.log(JSON.stringify(self.previewObj));
             if(msg=="success"){
                 if(this.id){
                     self.$api.post("/submit/update",{
@@ -825,9 +845,13 @@ export default {
                         data:self.previewObj.data,
                         describe:self.previewObj.describe
                     },r=>{
-                        console.log(r)
+                        // console.log(r)
                         // self.cardList=JSON.parse(r.data);
-                        self.$Message.success("提交成功");
+                        // self.$Message.success("修改成功");
+                        self.modalAdd=true;
+                        // self.$router.push({
+                        //     path:"/allTask"
+                        // })
                     },e=>{
                         console.log(e)
                     })
@@ -838,9 +862,11 @@ export default {
                         data:self.previewObj.data,
                         describe:self.previewObj.describe
                     },r=>{
-                        console.log(r)
+                        // console.log(r)
                         // self.cardList=JSON.parse(r.data);
-                        self.$Message.success("提交成功");
+                        // self.$Message.success("提交成功");
+                        self.modalAdd=true;
+                        
                     },e=>{
                         console.log(e)
                     })
@@ -852,6 +878,17 @@ export default {
             }
             
            
+        },
+        jumpBack(){
+            let self=this;
+            self.$router.push({
+                path:"/allTask"
+            })
+        },
+        continueFun(){
+
+            this.$emit("continues");
+            this.modalAdd=false;
         },
         downloadFun(res){
             let self=this;
@@ -1200,5 +1237,18 @@ export default {
         margin:2px 20px;
         cursor: pointer;
     }
+}
+.titlecls{
+    font-family: PingFang-SC-Medium;
+    font-size: 18px;
+    color: #5DB75D;
+    letter-spacing: -0.36px;
+}
+.titlecont{
+    font-family: PingFang-SC-Medium;
+    font-size: 14px;
+    color: #000000;
+    letter-spacing: -0.28px;
+
 }
 </style>

@@ -5,7 +5,7 @@
         <div class="duplicate-title">
             <p class='title-txt'><span class="back-cls" @click="backFun"><Icon type="ios-arrow-back" /></span>{{previewObj.title}}</p>
             <p class="btn-view">
-                <Button type="error" ghost @click="del" v-show="id&&state!=1">删除</Button>
+                <Button type="error" ghost @click="modalDel=true" v-show="id&&state!=1">删除</Button>
                 <Button type="success" ghost @click="history">填写记录</Button>
             </p>
         </div>
@@ -18,10 +18,30 @@
         </div>
         <div class="previewContent">
 
-            <formDetail :previewObj="previewObj" :types="'edits'" :isSave="state!=1" :taskid="taskid" :id="id"/>
+            <formDetail :previewObj="previewObj" :types="'edits'" :isSave="state!=1" :taskid="taskid" :id="id" @continues="getInit"/>
             
         </div>
     </div>
+    <Modal v-model="modalDel" width="360">
+        <p slot="header" style="color:#f60;text-align:center">
+            <Icon type="information-circled"></Icon>
+            <!-- <span>删除确认</span> -->
+        </p>
+        <div style="text-align:center">
+            <p>
+                <img src="@/assets/tijiaochanggong_picture@2x.png" alt="" style="display:inline-block;height: 79px;width:79px;">
+            </p>
+            <p class="titlecls">确认删除</p>
+            <p class="titlecont" style="margin-bottom: 50px;">确认删除这条数据么？</p>
+        </div>
+        <div slot="footer" style="text-align: center;">
+            <i-button type="success" @click="delFun">确认</i-button>
+            <i-button @click="modalDel=false">取消</i-button>
+            
+        </div>
+    </Modal>
+
+  
 </div>
 </template>
 
@@ -50,21 +70,25 @@ export default {
             taskid:this.$route.query.taskid,
             id:this.$route.query.id,
             state:"",//审核状态 0未审核 1审核通过 2审核未通过
-            reason:""
+            reason:"",
+            modalDel:false
         }
     },
     mounted(){
         // this.previewObj=this.$api.sGetObject("previewObj");
         // console.log("id:",!this.$route.query.id)
-        if(this.id){
-            this.getData();
-        }else{
-            this.getTaskDetail()
-        }
+        this.getInit();
         
         
     },
     methods: {
+        getInit(){
+            if(this.id){
+                this.getData();
+            }else{
+                this.getTaskDetail()
+            }
+        },
         getTaskDetail(){
             let self=this;
             self.$api.get("/task/taskdetail",{
@@ -79,53 +103,39 @@ export default {
         },
         getData(){
                 
-                let self=this;
-                self.$api.get("/task/taskdetail",{
-                    taskid:self.taskid
-                },r=>{
-                    let datas=JSON.parse(r.data);
-                    self.previewObj.title=datas.title;
-                    self.previewObj.describe=datas.describe;
-                    // console.log(1,self.previewObj)
-                });
-                self.$api.get("/submit/submitDetails",{
-                    id:this.id,
-                    taskid:this.taskid
-                },r=>{
-                    let datas=JSON.parse(r.data);
-                    self.previewObj.data=datas.data;
-                    self.reason=datas.reason;
-                    self.state=datas.state;
-
-                });
-            },
-        del () {
             let self=this;
-            self.$Modal.confirm({
-                title: '确认要删除？',
-                content: '',
-                onOk: () => {
-
-                    self.$api.get("/submit/delete",{
-                        taskid:self.taskid,
-                        id:self.id
-                    },r=>{
-                        let datas=JSON.parse(r.data);
-                        self.$Message.info('删除成功');
-                        setTimeout(() => {
-                            self.$router.push({
-                                path:"/record?taskid="+self.taskid
-                            })
-                        }, 400)
-                        
-                        // console.log(1,self.previewObj)
-                    })
-                    
-                },
-                onCancel: () => {
-                    // this.$Message.info('Clicked cancel');
-                }
+            self.$api.get("/task/taskdetail",{
+                taskid:self.taskid
+            },r=>{
+                let datas=JSON.parse(r.data);
+                self.previewObj.title=datas.title;
+                self.previewObj.describe=datas.describe;
+                // console.log(1,self.previewObj)
             });
+            self.$api.get("/submit/submitDetails",{
+                id:this.id,
+                taskid:this.taskid
+            },r=>{
+                let datas=JSON.parse(r.data);
+                self.previewObj.data=datas.data;
+                self.reason=datas.reason;
+                self.state=datas.state;
+
+            });
+        },
+
+        delFun(){
+            let self=this;
+            self.$api.get("/submit/delete",{
+                taskid:self.taskid,
+                id:self.id
+            },r=>{
+                self.$Message.info('删除成功');
+                self.$router.push({
+                    path:"/record?taskid="+self.taskid
+                })
+                // console.log(1,self.previewObj)
+            })
         },
         history(){
             this.$router.push({
@@ -269,7 +279,19 @@ export default {
         
     }
 }
+.titlecls{
+    font-family: PingFang-SC-Medium;
+    font-size: 18px;
+    color: #5DB75D;
+    letter-spacing: -0.36px;
+}
+.titlecont{
+    font-family: PingFang-SC-Medium;
+    font-size: 14px;
+    color: #000000;
+    letter-spacing: -0.28px;
 
+}
 </style>
 <style>
 .ivu-modal-confirm{
@@ -278,5 +300,9 @@ export default {
 }
 .ivu-modal-confirm-footer{
     text-align: center;
+}
+.ivu-modal-footer, .ivu-modal-header {
+    border-width: 0!important;
+    display: block; 
 }
 </style>

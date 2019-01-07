@@ -490,6 +490,7 @@ export default {
             },
             getBase:this.$api.getBase(),
             tempid:"",//编辑 模板id
+            actionArr:["selectstudent","selectgrade","selectteacher","selectdepartment"]
         }
     },
     components: {
@@ -566,6 +567,17 @@ export default {
     },
     methods: {
         ...mapActions(['setStudents','setTeachers','setGrades','setDepartments']),
+        checksFun(){
+            let num=0;
+            for(let i=0;i<this.sortable_item.length;i++){
+                for(let j=0;j<this.actionArr.length;j++){
+                    if(this.sortable_item[i].ele==this.actionArr[j]){
+                        num++;
+                    }
+                }
+            }
+            return num;
+        },
         saveObjs(){
             let objs={
                 title:this.formTitle,
@@ -610,6 +622,10 @@ export default {
         },
                 // 预览效果
         previewForm(){
+            if(this.checksFun()>1){
+                this.$Message.warning("选择学生、选择班级、选择老师、选择部门，只能存在一个哦");
+                return
+            };
             let formObj=this.formatData();
             this.$api.sSetObject("previewObj",formObj);
             // let cur_modal = this.$store.state.preview
@@ -672,6 +688,10 @@ export default {
             return formObj;
         },
         saveSoltItem(){
+            if(this.checksFun()>1){
+                this.$Message.warning("选择学生、选择班级、选择老师、选择部门，只能存在一个哦");
+                return
+            };
             this.saveObjs();
             let formObj=this.formatData();
             // console.log(JSON.stringify(this.sortable_item))
@@ -713,7 +733,7 @@ export default {
                          
                 let els=this.sortable_item[i].ele;
                 if(els=="selectstudent"||els=="selectteacher"||els=="selectgrade"||els=="selectdepartment"){
-                    console.log("选择学生、选择班级、选择老师、选择部门，只能存在一个哦。")
+                    // console.log("选择学生、选择班级、选择老师、选择部门，只能存在一个哦。")
                     return false;
                 }
             }

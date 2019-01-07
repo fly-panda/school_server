@@ -67,7 +67,7 @@
             <p class="time">{{cardItem.starttime}}</p>
         </div>
         <!-- <img v-if="" class="cardform-img" src='@/assets/logo.png'/> -->
-        <div class="cardform-submiteinfo-contioner" v-if="cardItem.state!=0">
+       <!--  <div class="cardform-submiteinfo-contioner" v-if="cardItem.state!=0">
             <div class="cardform-submiteinfo" v-if="cardItem.isloop!=0">
                 <div class="title">
                     提交人
@@ -84,8 +84,8 @@
                     {{cardItem.submitcount}}
                 </div>
             </div>
-        </div>
-        <div class="cardform-enddate" v-if="cardItem.state!=0">
+        </div> -->
+        <div class="cardform-enddate" v-if="cardItem.state!=0" style="margin-top: 15px;">
             截止时间： {{cardItem.endtime}}
         </div>
     </div>
