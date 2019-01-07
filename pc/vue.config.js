@@ -65,7 +65,8 @@ module.exports = {
         port: 8181,
         proxy: {
             '/api': {
-                target: 'http://47.93.156.129:8848/',
+                target:'https://jiance.meych.com/',
+                // target: 'http://47.93.156.129:8848/',
                 // target: 'http://127.0.0.1:8848/',
                 pathRewrite: {
                   '^/api': '/api'
