@@ -1,22 +1,25 @@
 <template>
   <div class="page">
-    <!-- <div class="title" v-html="allData.title"></div> -->
-    <!-- <div class="describe" v-show="allData.describe" v-html="allData.describe"></div> -->
-    <div class="list" v-for="(obj, index) of listData" :key="index">
+    <!-- 标题 -->
+    <div class="title" v-show="allData.title" v-html="allData.title"></div>
+    <!-- 描述 -->
+    <div class="describe" v-show="allData.describe" v-html="allData.describe"></div>
+    <!-- 表单列表 -->
+    <div class="list" v-for="(obj, index) of allData.data" :key="index">
 
       <div class="item" v-if="obj.ele == 'selectteacher'">
         <div class="label">选择老师</div>
-        <div class="value">{{ obj.obj.selObj }}</div>
+        <div class="value">{{ obj.obj.selObj.name }}</div>
       </div>
 
       <div class="item" v-if="obj.ele == 'selectgrade'">
         <div class="label">选择班级</div>
-        <div class="value">{{ obj.obj.selObj }}</div>
+        <div class="value">{{ obj.obj.selObj.name }}</div>
       </div>
 
       <div class="item" v-if="obj.ele == 'selectdepartment'">
         <div class="label">选择部门</div>
-        <div class="value">{{ obj.obj.selObj }}</div>
+        <div class="value">{{ obj.obj.selObj.name }}</div>
       </div>
 
       <div class="item" v-if="obj.ele == 'selectstudent'">
@@ -78,12 +81,7 @@
       <div class="item" v-if="obj.ele == 'address'">
         <div class="label" v-html="obj.obj.label"></div>
         <div class="value">
-          <div style="margin-bottom: 5px;">
-            <span v-if="obj.obj.shengValue" v-html="obj.obj.shengValue"></span>
-            <span v-if="obj.obj.shiValue" v-html="obj.obj.shiValue"></span>
-          </div>
-          <div style="margin-bottom: 5px;" v-if="obj.obj.quValue" v-html="obj.obj.quValue"></div>
-          <div v-if="obj.obj.value" v-html="obj.obj.value"></div>
+          {{ allData | addressFilter }}
         </div>
       </div>
       <!-- 图片展示 -->
@@ -116,14 +114,14 @@
       <!-- 勾选打分 -->
       <div class="item" v-if="obj.ele == 'score'">
         <div class="label" v-html="obj.obj.label"></div>
-        <div class="value">{{ obj.obj.items[value].scoreType == 'add' ? '+' : '-' }}{{ obj.obj.items[value].label_value }}</div>
+        <div class="value">{{ obj.obj.items[obj.obj.value].scoreType == 'add' ? '+' : '-' }}{{ obj.obj.items[obj.obj.value].label_value }}</div>
       </div>
 
     </div>
 
     <div class="btn-box">
       <button class="hg" @click="caozuoForm(1)" :disabled="state == 1">合格</button>
-      <button class="bhg" @click="caozuoForm(2)" :disabled="state == 1">不合格</button>
+      <button class="bhg" @click="showModel()" :disabled="state == 1">不合格</button>
     </div>
 
     <div class="model" v-show="isShowModel">
@@ -135,7 +133,7 @@
           </div>
           <textarea v-model="textareaValue" name="" id="" cols="30" rows="10" placeholder="请输入不合格理由" 
                     v-on:input='getValue'></textarea>
-          <button :disabled='bthDisabled'>确认</button>
+          <button :disabled='bthDisabled' @click="caozuoForm(2)">确认</button>
         </div>
       </div>
     </div>
@@ -147,36 +145,53 @@
 import { Toast } from "mint-ui";
 
 export default {
-  name: "SubmitFormDataDetail",
+  name: "SubmitFormDetail",
   components: {},
-  props: {},
+  props: ['name'],
+  filters: {
+    addressFilter(r) {
+      let value = ''
+      r.content.map((v, i) => {
+        if(v.type == 'address') {
+          value = v.value
+        }
+      })
+      return value
+    }
+  },
   data() {
     return {
+      apiQuery: this.name,
       baseUrl: "http://47.93.156.129:8848",
       bthDisabled: true,
-      allData: {},
       textareaValue: '',
       isShowModel: false,
       id: '',
       taskid: '',
-      listData: [],
-      state: '' // 审核状态 0未审核 1审核通过 2审核未通过
+      allData: {},
+      state: '', // 审核状态 0未审核 1审核通过 2审核未通过
     };
   },
-  watch: {},
+  watch: {
+    name: function(newVal, oldVal) {
+      this.curName = newVal;
+    },
+    curName: function(newVal, oldVal) {
+      this.$emit("update:name", newVal);
+    }
+  },
   computed: {
     Toast
   },
   methods: {
+    showModel() {
+      this.isShowModel = true
+    },
     hideModel() {
       this.isShowModel = false
     },
     caozuoForm(type) {
       let state = type  // type 1 通过，2 未通过
-
-      if(type == 2) {
-        this.isShowModel = true
-      }
 
       let obj = {
         id: this.id,
@@ -186,34 +201,36 @@ export default {
       }
 
       this.$api.get('/submit/examine', obj, r => {
-        console.log(r)
+        // console.log(r)
         Toast(r.result);
       })
 
     },
     getValue() {
-      this.bthDisabled = this.textareaValue.tirm() ? false : true
+      this.bthDisabled = this.textareaValue.trim() ? false : true
     }
   },
   mounted() {
   
   },
   created() {
-    let options = this.$route.query
+    // console.log(this.apiQuery)
 
-    this.id = options.id
-    this.taskid = options.taskid
+    // this.id = options.id
+    // this.taskid = options.taskid
+    this.allData = {}
+    this.state = ''
 
     let obj = {
-      id: options.id,
-      taskid: options.taskid
+      id: this.apiQuery.id,
+      taskid: this.apiQuery.taskid
     }
-
+    if(!this.apiQuery.id || !this.apiQuery.taskid) { return }
     this.$api.get('/submit/submitDetails', obj, r => {
       let datas = JSON.parse(r.data)
-      console.log(datas)
+      // console.log(datas)
       this.state = datas.state
-      this.listData = datas.data
+      this.allData = datas
     })
 
   }

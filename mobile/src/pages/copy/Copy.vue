@@ -13,7 +13,10 @@
     >
       <!-- 班级日常 -->
       <ul class="list list1" v-if="tabIndex == 0">
-        <li class="item" v-for="(item, index) of listData" :key="index">
+        <li class="item" 
+            v-for="(item, index) of listData" 
+            :key="index"
+            @click="detail(item)">
           <div class="top">
             <div class="title">
               <img class="icon" src="../../assets/img/task/icon1.png" alt>
@@ -29,7 +32,10 @@
       </ul>
       <!-- 任务抄送 -->
       <ul class="list" v-if="tabIndex == 1">
-        <li class="item" v-for="(item, index) of listData" :key="index">
+        <li class="item" 
+            v-for="(item, index) of listData" 
+            :key="index"
+            @click="taskDetail(item)">
           <div class="top">
             <div class="title">
               <img class="icon" src="../../assets/img/task/icon1.png" alt>
@@ -140,6 +146,15 @@ export default {
     });
   },
   methods: {
+    taskDetail(item) {
+      let obj = JSON.stringify(item)      
+      this.$router.push({ path: "/submitFormData", query: { item: obj } });
+    },
+    detail(item) {
+      console.log(item)
+      this.$router.push({ path: "/formPage", query: { ids: item.id, openType: '3' } });
+
+    },
     // 调用子组件tab切换的事件
     toogleTab(...data) {
       if (this.tabIndex == data[0]) {
@@ -168,6 +183,7 @@ export default {
       this.$api.get('task/getMyTask', obj, r => {
 
         let data = JSON.parse(r.data);
+        console.log(data)
         this.page++;
         this.pageCount = data.pageCount;
 

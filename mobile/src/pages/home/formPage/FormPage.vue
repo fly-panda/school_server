@@ -1,7 +1,7 @@
 <template>
-  <div :class="[{ 'pt-0': preview == '1' }, 'form-page']">
+  <div :class="[{ 'pt-0': preview == '1' || openType == '2' || openType == '1' }, 'form-page']">
     <!-- tab切换 -->
-    <tab :line-width="1" custom-bar-width="60px" v-if="preview != '1'">
+    <tab :line-width="1" custom-bar-width="60px" v-if="preview != '1' && openType != '2' && openType != '1'">
       <tab-item
         v-for="(item, index) in tabData"
         :selected="selectTabIndex === index"
@@ -10,7 +10,7 @@
       >{{ item }}</tab-item>
     </tab>
     <!-- 表单 -->
-    <div class="form-wrapper" v-if="selectTabIndex == 0">
+    <div class="form-wrapper" v-if="openType != 2">
       <!-- 标题&描述 -->
       <div class="title" v-html="allListData.title"></div>
       <div class="des" v-html="allListData.describe"></div>
@@ -410,18 +410,18 @@
       <button
         :disabled="preview == '1'"
         :class="[preview == '1' ? 'btn-disabled' : '','submit']"
-        v-show="openType != 0"
+        v-show="openType != '2' && openType != '3'"
         @click="submitForm"
       >提交</button>
 
-      <div class="btn-box" v-show="openType == 0">
+      <!-- <div class="btn-box" v-show="openType == 0">
         <div class="hg" @click="caozuoForm(1)">合格</div>
         <div class="bhg" @click="caozuoForm(2)">不合格</div>
-      </div>
+      </div> -->
 
     </div>
     <!-- 历史记录 -->
-    <div class="history-record" v-if="selectTabIndex == 1">
+    <!-- <div class="history-record" v-show="selectTabIndex == 1">
       <scroller
         lock-x
         scrollbar-y
@@ -431,7 +431,7 @@
         ref="scrollerBottom"
         :height="lishH"
       >
-        <ul class="list">
+        <ul class="list" v-show="historyRecord.length">
           <li class="item" v-for="(item, index) of historyRecord" :key="index">
             <div class="left">
               <div class="title">{{ item.title }}</div>
@@ -445,11 +445,33 @@
             </div>
           </li>
         </ul>
+
+        <no-data v-show="!historyRecord.length"></no-data>
+
       </scroller>
-    </div>
+    </div> -->
+
+    <submit-form-detail v-show="openType == 2" :name.sync='submitFormDetailQuery'></submit-form-detail>
 
     <!-- 悬浮按钮 -->
     <suspend-btn :isShowMenu="isShowMenu" @menuHandleClick="menuHandleClick"></suspend-btn>
+
+    <!-- 提交成功 -->
+    <div class="model" v-show="submitSuccess">
+      <div class="submit-success">
+        <div class="window">
+          <div class="close" @click="hideModel">x</div>
+          <img src="../../../assets/img/tijiaochanggong_picture@2x.png" width="70" alt="">
+          <div style="font-size: 18px;color: #5DB75D;">提交成功</div>
+          <div style="margin-top: 10px;">修改表单请到“历史记录”中修改</div>
+          <div class="btn-box">
+            <div @click='submitSuccessBtn(1)'>继续填写</div>
+            <div @click='submitSuccessBtn(2)'>确认</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
   </div>
 </template>
 
@@ -473,6 +495,10 @@ import {
   TransferDom,
   Datetime
 } from "vux";
+
+import NoData from "../../../components/noData/Nodata";
+import SubmitFormDetail from '../../task/submitFormData/detail/Detail';
+
 import Uploader from "vux-uploader";
 import SuspendBtn from "../../../components/suspendBtn/SuspendBtn"; // 悬浮按钮
 import mockData from "./mock.js"; // 本地模拟数据
@@ -509,7 +535,9 @@ export default {
     vueSlider,
     addressMe,
     selectStudent,
-    selectList
+    selectList,
+    NoData,
+    SubmitFormDetail
   },
   filters: {
     // 图片预览格式化
@@ -591,9 +619,17 @@ export default {
   },
   data() {
     return {
+      
+      submitSuccess: false,
+
+      submitFormDetailQuery: {},  // 提交的表单数据详情
+
+      page: 1,
+      pagesize: 15,
+
       test: [],
 
-      openType: "",
+      openType: "",  // 1-抄送班级日常 2-提交表单详情
 
       baseUrl: "http://47.93.156.129:8848/",
 
@@ -727,24 +763,7 @@ export default {
       calendarTitle: "TODAY",
 
       isShowMenu: false, //是否显示悬浮菜单
-      historyRecord: [
-        {
-          title: "我是一个标题",
-          date: "09/11 10:00"
-        },
-        {
-          title: "我是一个标题",
-          date: "09/11 10:00"
-        },
-        {
-          title: "我是一个标题",
-          date: "09/11 10:00"
-        },
-        {
-          title: "我是一个标题",
-          date: "09/11 10:00"
-        }
-      ],
+      historyRecord: [],
       lishH: "-53",
       pullupDefaultConfig: pullupDefaultConfig,
       tabData: ["表单", "历史记录"],
@@ -752,7 +771,9 @@ export default {
     };
   },
   computed: {},
-  mounted() {
+  created () {
+
+    // 链接里面的参数
     let options = this.$route.query
 
     // 判断页面是不是预览 preview == '1'为预览
@@ -760,7 +781,7 @@ export default {
     let ids = this.$route.query.ids ? this.$route.query.ids : "";
     this.ids = ids
 
-    this.openType = this.$route.query.openType;
+    this.openType = this.$route.query.openType ? this.$route.query.openType : ''
 
     // 预览
     if (this.preview == 1) {
@@ -787,26 +808,36 @@ export default {
       return;
     }
 
-
     //任务管理里面过来
-    if (this.openType == 0) {
-
+    if (this.openType == '2') {
+      
       let obj = {
         id: options.id,
         taskid: options.taskid
       };
-
-      this.$api.get("/submit/submitDetails", obj, r => {
-        let datas = JSON.parse(r.data);
-        console.log(datas);
-        this.dataFormat(datas);
-      });
+      this.submitFormDetailQuery = obj
       return;
     }
 
+    // 获取数据
     this.getFormData(ids);
+  
   },
   methods: {
+    // 提交成功里面的按钮
+    submitSuccessBtn(type) {
+      // 继续填写
+      if(type == 1) {
+        this.$router.push({ path: "/" })        
+      }
+      // 确认
+      if(type == 2) {
+
+      }
+    },
+    hideModel() {
+      this.submitSuccess = false
+    },
     // 二级下拉
     pickerValueChange(obj, value, obj1) {
       obj1.valueArr1 = [];
@@ -884,7 +915,12 @@ export default {
     },
     // tab切换
     tabItemClick(index) {
-      this.selectTabIndex = index;
+      if(index == 1) {
+        // this.loadMore()
+        let ids = this.$route.query.ids
+        console.log()
+        this.$router.push({ path: "/historyRecord", query: { ids: ids } });        
+      }
     },
     /**
      * 悬浮菜单操作按钮
@@ -926,32 +962,33 @@ export default {
         obj.value = parseInt(obj.value) + parseInt(obj.step);
       }
     },
-    loadMore() {},
     // 数据格式化
     dataFormat(allData) {
       let bigData = allData;
 
       bigData.data.map((c, d) => {
         if (c.ele == "select") {
-          c.obj.valueArr = [];
+          c.obj.valueArr = c.obj.value ? c.obj.value.split(',') : [];
         }
         if (c.ele == "address") {
-          c.obj.shengValueArr = [];
-          c.obj.shiValueArr = [];
-          c.obj.quValueArr = [];
+          c.obj.shengValueArr = c.obj.shengValue ? c.obj.shengValue.split(',') : []
+          c.obj.shiValueArr = c.obj.shiValue ? c.obj.shiValue.split(',') : [];
+          c.obj.quValueArr = c.obj.quValue ? c.obj.quValue.split(',') : [];
         }
         if (c.ele == "datepicker") {
-          c.obj.valueTimeArr = [];
+          c.obj.valueTimeArr = c.obj.valueTime ? c.obj.valueTime.split(',') : [];
         }
 
         if (c.ele == "selectcontact") {
-          c.obj.valueArr = [];
-          c.obj.valueArr1 = [];
+          c.obj.valueArr = c.obj.value ? c.obj.value.split(',') : [];
+          c.obj.valueArr1 = c.obj.value1 ? c.obj.value1.split(',') : [];
+          c.obj.two_arr =  c.obj.value ? c.obj.items[c.obj.value].arrs : []
         }
 
         if (c.ele == "selectstudent") {
           c.obj.items[0].active = true;
         }
+
       });
       this.allListData = bigData;
       console.log(this.allListData);
@@ -1109,10 +1146,7 @@ export default {
     },
     // 提交表单
     submitForm() {
-      console.log(this.allListData);
       let msg = this.requireCheck();
-      console.log(msg);
-
       // let obj = {
       //   id: this.id,
       //   title: this.allListData.title,
@@ -1120,7 +1154,7 @@ export default {
       //   describe: this.allListData.describe
       // };
 
-      console.log(this.ids)
+      // console.log(this.ids)
 
       if (msg == "success") {
         this.$api.post(
@@ -1132,7 +1166,7 @@ export default {
             describe: this.allListData.describe
           },
           r => {
-            Toast("提交成功");
+            this.submitSuccess = true
           },
           e => {
             console.log(e);
@@ -1155,6 +1189,66 @@ export default {
 
 <style scope lang="scss">
 @import "../../../assets/styles/mixins.scss";
+// 提交成功
+.model {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba($color: #000000, $alpha: .28);
+  z-index: 1000;
+  .submit-success {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    .window {
+      position: absolute;
+      padding-top: px2rem(16);
+      box-sizing: border-box;
+      top: 50%;
+      left: 50%;
+      margin-left: px2rem(-135);
+      margin-top: px2rem(-125);
+      width: px2rem(270);
+      height: px2rem(251);
+      background: #fff;
+      border-radius: 1px;
+      text-align: center;
+      .btn-box {
+        margin-top: px2rem(18);
+        div {
+          width: px2rem(79);
+          height: px2rem(28);
+          text-align: center;
+          line-height: px2rem(28);
+          color: #fff;
+          font-size: 12px;
+          border-radius: 1px;
+          &:first-child {
+            background: #5DB75D;
+            margin-right: px2rem(36);
+          }
+          &:last-child {
+            background: #C3C9CF;
+          }
+        }
+      }
+      img {
+        margin-bottom: px2rem(10);
+      }
+      .close {
+        color:  #C3C9D0;
+        text-align: right;
+        padding: 0 10px;
+        font-size: 16px;
+        margin-bottom: px2rem(20);
+      }
+    }
+  }
+}
+
+
 .time-picker {
   .weui-cell__ft {
     display: none;

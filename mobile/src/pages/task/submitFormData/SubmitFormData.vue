@@ -103,8 +103,8 @@ export default {
   methods: {
     detail(id) {
       this.$router.push({
-        path: "/submitFormDataDetail",
-        query: { taskid: this.taskid, id: id }
+        path: "/formPage",
+        query: { taskid: this.taskid, id: id, openType: 2 }
       });
     },
     loadMore() {

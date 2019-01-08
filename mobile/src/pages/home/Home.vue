@@ -86,7 +86,6 @@ import { TransferDomDirective as TransferDom } from "vux";
 import Tab from "../../components/tab/Tab";
 import NoData from "../../components/noData/Nodata";
 
-
 const pullupDefaultConfig = {
   content: "上拉加载更多",
   pullUpHeight: 60,

@@ -46,10 +46,18 @@ const router = new Router({
       name: 'FormPage',
       // component: FormPage,
       meta: {
-        title: '我的任务',
-        keepAlive: true
+        title: '我的任务'
       },
       component:resolve=>require(["@/pages/home/formPage/FormPage"],resolve)
+    },
+    {
+      path: '/historyRecord',
+      name: 'HistoryRecord',
+      // component: FormPage,
+      meta: {
+        title: '我的任务'
+      },
+      component:resolve=>require(["@/pages/home/historyRecord/HistoryRecord"],resolve)
     },
     {
       path: '/selectList',
@@ -78,15 +86,15 @@ const router = new Router({
       },
       component:resolve=>require(["@/pages/task/submitFormData/SubmitFormData"],resolve)
     },
-    {
-      path: '/submitFormDataDetail',
-      name: 'SubmitFormDataDetail',
-      // component: SubmitFormData,
-      meta: {
-        title: ''
-      },
-      component:resolve=>require(["@/pages/task/submitFormData/detail/Detail"],resolve)
-    },
+    // {
+    //   path: '/submitFormDataDetail',
+    //   name: 'SubmitFormDataDetail',
+    //   // component: SubmitFormData,
+    //   meta: {
+    //     title: ''
+    //   },
+    //   component:resolve=>require(["@/pages/task/submitFormData/detail/Detail"],resolve)
+    // },
     {
       path: '/fillInHisory',
       name: 'FillInHisory',
