@@ -56,12 +56,16 @@ export default {
                     originator:""
                 },
             columns8: [
-                // {
-                //     type: 'index',
-                //     width: 60,
-                //     title:"序号",
-                //     align: 'center'
-                // }
+                 {
+                        type: 'index2',
+                        width: 60,
+                        title:"序号",
+                        align: 'center',
+
+                        render: (h, params) => {
+                            return h('span', params.index + (this.currentPage- 1) * this.pagesize + 1);
+                        }
+                    }
             ],
             data7: [
 
@@ -86,7 +90,16 @@ export default {
         },
         getData(){
             let self=this;
-            self.columns8=[];
+            self.columns8=[ {
+                        type: 'index2',
+                        width: 60,
+                        title:"序号",
+                        align: 'center',
+
+                        render: (h, params) => {
+                            return h('span', params.index + (this.currentPage- 1) * this.pagesize + 1);
+                        }
+                    }];
             self.data7=[];
             self.$api.get("/submit/taskSummary",{
                 userid:this.userId,

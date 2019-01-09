@@ -36,7 +36,7 @@
                 <ul>
                     <li>
                         <span>序号</span>
-                        <span></span>
+                        <span>{{rowIndex + (currentPage- 1) * pagesize + 1}}</span>
                     </li>
                     <li>
                         <span>提交时间</span>
@@ -94,7 +94,7 @@
                 status:0,
                 currentPage:1,
                 totals:0,
-                pagesize:10,
+                pagesize:5,
                 formMsg:{
                     should:"",
                     submitCount:"",
@@ -108,12 +108,16 @@
                     state:""
                 },
                 columns8: [
-                    // {
-                    //     type: 'index',
-                    //     width: 60,
-                    //     title:"序号",
-                    //     align: 'center'
-                    // }
+                    {
+                        type: 'index2',
+                        width: 60,
+                        title:"序号",
+                        align: 'center',
+
+                        render: (h, params) => {
+                            return h('span', params.index + (this.currentPage- 1) * this.pagesize + 1);
+                        }
+                    }
                 ],
                 data7: [
     
@@ -142,7 +146,16 @@
             },
             getData(){
                 let self=this;
-                self.columns8=[];
+                self.columns8=[{
+                        type: 'index2',
+                        width: 60,
+                        title:"序号",
+                        align: 'center',
+
+                        render: (h, params) => {
+                            return h('span', params.index + (this.currentPage- 1) * this.pagesize + 1);
+                        }
+                    }];
                 self.data7=[];
                 self.$api.get("/submit/taskSummary",{
                     userid:"",

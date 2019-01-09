@@ -797,7 +797,7 @@ export default {
                         msg=item.obj.label
                         return true;
                     }
-                    if(item.ele=="score"&&(!item.obj.value&&item.obj.valueArr.length==0)){
+                    if(item.ele=="score"&&((item.obj.value<"-1")&&item.obj.valueArr.length==0)){
                         // this.$Message.warning(item.obj.label+"为必填项，请填写后提交!");
                         msg=item.obj.label
                         return true;
