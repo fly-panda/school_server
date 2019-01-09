@@ -636,11 +636,11 @@ export default {
             // this.$store.commit('previewStatus', cur_modal);
 
             // console.log(formObj)
-            console.log(JSON.stringify(this.sortable_item))
+            // console.log(JSON.stringify(this.sortable_item))
             this.$api.post("cform/preview",
                 formObj,
                 r=>{
-                    console.log(r)
+                    // console.log(r)
                    this.$router.push({
                        path:"/preview?ids="+r.data
                    })
@@ -756,7 +756,7 @@ export default {
         },
         handleAddSelectItem() {
             let curRemoveObj = this.sortable_item[this.curIndex].obj.items
-            console.log(this.sortable_item[this.curIndex])
+            // console.log(this.sortable_item[this.curIndex])
             if(this.sortable_item[this.curIndex].ele=="score"){
                 curRemoveObj.push({
                     "label_value": curRemoveObj.length + 1,
@@ -844,7 +844,7 @@ export default {
             // console.log(index)
         },
         getEndFun(curObj){
-            console.log("curObj",curObj);
+            // console.log("curObj",curObj);
             // console.log(this.sortable_item)
             let index=curObj.newIndex;
             for(let i=0;i<this.sortable_item.length;i++){
@@ -877,8 +877,8 @@ export default {
         },
 
         delImgFun(r){
-            console.log(r)
-            console.log(this.settingFormItem);
+            // console.log(r)
+            // console.log(this.settingFormItem);
         },
         add(){
             let self=this;

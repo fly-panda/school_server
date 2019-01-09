@@ -580,7 +580,7 @@ export default {
         saveStudent(res){
             let self=this;
             res.selObj=self.studentObj;
-            console.log(res)
+            // console.log(res)
           
             this.type_student=!this.type_student;
 
@@ -592,7 +592,7 @@ export default {
         },
         saveDepartment(res){
             let self=this;
-            console.log(res)
+            // console.log(res)
             for(let i=0;i<res.items.length;i++){
                 if(res.items[i].departid==res.value){
                     res.selObj=res.items[i];
@@ -835,7 +835,7 @@ export default {
             let self=this;
             
             let msg=this.requireCheck();
-            console.log(JSON.stringify(self.previewObj));
+            // console.log(JSON.stringify(self.previewObj));
             if(msg=="success"){
                 if(this.id){
                     self.$api.post("/submit/update",{
