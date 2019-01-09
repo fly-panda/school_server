@@ -2,6 +2,7 @@
     <div class="selectStudentContainer">
         <div class="title" :class="{'require-cls':cont.obj.require}">{{cont.obj.label}}</div>
         <div class="point">{{cont.obj.describe}}</div>
+        {{cont.obj}}
         <Row>
             <Col span="7">
                 <Select placeholder="省/市/区/直辖市" v-model="cont.obj.shengValue" @on-change="getShi(cont.obj.shengValue)" style="width:10rem;">
@@ -9,6 +10,7 @@
                 </Select>
             </Col>
             <Col span="7">
+            
                 <Select placeholder="市" v-model="cont.obj.shiValue" @on-change="getQu" style="width:10rem;">
                     
                     <Option v-for="item in shiArr" :value="item.id" :key="item.id">{{ item.name }}</Option>
@@ -39,7 +41,9 @@ export default {
     },
     mounted(){
         this.getSheng();
+
         if(this.cont.obj.shengValue){
+
             this.getShi(this.cont.obj.shengValue);
         }
         if(this.cont.obj.shiValue){
@@ -65,20 +69,23 @@ export default {
             }) 
         },
         getShi(res){
-            console.log(res)
+            // console.log(res)
             this.shiArr=[];
             this.quArr=[];
-            this.cont.obj.shiValue="";
-            this.cont.obj.quValue="";
+            // this.cont.obj.shiValue="";
+            // this.cont.obj.quValue="";
             this.$api.get("/city/getCity",{
                 pid:res
             },r=>{
                 this.shiArr=JSON.parse(r.data);
             })
         },
+        shiData(){
+            
+        },
         getQu(item){
             this.quArr=[];
-            this.cont.obj.quValue="";
+            // this.cont.obj.quValue="";
             this.$api.get("/city/getCity",{
                 pid:item
             },r=>{
