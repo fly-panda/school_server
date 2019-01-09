@@ -451,7 +451,7 @@
             <p class="titlecls">提交成功</p>
             <p class="titlecont" style="margin-bottom: 50px;">修改表单请到“我的提交”中修改</p>
         </div>
-        <div slot="footer" style="text-align: center;">
+        <div slot="footer" style="text-align: center;padding: 10px;">
             <i-button type="success" @click="continueFun">继续填写</i-button>
             <i-button @click="jumpBack">返回</i-button>
             
@@ -580,7 +580,7 @@ export default {
         saveStudent(res){
             let self=this;
             res.selObj=self.studentObj;
-            console.log(res)
+            // console.log(res)
           
             this.type_student=!this.type_student;
 
@@ -592,7 +592,7 @@ export default {
         },
         saveDepartment(res){
             let self=this;
-            console.log(res)
+            // console.log(res)
             for(let i=0;i<res.items.length;i++){
                 if(res.items[i].departid==res.value){
                     res.selObj=res.items[i];
@@ -797,7 +797,7 @@ export default {
                         msg=item.obj.label
                         return true;
                     }
-                    if(item.ele=="score"&&(!item.obj.value&&item.obj.valueArr.length==0)){
+                    if(item.ele=="score"&&((item.obj.value<"-1")&&item.obj.valueArr.length==0)){
                         // this.$Message.warning(item.obj.label+"为必填项，请填写后提交!");
                         msg=item.obj.label
                         return true;
@@ -835,7 +835,7 @@ export default {
             let self=this;
             
             let msg=this.requireCheck();
-            console.log(JSON.stringify(self.previewObj));
+            // console.log(JSON.stringify(self.previewObj));
             if(msg=="success"){
                 if(this.id){
                     self.$api.post("/submit/update",{

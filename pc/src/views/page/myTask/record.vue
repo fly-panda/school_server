@@ -56,12 +56,6 @@ export default {
                     originator:""
                 },
             columns8: [
-                // {
-                //     type: 'index',
-                //     width: 60,
-                //     title:"序号",
-                //     align: 'center'
-                // }
             ],
             data7: [
 
@@ -106,16 +100,30 @@ export default {
                 self.formMsg.title=datas.title;
                 self.formMsg.originator=datas.originator;
                 
-                let columnsArr=datas.tableTitle.split(",");
+                let columnsArr=[];
+                if(datas.tableTitle){
+                    columnsArr=datas.tableTitle.split(",")
+                }
                 
                 let typeArr=datas.valuetype.split(",");
                 if(columnsArr.length>0){
+                    self.columns8.push({
+                        type: 'index2',
+                        width: 60,
+                        title:"序号",
+                        align: 'center',
+
+                        render: (h, params) => {
+                            return h('span', params.index + (this.currentPage- 1) * this.pagesize + 1);
+                        }
+                    });
                     for(let i=0;i<columnsArr.length;i++){
                         let objs={};
                         if(typeArr[i]=="uploadimg"){
                             objs={
                                 title:columnsArr[i],
                                 key:"value"+i,
+                                minWidth:200,
                                 render: (h,params) => {
                                     let keys="value"+i;
                                         
@@ -146,6 +154,7 @@ export default {
                                 objs={
                                     title:columnsArr[i],
                                     key:"value"+i,
+                                    minWidth:200,
                                     render: (h,params) => {
                                         let keys="value"+i;                                        
                                         let arr=[];
@@ -169,9 +178,10 @@ export default {
                                     }
                                     
                                 }
-                            }else{
+                        }else{
                             objs={
                                 title:columnsArr[i],
+                                minWidth:100,
                                 key:"value"+i
                             }
                         }

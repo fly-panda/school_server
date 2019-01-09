@@ -74,10 +74,11 @@
                 <h3 class="no-cls">未提交人</h3>
                 <ul class="no-list">
                     <li v-for="item in noSubmit">{{item}}</li>
-                    <li class='center-cls'>
-                        <Button size="large" @click="wxFun" type="success">微信提醒</Button>
-                    </li>
+                    
                 </ul>
+                <div slot="footer" style="text-align: center;padding:10px;">
+                     <Button size="large" @click="wxFun" type="success">微信提醒</Button>
+                </div>
             </Modal>
         </div>
     </div>

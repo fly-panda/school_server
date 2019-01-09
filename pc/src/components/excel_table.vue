@@ -12,8 +12,7 @@
     <Button type="primary" size="large" @click="exportData(2)"><Icon type="ios-download-outline"></Icon> Export sorting and filtered data</Button>
     <Button type="primary" size="large" @click="exportData(3)"><Icon type="ios-download-outline"></Icon> Export custom data</Button> -->
     <Modal v-model="modals" width="855">
-        <p slot="header">
-            <span>header</span>
+        <p slot="header" style="height: 0;padding: 0;display:none;">
         </p>
         <div class="model-content">
             <div class="left-cls">
@@ -37,7 +36,7 @@
                 <ul>
                     <li>
                         <span>序号</span>
-                        <span></span>
+                        <span>{{rowIndex + (currentPage- 1) * pagesize + 1}}</span>
                     </li>
                     <li>
                         <span>提交时间</span>
@@ -59,12 +58,24 @@
         </div>
         <!-- 弹框底部占位 -->
         <div slot="footer">
-            <Button type="error" size="large" long >footer</Button>
+
         </div>
     </Modal>
 
     <Modal title="View Image" v-model="visible">
+        <div slot="header">
+            
+        </div>
         <img :src="baseImg+imgSrc" v-if="visible" style="width: 100%">
+        <div slot="footer">
+            <span style="float: left;margin: 15px 10px;">
+                {{imgSrc}}
+            </span>
+            <span class="viewimg-cls" >
+                <Icon type="md-download" @click="downFile(imgSrc)"/>
+                <Icon type="md-close" @click="visible=false"/>
+            </span>
+        </div>
     </Modal>
 </div>
 
@@ -83,7 +94,7 @@
                 status:0,
                 currentPage:1,
                 totals:0,
-                pagesize:10,
+                pagesize:5,
                 formMsg:{
                     should:"",
                     submitCount:"",
@@ -97,12 +108,6 @@
                     state:""
                 },
                 columns8: [
-                    // {
-                    //     type: 'index',
-                    //     width: 60,
-                    //     title:"序号",
-                    //     align: 'center'
-                    // }
                 ],
                 data7: [
     
@@ -124,6 +129,11 @@
 
         },
         methods: {
+            downFile(res){
+                let self=this;
+
+                window.location.href=this.baseImg+"api/file/download?path="+res;
+            },
             getData(){
                 let self=this;
                 self.columns8=[];
@@ -146,16 +156,31 @@
                     self.formMsg.title=datas.title;
                     self.formMsg.originator=datas.originator;
                     
-                    let columnsArr=datas.tableTitle.split(",");
+                    let columnsArr=[];
+                    if(datas.tableTitle){
+                        columnsArr=datas.tableTitle.split(",")
+                    }
                     
                     let typeArr=datas.valuetype.split(",");
                     if(columnsArr.length>0){
+                        self.columns8.push({
+                            type: 'index2',
+                            width: 60,
+                            title:"序号",
+                            align: 'center',
+
+                            render: (h, params) => {
+                                return h('span', params.index + (this.currentPage- 1) * this.pagesize + 1);
+                            }
+                        });
+                        
                         for(let i=0;i<columnsArr.length;i++){
                             let objs={};
                             if(typeArr[i]=="uploadimg"){
                                 objs={
                                     title:columnsArr[i],
                                     key:"value"+i,
+                                    minWidth:200,
                                     render: (h,params) => {
                                         let keys="value"+i;                                        
                                         let arr=[];
@@ -185,6 +210,7 @@
                                 objs={
                                     title:columnsArr[i],
                                     key:"value"+i,
+                                    minWidth:200,
                                     render: (h,params) => {
                                         let keys="value"+i;                                        
                                         let arr=[];
@@ -211,6 +237,7 @@
                             }else{
                                 objs={
                                     title:columnsArr[i],
+                                    minWidth:100,
                                     key:"value"+i
                                 }
                             }
@@ -444,10 +471,18 @@
         }
     }
 }
+.viewimg-cls{
+    font-size: 30px;
+    color:#19be6b;
+    i{
+        cursor: pointer;
+    }
+}
 </style>
 <style>
     .ivu-modal-footer,.ivu-modal-header{
         border-width:0!important;
+        padding: 0;
         display:none;
     }
     .ivu-table-cell,.ivu-table-small th{
