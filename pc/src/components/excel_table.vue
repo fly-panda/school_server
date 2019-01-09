@@ -108,16 +108,6 @@
                     state:""
                 },
                 columns8: [
-                    {
-                        type: 'index2',
-                        width: 60,
-                        title:"序号",
-                        align: 'center',
-
-                        render: (h, params) => {
-                            return h('span', params.index + (this.currentPage- 1) * this.pagesize + 1);
-                        }
-                    }
                 ],
                 data7: [
     
@@ -146,16 +136,7 @@
             },
             getData(){
                 let self=this;
-                self.columns8=[{
-                        type: 'index2',
-                        width: 60,
-                        title:"序号",
-                        align: 'center',
-
-                        render: (h, params) => {
-                            return h('span', params.index + (this.currentPage- 1) * this.pagesize + 1);
-                        }
-                    }];
+                self.columns8=[];
                 self.data7=[];
                 self.$api.get("/submit/taskSummary",{
                     userid:"",
@@ -175,10 +156,24 @@
                     self.formMsg.title=datas.title;
                     self.formMsg.originator=datas.originator;
                     
-                    let columnsArr=datas.tableTitle.split(",");
+                    let columnsArr=[];
+                    if(datas.tableTitle){
+                        columnsArr=datas.tableTitle.split(",")
+                    }
                     
                     let typeArr=datas.valuetype.split(",");
                     if(columnsArr.length>0){
+                        self.columns8.push({
+                            type: 'index2',
+                            width: 60,
+                            title:"序号",
+                            align: 'center',
+
+                            render: (h, params) => {
+                                return h('span', params.index + (this.currentPage- 1) * this.pagesize + 1);
+                            }
+                        });
+                        
                         for(let i=0;i<columnsArr.length;i++){
                             let objs={};
                             if(typeArr[i]=="uploadimg"){
