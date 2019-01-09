@@ -63,7 +63,19 @@
     </Modal>
 
     <Modal title="View Image" v-model="visible">
+        <div slot="header">
+            
+        </div>
         <img :src="baseImg+imgSrc" v-if="visible" style="width: 100%">
+        <div slot="footer">
+            <span style="float: left;margin: 15px 10px;">
+                {{imgSrc}}
+            </span>
+            <span class="viewimg-cls" >
+                <Icon type="md-download" @click="downFile(imgSrc)"/>
+                <Icon type="md-close" @click="visible=false"/>
+            </span>
+        </div>
     </Modal>
 </div>
 
@@ -123,6 +135,11 @@
 
         },
         methods: {
+            downFile(res){
+                let self=this;
+
+                window.location.href=this.baseImg+"api/file/download?path="+res;
+            },
             getData(){
                 let self=this;
                 self.columns8=[];
@@ -155,6 +172,7 @@
                                 objs={
                                     title:columnsArr[i],
                                     key:"value"+i,
+                                    minWidth:200,
                                     render: (h,params) => {
                                         let keys="value"+i;                                        
                                         let arr=[];
@@ -184,6 +202,7 @@
                                 objs={
                                     title:columnsArr[i],
                                     key:"value"+i,
+                                    minWidth:200,
                                     render: (h,params) => {
                                         let keys="value"+i;                                        
                                         let arr=[];
@@ -210,6 +229,7 @@
                             }else{
                                 objs={
                                     title:columnsArr[i],
+                                    minWidth:100,
                                     key:"value"+i
                                 }
                             }
@@ -441,6 +461,13 @@
                 margin-top: 10px;
             }
         }
+    }
+}
+.viewimg-cls{
+    font-size: 30px;
+    color:#19be6b;
+    i{
+        cursor: pointer;
     }
 }
 </style>

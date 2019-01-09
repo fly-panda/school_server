@@ -116,6 +116,7 @@ export default {
                             objs={
                                 title:columnsArr[i],
                                 key:"value"+i,
+                                minWidth:200,
                                 render: (h,params) => {
                                     let keys="value"+i;
                                         
@@ -146,6 +147,7 @@ export default {
                                 objs={
                                     title:columnsArr[i],
                                     key:"value"+i,
+                                    minWidth:200,
                                     render: (h,params) => {
                                         let keys="value"+i;                                        
                                         let arr=[];
@@ -169,9 +171,10 @@ export default {
                                     }
                                     
                                 }
-                            }else{
+                        }else{
                             objs={
                                 title:columnsArr[i],
+                                minWidth:100,
                                 key:"value"+i
                             }
                         }
