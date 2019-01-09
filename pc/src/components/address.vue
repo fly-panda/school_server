@@ -2,7 +2,6 @@
     <div class="selectStudentContainer">
         <div class="title" :class="{'require-cls':cont.obj.require}">{{cont.obj.label}}</div>
         <div class="point">{{cont.obj.describe}}</div>
-        {{cont.obj}}
         <Row>
             <Col span="7">
                 <Select placeholder="省/市/区/直辖市" v-model="cont.obj.shengValue" @on-change="getShi(cont.obj.shengValue)" style="width:10rem;">
@@ -79,9 +78,6 @@ export default {
             },r=>{
                 this.shiArr=JSON.parse(r.data);
             })
-        },
-        shiData(){
-            
         },
         getQu(item){
             this.quArr=[];
