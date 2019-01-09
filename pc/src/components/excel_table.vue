@@ -12,8 +12,7 @@
     <Button type="primary" size="large" @click="exportData(2)"><Icon type="ios-download-outline"></Icon> Export sorting and filtered data</Button>
     <Button type="primary" size="large" @click="exportData(3)"><Icon type="ios-download-outline"></Icon> Export custom data</Button> -->
     <Modal v-model="modals" width="855">
-        <p slot="header">
-            <span>header</span>
+        <p slot="header" style="height: 0;padding: 0;display:none;">
         </p>
         <div class="model-content">
             <div class="left-cls">
@@ -59,7 +58,7 @@
         </div>
         <!-- 弹框底部占位 -->
         <div slot="footer">
-            <Button type="error" size="large" long >footer</Button>
+
         </div>
     </Modal>
 
@@ -448,6 +447,7 @@
 <style>
     .ivu-modal-footer,.ivu-modal-header{
         border-width:0!important;
+        padding: 0;
         display:none;
     }
     .ivu-table-cell,.ivu-table-small th{

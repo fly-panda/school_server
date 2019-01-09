@@ -34,7 +34,7 @@
             <p class="titlecls">确认删除</p>
             <p class="titlecont" style="margin-bottom: 50px;">确认删除这条数据么？</p>
         </div>
-        <div slot="footer" style="text-align: center;">
+        <div slot="footer" style="text-align: center;padding: 10px;">
             <i-button type="success" @click="delFun">确认</i-button>
             <i-button @click="modalDel=false">取消</i-button>
             

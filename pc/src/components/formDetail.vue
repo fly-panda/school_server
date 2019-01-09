@@ -451,7 +451,7 @@
             <p class="titlecls">提交成功</p>
             <p class="titlecont" style="margin-bottom: 50px;">修改表单请到“我的提交”中修改</p>
         </div>
-        <div slot="footer" style="text-align: center;">
+        <div slot="footer" style="text-align: center;padding: 10px;">
             <i-button type="success" @click="continueFun">继续填写</i-button>
             <i-button @click="jumpBack">返回</i-button>
             

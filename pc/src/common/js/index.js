@@ -1,7 +1,7 @@
 // import md5 from 'js-md5';
 // 配置API接口地址
-var baseUrlRoot = 'https://jiance.meych.com/';
-// var baseUrlRoot = 'http://47.93.156.129:8848/'
+// var baseUrlRoot = 'http://jiance.meych.com/';
+var baseUrlRoot = 'http://47.93.156.129:8848/'
 // var baseUrlRoot = 'http://127.0.0.1:8848/'
 import {Message} from 'iview';
 // 引用axios
