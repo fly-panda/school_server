@@ -1,5 +1,5 @@
 <template>
-  <div class="home">
+  <div class="home" v-show="!isShowLoading">
     <tab :tabData="tab" @toogleTab="toogleTab"></tab>
     <scroller
       lock-x
@@ -41,7 +41,10 @@
         </li>
       </ul>
       <ul class="list history-list" v-show="tabIndex == 1 && listData.length">
-        <li class="li-item" v-for="(item, index) of listData" :key="index">
+        <li class="li-item" 
+            v-for="(item, index) of listData" 
+            :key="index"
+            @click="lishiTask(item)">
           <div class="top">
             <div class="title">{{ item.title }}</div>
             <div class="type">{{ item.type }}</div>
@@ -82,6 +85,8 @@
 <script>
 import { Scroller, Tabbar, TabbarItem } from "vux";
 import { TransferDomDirective as TransferDom } from "vux";
+import { Toast, Indicator } from "mint-ui";
+
 
 import Tab from "../../components/tab/Tab";
 import NoData from "../../components/noData/Nodata";
@@ -104,10 +109,13 @@ export default {
     Scroller,
     Tabbar,
     TabbarItem,
-    NoData
+    NoData,
+    Toast, 
+    Indicator
   },
   data() {
     return {
+      isShowLoading: true,
       pageLoading: true,
       userid: "",
       pagesize: 15, // 每页请求数量
@@ -150,6 +158,10 @@ export default {
       this.$refs.scrollerBottom.reset({ top: 0 });
     });
 
+    Indicator.open({
+      text: "加载中",
+    })
+
   },
   methods: {
     // 调用子组件tab切换的事件
@@ -177,8 +189,10 @@ export default {
         pagesize: this.pagesize
       };
       this.$api.get("task/participate", obj, r => {
+        Indicator.close()
+        this.isShowLoading = false
         let data = JSON.parse(r.data);
-        console.log(data)
+        // console.log(data)
         this.page++;
         this.pageCount = data.pageCount;
 
@@ -197,10 +211,15 @@ export default {
         this.$refs.scrollerBottom.donePullup();
       });
     },
-    // 详情
+    // 当前任务填写表单
     currentTask(item) {
       let ids = item.id;
       this.$router.push({ path: "/formPage", query: { ids: ids } });
+    },
+    // 历史任务的填写记录
+    lishiTask(item) {
+      let ids = item.id;
+      this.$router.push({ path: "/historyRecord", query: { ids: ids } });
     }
   },
   created() {

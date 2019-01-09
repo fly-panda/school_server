@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div v-show="!isShowloading">
     <!-- tab切换 -->
     <tab
       :line-width="1"
@@ -25,14 +25,16 @@
         :height="viewH"
       >
         <ul class="list" v-show="listData.length">
-          <li class="item" v-for="(item, index) of listData" :key="index">
+          <li class="item" v-for="(item, index) of listData" 
+              :key="index"
+              @click="formPage(item)">
             <div class="left">
-              <div class="title">{{ item.title }}</div>
-              <div class="date">填写时间：{{ item.date }}</div>
+              <div class="title">{{ item.value0 }}</div>
+              <div class="date">填写时间：{{ taskCreateTime }}</div>
             </div>
-            <div class="statu">
+            <!-- <div class="statu">
               <img src="../../../assets/img/icon/icon-tanhao.png" width="16" alt>
-            </div>
+            </div> -->
             <div class="right">
               <x-icon type="ios-arrow-right" size="16" class="icon-arrow-right"></x-icon>
             </div>
@@ -48,6 +50,8 @@
 <script>
 import { Tab, TabItem, Scroller } from "vux";
 import NoData from "../../../components/noData/Nodata";
+import { Toast, Indicator } from "mint-ui";
+
 
 const pullupDefaultConfig = {
   content: "上拉加载更多",
@@ -66,11 +70,14 @@ export default {
     Scroller,
     Tab,
     TabItem,
-    NoData
+    NoData,
+    Toast, Indicator
   },
   props: {},
   data() {
     return {
+      taskCreateTime: '',
+      isShowloading: true,
       page: 1,
       pagesize: 15,
       tabData: ["表单", "历史记录"],
@@ -84,6 +91,10 @@ export default {
   computed: {},
   mounted() {
 
+    Indicator.open({
+      text: "加载中",
+    })
+
     this.viewH = window.innerHeight - 60 + "px";
 
     this.$nextTick(() => {
@@ -92,22 +103,36 @@ export default {
     });
   },
   methods: {
+    // tab回到表单页面
     tabItemClick(index) {
       if(index == 0) {
         this.$router.push({ path: "/formPage", query: { ids: this.$route.query.ids } });
       }
     },
+    // 查看已填写表单的详情
+    formPage(item) {
+      this.$router.push({
+        path: "/submitFormDataDetail",
+        query: { ids: this.$route.query.ids, id: item.id, openType: 3 }
+      });
+    },
+    // 加载数据
     loadMore() {
       let obj = {
-        state: 1,
-        // taskid: this.$route.query.ids,
+        taskid: this.$route.query.ids,
         userid: this.$api.sGetObject("userObj").userId,
         page: this.page,
         pagesize: this.pagesize
       };
-      this.$api.get("task/participate", obj, r => {
+      this.$api.get("submit/taskSummary", obj, r => {
+        this.isShowloading = false
+        Indicator.close()
+
         let data = JSON.parse(r.data);
         console.log(data);
+
+        this.taskCreateTime = data.taskCreateTime
+
         this.page++;
         this.pageCount = data.pageCount;
 
@@ -115,13 +140,13 @@ export default {
           this.$refs.scrollerBottom.reset();
         });
 
-        if (this.page > data.pageCount) {
+        if (this.page > Math.ceil(data.count / this.pagesize)) {
           this.$refs.scrollerBottom.disablePullup();
         } else {
           this.$refs.scrollerBottom.enablePullup();
         }
 
-        this.listData = this.listData.concat(data.result);
+        this.listData = this.listData.concat(data.resultList);
 
         this.$refs.scrollerBottom.donePullup();
       });

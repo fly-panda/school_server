@@ -120,12 +120,32 @@ export default {
   created() {},
   mounted() {
     // console.log(this.obj);
+    // 获取省的数据
     this.getSheng();
     if (this.obj.obj.shengValue) {
-      this.getShi(this.obj.obj.shengValue);
+      this.$api.get(
+        "/city/getCity",
+        {
+          pid: this.obj.obj.shengValue
+        },
+        r => {
+          this.shiArr = JSON.parse(r.data);
+          this.dataFormat(this.shiArr)
+        }
+      );
     }
     if (this.obj.obj.shiValue) {
-      this.getQu(this.obj.obj.shiValue);
+      this.$api.get(
+        "/city/getCity",
+        {
+          pid: this.obj.obj.shiValue
+        },
+        r => {
+          this.quArr = []
+          this.quArr = JSON.parse(r.data);
+          this.dataFormat(this.quArr)
+        }
+      );
     }
   }
 };

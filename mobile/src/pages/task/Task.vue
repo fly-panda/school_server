@@ -1,5 +1,5 @@
 <template>
-  <div class="task">
+  <div class="task" v-show="!isShowLoading">
     <div class="no-data" v-if="!listData.length">
       <img src="../../assets/img/task/nodata.png" alt>
       <div>暂无任务！</div>
@@ -72,6 +72,7 @@
 
 <script>
 import { Scroller, Tabbar, TabbarItem } from "vux";
+import { Toast, Indicator } from "mint-ui";
 
 const pullupDefaultConfig = {
   content: "上拉加载更多",
@@ -93,6 +94,7 @@ export default {
   },
   data() {
     return {
+      isShowLoading: true,
       pullupDefaultConfig: pullupDefaultConfig,
       pagesize: 15, // 每页请求数量
       page: 1, // 页码
@@ -114,7 +116,7 @@ export default {
   methods: {
     taskDetail(item) {
       let obj = JSON.stringify(item)
-      this.$router.push({ path: "/submitFormData", query: { item: obj } });
+      this.$router.push({ path: "/submitFormData", query: { item: obj, openType: 2 } });
     },
     loadMore() {
       let obj = {
@@ -123,6 +125,8 @@ export default {
         pagesize: this.pagesize
       };
       this.$api.get("task/getMyTask", obj, r => {
+        Indicator.close()
+        this.isShowLoading = false
         let data = JSON.parse(r.data);
         this.page++;
         this.pageCount = data.pageCount;
@@ -145,6 +149,7 @@ export default {
     }
   },
   created() {
+    Indicator.open({text: '加载中'})
     this.userid = this.$api.sGetObject("userObj").userId;
     this.loadMore();
   }

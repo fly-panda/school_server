@@ -1,7 +1,7 @@
 <template>
-  <div :class="[{ 'pt-0': preview == '1' || openType == '2' || openType == '1' }, 'form-page']">
+  <div v-show="!isShowLoading" :class="[{ 'pt-0': preview == '1' || openType == '2' || openType == '1' || openType == '3' || openType == '4' }, 'form-page']">
     <!-- tab切换 -->
-    <tab :line-width="1" custom-bar-width="60px" v-if="preview != '1' && openType != '2' && openType != '1'">
+    <tab :line-width="1" custom-bar-width="60px" v-if="preview != '1' && openType != '2' && openType != '1' && openType != '3' && openType != '4'">
       <tab-item
         v-for="(item, index) in tabData"
         :selected="selectTabIndex === index"
@@ -10,10 +10,10 @@
       >{{ item }}</tab-item>
     </tab>
     <!-- 表单 -->
-    <div class="form-wrapper" v-if="openType != 2">
+    <div class="form-wrapper" v-if="selectTabIndex == 0 && openType != 2 && openType != 3">
       <!-- 标题&描述 -->
-      <div class="title" v-html="allListData.title"></div>
-      <div class="des" v-html="allListData.describe"></div>
+      <div class="title" v-html="allListData.title" v-show="allListData.title"></div>
+      <div class="des" v-html="allListData.describe" v-show="allListData.describe"></div>
 
       <!-- 表单列表 -->
       <div v-for="(obj, idx) of allListData.data" :key="idx">
@@ -83,7 +83,7 @@
                      v-show="openType != 0">X</div>
               </div>
             </div>
-            <div class="upload" v-show="openType != 0">
+            <div class="upload">
               <div>
                 <span>+</span>
                 <span>点击上传</span>
@@ -120,7 +120,7 @@
             >
           </div>
         </div>
-        <div class="des" v-if="obj.ele == 'p'" v-html="obj.obj.describe"></div>
+        <div class="des" v-if="obj.ele == 'p' && obj.obj.describe" v-html="obj.obj.describe"></div>
         <!-- 单行文字 -->
         <div class="select-item once-text" v-if="obj.ele == 'input'">
           <div class="select-item-title" v-html="obj.obj.label"></div>
@@ -334,7 +334,7 @@
         <div class="select-item radio" v-if="obj.ele == 'score' && obj.obj.isCheck == false">
           <div class="select-item-title" v-html="obj.obj.label"></div>
           <div class="radio-box-form">
-            <mt-radio :options="obj.obj.items | radioFilter" v-model="obj.obj.value"></mt-radio>
+            <mt-radio :options="obj.obj.items | scoreradioFilter" v-model="obj.obj.value"></mt-radio>
           </div>
         </div>
         <!-- 多选 勾选打分-->
@@ -343,7 +343,7 @@
           <div class="checkbox-form">
             <checklist
               :required="obj.obj.require"
-              :options="obj.obj.items | checkBoxFilter"
+              :options="obj.obj.items | scorecheckBoxFilter"
               v-model="obj.obj.value"
               @on-change="checkboxChange"
             ></checklist>
@@ -410,7 +410,7 @@
       <button
         :disabled="preview == '1'"
         :class="[preview == '1' ? 'btn-disabled' : '','submit']"
-        v-show="openType != '2' && openType != '3'"
+        v-show="openType != '2'"
         @click="submitForm"
       >提交</button>
 
@@ -432,13 +432,13 @@
         :height="lishH"
       >
         <ul class="list" v-show="historyRecord.length">
-          <li class="item" v-for="(item, index) of historyRecord" :key="index">
+          <li class="item" 
+              v-for="(item, index) of historyRecord" 
+              :key="index"
+              @click="historyRecordDetail(item)">
             <div class="left">
-              <div class="title">{{ item.title }}</div>
-              <div class="date">填写时间：{{ item.date }}</div>
-            </div>
-            <div class="statu">
-              <img src="../../../assets/img/icon/icon-tanhao.png" width="16" alt>
+              <div class="title">{{ item.id }}</div>
+              <div class="date">填写时间：{{ item.value0 }}</div>
             </div>
             <div class="right">
               <x-icon type="ios-arrow-right" size="16" class="icon-arrow-right"></x-icon>
@@ -451,10 +451,10 @@
       </scroller>
     </div> -->
 
-    <submit-form-detail v-show="openType == 2" :name.sync='submitFormDetailQuery'></submit-form-detail>
+    <!-- <submit-form-detail v-show="openType == 2 || openType == 3" :name.sync='submitFormDetailQuery'></submit-form-detail> -->
 
     <!-- 悬浮按钮 -->
-    <suspend-btn :isShowMenu="isShowMenu" @menuHandleClick="menuHandleClick"></suspend-btn>
+    <!-- <suspend-btn :menuData="menuData" @menuHandleClick="menuHandleClick" v-show="openType == '3'"></suspend-btn> -->
 
     <!-- 提交成功 -->
     <div class="model" v-show="submitSuccess">
@@ -585,6 +585,17 @@ export default {
       }
       return list;
     },
+    scorecheckBoxFilter(r) {
+      let list = []
+      r.map((v, i) => {
+        let item = {
+          key: i + "",
+          value: v.scoreType == 'add' ? v.label_name + '+' + v.label_value : v.label_name + '-' + v.label_value
+        };
+        list.push(item);
+      })
+      return list
+    },
     radioFilter(r, otherValue) {
       let list = [];
 
@@ -604,6 +615,19 @@ export default {
       }
       return list;
     },
+    // 勾选打分数据格式
+    scoreradioFilter(r) {
+      let list = []
+      r.map((v, i) => {
+        console.log(v)
+        let item = {
+          label: v.scoreType == 'add' ? v.label_name + '+' + v.label_value : v.label_name + '-' + v.label_value,
+          value: i + ""
+        };
+        list.push(item);
+      })
+      return list
+    },
     cityDatafilter(r) {
       console.log(r);
       let list = [];
@@ -619,6 +643,8 @@ export default {
   },
   data() {
     return {
+
+      isShowLoading: true,  // 显示loading
       
       submitSuccess: false,
 
@@ -629,7 +655,7 @@ export default {
 
       test: [],
 
-      openType: "",  // 1-抄送班级日常 2-提交表单详情
+      openType: "",  // 1-抄送班级日常 2-提交表单详情 3-表单填写记录
 
       baseUrl: "http://47.93.156.129:8848/",
 
@@ -751,18 +777,83 @@ export default {
           "57",
           "58",
           "59"
+        ],
+        [
+          "00",
+          "01",
+          "02",
+          "03",
+          "04",
+          "05",
+          "06",
+          "07",
+          "08",
+          "09",
+          "10",
+          "11",
+          "12",
+          "13",
+          "14",
+          "15",
+          "16",
+          "17",
+          "18",
+          "19",
+          "20",
+          "21",
+          "22",
+          "23",
+          "24",
+          "25",
+          "26",
+          "27",
+          "28",
+          "29",
+          "30",
+          "31",
+          "32",
+          "33",
+          "34",
+          "35",
+          "36",
+          "37",
+          "38",
+          "39",
+          "40",
+          "41",
+          "42",
+          "43",
+          "44",
+          "45",
+          "46",
+          "47",
+          "48",
+          "49",
+          "50",
+          "51",
+          "52",
+          "53",
+          "54",
+          "55",
+          "56",
+          "57",
+          "58",
+          "59"
         ]
       ],
       // 时间格式化
       timeFormat: function(value, name) {
-        return `${value[0]}:${value[1]}`;
+        return `${value[0]}:${value[1]}:${value[2]}`;
       },
 
       previewerOptions: {},
 
       calendarTitle: "TODAY",
 
-      isShowMenu: false, //是否显示悬浮菜单
+      menuData: {
+        isShowMenu: false,
+        isShowModel: false
+      }, //是否显示悬浮菜单
       historyRecord: [],
       lishH: "-53",
       pullupDefaultConfig: pullupDefaultConfig,
@@ -773,19 +864,23 @@ export default {
   computed: {},
   created () {
 
-    // 链接里面的参数
+    Indicator.open({ text: "加载中"});
+
+    // 链接里的数据
     let options = this.$route.query
+    // 主任务ID
+    this.ids = options.ids
 
     // 判断页面是不是预览 preview == '1'为预览
     this.preview = this.$route.query.preview ? this.$route.query.preview : "";
-    let ids = this.$route.query.ids ? this.$route.query.ids : "";
-    this.ids = ids
-
+    // 页面打开方式
     this.openType = this.$route.query.openType ? this.$route.query.openType : ''
+
 
     // 预览
     if (this.preview == 1) {
-      console.log("预览模式！！！");
+      
+      let ids = this.$route.query.ids ? this.$route.query.ids : ""
 
       this.$api.sSetObject("userObj", {
         userId: this.$route.query.userId,
@@ -793,8 +888,6 @@ export default {
         openAppID: this.$route.query.openAppID,
         objectid: this.$route.query.objectid
       });
-
-      this.dataFormat(mockData.data2);
 
       if (!ids) {
         return;
@@ -808,19 +901,25 @@ export default {
       return;
     }
 
-    //任务管理里面过来
-    if (this.openType == '2') {
-      
+    // 修改当前表单
+    if(this.openType == '4') {
       let obj = {
         id: options.id,
-        taskid: options.taskid
-      };
-      this.submitFormDetailQuery = obj
-      return;
+        taskid: options.ids
+      }
+      this.$api.get('/submit/submitDetails', obj, r => {
+        this.isShowLoading = false
+        Indicator.close()
+
+        let datas = JSON.parse(r.data)
+
+        this.dataFormat(datas)
+      })
+      return
     }
 
     // 获取数据
-    this.getFormData(ids);
+    this.getFormData(this.ids);
   
   },
   methods: {
@@ -828,11 +927,13 @@ export default {
     submitSuccessBtn(type) {
       // 继续填写
       if(type == 1) {
-        this.$router.push({ path: "/" })        
+        console.log(111)
+        this.$router.go(0)
+        // this.$router.push({ path: "/formPage", query: { ids: this.$route.query.ids } })        
       }
       // 确认
       if(type == 2) {
-
+        this.$router.push({ path: "/historyRecord", query: { ids: this.$route.query.ids } });
       }
     },
     hideModel() {
@@ -877,7 +978,6 @@ export default {
       let path = list[idx].src;
       Indicator.open({
         text: "删除中",
-        spinnerType: "fading-circle"
       });
       this.$api.get("/file/deleteFile", { path: path }, r => {
         console.log(r);
@@ -904,7 +1004,6 @@ export default {
       let path = res[i].url;
       Indicator.open({
         text: "删除中",
-        spinnerType: "fading-circle"
       });
       this.$api.get("/file/deleteFile", { path: path }, r => {
         console.log(r);
@@ -915,21 +1014,38 @@ export default {
     },
     // tab切换
     tabItemClick(index) {
+
       if(index == 1) {
-        // this.loadMore()
-        let ids = this.$route.query.ids
-        console.log()
-        this.$router.push({ path: "/historyRecord", query: { ids: ids } });        
+        this.$router.push({ path: "/historyRecord", query: { ids: this.$route.query.ids } });      
       }
+
     },
     /**
      * 悬浮菜单操作按钮
-     * @type==0 修改
-     * @type==1 删除
+     * @type==1 修改
+     * @type==2 删除
      */
-    menuHandleClick(type) {
-      console.log(type);
-    },
+    // menuHandleClick(type) {
+    //   console.log(type);
+    //   if(type == 1) {
+    //     let obj = {
+    //       id: this.$route.query.id,
+    //       taskid: this.$route.query.ids
+    //     }
+    //     // this.openType = '4'
+    //     // this.menuData.isShowMenu = false
+    //     // this.$api.get('/submit/submitDetails', obj, r => {
+    //     //   let datas = JSON.parse(r.data)
+    //     //   console.log(datas)
+    //     //   this.dataFormat(datas)
+    //     // })
+    //     this.$router.push({ path: '/formPage', 
+    //     query: { openType: '4', id: this.$route.query.id, ids: this.$route.query.ids } })
+    //   }
+    //   if(type == 2) {
+
+    //   }
+    // },
     // 隐藏选项菜单
     hideSelectList(...data) {
       console.log(data);
@@ -962,36 +1078,86 @@ export default {
         obj.value = parseInt(obj.value) + parseInt(obj.step);
       }
     },
+    // historyRecordDetail(item) {
+    //   this.selectTabIndex = 0
+    //   this.openType = '3'
+      
+    //   let obj = {
+    //     id: item.id,
+    //     taskid: this.$route.query.ids
+    //   };
+
+    //   console.log(obj)
+
+    //   this.submitFormDetailQuery = obj
+    // },
+    // loadMore() {
+    //   let obj = {
+    //     taskid: this.$route.query.ids,
+    //     userid: this.$api.sGetObject('userObj').userId,
+    //     page: this.page,
+    //     pagesize: this.pagesize
+    //   };
+    //   this.$api.get("submit/taskSummary", obj, r => {
+    //     let data = JSON.parse(r.data);
+    //     console.log(data)
+    //     this.page++;
+    //     this.pageCount = data.pageCount;
+
+    //     this.$nextTick(() => {
+    //       this.$refs.scrollerBottom.reset();
+    //     });
+
+    //     if (this.page > Math.ceil(data.count / this.pagesize)) {
+    //       this.$refs.scrollerBottom.disablePullup();
+    //     } else {
+    //       this.$refs.scrollerBottom.enablePullup();
+    //     }
+
+    //     this.historyRecord = this.historyRecord.concat(data.resultList);
+
+    //     console.log(this.historyRecord)
+
+    //     this.$refs.scrollerBottom.donePullup();
+    //   });
+    // },
     // 数据格式化
     dataFormat(allData) {
       let bigData = allData;
 
+      // console.log(bigData)
+
       bigData.data.map((c, d) => {
         if (c.ele == "select") {
-          c.obj.valueArr = c.obj.value ? c.obj.value.split(',') : [];
+          c.obj.valueArr = c.obj.value + '' ? c.obj.value.toString().split(',') : [];
         }
         if (c.ele == "address") {
           c.obj.shengValueArr = c.obj.shengValue ? c.obj.shengValue.split(',') : []
-          c.obj.shiValueArr = c.obj.shiValue ? c.obj.shiValue.split(',') : [];
-          c.obj.quValueArr = c.obj.quValue ? c.obj.quValue.split(',') : [];
+          c.obj.shiValueArr = c.obj.shiValue ? c.obj.shiValue.split(',') : []
+          c.obj.quValueArr = c.obj.quValue ? c.obj.quValue.split(',') : []
         }
+
         if (c.ele == "datepicker") {
-          c.obj.valueTimeArr = c.obj.valueTime ? c.obj.valueTime.split(',') : [];
+          c.obj.valueTimeArr = c.obj.valueTime ? c.obj.valueTime.split(':') : [];
         }
 
         if (c.ele == "selectcontact") {
-          c.obj.valueArr = c.obj.value ? c.obj.value.split(',') : [];
-          c.obj.valueArr1 = c.obj.value1 ? c.obj.value1.split(',') : [];
-          c.obj.two_arr =  c.obj.value ? c.obj.items[c.obj.value].arrs : []
+          c.obj.valueArr = c.obj.value + '' ? c.obj.value.toString().split(',') : [];
+          c.obj.valueArr1 = c.obj.value1+'' ? c.obj.value1.toString().split(',') : [];
+          c.obj.two_arr =  c.obj.value+'' ? c.obj.items[c.obj.value].arrs : []
         }
 
         if (c.ele == "selectstudent") {
           c.obj.items[0].active = true;
         }
 
+        // if(c.ele == 'score') {
+
+        // }
+
       });
       this.allListData = bigData;
-      console.log(this.allListData);
+      // console.log(this.allListData);
     },
     requireCheck() {
       let msg = "";
@@ -1013,7 +1179,7 @@ export default {
           v.obj.value1 = v.obj.valueArr1[0];
         }
       });
-
+      // console.log(this.allListData.data)
       this.allListData.data.some((v, i) => {
         if (v.obj.require) {
           msg = "";
@@ -1109,7 +1275,7 @@ export default {
             msg = v.obj.label;
             return true;
           }
-          if (v.ele == "score" && !v.obj.valueArr.length && v.obj.isCheck) {
+          if (v.ele == "score" && !v.obj.value.length && v.obj.isCheck) {
             msg = v.obj.label;
             return true;
           }
@@ -1146,17 +1312,44 @@ export default {
     },
     // 提交表单
     submitForm() {
+      // 提交前的验证
       let msg = this.requireCheck();
-      // let obj = {
-      //   id: this.id,
-      //   title: this.allListData.title,
-      //   data: this.allListData.data,
-      //   describe: this.allListData.describe
-      // };
 
-      // console.log(this.ids)
+      // msg=='success' 校验通过
+      if (msg == "success") { 
 
-      if (msg == "success") {
+        Indicator.open({
+          text: "提交中",
+        });
+        
+        // openType == 4 为修改表单
+        if(this.openType == '4') {
+          
+          this.$api.post(
+            "/submit/update",
+            {
+              id: this.$route.query.id,
+              taskid: this.ids,
+              title: this.allListData.title,
+              data: this.allListData.data,
+              describe: this.allListData.describe
+            },
+            r => {
+              console.log(r)
+              Indicator.close()
+              if(r.state == '0') {
+                Toast(r.result)
+              }
+              console.log(r)
+            },
+            e => {
+              console.log(e);
+            Indicator.close()
+            }
+          );
+          return
+        }
+
         this.$api.post(
           "/submit/submitTask",
           {
@@ -1166,12 +1359,14 @@ export default {
             describe: this.allListData.describe
           },
           r => {
+            console.log(r)
+            Indicator.close()
             this.submitSuccess = true
           },
           e => {
             console.log(e);
-          }
-        );
+            Indicator.close()
+          });
       } else {
         Toast(msg + "为必填项，请填写后提交!");
       }
@@ -1179,6 +1374,8 @@ export default {
     // 获取表单数据
     getFormData(ids) {
       this.$api.get("/task/taskdetail", { taskid: ids }, r => {
+        Indicator.close()
+        this.isShowLoading = false
         let datas = JSON.parse(r.data);
         this.dataFormat(datas);
       });
@@ -1441,13 +1638,6 @@ a:hover {
 .vux-x-icon-ios-arrow-right {
   fill: #c3c9cf !important;
 }
-.vux-tab-wrap {
-  position: fixed !important;
-  top: 0;
-  left: 0;
-  width: 100%;
-  z-index: 11;
-}
 .range-bar-active-color {
   background: #5db75d;
 }
@@ -1459,6 +1649,13 @@ a:hover {
   padding-bottom: 53px;
   padding-top: 44px;
   font-size: 14px;
+  .vux-tab-wrap {
+    position: fixed !important;
+    top: 0;
+    left: 0;
+    width: 100%;
+    z-index: 11;
+  }
   input,
   textarea {
     font-size: 14px;
@@ -1909,42 +2106,42 @@ a:hover {
     }
   }
 }
-.history-record {
-  padding: 0 px2rem(20);
-  padding-top: 40px;
-  .list {
-    padding-bottom: 20px;
-    .item {
-      padding: 12px px2rem(20);
-      box-sizing: border-box;
-      background: #ffffff;
-      box-shadow: 0 3px 15px 0 rgba(0, 0, 0, 0.06);
-      border-radius: 2px;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-bottom: 10px;
-      .statu {
-        flex: 1;
-      }
-      .left {
-        width: px2rem(236);
-        .title {
-          font-size: 17px;
-          color: #333333;
-          overflow: hidden;
-          text-overflow: ellipsis;
-          white-space: nowrap;
-          margin-bottom: 7px;
-        }
-        .date {
-          font-size: 13.9px;
-          color: #939393;
-        }
-      }
-    }
-  }
-}
+// .history-record {
+//   padding: 0 px2rem(20);
+//   padding-top: 40px;
+//   .list {
+//     padding-bottom: 20px;
+//     .item {
+//       padding: 12px px2rem(20);
+//       box-sizing: border-box;
+//       background: #ffffff;
+//       box-shadow: 0 3px 15px 0 rgba(0, 0, 0, 0.06);
+//       border-radius: 2px;
+//       display: flex;
+//       justify-content: space-between;
+//       align-items: center;
+//       margin-bottom: 10px;
+//       .statu {
+//         flex: 1;
+//       }
+//       .left {
+//         width: px2rem(236);
+//         .title {
+//           font-size: 17px;
+//           color: #333333;
+//           overflow: hidden;
+//           text-overflow: ellipsis;
+//           white-space: nowrap;
+//           margin-bottom: 7px;
+//         }
+//         .date {
+//           font-size: 13.9px;
+//           color: #939393;
+//         }
+//       }
+//     }
+//   }
+// }
 
 .other-input {
   background: #ffffff;

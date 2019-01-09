@@ -86,15 +86,15 @@ const router = new Router({
       },
       component:resolve=>require(["@/pages/task/submitFormData/SubmitFormData"],resolve)
     },
-    // {
-    //   path: '/submitFormDataDetail',
-    //   name: 'SubmitFormDataDetail',
-    //   // component: SubmitFormData,
-    //   meta: {
-    //     title: ''
-    //   },
-    //   component:resolve=>require(["@/pages/task/submitFormData/detail/Detail"],resolve)
-    // },
+    {
+      path: '/submitFormDataDetail',
+      name: 'SubmitFormDataDetail',
+      // component: SubmitFormData,
+      meta: {
+        title: ''
+      },
+      component:resolve=>require(["@/pages/task/submitFormData/detail/Detail"],resolve)
+    },
     {
       path: '/fillInHisory',
       name: 'FillInHisory',

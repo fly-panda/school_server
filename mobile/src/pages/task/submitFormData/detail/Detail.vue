@@ -1,5 +1,5 @@
 <template>
-  <div class="page">
+  <div class="page" v-show="!isShowLoading">
     <!-- 标题 -->
     <div class="title" v-show="allData.title" v-html="allData.title"></div>
     <!-- 描述 -->
@@ -72,7 +72,7 @@
       <!-- 时间日期 -->
       <div class="item" v-if="obj.ele == 'datepicker'">
         <div class="label" v-html="obj.obj.label"></div>
-        <div>
+        <div class="value">
           <span v-if="obj.obj.valueDate">{{ obj.obj.valueDate }}</span>
           <span v-if="obj.obj.valueTime">{{ obj.obj.valueTime }}</span>
         </div>
@@ -119,7 +119,7 @@
 
     </div>
 
-    <div class="btn-box">
+    <div class="btn-box" v-if="openType != 3 && openType != '5'">
       <button class="hg" @click="caozuoForm(1)" :disabled="state == 1">合格</button>
       <button class="bhg" @click="showModel()" :disabled="state == 1">不合格</button>
     </div>
@@ -138,15 +138,22 @@
       </div>
     </div>
 
+    <suspend-btn :menuData="menuData" @menuHandleClick="menuHandleClick" v-show="openType == '3'"></suspend-btn>
+
+
   </div>
 </template>
 
 <script>
-import { Toast } from "mint-ui";
+import { Toast, Indicator } from "mint-ui";
+import SuspendBtn from "../../../../components/suspendBtn/SuspendBtn"; // 悬浮按钮
 
 export default {
   name: "SubmitFormDetail",
-  components: {},
+  components: {
+    SuspendBtn,
+    Indicator
+  },
   props: ['name'],
   filters: {
     addressFilter(r) {
@@ -161,6 +168,12 @@ export default {
   },
   data() {
     return {
+      isShowLoading: true,
+      menuData: {
+        isShowMenu: false,
+        isShowModel: false
+      }, //是否显示悬浮菜单
+      openType: '',
       apiQuery: this.name,
       baseUrl: "http://47.93.156.129:8848",
       bthDisabled: true,
@@ -194,8 +207,8 @@ export default {
       let state = type  // type 1 通过，2 未通过
 
       let obj = {
-        id: this.id,
-        taskid: this.taskid,
+        id: this.$route.query.id,
+        taskid: this.$route.query.ids,
         state: state,
         reason: this.textareaValue
       }
@@ -214,6 +227,8 @@ export default {
   
   },
   created() {
+    Indicator.open({text: '加载中'})
+    let options = this.$route.query
     // console.log(this.apiQuery)
 
     // this.id = options.id
@@ -222,13 +237,24 @@ export default {
     this.state = ''
 
     let obj = {
-      id: this.apiQuery.id,
-      taskid: this.apiQuery.taskid
+      id: this.$route.query.id,
+      taskid: this.$route.query.ids
     }
-    if(!this.apiQuery.id || !this.apiQuery.taskid) { return }
+
+    this.openType = this.$route.query.openType
+
+    // openType==3时  页面是从记录页面来 显示悬浮按钮
+    this.menuData.isShowMenu = this.openType == '3' ? true : false
+    if(this.openType == '3') {
+      this.menuData.id = options.id
+      this.menuData.taskid = options.ids
+    }
+
     this.$api.get('/submit/submitDetails', obj, r => {
+      Indicator.close()
+      this.isShowLoading = false
       let datas = JSON.parse(r.data)
-      // console.log(datas)
+      console.log(datas)
       this.state = datas.state
       this.allData = datas
     })
@@ -341,6 +367,13 @@ export default {
   }
   .list {
     padding-top: px2rem(10);
+    .des {
+      font-size: 15px;
+      color: #4a4a4a;
+      letter-spacing: 0;
+      text-align: justify;
+      line-height: 28px;
+    }
     .item {
       margin-bottom: px2rem(10);
       .label {

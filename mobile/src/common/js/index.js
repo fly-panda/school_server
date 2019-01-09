@@ -90,7 +90,7 @@ function apiAxios(method, url, params, success, failure) {
             // Message.success(data.result);
             success(data);
           }else{
-            failure(err);
+            failure(data);
             Toast(data.result)
           }   
         }
@@ -127,6 +127,7 @@ function apiAxios(method, url, params, success, failure) {
             success(data);
           }else{
             Toast(data.result)
+            failure(data)
           }   
         }
         
