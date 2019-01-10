@@ -76,7 +76,7 @@ export default {
             this.$router.push({
                 path:`/taskDetail?taskid=${this.taskid}&id=${data.id}`
             })    
-            console.log(data);
+            // console.log(data);
         },
         getData(){
             let self=this;

@@ -24,6 +24,11 @@
                         <p v-if="item.type=='uploadimg'" class="img-view">
                             <img v-for="(cont,i) in item.value" :src="baseImg+cont" :key="i" @click="viewImg(cont)" alt=""/>
                         </p>
+                        <p v-if="item.type=='uploads'" class="img-view">
+                            <!-- {{item.value}} -->
+                            <a v-for="(cont,i) in item.value" :href='baseImg+"api/file/download?path="+cont'>附件{{i+1}}</a>
+                            
+                        </p>
                         <p v-else class="cont">{{item.value}}</p>
                     </li>
                 </ul>
@@ -262,8 +267,11 @@
                     let datas=JSON.parse(r.data);
                     self.submitMsg.state=datas.state;
                     for(let i=0;i<datas.content.length;i++){
-                        datas.content[i].title=self.columns8[i].title;
-                        if(datas.content[i].type=="uploadimg"){
+                        datas.content[i].title=self.columns8[i+1].title;
+                        if(datas.content[i].type=="uploadimg"&&datas.content[i].value!=""){
+                            datas.content[i].value=datas.content[i].value.split(",");                         
+                        }
+                        if(datas.content[i].type=="uploads"&&datas.content[i].value!=""){
                             datas.content[i].value=datas.content[i].value.split(",");                         
                         }
                     }
@@ -312,7 +320,7 @@
                 this.rowIndex=index;
                 // console.log(index);
                 this.modals=true;
-                console.log(data);
+                // console.log(data);
                 this.getModalData(data.id);
                 // console.log(data)
             },

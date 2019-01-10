@@ -50,9 +50,9 @@ export default {
                 let datas=JSON.parse(r.data);
                 self.cardList=datas.result;
                 self.totals=datas.count;
-                console.log(r)
+                // console.log(r)
             },e=>{
-                console.log(e)
+                // console.log(e)
             })
         },
         addTempFun(){
