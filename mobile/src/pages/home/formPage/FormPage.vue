@@ -896,7 +896,10 @@ export default {
       // 获取预览数据
       this.$api.get("/cform/getpreview", { tempid: ids }, r => {
         let allData = JSON.parse(r.data);
+        console.log(allData)
         this.dataFormat(allData);
+        Indicator.close()
+        this.isShowLoading = false
       });
       return;
     }
