@@ -19,9 +19,17 @@ const LOGIN_PAGE_NAME = 'login'
 //   else next({ replace: true, name: 'error_401' }) // 无权限，重定向到401页面
 // }
 
-// router.beforeEach((to, from, next) => {
-//   iView.LoadingBar.start()
-// })
+router.beforeEach((to, from, next) => {
+  
+	let allowBack = true    //    给个默认值true
+	if (to.meta.allowBack !== undefined) {
+	    allowBack = to.meta.allowBack
+	}
+	if (!allowBack) {
+	      history.pushState(null, null, location.href)
+	}    
+  	next();
+})
 
 // router.afterEach(to => {
 //   iView.LoadingBar.finish()

@@ -42,6 +42,11 @@ export default {
         }
     },
     mounted(){
+        //防止页面后退
+        history.pushState(null, null, document.URL);
+        window.addEventListener('popstate', function () {
+            history.pushState(null, null, document.URL);
+        });
         this.previewObj=this.$api.sGetObject("previewObj");
         this.ids=this.$route.query.ids;
         // this.getData();

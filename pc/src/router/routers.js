@@ -184,6 +184,7 @@ export default [
         name: 'preview',
         meta: {
             title: '预览',
+            allowBack:false,
             keepAlive: false // 不需要缓存
         },
         component:resolve=>require(["@/views/page/editor/preview"],resolve)
