@@ -864,7 +864,7 @@ export default {
   computed: {},
   created () {
 
-    Indicator.open({ text: "加载中"});
+    // Indicator.open({ text: "加载中"});
 
     // 链接里的数据
     let options = this.$route.query
