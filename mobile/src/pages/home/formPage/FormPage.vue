@@ -1,5 +1,5 @@
 <template>
-  <div v-show="!isShowLoading" :class="[{ 'pt-0': preview == '1' || openType == '2' || openType == '1' || openType == '3' || openType == '4' }, 'form-page']">
+  <div :class="[{ 'pt-0': preview == '1' || openType == '2' || openType == '1' || openType == '3' || openType == '4' }, 'form-page']">
     <!-- tab切换 -->
     <tab :line-width="1" custom-bar-width="60px" v-if="preview != '1' && openType != '2' && openType != '1' && openType != '3' && openType != '4'">
       <tab-item
