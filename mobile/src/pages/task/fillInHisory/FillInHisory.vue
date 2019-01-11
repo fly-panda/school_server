@@ -27,14 +27,14 @@
         </li>
       </ul>
 
-      <!-- <no-data v-show="!listData.length"></no-data> -->
+      <no-data v-show="!listData.length"></no-data>
     </scroller>
   </div>
 </template>
 
 <script>
 import { Scroller } from "vux";
-// import NoData from '../../../components/noData/NoData';
+import NoData from "../../../components/noData/Nodata";
 
 const pullupDefaultConfig = {
   content: "上拉加载更多",
@@ -51,7 +51,7 @@ export default {
   name: "FillInHisory",
   components: {
     Scroller,
-    // NoData
+    NoData
   },
   props: {},
   data() {
