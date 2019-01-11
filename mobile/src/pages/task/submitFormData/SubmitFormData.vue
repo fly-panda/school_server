@@ -25,7 +25,7 @@
       ref="scrollerBottom"
       :height="lishH"
     >
-      <ul class="list">
+      <!-- <ul class="list">
         <li
           class="list-item"
           v-for="(item, index) of listData"
@@ -34,6 +34,24 @@
         >
           <div class="left">
             <span class="name">{{ item.value0 }}</span>
+            <img
+              v-if="item.statu"
+              class="img-statu"
+              src="../../../assets/img/icon/icon-tanhao.png"
+              width="13"
+              alt
+            >
+          </div>
+          <div class="right">{{ datas.taskCreateTime | timeFifler }}</div>
+        </li>
+      </ul> -->
+      <ul class="list">
+        <li
+          class="list-item"
+          @click="detail()"
+        >
+          <div class="left">
+            <span class="name">{{ datas.originator }}</span>
             <!-- <img
               v-if="item.statu"
               class="img-statu"
@@ -42,7 +60,7 @@
               alt
             >-->
           </div>
-          <div class="right">{{ datas.taskCreateTime | timeFifler }}</div>
+          <div class="right">{{ datas.taskCreateTime }}</div>
         </li>
       </ul>
     </scroller>
@@ -71,9 +89,9 @@ export default {
   props: {},
   filters: {
     timeFifler(r) {
+      console.log(r)
       let date = r.slice(0, 10)
       return date
-      console.log(r);
     }
   },
   data() {
@@ -101,10 +119,10 @@ export default {
     });
   },
   methods: {
-    detail(id) {
+    detail() {
       this.$router.push({
-        path: "/submitFormDataDetail",
-        query: { ids: this.taskid, id: id, openType: this.$route.query.openType }
+        path: "/fillInHisory",
+        query: { ids: this.taskid, openType: this.$route.query.openType }
       });
     },
     loadMore() {
@@ -142,8 +160,9 @@ export default {
   },
   created() {
     let options = this.$route.query;
-    this.obj = JSON.parse(options.item);
-    this.taskid = this.obj.id;
+    // this.obj = JSON.parse(options.item);
+    console.log(this.obj)
+    this.taskid = options.ids
 
     this.loadMore();
   }

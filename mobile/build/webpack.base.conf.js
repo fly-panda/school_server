@@ -26,7 +26,7 @@ const webpackConfig = {
   externals: {
     'vue': 'Vue',
     'element-ui':'ELEMENT',
-    // 'mint-ui': 'MINT'
+    'mint-ui': 'MINT'
   },
   resolve: {
     extensions: ['.js', '.vue', '.json'],

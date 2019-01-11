@@ -115,8 +115,8 @@ export default {
   },
   methods: {
     taskDetail(item) {
-      let obj = JSON.stringify(item)
-      this.$router.push({ path: "/submitFormData", query: { item: obj, openType: 2 } });
+      // let obj = JSON.stringify(item)
+      this.$router.push({ path: "/submitFormData", query: { ids: item.id, openType: 2 } });
     },
     loadMore() {
       let obj = {

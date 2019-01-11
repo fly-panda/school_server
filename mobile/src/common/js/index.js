@@ -70,40 +70,40 @@ function download(url, params, success) {
     })
 }
 
-function apiAxios(method, url, params, success, failure) {
-  if (method=="POST") {
-    params = getParams(params)
-  }
-  axios({
-    method: method,
-    url: url,
-    data: method === 'POST'? params : null,
-    params: method === 'GET'? params : null,
-    baseURL: baseUrlRoot+"api/",
-    withCredentials: false,
-    timeout: 10000
-  })
-    .then(function (res) {
-        let data=res.data;
-        if(res.status==200){
-          if(data.state==0){
-            // Message.success(data.result);
-            success(data);
-          }else{
-            failure(data);
-            Toast(data.result)
-          }   
-        }
+// function apiAxios(method, url, params, success, failure) {
+//   if (method=="POST") {
+//     params = getParams(params)
+//   }
+//   axios({
+//     method: method,
+//     url: url,
+//     data: method === 'POST'? params : null,
+//     params: method === 'GET'? params : null,
+//     baseURL: baseUrlRoot+"api/",
+//     withCredentials: false,
+//     timeout: 10000
+//   })
+//     .then(function (res) {
+//         let data=res.data;
+//         if(res.status==200){
+//           if(data.state==0){
+//             // Message.success(data.result);
+//             success(data);
+//           }else{
+//             failure(data);
+//             Toast(data.result)
+//           }   
+//         }
         
-    })
-    .catch(function (err) {
-      // Toast(err)
+//     })
+//     .catch(function (err) {
+//       // Toast(err)
 
-      failure(err);
-        // Message.error("服务异常，请刷新重试！");
+//       failure(err);
+//         // Message.error("服务异常，请刷新重试！");
 
-    })
-}
+//     })
+// }
 
 function apiAxios(method, url, params, success, failure) {
   if (method=="POST") {

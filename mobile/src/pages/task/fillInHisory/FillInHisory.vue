@@ -9,26 +9,32 @@
       ref="scrollerBottom"
       :height="lishH"
     >
-      <ul class="list">
-        <li class="item" v-for="(item, index) of listData" :key="index">
+      <ul class="list" 
+          v-show="listData.length">
+        <li class="item" v-for="(item, index) of listData" 
+            :key="index"
+            @click="detail(item.id)">
           <div class="left">
             <div class="left-top">
-              <div class="title">{{ item.title }}</div>
+              <div class="title">{{ item.value0 }}</div>
               <img v-if="item.statu" src="../../../assets/img/icon/icon-tanhao.png" width="13" alt>
             </div>
-            <div class="date">填写时间：{{ item.date }}</div>
+            <div class="date">填写时间：{{ datas.taskCreateTime }}</div>
           </div>
           <div class="right">
             <x-icon type="ios-arrow-right" size="16" class="icon-arrow-right"></x-icon>
           </div>
         </li>
       </ul>
+
+      <!-- <no-data v-show="!listData.length"></no-data> -->
     </scroller>
   </div>
 </template>
 
 <script>
 import { Scroller } from "vux";
+// import NoData from '../../../components/noData/NoData';
 
 const pullupDefaultConfig = {
   content: "上拉加载更多",
@@ -44,49 +50,75 @@ const pullupDefaultConfig = {
 export default {
   name: "FillInHisory",
   components: {
-    Scroller
+    Scroller,
+    // NoData
   },
   props: {},
   data() {
     return {
+      lishH: '',
+      page: 1,
+      pagesize: 15,
       pullupDefaultConfig: pullupDefaultConfig,
-      lishH: "-53",
-      listData: [
-        {
-          title: "收集更多数据收集更多数据收集更多数据收集更多数据收集更多数据",
-          statu: true,
-          date: "11/26 08:00"
-        },
-        {
-          title: "收集更多数据",
-          statu: false,
-          date: "11/26 08:00"
-        },
-        {
-          title: "收集更多数据",
-          statu: false,
-          date: "11/26 08:00"
-        },
-        {
-          title: "收集更多数据",
-          statu: false,
-          date: "11/26 08:00"
-        },
-        {
-          title: "收集更多数据",
-          statu: false,
-          date: "11/26 08:00"
-        }
-      ]
+      listData: [],
+      datas: {}
     };
   },
   watch: {},
   computed: {},
-  methods: {
-    loadMore() {}
+  mounted() {
+    this.lishH = window.innerHeight + 'px'
+
+    this.$nextTick(() => {
+      this.$refs.scrollerBottom.disablePullup();
+      this.$refs.scrollerBottom.reset({ top: 0 });
+    });
   },
-  created() {},
-  mounted() {}
+  methods: {
+    detail(id) {
+      this.$router.push({
+        path: "/submitFormDataDetail",
+        query: { ids: this.$route.query.ids, id: id, openType: this.$route.query.openType }
+      });
+    },
+    loadMore() {
+      let obj = {
+        userid: "",
+        taskid: this.$route.query.ids,
+        page: this.page,
+        pagesize: this.pagesize
+      };
+      this.$api.get("/submit/taskSummary", obj, r => {
+        let data = JSON.parse(r.data);
+
+        this.datas = data;
+
+        console.log(data);
+
+        this.page++;
+        this.pageCount = data.count;
+
+        this.$nextTick(() => {
+          this.$refs.scrollerBottom.reset();
+        });
+
+        if (this.page > data.CurrentPage) {
+          this.$refs.scrollerBottom.disablePullup();
+        } else {
+          this.$refs.scrollerBottom.enablePullup();
+        }
+
+        this.listData = this.listData.concat(data.resultList);
+
+        this.$refs.scrollerBottom.donePullup();
+      });
+    }
+  },
+  created() {
+    let options = this.$route.query
+    console.log(options)
+    this.loadMore()
+  }
 };
 </script>
 <style lang="scss" scoped>

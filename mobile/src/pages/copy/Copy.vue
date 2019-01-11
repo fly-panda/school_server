@@ -148,7 +148,7 @@ export default {
   methods: {
     taskDetail(item) {
       let obj = JSON.stringify(item)      
-      this.$router.push({ path: "/submitFormData", query: { item: obj, openType: '5' } });
+      this.$router.push({ path: "/submitFormData", query: { ids: item.id, openType: '5' } });
     },
     detail(item) {
       console.log(item)

@@ -987,6 +987,8 @@ export default {
         Indicator.close();
         list.splice(idx, 1);
         Toast(r.result);
+      }, r => {
+        Indicator.close();
       });
     },
     // 上传文件
@@ -1013,6 +1015,8 @@ export default {
         res.splice(i, 1);
         Indicator.close();
         Toast(r.result);
+      }, r => {
+        Indicator.close();
       });
     },
     // tab切换

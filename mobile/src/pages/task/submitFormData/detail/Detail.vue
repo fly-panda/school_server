@@ -1,5 +1,12 @@
 <template>
   <div class="page" v-show="!isShowLoading">
+    <!-- 不合格理由 -->
+    <div class="bghly" v-show="allData.reason">
+      <div class="box">
+        <div class="title">不合格理由：</div>
+        <div v-html="allData.reason"></div>
+      </div>
+    </div>
     <!-- 标题 -->
     <div class="title" v-show="allData.title" v-html="allData.title"></div>
     <!-- 描述 -->
@@ -168,6 +175,8 @@ export default {
   },
   data() {
     return {
+      startY: '',
+      moveEndY: '',
       isShowLoading: true,
       menuData: {
         isShowMenu: false,
@@ -186,15 +195,18 @@ export default {
     };
   },
   watch: {
-    name: function(newVal, oldVal) {
-      this.curName = newVal;
-    },
-    curName: function(newVal, oldVal) {
-      this.$emit("update:name", newVal);
-    }
+    // name: function(newVal, oldVal) {
+    //   this.curName = newVal;
+    // },
+    // curName: function(newVal, oldVal) {
+    //   this.$emit("update:name", newVal);
+    // }
   },
   computed: {
     Toast
+  },  
+  mounted() {
+
   },
   methods: {
     showModel() {
@@ -222,9 +234,6 @@ export default {
     getValue() {
       this.bthDisabled = this.textareaValue.trim() ? false : true
     }
-  },
-  mounted() {
-  
   },
   created() {
     Indicator.open({text: '加载中'})
@@ -254,7 +263,7 @@ export default {
       Indicator.close()
       this.isShowLoading = false
       let datas = JSON.parse(r.data)
-      console.log(datas)
+      // console.log(datas)
       this.state = datas.state
       this.allData = datas
     })
@@ -266,6 +275,23 @@ export default {
 @import "../../../../assets/styles/mixins.scss";
 .page {
   padding: px2rem(20);
+  .bghly {
+    padding-bottom: px2rem(20);
+    font-size: 15px;
+    color: #4A4A4A;
+    .box {
+      background: #FFFFFF;
+      border: 1px solid #C3C9CF;
+      box-shadow: -3px 4px 15px -7px rgba(0,0,0,0.24);
+      border-radius: 2px;
+      padding: px2rem(13);
+      .title {
+        font-size: 16px;
+        color: #EF000C;
+        margin-bottom: 13px;
+      }
+    }
+  }
   .model {
     position: fixed;
     top: 0;
