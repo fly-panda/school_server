@@ -31,7 +31,7 @@
                                        <span class="check-cls" :class="{'active-cls':item.checked}"></span>
                                    </li>
                                </ul>
-                               <div class="flexCenters">
+                               <div class="flexCenters postChild" >
                                     <Button type="primary" @click="submitResut">确定</Button>
                                 </div>
                             </div>
@@ -258,6 +258,7 @@ export default {
     }
 }
 .peo-list{
+    padding-bottom: 36px;
     li{
         text-align:left;
         display:flex;
@@ -326,5 +327,15 @@ export default {
             border: 1px solid #A8BACE;
             border-radius: 2px;
         }
+    }
+    .posts{
+        position: relative;
+    }
+    .postChild{
+        width: 202px;
+        background:#fff;
+        position: absolute;
+        margin:5px 0 1px 0;
+        bottom:0;
     }
 </style>

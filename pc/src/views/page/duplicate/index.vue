@@ -243,7 +243,7 @@ export default {
                 padding: 0 10px;
                 .title{
                     font-weight: 700;
-                    margin-top: 10px; 
+                    // margin-top: 10px; 
                     margin-left: 10px; 
 
                     font-size: 16px;

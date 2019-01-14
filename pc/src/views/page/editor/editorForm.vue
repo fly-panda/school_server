@@ -209,7 +209,7 @@
             <!-- 下拉配置 -->
             <div v-if="settingFormItem.type =='select' || settingFormItem.type == 'radio' || settingFormItem.type == 'checkbox'">
                 <span style="display:block;margin:15px 0 0 15px;">选项配置</span>
-                <draggable element="div" v-model="settingFormItem.items" @update="datadragEnd">
+                <draggable element="div" v-model="settingFormItem.items" @update="datadragEnd" :options="{handle:'.move-cls'}">
                     <transition-group name="no" tag="div">
                         <FormItem style="border: none;padding: 3px 15px;" v-for="(SelectItem, index) in settingFormItem.items" :key="index">
                             <Row class="sel-cls">
@@ -243,7 +243,7 @@
             <!-- 二级下拉配置 -->
             <div v-if="settingFormItem.type =='selectcontact'">
                 <span style="display:block;margin:15px 0 0 15px;">选项配置</span>
-                <draggable element="div" v-model="settingFormItem.items">
+                <draggable element="div" v-model="settingFormItem.items" :options="{handle:'.move-cls'}">
                     <transition-group name="no" tag="div">
                         <FormItem style="border: none;padding: 3px 15px;" v-for="(SelectItem, index) in settingFormItem.items" :key="index">
                             <Row class="sel-cls">
@@ -292,7 +292,7 @@
             </div>
             <div v-if="settingFormItem.type =='score'">
                 <span style="display:block;margin-left:15px; margin-top: 15px">选项内容</span>
-                <draggable element="div" v-model="settingFormItem.items">
+                <draggable element="div" v-model="settingFormItem.items" :options="{handle:'.move-cls'}">
                     <transition-group name="no" tag="div">
                         <FormItem style="border: none" v-for="(SelectItem, index) in settingFormItem.items" :key="index">
                             <Row class="sel-cls">

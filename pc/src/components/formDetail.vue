@@ -175,7 +175,7 @@
             <!-- 图片展示 -->
             <div class="imgPreview selectStudentContainer" v-if="cont.ele=='imgshow'">
                 <p v-for="(item,ind) in cont.obj.imgArr">
-                    <img :src="baseImg+item.url" alt="">
+                    <img :src="baseImg+item.url" alt="" @click="showImgFun(item.url)">
                 </p>
                 
                 <!-- <img src="@/assets/logo.png" alt=""> -->
@@ -403,8 +403,8 @@
                 </Row>
                 <Row style="margin-top:40px;">
                      <Col span="16" class="slider-img">
-                        <img src="@/assets/icon-jian.png" @click="countRangeValue(-1, cont.obj)" width="40px" height="40px" alt="">
-                        <img src="@/assets/icon-add.png" @click="countRangeValue(1, cont.obj)" width="40px" height="40px" alt="">
+                        <img src="@/assets/icon-jian.png" @click="countRangeValue(-1, cont.obj.value)" width="40px" height="40px" alt="">
+                        <img src="@/assets/icon-add.png" @click="countRangeValue(1, cont.obj.value)" width="40px" height="40px" alt="">
                     </Col>
                     
                     
@@ -438,6 +438,15 @@
             </Row>
         </div>
     </div>
+    <Modal title="View Image" v-model="visible">
+        <div slot="header">
+            
+        </div>
+        <img :src="baseImg+imgSrc" v-if="visible" style="width: 100%">
+        <div slot="footer">
+            
+        </div>
+    </Modal>
     <Modal v-model="modalAdd" width="360" >
         <p slot="close"></p>
         <p slot="header" style="color:#f60;text-align:center">
@@ -494,7 +503,9 @@ export default {
             departmentMultiple:false,
             studentObj:{},
             teacherObj:{},
-            modalAdd:false
+            modalAdd:false,
+            visible: false,
+            imgSrc:""
         }
     },
     filter:{
@@ -516,22 +527,38 @@ export default {
 
     },
     methods: {
+        showImgFun(path){
+            this.imgSrc= path;
+            this.visible = true;
+        },
         // 滑动打分
         countRangeValue(type, obj) {
-            if (
-                type == -1 &&
-                parseInt(obj.value) > parseInt(obj.low) &&
-                parseInt(obj.value) <= parseInt(obj.high)
-            ) {
-                obj.value = parseInt(obj.value) - parseInt(obj.step);
-            }
-            if (
-                type == 1 &&
-                parseInt(obj.value) >= parseInt(obj.low) &&
-                parseInt(obj.value) < parseInt(obj.high)
-            ) {
-                obj.value = parseInt(obj.value) + parseInt(obj.step);
-            }
+            console.log(type,obj)
+            // console.log(
+            //     type == 1 &&
+            //     parseInt(obj.value) >= parseInt(obj.low) &&
+            //     parseInt(obj.value) < parseInt(obj.high))
+            // if (
+            //     type == -1 &&
+            //     parseInt(obj.value) > parseInt(obj.low) &&
+            //     parseInt(obj.value) <= parseInt(obj.high)
+            // ) {
+                
+            //     console.log(parseInt(obj.value) - parseInt(obj.step))
+            //     obj.value = parseInt(obj.value) - parseInt(obj.step);
+
+            // }
+            // if (
+            //     type == 1 &&
+            //     parseInt(obj.value) >= parseInt(obj.low) &&
+            //     parseInt(obj.value) < parseInt(obj.high)
+            // ) {
+            //     console.log(parseInt(obj.value))
+            //     console.log(parseInt(obj.step))
+            //     console.log(parseInt(obj.value) - parseInt(obj.step))
+            //     obj.value = parseInt(obj.value) + parseInt(obj.step);
+
+            // }
         },
         selS(){
             let self=this;

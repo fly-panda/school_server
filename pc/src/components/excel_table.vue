@@ -24,7 +24,7 @@
                         <p v-if="item.type=='uploadimg'" class="img-view">
                             <img v-for="(cont,i) in item.value" :src="baseImg+cont" :key="i" @click="viewImg(cont)" alt=""/>
                         </p>
-                        <p v-if="item.type=='uploads'" class="img-view">
+                        <p v-else-if="item.type=='uploads'" class="img-view">
                             <!-- {{item.value}} -->
                             <a v-for="(cont,i) in item.value" :href='baseImg+"api/file/download?path="+cont'>附件{{i+1}}</a>
                             
@@ -54,8 +54,8 @@
                 </ul>
                 <div class="form-view">
                     <p>
-                        <Button @click="audit(1)" type="success":disabled="submitMsg.state==1">合格</Button>
-                        <Button @click="audit(2)" type="error" :disabled="(reason.length==0&&submitMsg.state!=1)||submitMsg.state==1">不合格</Button>
+                        <Button @click="audit(1)" type="success"v-show="submitMsg.state==2">合格</Button>
+                        <Button @click="audit(2)" type="error" :disabled="reason.length==0">不合格</Button>
                     </p>
                     <textarea class="txt-cls" placeholder="请输入驳回理由" v-model="reason"></textarea>    
                 </div>
@@ -170,7 +170,7 @@
                     if(columnsArr.length>0){
                         self.columns8.push({
                             type: 'index2',
-                            width: 60,
+                            width: 80,
                             title:"序号",
                             align: 'center',
 
@@ -198,10 +198,11 @@
                                                         style: 'width: 40px;display:inline-block;'
                                                     },
                                                     on:{
-                                                        click:()=>{
-                                                            // console.log(event)
-                                                            // event.stopPropagetion();
-                                                            console.log(item)
+                                                        click: e => {
+                                                            e.stopPropagation();
+                                                            self.imgSrc=item;
+                                                            self.visible=true;
+                                                            console.log(11)
                                                         }
                                                     }
                                                 }))
@@ -491,7 +492,7 @@
     .ivu-modal-footer,.ivu-modal-header{
         border-width:0!important;
         padding: 0;
-        display:none;
+        /*display:none;*/
     }
     .ivu-table-cell,.ivu-table-small th{
         text-align: center!important;
