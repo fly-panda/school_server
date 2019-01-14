@@ -44,15 +44,17 @@ function apiAxios(method, url, params, success, failure) {
           if(data.state==0){
             // Message.success(data.result);
             success(data);
+            conosle.log("success")
           }else{
             failure(data);
+            conosle.log("err")
             Message.error(data.result);
           }   
         }
         
     })
     .catch(function (err) {
-      failure(err);
+      // failure(err);
         // Message.error("服务异常，请刷新重试！");
 
     })

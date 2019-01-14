@@ -259,7 +259,7 @@
             getModalData(ids){
                 
                 let self=this;
-                this.reason="";
+                self.reason="";
                 self.ids=ids;
                 self.$api.get("/submit/submitDetails",{
                     id:ids,
@@ -276,6 +276,7 @@
                             datas.content[i].value=datas.content[i].value.split(",");                         
                         }
                     }
+                    self.reason=datas.reason;
                     self.submitMsg.submiter=datas.submiter;
                     self.submitMsg.createtime=datas.createtime;
                     self.lists=datas.content;
@@ -285,12 +286,12 @@
                 let self=this;
                 self.$api.get("/submit/examine",{
                     id:self.ids,
-                    taskid:this.taskid,
+                    taskid:self.taskid,
                     state:states,
-                    reason:this.reason
+                    reason:self.reason
                 },r=>{
-                    let datas=JSON.parse(r.data);
-                    self.$Message.info('成功');
+                   
+                    self.$Message.info(r.result);
                 })
             },
             viewImg(srcs){
