@@ -403,8 +403,8 @@
                 </Row>
                 <Row style="margin-top:40px;">
                      <Col span="16" class="slider-img">
-                        <img src="@/assets/icon-jian.png" @click="countRangeValue(-1, cont.obj.value)" width="40px" height="40px" alt="">
-                        <img src="@/assets/icon-add.png" @click="countRangeValue(1, cont.obj.value)" width="40px" height="40px" alt="">
+                        <img src="@/assets/icon-jian.png" @click="countRangeValue(-1, cont.obj)" width="40px" height="40px" alt="">
+                        <img src="@/assets/icon-add.png" @click="countRangeValue(1, cont.obj)" width="40px" height="40px" alt="">
                     </Col>
                     
                     
@@ -533,32 +533,24 @@ export default {
         },
         // 滑动打分
         countRangeValue(type, obj) {
-            console.log(type,obj)
-            // console.log(
-            //     type == 1 &&
-            //     parseInt(obj.value) >= parseInt(obj.low) &&
-            //     parseInt(obj.value) < parseInt(obj.high))
-            // if (
-            //     type == -1 &&
-            //     parseInt(obj.value) > parseInt(obj.low) &&
-            //     parseInt(obj.value) <= parseInt(obj.high)
-            // ) {
+            if (
+                type == -1 &&
+                parseInt(obj.value) > parseInt(obj.low) &&
+                parseInt(obj.value) <= parseInt(obj.high)
+            ) {
                 
-            //     console.log(parseInt(obj.value) - parseInt(obj.step))
-            //     obj.value = parseInt(obj.value) - parseInt(obj.step);
+                obj.value = parseInt(obj.value) - parseInt(obj.step);
 
-            // }
-            // if (
-            //     type == 1 &&
-            //     parseInt(obj.value) >= parseInt(obj.low) &&
-            //     parseInt(obj.value) < parseInt(obj.high)
-            // ) {
-            //     console.log(parseInt(obj.value))
-            //     console.log(parseInt(obj.step))
-            //     console.log(parseInt(obj.value) - parseInt(obj.step))
-            //     obj.value = parseInt(obj.value) + parseInt(obj.step);
+            }
+            if (
+                type == 1 &&
+                parseInt(obj.value) >= parseInt(obj.low) &&
+                parseInt(obj.value) < parseInt(obj.high)
+            ) {
 
-            // }
+                obj.value = parseInt(obj.value) + parseInt(obj.step);
+
+            }
         },
         selS(){
             let self=this;
