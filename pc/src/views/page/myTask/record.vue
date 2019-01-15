@@ -18,6 +18,22 @@
                 </div>
         </div>
     </div>
+
+    <Modal title="View Image" v-model="visible">
+        <div slot="header">
+            
+        </div>
+        <img :src="baseImg+imgSrc" v-if="visible" style="width: 100%">
+        <div slot="footer">
+            <span style="float: left;margin: 15px 10px;">
+                {{imgSrc}}
+            </span>
+            <span class="viewimg-cls" >
+                <Icon type="md-download" @click="downFile(imgSrc)"/>
+                <Icon type="md-close" @click="visible=false"/>
+            </span>
+        </div>
+    </Modal>
 </div>
 </template>
 
@@ -61,7 +77,8 @@ export default {
 
             ],
             baseImg:this.$api.getBase(),    
-          
+            visible:false,
+            imgSrc:""
         }
     },
     mounted(){
@@ -137,8 +154,10 @@ export default {
                                                     style: 'width: 40px;display:inline-block;'
                                                 },
                                                 on:{
-                                                    click:()=>{
-                                                        // event.stopPropagetion();
+                                                    click: e => {
+                                                        e.stopPropagation();
+                                                        self.imgSrc=item;
+                                                        self.visible=true;
                                                         console.log(item)
                                                     }
                                                 }
@@ -167,7 +186,8 @@ export default {
                                                         style: 'margin:0 2px;color:#5DB75D;cursor:pointer;'
                                                     },
                                                     on:{
-                                                        click:()=>{
+                                                        click: e => {
+                                                            e.stopPropagation();
                                                             window.location.href=this.baseImg+"api/file/download?path="+item;
                                                         }
                                                     }
@@ -349,7 +369,13 @@ export default {
         
     }
 }
-
+.viewimg-cls{
+    font-size: 30px;
+    color:#19be6b;
+    i{
+        cursor: pointer;
+    }
+}
 </style>
 <style>
 .ivu-modal-confirm{

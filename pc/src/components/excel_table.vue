@@ -229,7 +229,8 @@
                                                         style: 'margin:0 2px;color:#5DB75D;cursor:pointer;'
                                                     },
                                                     on:{
-                                                        click:()=>{
+                                                        click: e => {
+                                                            e.stopPropagation();
                                                             window.location.href=this.baseImg+"api/file/download?path="+item;
                                                         }
                                                     }
