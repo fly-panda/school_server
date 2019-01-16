@@ -221,7 +221,7 @@ export default {
         changeFun(page){
             this.currentPage=page;
             this.getData();
-            console.log(page)
+            // console.log(page)
         }
     }
 }
