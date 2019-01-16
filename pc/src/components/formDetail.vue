@@ -765,7 +765,7 @@ export default {
                         msg=item.obj.label
                         return true;
                     }
-                    if(item.ele=="select"&&(!toString(item.obj.value))){
+                    if(item.ele=="select"&&(item.obj.value<"-1")){
                         // this.$Message.warning(item.obj.label+"为必填项，请填写后提交!");
                         msg=item.obj.label
                         return true;
@@ -873,6 +873,7 @@ export default {
                         // })
                     },e=>{
                         console.log(e)
+                        self.$Message.warning(e.result);
                     })
                 }else{
                     self.$api.post("/submit/submitTask",{
@@ -888,6 +889,7 @@ export default {
                         
                     },e=>{
                         console.log(e)
+                        self.$Message.warning(e.result);
                     })
                 }
                 

@@ -204,8 +204,11 @@ export default {
                 settingObj.writes=self.treeList;
                 
             }else if(self.checkStatus=="1"){
+                if(self.$refs.studentList.selStudentList.length==0){
+                    self.$Message.warning('请选择填写老师');
+                }
                 settingObj.writes=self.$refs.studentList.selStudentList
-            
+                
             }
             if(self.settingForm.isCycle==1){
                 if(!self.settingForm.startWeek){
@@ -214,6 +217,15 @@ export default {
                 }
                 if(!self.settingForm.endWeek){
                     self.$Message.warning('请设置每周结束时间');
+                    return
+                } 
+            }else if(self.settingForm.isCycle==0){
+                if(!self.settingForm.startTime){
+                    self.$Message.warning('请设置开始时间');
+                    return
+                }
+                if(!self.settingForm.endTime){
+                    self.$Message.warning('请设置结束时间');
                     return
                 } 
             }
