@@ -95,7 +95,9 @@
       <div class="item" v-if="obj.ele == 'imgshow'">
         <div class="label" v-html="obj.obj.label"></div>
         <div class="list-img">
-          <img v-for="(imgItem, idx) of obj.obj.imgArr" :src="baseUrl+imgItem.url" :key="idx">
+          <img v-for="(imgItem, idx) of obj.obj.imgArr" 
+               :src="baseUrl+imgItem.url" 
+               :key="idx">
         </div>
       </div>
       <!-- 图片选择 -->
@@ -123,6 +125,14 @@
         <div class="label" v-html="obj.obj.label"></div>
         <div class="value">{{ obj.obj.items[obj.obj.value].scoreType == 'add' ? '+' : '-' }}{{ obj.obj.items[obj.obj.value].label_value }}</div>
       </div>
+
+      <!-- <div v-transfer-dom>
+        <previewer
+          :list="previewerImgList | imgFilter(baseUrl)"
+          :ref="imgShow"
+          :options="previewerOptions"
+        ></previewer>
+      </div> -->
 
     </div>
 
@@ -153,13 +163,15 @@
 
 <script>
 import { Toast, Indicator } from "mint-ui";
+// import previewer from 'vux';
 import SuspendBtn from "../../../../components/suspendBtn/SuspendBtn"; // 悬浮按钮
 
 export default {
   name: "SubmitFormDetail",
   components: {
     SuspendBtn,
-    Indicator
+    Indicator,
+    // previewer
   },
   props: ['name'],
   filters: {
@@ -175,6 +187,8 @@ export default {
   },
   data() {
     return {
+      previewerImgList: [],
+      previewerOptions: {},
       startY: '',
       moveEndY: '',
       isShowLoading: true,
