@@ -145,7 +145,8 @@ export default {
             let alertMsg = h('div', {
                 style: {
                     'margin-bottom': '6px',
-                    'font-size': '12px'
+                    'font-size': '12px',
+                    'padding':"1em"
                 },
                 class: {
                     alertMsgStyle: true

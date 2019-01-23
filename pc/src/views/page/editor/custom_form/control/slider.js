@@ -137,7 +137,7 @@ export let sliderConf = {
     // 是否显示行内元素
     inlineBlock: false,
     // 是否必填
-    require: true,
+    require: false,
     // 最大长度
     describe: '',
     gradesType: 'add',

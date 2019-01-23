@@ -3,25 +3,25 @@
         <div class="title" :class="{'require-cls':cont.obj.require}">{{cont.obj.label}}</div>
         <div class="point">{{cont.obj.describe}}</div>
         <Row>
-            <Col span="7">
+            <Col span="7" v-show="cont.obj.chooseCheck[0]=='province'">
                 <Select placeholder="省/市/区/直辖市" v-model="cont.obj.shengValue" @on-change="getShi(cont.obj.shengValue)" style="width:10rem;">
                     <Option v-for="item in shengArr" :value="item.id" :key="item.id">{{ item.name }}</Option>
                 </Select>
             </Col>
-            <Col span="7">
+            <Col span="7" v-show="cont.obj.chooseCheck[1]=='city'">
             
                 <Select placeholder="市" v-model="cont.obj.shiValue" @on-change="getQu" style="width:10rem;">
                     
                     <Option v-for="item in shiArr" :value="item.id" :key="item.id">{{ item.name }}</Option>
                 </Select>
             </Col>
-            <Col span="7">
+            <Col span="7" v-show="cont.obj.chooseCheck[2]=='zone'">
                 <Select placeholder="县/区" v-model="cont.obj.quValue" style="width:10rem;">
                      <Option v-for="item in quArr" :value="item.id" :key="item.id">{{ item.name }}</Option>
                 </Select>
             </Col>
         </Row>
-        <Row style="margin-top: .4rem">
+        <Row style="margin-top: .4rem" v-show="cont.obj.chooseCheck[3]=='detail'">
             <Input  type="text" v-model="cont.obj.value" placeholder="请输入详细地址"></Input>
         </Row>
     </div>

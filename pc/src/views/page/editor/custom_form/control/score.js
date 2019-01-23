@@ -4,8 +4,9 @@ export default (_self, h) => {
         let checkBoxList = _self.obj.items.map(v => {
             return h("Checkbox", {
                 props: {
-                    label: v.label_value
-                }
+                    label: v.label_value,
+                    style:{}
+                },
             }, v.label_name+"("+(v.scoreType=='add'?'+':'-')+v.label_value+")")
         })
         return [

@@ -415,7 +415,7 @@
                 <div class="title" :class="{'require-cls':cont.obj.require}">{{cont.obj.label}}</div>
                 <div class="point">{{cont.obj.describe}}</div>
                 <div class="imgCheckPreview">
-                    <CheckboxGroup v-model="cont.obj.value" style="width: 100%;display:flex;flex-direction: row;justify-content:left;">
+                    <CheckboxGroup v-model="cont.obj.value" style="width: 100%;display:flex;flex-wrap: wrap;flex-direction: row;justify-content:left;">
                         <div v-for="(item,ind) in cont.obj.imgArr" style="text-align: center;">
                             
                                 <img :src="baseImg+item.url" alt="">
@@ -533,6 +533,7 @@ export default {
         },
         // 滑动打分
         countRangeValue(type, obj) {
+            console.log(type,obj)
             if (
                 type == -1 &&
                 parseInt(obj.value) > parseInt(obj.low) &&
@@ -986,7 +987,7 @@ export default {
                 line-height: 1.3rem;
                 overflow-x: auto;
                 img{
-                    width:200px;
+                    width:200px!important;
                 }
             }
 
@@ -1000,6 +1001,7 @@ export default {
 
                 .point {
                     margin-bottom: .6rem;
+                    padding: 0 1em!important;
                 }
 
                 .selectBtn {

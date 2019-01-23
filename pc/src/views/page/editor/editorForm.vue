@@ -75,7 +75,7 @@
             <FormItem v-if="!(settingFormItem.type == 'title'||settingFormItem.type == 'imgShow')"  label="提示" prop="describe">
                 <Input type="textarea" :rows="3" v-model="settingFormItem.describe"></Input>
             </FormItem>
-            <FormItem  v-if="!(settingFormItem.type == 'describe'  || settingFormItem.type == 'title'||settingFormItem.type == 'imgShow'||settingFormItem.type == 'download')" label="校验" :style="settingFormItem.type==='input'?{'font-weight': 400, 'border-bottom': 'none', 'padding-bottom': 0}:{'font-weight': 400}" prop="require">
+            <FormItem  v-if="!(settingFormItem.type == 'describe'  || settingFormItem.type == 'title'||settingFormItem.type == 'imgShow'||settingFormItem.type == 'download'|| settingFormItem.type == 'slider')" label="校验" :style="settingFormItem.type==='input'?{'font-weight': 400, 'border-bottom': 'none', 'padding-bottom': 0}:{'font-weight': 400}" prop="require">
                 <Checkbox style="font-weight: 400" v-model="settingFormItem.require">&nbsp;&nbsp;这是一个必填选项</Checkbox>
                 <div v-if="settingFormItem.type =='imgCheck'">
                     <Checkbox style="font-weight: 400">&nbsp;&nbsp;最少选&nbsp;&nbsp;<input type="number" class="img-inp" v-model="settingFormItem.minlen">&nbsp;&nbsp;项&nbsp;&nbsp;</Checkbox>
@@ -1290,6 +1290,18 @@ export default {
 .ql-editor{
     height: auto!important;
 }
+
+</style>
+<style>
+   .ivu-radio-wrapper{
+        white-space:normal;
+    } 
+    .ivu-form-item-content{
+            line-height: 22px;
+    }
+    .ivu-form .ivu-form-item-label{
+        text-align: left;
+    }
 </style>
 
 

@@ -134,6 +134,7 @@ export default {
 
 <style lang="less" scoped>
 .cardform {
+    font-family: PingFang-SC-Medium;
     width: 175px;
     height: 220px;
     background: #fff;
@@ -171,8 +172,8 @@ export default {
     }
 
     .cardform-img {
-        width: 50px;
-        height: 56px;
+        // width: 50px;
+        // height: 56px;
         margin-top: 18px;
         margin-bottom: 20px;
     }
