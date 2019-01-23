@@ -11,15 +11,15 @@
 
 <script>
 export default {
-    data() {
-        return {
-            theme1: 'light'
-        }
-    }
-}
+  data() {
+    return {
+      theme1: "light"
+    };
+  }
+};
 </script>
 <style lang='less' scoped>
-    .rootStyle{
-        height: 100%
-    }
+.rootStyle {
+  height: 100%;
+}
 </style>

@@ -1289,8 +1289,9 @@ export default {
 }
 .ql-editor{
     height: auto!important;
-}
 
+}
+    
 </style>
 <style>
    .ivu-radio-wrapper{
@@ -1301,6 +1302,12 @@ export default {
     }
     .ivu-form .ivu-form-item-label{
         text-align: left;
+    }
+    strong{
+        font-weight:bolder!important;
+    }
+    em{
+        font-style:italic!important;
     }
 </style>
 
