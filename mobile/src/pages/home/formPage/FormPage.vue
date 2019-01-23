@@ -204,6 +204,7 @@
                 v-model="obj.obj.value"
                 :max="obj.obj.high"
                 width="80%"
+                :interval="obj.obj.step"
                 :dotSize="sliderDotSize"
                 :processStyle="siliderProcessStyle"
                 :tooltipStyle="sliderTooltipStyle"
@@ -1070,19 +1071,23 @@ export default {
     },
     // 滑动打分
     countRangeValue(type, obj) {
-      if (
-        type == -1 &&
-        parseInt(obj.value) > parseInt(obj.low) &&
-        parseInt(obj.value) <= parseInt(obj.high)
-      ) {
-        obj.value = parseInt(obj.value) - parseInt(obj.step);
-      }
+      // console.log(type)
+      // console.log(obj.value)
       if (
         type == 1 &&
-        parseInt(obj.value) >= parseInt(obj.low) &&
-        parseInt(obj.value) < parseInt(obj.high)
+        parseFloat(obj.value) >= parseFloat(obj.low) &&
+        parseFloat(obj.value) < parseFloat(obj.high)
       ) {
-        obj.value = parseInt(obj.value) + parseInt(obj.step);
+        obj.value = parseFloat(obj.value) + parseFloat(obj.step)
+        obj.value = Math.round(obj.value*10)/10
+      }
+      if (
+        type == -1 &&
+        parseFloat(obj.value) > parseFloat(obj.low) &&
+        parseFloat(obj.value) <= parseFloat(obj.high)
+      ) {
+        obj.value = parseFloat(obj.value) - parseFloat(obj.step);
+        obj.value = Math.round(obj.value*10)/10
       }
     },
     // historyRecordDetail(item) {
@@ -1384,6 +1389,7 @@ export default {
         Indicator.close()
         this.isShowLoading = false
         let datas = JSON.parse(r.data);
+        console.log(datas)
         this.dataFormat(datas);
       });
     }
