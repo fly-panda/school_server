@@ -1,7 +1,7 @@
 import add from "@/assets/icon-add.png";
 import jian from "@/assets/icon-jian.png";
 export default (_self, h) => {
-    
+
    let control = [
         h("span", {
             style: {
@@ -26,7 +26,7 @@ export default (_self, h) => {
                 max: _self.obj.high,// 最大值
                 interval: _self.obj.step,// 分段间隔
                 startAnimation: false,// 是否开启初始动画
-                tooltipMerge: true,// 
+                tooltipMerge: true,//
                 processDragable: false,// 进度条是否可拖拽（只限范围模式）
                 minRange: null,// 最小范围
                 maxRange: null,// 最大范围
@@ -64,7 +64,7 @@ export default (_self, h) => {
                     // _self.obj.value = val.currentTarget.value;
                     _self.$emit('handleChangeVal', val.currentTarget.value)
                 },
-               
+
             }
         },),
         h("span", {
@@ -87,9 +87,9 @@ export default (_self, h) => {
             },
             on: {
                 "click": function (val) {
-                   console.log("-",_self.obj.step)
+                   // console.log("-",_self.obj.step)
                 },
-               
+
             }
         },""),
         h("div", {
@@ -106,9 +106,9 @@ export default (_self, h) => {
             },
             on: {
                 "click": function (val) {
-                   console.log("+",_self.obj.step)
+                   // console.log("+",_self.obj.step)
                 },
-               
+
             }
         },""),
     ];
@@ -119,7 +119,7 @@ export default (_self, h) => {
             height:"100px"
         }
     },control)]
-    
+
 };
 
 

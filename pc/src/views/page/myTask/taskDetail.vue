@@ -1,6 +1,6 @@
 <template>
 <div class="my-duplicate-container">
-    
+
     <div class="title-cont">
         <div class="duplicate-title">
             <p class='title-txt'><span class="back-cls" @click="backFun"><Icon type="ios-arrow-back" /></span>{{previewObj.title}}</p>
@@ -10,7 +10,7 @@
             </p>
         </div>
     </div>
-    
+
     <div class="duplicate-content" :style="{height:fullHeight.height}">
         <div class="nopass" v-show="state==2">
             <h3>不合格理由:</h3>
@@ -19,7 +19,7 @@
         <div class="previewContent">
 
             <formDetail :previewObj="previewObj" :types="'edits'" :isSave="state!=1" :taskid="taskid" :id="id" @continues="getInit"/>
-            
+
         </div>
     </div>
     <Modal v-model="modalDel" width="360">
@@ -37,11 +37,14 @@
         <div slot="footer" style="text-align: center;padding: 10px;">
             <i-button type="success" @click="delFun">确认</i-button>
             <i-button @click="modalDel=false">取消</i-button>
-            
+
         </div>
     </Modal>
+		<Spin fix  v-if="spinShow">
+        <Icon type="ios-loading" size=18 class="demo-spin-icon-load"></Icon>
+        <div>Loading</div>
+    </Spin>
 
-  
 </div>
 </template>
 
@@ -58,6 +61,7 @@ export default {
     },
     data() {
         return {
+        		spinShow:false,
             fullHeight:{// 动态获取屏幕高度
                 height: (document.documentElement.clientHeight-124)+"px"
             },
@@ -78,8 +82,8 @@ export default {
         // this.previewObj=this.$api.sGetObject("previewObj");
         // console.log("id:",!this.$route.query.id)
         this.getInit();
-        
-        
+
+
     },
     methods: {
         getInit(){
@@ -91,9 +95,11 @@ export default {
         },
         getTaskDetail(){
             let self=this;
+            // self.spinShow=true;
             self.$api.get("/task/taskdetail",{
                 taskid:self.taskid
             },r=>{
+            		// self.spinShow=false;
                 let datas=JSON.parse(r.data);
                 self.previewObj.title=datas.title;
                 self.previewObj.describe=datas.describe;
@@ -102,7 +108,7 @@ export default {
             })
         },
         getData(){
-                
+
             let self=this;
             self.$api.get("/task/taskdetail",{
                 taskid:self.taskid
@@ -145,7 +151,7 @@ export default {
         backFun(){
             this.$router.go(-1);
         },
-      
+
     }
 }
 </script>
@@ -169,7 +175,7 @@ export default {
         .duplicate-title{
             display: flex;
             height: 60px;
-            
+
             margin:0 auto;
             width: 1170px;
             line-height: 60px;
@@ -204,7 +210,7 @@ export default {
         margin:0 auto;
         // height: 100%;
         padding: 20px 0;
-        
+
         overflow-y: auto;
         .nopass{
             background: #fff;
@@ -225,8 +231,8 @@ export default {
                 padding: 0 10px;
                 .title{
                     font-weight: 700;
-                    margin-top: 10px; 
-                    margin-left: 10px; 
+                    margin-top: 10px;
+                    margin-left: 10px;
 
                     font-size: 16px;
                     color: #363636;
@@ -266,7 +272,7 @@ export default {
                     color: #363636;
                     letter-spacing: 1.11px;
                     line-height: 48px;
-    
+
                 }
                 .text{
                     font-size: 14px;
@@ -276,7 +282,7 @@ export default {
                 }
             }
         }
-        
+
     }
 }
 .titlecls{
@@ -303,6 +309,9 @@ export default {
 }
 .ivu-modal-footer, .ivu-modal-header {
     border-width: 0!important;
-    display: block; 
+    display: block;
+}
+.ivu-spin-fix{
+	    z-index: 9999;
 }
 </style>
