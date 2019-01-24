@@ -48,13 +48,13 @@
             :editorToolbar="customToolbar"
             v-model="content"></VueEditor>
         </FormItem>
-        
+
         <draggable element="div" v-model="sortable_item" :options="dragOptions2"  @update="moveEnd" @add="getEndFun">
             <transition-group name="no" class="editorArea" tag="div" style="margin-top: 60px;">
                 <renders @handleRemoveEle="removeEle"  :curIndex="curIndex" @setIndex="setIndexFun" v-for="(element,index) in sortable_item" :key="index" :index="index" :ele="element.ele" :obj="element.obj || {}" :sortableItem="sortable_item" :config-icon="true">
                 </renders>
-                
-                
+
+
                 <!-- @handleCopyEle="copyEle" -->
             </transition-group>
         </draggable>
@@ -81,7 +81,7 @@
                     <Checkbox style="font-weight: 400">&nbsp;&nbsp;最少选&nbsp;&nbsp;<input type="number" class="img-inp" v-model="settingFormItem.minlen">&nbsp;&nbsp;项&nbsp;&nbsp;</Checkbox>
                     <Checkbox style="font-weight: 400">&nbsp;&nbsp;最多选&nbsp;&nbsp;<input type="number" class="img-inp" v-model="settingFormItem.maxlen">&nbsp;&nbsp;项&nbsp;&nbsp;</Checkbox>
                 </div>
-                
+
                 <Checkbox v-if="settingFormItem.type =='score'"  style="font-weight: 400" v-model="settingFormItem.isCheck">&nbsp;&nbsp;可以选择多个评分项</Checkbox>
                 <Row v-if="settingFormItem.type == 'uploadimg'">
                     <Col span="3" >
@@ -112,27 +112,27 @@
                                         <span class="title-cls" :title="SelectItem.name">{{SelectItem.name}}</span>
                                         <!-- <Icon class="close-cls" type="ios-close" @click="delImgFun(SelectItem)"/> -->
                                     </p>
-                                    
+
                                     <Progress v-show="index==(settingFormItem.imgArr.length-1)" :percent="progress" :stroke-width="5" style="text-align: center;"/>
                                     <span class="size-cls">{{SelectItem.size}}</span>
                                 </div>
-                                
+
                             </Row>
                             <Row class='btn-view' v-if="SelectItem.name==''">
-                                    <input class="files" id="files" type="file" accept="image/*" @change="addFile(index)">            
+                                    <input class="files" id="files" type="file" accept="image/*" @change="addFile(index)">
                                     <i-button type="ghost" icon="md-add">点击上传图片</i-button>
-                                    
-                                
+
+
                             </Row>
                             <p class="flex-cls tools">
                                 <input class="title-cls" v-model="SelectItem.labels" type="text" placeholder="选项">
-                               
+
                                 <img class="jian-cls" src="@/assets/jian_ico.png" @click="jian(index)" alt="">
                                 <img class="move-cls" src="@/assets/move_ico.png" alt="">
                             </p>
-                            
+
                             <!-- <RadioGroup v-model="SelectItem.scoreType">
-                            
+
                             </RadioGroup> -->
                         </FormItem>
                     </transition-group>
@@ -156,21 +156,21 @@
                                         <span class="title-cls" :title="SelectItem.name">{{SelectItem.name}}</span>
                                         <Icon class="close-cls" type="ios-close" @click="jian(index)"/>
                                     </p>
-                                    
+
                                     <Progress v-show="index==(settingFormItem.imgArr.length-1)" :percent="progress" :stroke-width="5" style="text-align: center;"/>
                                     <span class="size-cls">{{SelectItem.size}}</span>
                                 </div>
-                                
+
                             </Row>
                         </FormItem>
                     </transition-group>
                 </draggable>
                 <div>
                     <Row class='btn-view'>
-                            <input class="files" id="showFiles" type="file" accept="image/*" @change="addShowFile(index)">            
+                            <input class="files" id="showFiles" type="file" accept="image/*" @change="addShowFile(index)">
                             <i-button type="ghost" class="dashed-cls" icon="md-add">点击上传图片</i-button>
-                            
-                        
+
+
                     </Row>
                 </div>
             </div>
@@ -178,12 +178,12 @@
             <FormItem  v-if="settingFormItem.type == 'radio'  || settingFormItem.type == 'checkbox'" label=""  prop="require">
                 <Checkbox style="font-weight: 400" v-model="settingFormItem.hasOther">&nbsp;&nbsp;是否添加其他选项</Checkbox>
             </FormItem>
-            <FormItem  v-if="settingFormItem.type =='input'" prop="verify">
+            <!-- <FormItem  v-if="settingFormItem.type =='input'" prop="verify">
                 <span>选择验证:&nbsp;&nbsp;&nbsp;</span>
                 <Select v-model="settingFormItem.verify" size="small" style="width:100px">
                     <Option v-for="item in verifyList" :value="item.dKey" :key="item.dKey">{{ item.dValue }}</Option>
                 </Select>
-            </FormItem>
+            </FormItem> -->
             <!-- <FormItem label="选择上传类型"  v-if="settingFormItem.type==='uploads'" prop="uploads">
                 <Select v-model="settingFormItem.updateType" size="small" style="width:100px">
                     <Option v-for="item in settingFormItem.updateTypeList" :value="item.dKey" :key="item.dKey">{{ item.dValue }}</Option>
@@ -225,13 +225,13 @@
                                 <Col span="2" offset="1">
                                     <img class="move-cls" src="@/assets/move_ico.png" alt="">
                                 </Col>
-                                
-                                
+
+
                             </Row>
                         </FormItem>
                     </transition-group>
                 </draggable>
-                
+
                 <FormItem>
                     <Row>
                         <Col span="12">
@@ -259,8 +259,8 @@
                                 <Col span="2" offset="1">
                                     <img class="move-cls" src="@/assets/move_ico.png" alt="">
                                 </Col>
-                                
-                                
+
+
                             </Row>
                             <Row class="sel-cls" style="padding: 0 10px;" v-for="(cont,i) in SelectItem.arrs" :key="i">
                                 <Col span="9" v-if="false">
@@ -281,7 +281,7 @@
                         </FormItem>
                     </transition-group>
                 </draggable>
-                
+
                 <FormItem>
                     <Row>
                         <Col span="12">
@@ -318,7 +318,7 @@
                         </FormItem>
                     </transition-group>
                 </draggable>
-                
+
                 <FormItem>
                     <Row>
                         <Col span="12">
@@ -372,20 +372,20 @@
                                         <span class="title-cls" :title="SelectItem.label_name">{{SelectItem.label_name}}</span>
                                         <Icon class="close-cls" type="ios-close" @click="jianFile(index)"/>
                                     </p>
-                                    
+
                                     <Progress v-show="index==(settingFormItem.items.length-1)" :percent="progress" :stroke-width="5" style="text-align: center;"/>
                                     <span class="size-cls">{{SelectItem.size}}</span>
                                 </div>
-                                
+
                             </Row>
                         </FormItem>
                     </transition-group>
                 </draggable>
                 <div>
                     <Row class='btn-view'>
-                            <input class="files" id="downloadFiles" type="file" @change="dwFile">            
+                            <input class="files" id="downloadFiles" type="file" @change="dwFile">
                             <i-button type="ghost" class="dashed-cls" icon="md-add">点击上传文件</i-button>
-              
+
                     </Row>
                 </div>
             </div>
@@ -406,7 +406,7 @@
              <!-- <FormItem v-if="settingFormItem.type =='title'" label="调整字体大小">
                     <Rate v-model="settingFormItem.level" character="A" />
             </FormItem> -->
-           
+
             <!-- <FormItem>
                 <Button type="primary" @click="handleSubmit('formCustom')">保存</Button>
                 <Button @click="handleReset('formCustom')" style="margin-left: 8px">重置</Button>
@@ -552,14 +552,14 @@ export default {
         // console.log(this.sortable_item);
         // console.log("我获取的",this.departmentList);
         // this.sortable_item=datas.data.data;
-        
+
         // console.log(this.sortable_item);
         this.tempid=this.$route.query.tempid;
         if(this.tempid){
             this.getEditForm();
-            
+
         }
-        
+
         // console.log('studentList',this.studentList);
         // console.log('teacherList',this.teacherList);
         // console.log('gradeList',this.gradeList);
@@ -617,7 +617,7 @@ export default {
                     }
 
                 }
-                
+
             })
         },
                 // 预览效果
@@ -649,7 +649,7 @@ export default {
                     // this.$Message.error(e.result)
                 }
             )
-            
+
         },
         handleImageAdded:function(file,Editor,cursorLocation){
 
@@ -657,7 +657,7 @@ export default {
 
             //把获取到的图片url 插入到鼠标所在位置 回显图片
             Editor.insertEmbed(cursorLocation, 'image', url);
-            
+
         },
         formatData(){
             for(let i=0;i<this.sortable_item.length;i++){
@@ -670,7 +670,7 @@ export default {
                     }
                 }
                 if(this.sortable_item[i].ele=="selectstudent"){
-                    
+
                     this.sortable_item[i].obj.items = this.studentList;
                 }
                 if(this.sortable_item[i].ele=="selectgrade"){
@@ -706,7 +706,7 @@ export default {
                 },
                 e=>{
                     this.$emit("changeId",e.data);
-                   // this.$emit("changeId",r.data); 
+                   // this.$emit("changeId",r.data);
                 }
             )
         },
@@ -730,7 +730,7 @@ export default {
             // console.log("start",curObj.clone.innerText)
             // console.log(this.sortable_item)
             for(let i=0;i<this.sortable_item.length;i++){
-                         
+
                 let els=this.sortable_item[i].ele;
                 if(els=="selectstudent"||els=="selectteacher"||els=="selectgrade"||els=="selectdepartment"){
                     // console.log("选择学生、选择班级、选择老师、选择部门，只能存在一个哦。")
@@ -769,7 +769,7 @@ export default {
                     "label_name": ''
                 })
             }
-            
+
         },
         handleAddSelectItems(index){
             let curRemoveObj = this.sortable_item[this.curIndex].obj.items[index].arrs;
@@ -778,10 +778,10 @@ export default {
                 "label_name": ''
             })
         },
-        
+
         // 点击更改
         setIndexFun(index) {
-            
+
             // if (this.curIndex === index) return;
             this.curIndex = index
             let curClickItem = this.sortable_item[index]
@@ -816,22 +816,22 @@ export default {
             //   this.sortable_item.splice(index, index+1)
             //   return
             // }
-            
-            
+
+
             // console.log("len",this.sortable_item.length)
             // console.log(this.sortable_item.length==1)
             //  console.log(222,this.settingFormItem)
             if(this.sortable_item.length==1){
                 // this.settingFormItem={};
-                this.curIndex = -1  
+                this.curIndex = -1
                 // for(var key in this.settingFormItem){
                 //     delete this.settingFormItem[key];
                 // }
-                
+
             }
             // console.log(111,this.settingFormItem)
             if(this.curIndex == index){
-                this.curIndex = -1  
+                this.curIndex = -1
             }
             this.sortable_item.splice(index, 1)
         },
@@ -848,7 +848,7 @@ export default {
             // console.log(this.sortable_item)
             let index=curObj.newIndex;
             for(let i=0;i<this.sortable_item.length;i++){
-                         
+
                 let els=this.sortable_item[i].ele;
                 // console.log(els)
                 if(els=="selectstudent"||els=="selectteacher"||els=="selectgrade"||els=="selectdepartment"){
@@ -905,9 +905,9 @@ export default {
                     if(self.progress<100){
                         self.progress+=10;
                     }
-                }, 200)            
+                }, 200)
                 curRemoveObj[index].titles='图片';
-                
+
                 curRemoveObj[index].url= r.data;
                 curRemoveObj[index].size=self.$api.onver(fileObj.size);
                 curRemoveObj[index].labels='选项';
@@ -930,14 +930,14 @@ export default {
                     if(self.progress<100){
                         self.progress+=10;
                     }
-                }, 200)   
-                objs.url=r.data;    
-                curRemoveObj.push(objs)     
+                }, 200)
+                objs.url=r.data;
+                curRemoveObj.push(objs)
 
             });
         },
         dwFile(index){
-            
+
             let self=this;
             self.progress=0;
             let fileObj=document.getElementById("downloadFiles").files[0];
@@ -954,8 +954,8 @@ export default {
                     if(self.progress<100){
                         self.progress+=10;
                     }
-                }, 200)       
-                curRemoveObj[curRemoveObj.length-1].url=r.data;    
+                }, 200)
+                curRemoveObj[curRemoveObj.length-1].url=r.data;
 
             });
         },
@@ -1177,7 +1177,7 @@ export default {
     border-radius: 2px;
 }
 .label-cls{
-    
+
     font-size: 13px;
     font-weight: 700;
     color: #363636;
@@ -1208,7 +1208,7 @@ export default {
         padding-left:4px;
         flex:1;
         overflow: hidden; white-space: nowrap; text-overflow: ellipsis;
-    } 
+    }
     .size-cls{
         font-family: PingFang-SC-Medium;
         font-size: 9px;
@@ -1220,10 +1220,10 @@ export default {
         font-size:20px;
         cursor: pointer;
     }
-    
+
 }
 .btn-view{
-    position: relative;    
+    position: relative;
     margin:3px 0;
     button{
         width:140px;
@@ -1252,7 +1252,7 @@ export default {
 
 .flex-cls{
     display: flex;
-    justify-content:space-between;    
+    justify-content:space-between;
 }
 .tools{
     color:#505050;
@@ -1291,12 +1291,12 @@ export default {
     height: auto!important;
 
 }
-    
+
 </style>
 <style>
    .ivu-radio-wrapper{
         white-space:normal;
-    } 
+    }
     .ivu-form-item-content{
             line-height: 22px;
     }

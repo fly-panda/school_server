@@ -66,7 +66,7 @@ export default {
         })
     },
     mounted(){
-        
+
     },
     methods: {
         changeRoure(name) {
