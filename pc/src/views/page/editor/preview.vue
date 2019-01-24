@@ -11,7 +11,7 @@
     <div v-show="active==2" class="previewMobile">
         <previewMobile :ids="ids"/>
     </div>
-    
+
 </div>
 </template>
 
@@ -25,7 +25,7 @@ export default {
     },
     data() {
         return {
-            
+
             fullHeight:{// 动态获取屏幕高度
                 height: (document.documentElement.clientHeight-60)+"px"
             },
@@ -60,22 +60,22 @@ export default {
                 tempid:this.ids
             },r=>{
                 self.previewOb=JSON.parse(r.data);
-                console.log(r)
+                // console.log(r)
             })
-        },    
+        },
         preview(type){
-            
+
             let self=this;
             if(type=="1"){
                 self.active=type;
             }else if(type=="2"){
                 self.active=type;
             }else if(type=="3"){
-                
+
                 self.$router.push({
                     path:"/editorForm?isBack=1"
                 });
-               
+
             }
         }
     }
@@ -108,7 +108,7 @@ export default {
                 background: #5DB75D;
             }
         }
-        
+
     .positionColumn {
         display: flex;
         flex-direction: column;
@@ -122,7 +122,7 @@ export default {
         background: #fff;
         margin: 30px auto;
         overflow-y: auto;
-        
+
     //     // .header {
     //     //     height: 50px;
     //     //     font-size: 16px;
