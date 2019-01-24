@@ -3,7 +3,9 @@
     <Layout style="height: 100%;">
         <Header style="background: #272A34;">
             <Menu style="width: 1170px;margin:0 auto;" mode="horizontal" theme="dark" @on-select="changeRoure" :active-name="$route.name">
-                <div class="layout-logo"></div>
+                <div class="layout-logo">
+                	<img src="@/assets/xiaodinglogo.png" alt="">
+                </div>
                 <div class="layout-nav">
                     <MenuItem name="home">
                     <!-- <Icon type="ios-navigate"></Icon> -->
@@ -118,8 +120,8 @@ export default {
 
 .layout-logo {
     width: 100px;
-    height: 30px;
-    background: #5b6270;
+    height: 33px;
+    // background: #5b6270;
     border-radius: 3px;
     float: left;
     position: relative;

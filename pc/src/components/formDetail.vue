@@ -82,8 +82,7 @@
                     <!-- {{studentList}} -->
                     <ul class="peo-list">
                       <li
-                        v-for="(item,index) in 
-                                   cont.obj.items"
+                        v-for="(item,index) in cont.obj.items"
                         @click="selsClick(item,index)"
                         :key="index"
                       >
@@ -410,7 +409,7 @@
                     </Col>
                     <Col span="7">
                         <Select placeholder="市" v-model="cont.obj.shiValue" @on-change="getQu" style="width:10rem;">
-                            
+
                             <Option v-for="item in shiArr" :value="item.id" :key="item.id">{{ item.name }}</Option>
                         </Select>
                     </Col>
@@ -459,6 +458,12 @@
                 <span>{{cont.obj.high}}</span>
               </Col>
             </Row>
+            <!-- gradesType -->
+<!--             <Row>
+            	<Col>
+            		<span>()</span>
+            	</Col>
+            </Row> -->
             <Row style="margin-top:40px;">
               <Col span="16" class="slider-img">
                 <img
