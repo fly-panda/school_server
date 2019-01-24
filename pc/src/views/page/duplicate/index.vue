@@ -5,11 +5,11 @@
             <span class="back-cls" @click="backFun"><Icon type="ios-arrow-back" /></span>{{formMsg.title}}
             <img class="new-form" @click="newFun" src="@/assets/bianji_ico.png" alt="">
         </div>
-        
+
     </div>
     <div class="contents" :style="{height:fullHeight.height}">
-        
-    
+
+
         <div class="duplicate-content">
             <div class="contentTop">
                 <div class="formMsg">
@@ -61,10 +61,12 @@
                 :title="modalTitle"
                 @on-ok="ok"
                 @on-cancel="cancel">
+                <div slot="header"></div>
                 <h3 class="titles" >是否以《{{formMsg.title}}》为基础，建立新表单？</h3>
                 <div class="btns">
                     <Button size="large" @click="affirmFun" type="success">确认</Button>
                 </div>
+                <div slot="footer"></div>
             </Modal>
             <!-- 未提交人 -->
             <Modal
@@ -74,7 +76,7 @@
                 <h3 class="no-cls">未提交人</h3>
                 <ul class="no-list">
                     <li v-for="item in noSubmit">{{item}}</li>
-                    
+
                 </ul>
                 <div slot="footer" style="text-align: center;padding:10px;">
                      <Button size="large" @click="wxFun" type="success">微信提醒</Button>
@@ -230,7 +232,7 @@ export default {
         margin:0 auto;
         height: 100%;
         padding: 10px 0;
-        
+
         .contentTop{
             height: 160px;
             display: flex;
@@ -243,8 +245,8 @@ export default {
                 padding: 0 10px;
                 .title{
                     font-weight: 700;
-                    // margin-top: 10px; 
-                    margin-left: 10px; 
+                    // margin-top: 10px;
+                    margin-left: 10px;
 
                     font-size: 16px;
                     color: #363636;
@@ -284,7 +286,7 @@ export default {
                     color: #363636;
                     letter-spacing: 1.11px;
                     line-height: 48px;
-    
+
                 }
                 .text{
                     font-size: 14px;
@@ -294,7 +296,7 @@ export default {
                 }
             }
         }
-        
+
     }
 }
 .tipWx{
