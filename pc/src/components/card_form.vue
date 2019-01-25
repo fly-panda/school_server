@@ -46,7 +46,7 @@
         <!-- 根据状态可显示不同的图片 -->
         <!-- <img v-if="" class="cardform-img" src='@/assets/logo.png'/> -->
 
-        <div class="cardform-enddate">
+        <div class="cardform-enddate" style="margin-top: 30px;">
             点击修改
         </div>
     </div>
@@ -115,10 +115,10 @@ export default {
                 //     name:"taskDetail"
                 // })
 
-            
+
 
         },
-        
+
         jumpForms(item){
             // console.log(item)
             let self=this;
@@ -157,7 +157,7 @@ export default {
         height: 18px;
         border-radius: 4px 4px 0 0;
         top: -18px;
-        right: 0;
+        right: 3px;
     }
 
     .cardform-title {
@@ -166,7 +166,7 @@ export default {
         font-weight: 700;
         margin-top: 10px;
         height: 40px;
-            width: 100%;
+        width: 100%;
         padding: 0 10px;
         overflow: hidden; white-space: wrap; text-overflow: ellipsis;
     }
