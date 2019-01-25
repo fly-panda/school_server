@@ -145,7 +145,7 @@ export default {
     flex-direction: column;
     align-items: center;
     background: #FFFFFF;
-    border: 1px solid #C3C9CF;
+    border: 1px solid #C3C9D0;
     cursor: pointer;
     border-radius: 5px;
     .card-tag {
@@ -197,17 +197,22 @@ export default {
         }
 
         .message {
-            font-size: 14px;
             font-weight: 700;
             text-align: center;
+            font-family: DINMittelschriftStd;
+						font-size: 14px;
+						color: #363636;
+						letter-spacing: 0.84px;
         }
     }
 
     .cardform-enddate {
         text-align: center;
         font-size: 12px;
-        color: #363636;
         letter-spacing: 0.46px;
+	       font-family: DINMittelschriftStd;
+				color: #363636;
+				letter-spacing: 0.54px;
     }
     .no-start{
         text-align:center;

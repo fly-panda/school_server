@@ -60,12 +60,19 @@ export default {
 		}
 	},
 	created(){
-		this.$api.sSetObject("userObj",{
-			userId:"nHoIlS9HDYodone",
-			objType:"2",
-			openAppID:"315492154052",
-			objectid:"EzQ319HuHN8done"
-		})
+		// console.log(this.$api.sGetObject("userObj"))
+		if(!this.$api.sGetObject("userObj")){
+			let objectid=this.$route.query.objectid;
+			let userId=this.$route.query.userId;
+			let objType=this.$route.query.objType;
+			this.$api.sSetObject("userObj",{
+				userId:userId,
+				objType:objType,
+				openAppID:"315492154052",
+				objectid:objectid
+			})
+		}
+
 	},
 	mounted(){
 

@@ -1348,9 +1348,10 @@ export default {
       border: none;
     }
     .check-cls {
-      width: 15px;
-      height: 15px;
-      border-radius: 50%;
+      width: 16px;
+      height: 16px;
+      background-repeat: no-repeat;
+      // border-radius: 50%;
       background: url("../assets/choix_nor.png");
     }
     .active-cls {

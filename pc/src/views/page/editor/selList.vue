@@ -4,7 +4,7 @@
                 <div class="title-cls flex-cls">
                     <p>老师范围</p>
                     <p class="posi-cls">
-                        <input type="text" placeholder="请输入姓名"> 
+                        <input type="text" placeholder="请输入姓名">
                         <img src="@/assets/search_ico.png" alt="">
                     </p>
                 </div>
@@ -26,7 +26,7 @@
                             <div>
                                 <ul class="peo-list">
                                    <li v-for="(item,index) in studentList" @click="selClick(item,index)">
-                                       
+
                                        <span class="name-cls">{{item.name}}</span>
                                        <span class="check-cls" :class="{'active-cls':item.checked}"></span>
                                    </li>
@@ -73,7 +73,7 @@ export default {
             gradeList:[],// 班主任列表
             studentList:[],//人员
             selStudentList:[],
-            
+
         }
     },
     components: {
@@ -136,29 +136,29 @@ export default {
                 if(!item.checked){
                     bool=true;
                 }
-              
+
             });
             self.studentList.forEach(item => {
                 if(bool){
                     item.checked = true;
                 }else{
-                    item.checked = false;    
+                    item.checked = false;
                 }
             });
         },
-        concat_(arr1,arr2){  
-            //不要直接使用var arr = arr1，这样arr只是arr1的一个引用，两者的修改会互相影响  
-            var arr = arr1.concat();  
-            //或者使用slice()复制，var arr = arr1.slice(0)  
-            for(var i=0;i<arr2.length;i++){  
-                arr.indexOf(arr2[i]) === -1 ? arr.push(arr2[i]) : 0;  
-            }  
-            return arr;  
-        }, 
+        concat_(arr1,arr2){
+            //不要直接使用var arr = arr1，这样arr只是arr1的一个引用，两者的修改会互相影响
+            var arr = arr1.concat();
+            //或者使用slice()复制，var arr = arr1.slice(0)
+            for(var i=0;i<arr2.length;i++){
+                arr.indexOf(arr2[i]) === -1 ? arr.push(arr2[i]) : 0;
+            }
+            return arr;
+        },
         submitResut() {
             let self=this;
             let arr=[];
-            
+
             self.studentList.forEach(item => {
                 if(item.checked){
                     arr.push(item);
@@ -167,13 +167,13 @@ export default {
             });
             self.selStudentList=self.concat_(arr,self.selStudentList);
 
-            
-           
+
+
         },
         delFun(item,i){
             let self=this;
              self.selStudentList.splice(i,1)
-            
+
         },
         delAll(){
             let self=this;
@@ -204,11 +204,11 @@ export default {
 }
 .title-cls{
     border-bottom: 1px solid #C3C9D0;
-    
+
 }
 .student-view{
     .title-cls{
-        padding:0 10px;
+        padding:5px 10px;
         input{
             height: 22px;
             border: 1px solid #C3C9D0;
@@ -229,10 +229,10 @@ export default {
     .list-view{
         width: 100%;
         display:flex;
-        
+
         >div{
             height: 298px;
-            
+
             flex:1;
             border-right: 1px solid #C3C9D0;
             >p{
@@ -272,15 +272,15 @@ export default {
         }
         .check-cls{
             width: 15px;
-            height: 15px;
-
+            height: 16px;
+						background-repeat: no-repeat;
             background:url("../../../assets/choix_nor.png");
         }
         .active-cls{
             background:url("../../../assets/choix_pre.png");
         }
     }
-    
+
 }
     .flexCenters {
         display: flex;
