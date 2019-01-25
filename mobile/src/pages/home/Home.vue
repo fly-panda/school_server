@@ -224,10 +224,10 @@ export default {
   },
   created() {
     this.$api.sSetObject("userObj", {
-      userId: "nHoIlS9HDYodone",
+      userId: this.$route.query.userId ? this.$route.query.userId : "nHoIlS9HDYodone",
       objType: "2",
       openAppID: "315492154052",
-      objectid: "EzQ319HuHN8done"
+      objectid: this.$route.query.objectid ? this.$route.query.objectid : "EzQ319HuHN8done"
     });
     this.loadMore();
   }
