@@ -224,11 +224,17 @@ export default {
   },
   created() {
     this.$api.sSetObject("userObj", {
-      userId: this.$route.query.userId ? this.$route.query.userId : "nHoIlS9HDYodone",
-      objType: "2",
+      userId: this.$route.query.userId,
+      objType: this.$route.query.objType,
       openAppID: "315492154052",
-      objectid: this.$route.query.objectid ? this.$route.query.objectid : "EzQ319HuHN8done"
+      objectid: this.$route.query.objectid
     });
+    // this.$api.sSetObject("userObj", {
+    //   userId: this.$route.query.userId ? this.$route.query.userId : "nHoIlS9HDYodone",
+    //   objType: this.$route.query.objType ? this.$route.query.objType : "2",
+    //   openAppID: "315492154052",
+    //   objectid: this.$route.query.objectid ? this.$route.query.objectid : "EzQ319HuHN8done"
+    // });
     this.loadMore();
   }
 };
