@@ -41,7 +41,7 @@ imgArr:[
                     'url': '',
                     'progress':0,
                     "size":"0",
-                    'labels':"选项1"
+                    'labels':"选项"
                 }
 ],
 describe: '',

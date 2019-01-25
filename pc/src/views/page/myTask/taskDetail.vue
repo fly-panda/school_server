@@ -206,7 +206,7 @@ export default {
         }
     }
     .duplicate-content {
-        width:1170px;
+        width:760px;
         margin:0 auto;
         // height: 100%;
         padding: 20px 0;

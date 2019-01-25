@@ -433,10 +433,12 @@
             <div class="point">{{cont.obj.describe}}</div>
             <Row class="fileList-cls" v-for="(item,ind) in cont.obj.value" :key="ind">
               <div class="flex-cls">
+                
                 <span class="title-cls" :title="item.name">{{item.name}}</span>
                 <Icon class="close-cls" type="ios-close" @click="delFile(cont.obj.value,ind)"/>
-                <p class="size-cls">{{item.size}}</p>
+                
               </div>
+              <p class="size-cls">{{item.size}}</p>
             </Row>
             <Row class="btn-view">
               <input class="files" id="files" type="file" @change="addFile(cont.obj)">
@@ -1275,7 +1277,7 @@ export default {
   font-size: 12px;
   color: #9b9b9b;
   letter-spacing: 0.72px;
-  margin: 2px 7px;
+  margin: 0 17px;
 }
 .student-view,
 .teacher-view,

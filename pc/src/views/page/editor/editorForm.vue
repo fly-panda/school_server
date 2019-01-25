@@ -1,6 +1,6 @@
 <template>
-<div class="editorContainer">
-    <div class="slide">
+<div class="editorContainer" style="background:#f8f8f8;">
+    <div class="slide" style="border-right:solid 1px #d8d8d8;">
         <div class="title">基础控件</div>
                     <!-- :title="getModalTitle" -->
         <Modal
@@ -59,7 +59,7 @@
             </transition-group>
         </draggable>
     </Form>
-    <div class="slide">
+    <div class="slide" style="border-left:solid 1px #d8d8d8;">
         <div class="title">控件设置</div>
         <!-- &&sortable_item.length!=0 -->
         <Form v-if="curIndex !== -1" ref="formCustom" class="settingForm" :model="settingFormItem" label-position="top">
@@ -101,7 +101,7 @@
             <!-- 图片选择 控件设置 -->
             <div class="pad-cls" v-if="settingFormItem.type =='imgCheck'">
                 <p class="label-cls">选项内容</p>
-                 <draggable element="div" v-model="settingFormItem.imgArr" @update="datadragEndSlide" >
+                 <draggable element="div" v-model="settingFormItem.imgArr" @update="datadragEndSlide"  :options="{handle:'.move-cls'}">
                     <transition-group name="no" tag="div">
                         <FormItem style="border: none;padding:3px 0;" v-for="(SelectItem, index) in settingFormItem.imgArr" :key="index">
                             <p>{{SelectItem.titles}}{{index+1}}</p>
@@ -139,7 +139,7 @@
                 </draggable>
                 <div>
                     <p>
-                        <Button style="width: 140px;" type="dashed" long @click="add" icon="md-add">点击上传图片</Button>
+                        <Button style="width: 140px;" type="dashed" long @click="add" icon="md-add">新增一个选项</Button>
                     </p>
                 </div>
             </div>
@@ -195,16 +195,16 @@
                 </Select>
             </FormItem> -->
             <FormItem label="选择需要选择的班级范围"  v-if="settingFormItem.type==='selectgrade'">
-                <Button type="primary" ghost long size="small" @click="changeModal">点击选择班级范围</Button>
+                <Button class="top-cls" type="primary" ghost long size="small" @click="changeModal">点击选择班级范围</Button>
             </FormItem>
             <FormItem label="选择需要选择的学生范围"  v-if="settingFormItem.type==='selectstudent'">
-                <Button type="primary" ghost long size="small" @click="changeModal">点击选择学生范围</Button>
+                <Button class="top-cls" type="primary" ghost long size="small" @click="changeModal">点击选择学生范围</Button>
             </FormItem>
             <FormItem label="选择需要选择的部门范围"  v-if="settingFormItem.type==='selectdepartment'">
-                <Button type="primary" ghost long size="small" @click="changeModal">点击选择部门范围</Button>
+                <Button class="top-cls" type="primary" ghost long size="small" @click="changeModal">点击选择部门范围</Button>
             </FormItem>
             <FormItem label="选择需要选择的老师范围"  v-if="settingFormItem.type==='selectteacher'">
-                <Button type="primary" ghost long size="small" @click="changeModal">点击选择老师范围</Button>
+                <Button class="top-cls" type="primary" ghost long size="small" @click="changeModal">点击选择老师范围</Button>
             </FormItem>
             <!-- 下拉配置 -->
             <div v-if="settingFormItem.type =='select' || settingFormItem.type == 'radio' || settingFormItem.type == 'checkbox'">
@@ -1045,7 +1045,7 @@ export default {
         width: 256px;
         height: 100%;
         overflow-y: auto;
-        background: #F1F1F1;
+        background: #f1f1f1;
         padding-bottom:80px;
 
         .title {
@@ -1291,7 +1291,9 @@ export default {
     height: auto!important;
 
 }
-
+.top-cls{
+  margin-top:10px;
+}
 </style>
 <style>
    .ivu-radio-wrapper{

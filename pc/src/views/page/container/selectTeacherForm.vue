@@ -2,7 +2,7 @@
 <div class="checkContainer">
     <div class="title-cls">选择老师范围</div>
     <div class="save-cls">
-        <Button type="primary" @click="saveFun">保存</Button>
+        <Button type="primary" @click="saveFun" style='padding:5px 30px;'>保存</Button>
     </div>
 <!--     <Row class="searchContainer">
         <Input suffix="ios-search" placeholder="Enter text" style="width: auto" />

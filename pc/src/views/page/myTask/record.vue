@@ -140,7 +140,7 @@ export default {
                             objs={
                                 title:columnsArr[i],
                                 key:"value"+i,
-                                minWidth:200,
+                                minWidth:230,
                                 render: (h,params) => {
                                     let keys="value"+i;
                                         
@@ -151,7 +151,7 @@ export default {
                                             arr.push(h("img",{
                                                 attrs:{
                                                     src: self.baseImg+item,
-                                                    style: 'width: 40px;display:inline-block;'
+                                                    style: 'width: 40px;height:40px;display:inline-block;margin:6px 2px 0;'
                                                 },
                                                 on:{
                                                     click: e => {
@@ -180,10 +180,12 @@ export default {
                                         if(params.row[keys]!=""){
                                             let arrs=params.row[keys].split(",");
                                             arrs.map((item,index)=>{
+                                              var ind = item.lastIndexOf("\/");  
+                                              item  = item.substring(ind + 1, item.length);
                                                 arr.push(h("a",{
                                                     attrs:{
                                                         // src:self.baseImg+"api/file/download?path="+item,
-                                                        style: 'margin:0 2px;color:#5DB75D;cursor:pointer;'
+                                                        style: 'margin:0 6px;color:#5DB75D;cursor:pointer;'
                                                     },
                                                     on:{
                                                         click: e => {
@@ -191,7 +193,7 @@ export default {
                                                             window.location.href=this.baseImg+"api/file/download?path="+item;
                                                         }
                                                     }
-                                                },"附件"+(index+1)))
+                                                },item))
                                             })
                                         }                                       
                                         return h("div",arr)                                      

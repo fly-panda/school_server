@@ -81,11 +81,11 @@ export let scoreConf = {
     valueArr:[],
     // 选项内数据
     items: [{
-        "label_value": "1",
+        "label_value": "0",
         "label_name": "选项",
         'scoreType': 'add',
     }, {
-        "label_value": "2",
+        "label_value": "0",
         "label_name": "选项",
         'scoreType': 'mins'
     }],

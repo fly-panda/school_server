@@ -238,15 +238,14 @@ export default {
             display: flex;
             justify-content: space-between;
             .formMsg{
-                width: 28%;
-                height: 140px;
+                width: 33%;
+                height: 150px;
                 background: #fff;
                 box-shadow: 3px 3px 3px #e2e2e2;
-                padding: 0 10px;
+                padding: 0 30px;
                 .title{
                     font-weight: 700;
-                    // margin-top: 10px;
-                    margin-left: 10px;
+                    margin: 10px 10px 3px 0;
 
                     font-size: 16px;
                     color: #363636;
@@ -255,8 +254,6 @@ export default {
                 }
                 .content{
                     height: 84px;
-                    margin-left: 10px;
-                    margin-top: 8px;
                     display: flex;
                     flex-direction: column;
                     .item{
@@ -264,8 +261,8 @@ export default {
                         display: flex;
                         // flex-direction: row;
                         justify-content: space-between;
-                        font-size: 14px;
-                        line-height:14px;
+                        font-size: 12px;
+                        line-height:25px;
                         color: #363636;
                         letter-spacing: -0.49px;
                         margin-bottom: 13px;
@@ -273,8 +270,8 @@ export default {
                 }
             }
             .submitContainer{
-                width: 20%;
-                height: 140px;
+                width: 21%;
+                height: 150px;
                 background: #fff;
                 box-shadow: 3px 3px 3px #e2e2e2;
                 display: flex;

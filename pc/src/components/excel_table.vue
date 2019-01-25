@@ -26,7 +26,7 @@
                         </p>
                         <p v-else-if="item.type=='uploads'" class="img-view">
                             <!-- {{item.value}} -->
-                            <a v-for="(cont,i) in item.value" :href='baseImg+"api/file/download?path="+cont'>附件{{i+1}}</a>
+                            <a v-for="(cont,i) in item.value" :key="i" :href='baseImg+"api/file/download?path="+cont'>{{cont.substring(cont.lastIndexOf("\/") + 1, cont.length)}}</a>
                             
                         </p>
                         <p v-else class="cont">{{item.value}}</p>
@@ -54,7 +54,7 @@
                 </ul>
                 <div class="form-view">
                     <p>
-                        <Button @click="audit(1)" type="success"v-show="submitMsg.state==2">合格</Button>
+                        <Button @click="audit(1)" type="success" v-show="submitMsg.state==2">合格</Button>
                         <Button @click="audit(2)" type="error" :disabled="reason.length==0">不合格</Button>
                     </p>
                     <textarea class="txt-cls" placeholder="请输入驳回理由" v-model="reason"></textarea>    
@@ -185,7 +185,7 @@
                                 objs={
                                     title:columnsArr[i],
                                     key:"value"+i,
-                                    minWidth:200,
+                                    minWidth:230,
                                     render: (h,params) => {
                                         let keys="value"+i;                                        
                                         let arr=[];
@@ -195,14 +195,14 @@
                                                 arr.push(h("img",{
                                                     attrs:{
                                                         src: self.baseImg+item,
-                                                        style: 'width: 40px;display:inline-block;'
+                                                        style: 'width: 40px;height:40px;display:inline-block;margin:6px 2px 0;'
                                                     },
                                                     on:{
                                                         click: e => {
                                                             e.stopPropagation();
                                                             self.imgSrc=item;
                                                             self.visible=true;
-                                                            console.log(11)
+                                                            // console.log(11)
                                                         }
                                                     }
                                                 }))
@@ -222,11 +222,15 @@
                                         let arr=[];
                                         if(params.row[keys]!=""){
                                             let arrs=params.row[keys].split(",");
+                                            
                                             arrs.map((item,index)=>{
+                                              var ind = item.lastIndexOf("\/");  
+                                              item  = item.substring(ind + 1, item.length);
+                                              
                                                 arr.push(h("a",{
                                                     attrs:{
                                                         // src:self.baseImg+"api/file/download?path="+item,
-                                                        style: 'margin:0 2px;color:#5DB75D;cursor:pointer;'
+                                                        style: 'margin:0 6px;color:#5DB75D;cursor:pointer;'
                                                     },
                                                     on:{
                                                         click: e => {
@@ -234,7 +238,7 @@
                                                             window.location.href=this.baseImg+"api/file/download?path="+item;
                                                         }
                                                     }
-                                                },"附件"+(index+1)))
+                                                },item))
                                             })
                                         }                                       
                                         return h("div",arr)                                      
@@ -363,12 +367,19 @@
 </script>
 
 <style lang='less' scoped >
-.img-view img{
-    width:50px;
-    height:50px;
-    display: inline-block;
-    margin: 2px 4px;
-}
+.img-view{
+  margin: 5px 0;
+  img{
+      width:50px;
+      height:50px;
+      display: inline-block;
+      margin: 2px 4px;
+  }
+  a{
+    margin: 2px 6px;
+    color:#19be6b;
+  }
+} 
 
 .page-view{
     padding: 10px;

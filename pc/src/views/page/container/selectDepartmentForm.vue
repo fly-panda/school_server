@@ -4,7 +4,7 @@
     <!-- :load-data="loadData" -->
     
     <div style="height:300px;overflow-y: auto;">
-        <Tree ref="tree" :data="data3"  show-checkbox></Tree>
+        <Tree style="text-align: left;" ref="tree" :data="data3"  show-checkbox></Tree>
     </div>
     <div class="flexCenter" style="padding: 5px;">
         <Button type="primary" @click="submitResut">确定</Button>
@@ -52,7 +52,7 @@ export default {
 <style lang="less" scoped>
 .checkContainer {
     min-height: 400px;
-    text-align: center;
+    text-align: left;
     .title-cls{
         font-size: 20px;
         padding:5px 15px;
@@ -82,4 +82,10 @@ export default {
         margin-top: 20px;
     }
 }
+
+</style>
+<style>
+  .ivu-tree{
+    text-align: left;
+  }
 </style>
