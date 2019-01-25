@@ -123,7 +123,12 @@
       <!-- 勾选打分 -->
       <div class="item" v-if="obj.ele == 'score'">
         <div class="label" v-html="obj.obj.label"></div>
-        <div class="value">{{ obj.obj.items[obj.obj.value].scoreType == 'add' ? '+' : '-' }}{{ obj.obj.items[obj.obj.value].label_value }}</div>
+        <div v-if="obj.obj.isCheck">
+          <div v-for="(items, index) of obj.obj.valueArr" :key="index" class="value">
+            {{ obj.obj.items[items].scoreType == 'add' ? '+' : '-' }}{{ obj.obj.items[items].label_value }}{{ obj.obj.items[items].label_name }}
+          </div>
+        </div>
+        <div v-if="!obj.obj.isCheck" class="value">{{ obj.obj.items[obj.obj.value].scoreType == 'add' ? '+' : '-' }}{{ obj.obj.items[obj.obj.value].label_value }}</div>
       </div>
 
       <!-- <div v-transfer-dom>
@@ -277,7 +282,7 @@ export default {
       Indicator.close()
       this.isShowLoading = false
       let datas = JSON.parse(r.data)
-      // console.log(datas)
+      console.log(datas)
       this.state = datas.state
       this.allData = datas
     })
