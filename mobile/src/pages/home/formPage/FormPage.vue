@@ -1501,8 +1501,8 @@ thead {
     color: #575757;
     font-size: 12px;
     display: block;
-    height: 40px;
-    line-height: 40px;
+    height: 32px;
+    line-height: 32px;
   }
   .vux-no-group-title,
   .weui-cells {
@@ -1542,8 +1542,8 @@ thead {
 .picker {
   .vux-cell-box {
     width: 100%;
-    height: 40px;
-    line-height: 40px;
+    height: 32px;
+    line-height: 32px;
   }
   .vux-cell-value,
   .vux-cell-placeholder {
@@ -1696,38 +1696,42 @@ a:hover {
   .form-wrapper {
     padding: px2rem(20);
     .title {
-      font-size: 18.5px;
-      color: #333333;
+      font-size: 14px;
+      color: #212A33;
+      font-weight: 600;
       margin-bottom: 10px;
     }
     .des {
-      font-size: 15px;
+      font-size: 9px;
       color: #4a4a4a;
       letter-spacing: 0;
       text-align: justify;
       line-height: 28px;
       margin-bottom: 20px;
+      img {
+        width: 100%;
+      }
     }
     .select-item {
       margin-bottom: 28px;
       .select-item-title {
-        font-size: 16px;
+        font-size: 14px;
         color: #363636;
       }
       .select-item-txt {
-        font-size: 13px;
+        font-size: 12px;
         color: #575757;
         margin: 6px 0 13px 0;
       }
       button {
         background: #ffffff;
         border: 1px solid #5db75d;
-        font-size: 14px;
+        font-size: 12px;
         color: #5db75d;
-        width: px2rem(170);
-        height: 40px;
+        width: px2rem(150);
+        height: 32px;
         text-align: center;
-        line-height: 40px;
+        line-height: 32px;
       }
     }
     .upload-img {
@@ -1747,7 +1751,7 @@ a:hover {
           position: relative;
           margin-bottom: 5px;
           margin-right: px2rem(8);
-          &:nth-child(4n + 0) {
+          &:nth-child(3n + 0) {
             margin-right: 0;
           }
           .del-img {
@@ -1815,7 +1819,7 @@ a:hover {
         font-size: 12px;
         color: #5db75d;
         width: 100%;
-        height: 40px;
+        height: 32px;
         padding: 0 20px;
         box-sizing: border-box;
       }
@@ -1824,7 +1828,7 @@ a:hover {
       input {
         border: 1px solid #c3c9cf;
         width: 100%;
-        height: 40px;
+        height: 32px;
         padding: 0 10px;
         box-sizing: border-box;
       }
@@ -1844,7 +1848,7 @@ a:hover {
         justify-content: space-between;
         width: px2rem(150);
         box-sizing: border-box;
-        height: 40px;
+        height: 32px;
         border: 1px solid #c3c9cf;
         // padding: 0 10px;
         font-size: 12px;
@@ -1891,7 +1895,7 @@ a:hover {
           align-items: center;
           justify-content: space-between;
           width: px2rem(150);
-          height: 40px;
+          height: 32px;
           // padding: 0 12px;
           background: #ffffff;
           border: 1px solid #c3c9cf;
@@ -1902,7 +1906,7 @@ a:hover {
           align-items: center;
           justify-content: space-between;
           width: px2rem(150);
-          height: 40px;
+          height: 32px;
           // padding: 0 12px;
           background: #ffffff;
           border: 1px solid #c3c9cf;
@@ -1917,7 +1921,7 @@ a:hover {
           align-items: center;
           justify-content: space-between;
           width: 100%;
-          height: 40px;
+          height: 32px;
           // padding: 0 12px;
           background: #ffffff;
           border: 1px solid #c3c9cf;
@@ -1941,9 +1945,9 @@ a:hover {
         justify-content: space-between;
         > div {
           overflow: hidden;
-          height: 40px;
+          height: 32px;
           text-align: center;
-          line-height: 40px;
+          line-height: 32px;
           background: #ffffff;
           border: 1px solid #c3c9cf;
           width: px2rem(150);
@@ -1960,9 +1964,9 @@ a:hover {
         > div {
           overflow: hidden;
           width: 100%;
-          height: 40px;
+          height: 32px;
           text-align: center;
-          line-height: 40px;
+          line-height: 32px;
           background: #ffffff;
           border: 1px solid #c3c9cf;
         }
@@ -1992,9 +1996,9 @@ a:hover {
         }
         > div {
           width: 100%;
-          height: 40px;
+          height: 32px;
           text-align: center;
-          line-height: 40px;
+          line-height: 32px;
           background: #ffffff;
           border: 1px solid #c3c9cf;
         }
@@ -2037,6 +2041,7 @@ a:hover {
         display: block;
         .el-checkbox-group {
           display: flex;
+          flex-wrap: wrap;
           .el-checkbox__input.is-checked .el-checkbox__inner {
             background: #5db75d;
             border-color: #5db75d;
