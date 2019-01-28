@@ -345,7 +345,7 @@
                 </Radio>
               </Row>
               <Row v-if="cont.obj.hasOther">
-                <Col span="3">
+                <Col span="7">
                   <Radio class="checkboxItem" value="other" label="other">
                     <span>其他</span>
                   </Radio>
@@ -433,10 +433,10 @@
             <div class="point">{{cont.obj.describe}}</div>
             <Row class="fileList-cls" v-for="(item,ind) in cont.obj.value" :key="ind">
               <div class="flex-cls">
-                
+
                 <span class="title-cls" :title="item.name">{{item.name}}</span>
                 <Icon class="close-cls" type="ios-close" @click="delFile(cont.obj.value,ind)"/>
-                
+
               </div>
               <p class="size-cls">{{item.size}}</p>
             </Row>
