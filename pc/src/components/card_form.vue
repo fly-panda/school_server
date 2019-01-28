@@ -1,8 +1,44 @@
 <template>
-<!-- status  :1 我的任务     0 我的发布-全部 3我的任务-全部任务-->
+<!-- status  :1 我的任务     0 我的发布-全部 3我的任务-全部任务  2我的抄送-->
 <div>
     <!-- 我的发布 全部 -->
     <div class="cardform" v-if="status==0" @click="jumpDetails(cardItem)">
+        <!-- state 任务状态(0 任务未开始 1 任务进行中 2 任务已结束) -->
+        <div class="card-tag" :style="{background: cardItem.isloop==0?'#78BBFF': '#86E9D8'}">{{cardItem.isloop==0?"周任务":"单次任务"}}</div>
+        <div class="cardform-title" :title="cardItem.title">{{cardItem.title}}</div>
+        <img v-if="cardItem.state==0" class="cardform-img" src='@/assets/weikaishi_ico.png'/>
+        <img v-if="cardItem.state==1&&cardItem.isloop==0" class="cardform-img" src='@/assets/zhourenwu_ico.png'/>
+        <img v-if="cardItem.state==2" class="cardform-img" src='@/assets/jieshurenwu_ico.png'/>
+        <img v-if="cardItem.state==1&&cardItem.isloop==1" class="cardform-img" src='@/assets/dancirenwu_ico.png'/>
+        <!-- 根据状态可显示不同的图片 -->
+        <div class="no-start" v-if="cardItem.state==0">
+            <p class="title">开始时间</p>
+            <p class="time">{{cardItem.starttime}}</p>
+        </div>
+        <!-- <img v-if="" class="cardform-img" src='@/assets/logo.png'/> -->
+        <div class="cardform-submiteinfo-contioner" v-if="cardItem.state!=0">
+            <div class="cardform-submiteinfo" v-if="cardItem.isloop!=0">
+                <div class="title">
+                    提交人
+                </div>
+                <div class="message">
+                    {{cardItem.submitpeople}}/{{cardItem.participants}}
+                </div>
+            </div>
+            <div class="cardform-submiteinfo">
+                <div class="title">
+                    提交数
+                </div>
+                <div class="message">
+                    {{cardItem.submitcount}}
+                </div>
+            </div>
+        </div>
+        <div class="cardform-enddate" v-if="cardItem.state!=0">
+            截止时间： {{cardItem.endtime}}
+        </div>
+    </div>
+    <div class="cardform" v-if="status==2" @click="jumpDetails(cardItem)">
         <!-- state 任务状态(0 任务未开始 1 任务进行中 2 任务已结束) -->
         <div class="card-tag" :style="{background: cardItem.isloop==0?'#78BBFF': '#86E9D8'}">{{cardItem.isloop==0?"周任务":"单次任务"}}</div>
         <div class="cardform-title" :title="cardItem.title">{{cardItem.title}}</div>
@@ -104,11 +140,27 @@ export default {
             // console.log(cardItem)
             if(self.status==0){
                 self.$router.push({
-                    path:"/duplicate?taskid="+cardItem.id
+                    path:"/duplicate",
+                    query:{
+                    	taskid:cardItem.id,
+                    	isBtn:1
+                    }
                 })
             }else if(self.status==1){
                 self.$router.push({
-                    path:"/editorForm?tempid="+cardItem.tempid
+                    path:"/editorForm",
+                    query:{
+                    	tempid:cardItem.tempid
+                    }
+                })
+            }
+            else if(self.status==2){
+                self.$router.push({
+                    path:"/duplicate",
+                    query:{
+                    	taskid:cardItem.id,
+                    	isBtn:0
+                    }
                 })
             }
             // self.$router.push({
@@ -124,7 +176,10 @@ export default {
             let self=this;
             if(item.state!=0){
                 self.$router.push({
-                    path:"/taskDetail?taskid="+item.id
+                    path:"/taskDetail",
+                    query:{
+                    	taskid:item.id
+                    }
                 })
             }
         }

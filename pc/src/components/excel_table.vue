@@ -1,5 +1,6 @@
 <template>
 <div style="height: 400px;">
+
     <div class="searchContainer">
         <!-- <Input suffix="ios-search" placeholder="搜索" size="small" style="width: auto" /> -->
         <span  @click="exportData(1)">导出Excel</span>
@@ -27,7 +28,7 @@
                         <p v-else-if="item.type=='uploads'" class="img-view">
                             <!-- {{item.value}} -->
                             <a v-for="(cont,i) in item.value" :key="i" :href='baseImg+"api/file/download?path="+cont'>{{cont.substring(cont.lastIndexOf("\/") + 1, cont.length)}}</a>
-                            
+
                         </p>
                         <p v-else class="cont">{{item.value}}</p>
                     </li>
@@ -53,11 +54,11 @@
                     </li>
                 </ul>
                 <div class="form-view">
-                    <p>
+                    <p v-show="isBtn==1">
                         <Button @click="audit(1)" type="success" v-show="submitMsg.state==2">合格</Button>
                         <Button @click="audit(2)" type="error" :disabled="reason.length==0">不合格</Button>
                     </p>
-                    <textarea class="txt-cls" placeholder="请输入驳回理由" v-model="reason"></textarea>    
+                    <textarea :disabled="isBtn!=1" class="txt-cls" placeholder="请输入驳回理由" v-model="reason"></textarea>
                 </div>
             </div>
         </div>
@@ -69,7 +70,7 @@
 
     <Modal title="View Image" v-model="visible">
         <div slot="header">
-            
+
         </div>
         <img :src="baseImg+imgSrc" v-if="visible" style="width: 100%">
         <div slot="footer">
@@ -90,6 +91,7 @@
     export default {
         data () {
             return {
+            		isBtn:this.$route.query.isBtn,
                 visible:false,
                 imgSrc:"",
                 modals: false,
@@ -115,7 +117,7 @@
                 columns8: [
                 ],
                 data7: [
-    
+
                 ],
                 lists:[],
                 submitMsg:{
@@ -131,7 +133,6 @@
             this.userId=this.$api.sGetObject("userObj").userId;
             this.taskid=this.$route.query.taskid;
             this.getData();
-
         },
         methods: {
             downFile(res){
@@ -160,12 +161,12 @@
                     self.formMsg.tempid=datas.tempid;
                     self.formMsg.title=datas.title;
                     self.formMsg.originator=datas.originator;
-                    
+
                     let columnsArr=[];
                     if(datas.tableTitle){
                         columnsArr=datas.tableTitle.split(",")
                     }
-                    
+
                     let typeArr=datas.valuetype.split(",");
                     if(columnsArr.length>0){
                         self.columns8.push({
@@ -178,7 +179,7 @@
                                 return h('span', params.index + (this.currentPage- 1) * this.pagesize + 1);
                             }
                         });
-                        
+
                         for(let i=0;i<columnsArr.length;i++){
                             let objs={};
                             if(typeArr[i]=="uploadimg"){
@@ -187,7 +188,7 @@
                                     key:"value"+i,
                                     minWidth:230,
                                     render: (h,params) => {
-                                        let keys="value"+i;                                        
+                                        let keys="value"+i;
                                         let arr=[];
                                         if(params.row[keys]!=""){
                                             let arrs=params.row[keys].split(",");
@@ -207,10 +208,10 @@
                                                     }
                                                 }))
                                             })
-                                        }                                       
-                                        return h("div",arr)                                      
+                                        }
+                                        return h("div",arr)
                                     }
-                                    
+
                                 }
                             }else if(typeArr[i]=="uploads"){
                                 objs={
@@ -218,15 +219,15 @@
                                     key:"value"+i,
                                     minWidth:200,
                                     render: (h,params) => {
-                                        let keys="value"+i;                                        
+                                        let keys="value"+i;
                                         let arr=[];
                                         if(params.row[keys]!=""){
                                             let arrs=params.row[keys].split(",");
-                                            
+
                                             arrs.map((item,index)=>{
-                                              var ind = item.lastIndexOf("\/");  
+                                              var ind = item.lastIndexOf("\/");
                                               item  = item.substring(ind + 1, item.length);
-                                              
+
                                                 arr.push(h("a",{
                                                     attrs:{
                                                         // src:self.baseImg+"api/file/download?path="+item,
@@ -240,10 +241,10 @@
                                                     }
                                                 },item))
                                             })
-                                        }                                       
-                                        return h("div",arr)                                      
+                                        }
+                                        return h("div",arr)
                                     }
-                                    
+
                                 }
                             }else{
                                 objs={
@@ -253,16 +254,16 @@
                                 }
                             }
                             self.columns8.push(objs);
-                            
+
                         };
                     }
-                    
+
                     self.data7=datas.resultList;
-                  
+
                 })
             },
             getModalData(ids){
-                
+
                 let self=this;
                 self.reason="";
                 self.ids=ids;
@@ -275,10 +276,10 @@
                     for(let i=0;i<datas.content.length;i++){
                         datas.content[i].title=self.columns8[i+1].title;
                         if(datas.content[i].type=="uploadimg"&&datas.content[i].value!=""){
-                            datas.content[i].value=datas.content[i].value.split(",");                         
+                            datas.content[i].value=datas.content[i].value.split(",");
                         }
                         if(datas.content[i].type=="uploads"&&datas.content[i].value!=""){
-                            datas.content[i].value=datas.content[i].value.split(",");                         
+                            datas.content[i].value=datas.content[i].value.split(",");
                         }
                     }
                     self.reason=datas.reason;
@@ -295,7 +296,7 @@
                     state:states,
                     reason:self.reason
                 },r=>{
-                   
+
                     self.$Message.info(r.result);
                 })
             },
@@ -340,7 +341,7 @@
             prevFun () {
                 if(this.rowIndex==0){
                     this.$Message.warning('已经是第一个了哦');
-                    return 
+                    return
                 }
                 this.rowIndex--;
                 let ids=this.data7[this.rowIndex].id;
@@ -350,13 +351,13 @@
 
                 if(this.rowIndex==(this.data7.length-1)){
                     this.$Message.warning('已经是最后一个了哦');
-                    return 
+                    return
                 }
                 this.rowIndex++;
                 let ids=this.data7[this.rowIndex].id;
                 this.getModalData(ids);
             },
-   
+
             changeFun(page){
                 this.currentPage=page;
                 this.getData();
@@ -379,7 +380,7 @@
     margin: 2px 6px;
     color:#19be6b;
   }
-} 
+}
 
 .page-view{
     padding: 10px;
@@ -392,7 +393,7 @@
     border-bottom: none;
     display: flex;
     justify-content: flex-end;
-    align-items: center; 
+    align-items: center;
     padding: 0 20px;
     span{
         cursor: pointer;
@@ -430,7 +431,7 @@
                     font-family: PingFang-SC-Medium;
                     font-size: 14px;
                     color: #363636;
-                    letter-spacing: -0.31px; 
+                    letter-spacing: -0.31px;
                     margin-top:13px;
                 }
                 .cont{
@@ -480,7 +481,7 @@
             p{
                 display:flex;
                 justify-content: space-around;
-                
+
             }
             .txt-cls{
                 width: 100%;

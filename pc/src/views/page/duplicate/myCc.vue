@@ -6,7 +6,7 @@
             <div class="page-view" v-if="cardList.length!=0">
                 <Page prev-text="上一页" next-text="下一页" :page-size="pagesize" :current="currentPage" :total="totals" @on-change="changeFun" :show-total="showTotal"/>
             </div>
-        </div>    
+        </div>
     </div>
 
 </template>
@@ -21,7 +21,7 @@ export default {
     },
     data() {
         return {
-            status:0,
+            status:2,
             currentPage:1,
             totals:0,
             pagesize:18,
@@ -37,12 +37,12 @@ export default {
         }
     },
     created(){
-        
+
     },
     mounted(){
         this.userId=this.$api.sGetObject("userObj").userId;
         this.getData();
-        
+
     },
     methods: {
         getData(){
@@ -96,6 +96,6 @@ export default {
     align-items: flex-start;
     align-content: flex-start;
     flex-grow: 20px;
-    
+
 }
 </style>
