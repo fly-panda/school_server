@@ -1,7 +1,7 @@
 <template>
   <div class="page" v-show="!isShowLoading">
     <!-- 不合格理由 -->
-    <div class="bghly" v-show="allData.reason">
+    <div class="bghly" v-show="allData.state == 2">
       <div class="box">
         <div class="title">不合格理由：</div>
         <div v-html="allData.reason"></div>
