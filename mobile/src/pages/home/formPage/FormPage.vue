@@ -1612,7 +1612,7 @@ a:hover {
 .checkbox-form,
 .radio-box-form {
   .weui-cell__bd {
-    font-size: 11px;
+    font-size: px2rem(14);
   }
   .weui-cell {
     padding: 0;
@@ -1671,7 +1671,7 @@ a:hover {
   }
   input,
   textarea {
-    font-size: 11px;
+    font-size: px2rem(14);
   }
   textarea {
     border: 1px solid #c3c9cf;
@@ -1696,13 +1696,13 @@ a:hover {
   .form-wrapper {
     padding: px2rem(20);
     .title {
-      font-size: 16px;
+      font-size: px2rem(18);
       color: #212A33;
       font-weight: 600;
       margin-bottom: 10px;
     }
     .des {
-      font-size: 11px;
+      font-size: px2rem(15);
       color: #4a4a4a;
       letter-spacing: 0;
       text-align: justify;
@@ -1715,22 +1715,22 @@ a:hover {
     .select-item {
       margin-bottom: 28px;
       .select-item-title {
-        font-size: 13px;
+        font-size: px2rem(16);
         color: #363636;
         font-weight: 600;
       }
       .select-item-txt {
-        font-size: 12px;
+        font-size: px2rem(13);
         color: #575757;
         margin: 6px 0 13px 0;
       }
       button {
         background: #ffffff;
         border: 1px solid #5db75d;
-        font-size: 12px;
+        font-size: px2rem(14);
         color: #5db75d;
         width: px2rem(150);
-        height: 32px;
+        height: px2rem(40);
         text-align: center;
         line-height: 32px;
       }
@@ -1829,7 +1829,7 @@ a:hover {
       input {
         border: 1px solid #c3c9cf;
         width: 100%;
-        height: 32px;
+        height: px2rem(40);
         padding: 0 10px;
         box-sizing: border-box;
       }
@@ -1849,7 +1849,7 @@ a:hover {
         justify-content: space-between;
         width: px2rem(150);
         box-sizing: border-box;
-        height: 32px;
+        height: px2rem(40);
         border: 1px solid #c3c9cf;
         // padding: 0 10px;
         font-size: 12px;
@@ -1883,7 +1883,7 @@ a:hover {
       }
     }
     .address-box {
-      font-size: 12px;
+      font-size: px2rem(12);
       color: #575757;
       .select-address {
         display: flex;
@@ -1896,7 +1896,7 @@ a:hover {
           align-items: center;
           justify-content: space-between;
           width: px2rem(150);
-          height: 32px;
+          height: px2rem(40);
           // padding: 0 12px;
           background: #ffffff;
           border: 1px solid #c3c9cf;
@@ -1907,7 +1907,7 @@ a:hover {
           align-items: center;
           justify-content: space-between;
           width: px2rem(150);
-          height: 32px;
+          height: px2rem(40);
           // padding: 0 12px;
           background: #ffffff;
           border: 1px solid #c3c9cf;
@@ -1922,7 +1922,7 @@ a:hover {
           align-items: center;
           justify-content: space-between;
           width: 100%;
-          height: 32px;
+          height: px2rem(40);
           // padding: 0 12px;
           background: #ffffff;
           border: 1px solid #c3c9cf;
@@ -1931,7 +1931,7 @@ a:hover {
       }
     }
     .date-time-box {
-      font-size: 12px;
+      font-size: px2rem(12);
       color: #575757;
       .select-item-title {
         margin-bottom: 12px;
@@ -1946,9 +1946,9 @@ a:hover {
         justify-content: space-between;
         > div {
           overflow: hidden;
-          height: 32px;
+          height: px2rem(40);
           text-align: center;
-          line-height: 32px;
+          line-height: px2rem(40);
           background: #ffffff;
           border: 1px solid #c3c9cf;
           width: px2rem(150);
@@ -1965,16 +1965,16 @@ a:hover {
         > div {
           overflow: hidden;
           width: 100%;
-          height: 32px;
+          height: px2rem(40);
           text-align: center;
-          line-height: 32px;
+          line-height: px2rem(40);
           background: #ffffff;
           border: 1px solid #c3c9cf;
         }
       }
     }
     .time-box {
-      font-size: 12px;
+      font-size: px2rem(12);
       color: #575757;
       .select-item-title {
         margin-bottom: 12px;
@@ -1997,9 +1997,9 @@ a:hover {
         }
         > div {
           width: 100%;
-          height: 32px;
+          height: px2rem(40);
           text-align: center;
-          line-height: 32px;
+          line-height: px2rem(40);
           background: #ffffff;
           border: 1px solid #c3c9cf;
         }
@@ -2058,7 +2058,7 @@ a:hover {
       }
     }
     .wj-upload {
-      font-size: 14px;
+      font-size: px2rem(14);
       color: #575757;
       .select-item-title {
         margin-bottom: 12px;
@@ -2071,7 +2071,7 @@ a:hover {
           background: #ffffff;
           border: 1px solid #c3c9d0;
           width: px2rem(254);
-          height: 54px;
+          height: px2rem(54);
           padding: 6px px2rem(16);
           box-sizing: border-box;
           margin-bottom: 14px;

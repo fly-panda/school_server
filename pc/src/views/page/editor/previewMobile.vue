@@ -12,7 +12,7 @@ export default {
     data() {
         return {
 
-            srcs:"http://47.93.156.129:8080/formPage?preview=1&ids=",
+            srcs:"http://172.31.56.28:8080/formPage?preview=1&ids=",
             // srcs:"http://10.108.12.74:8080/formPage?preview=1&ids=",
             
             userId:"",
