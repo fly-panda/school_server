@@ -223,12 +223,17 @@ export default {
     }
   },
   created() {
-    this.$api.sSetObject("userObj", {
-      userId: this.$route.query.userId,
-      objType: this.$route.query.objType,
-      openAppID: "315492154052",
-      objectid: this.$route.query.objectid
-    });
+    if(!this.$api.sGetObject("userObj")){
+			let objectid=this.$route.query.objectid;
+			let userId=this.$route.query.userId;
+			let objType=this.$route.query.objType;
+			this.$api.sSetObject("userObj",{
+				userId:userId,
+				objType:objType,
+				openAppID:"315492154052",
+				objectid:objectid
+			})
+		}
     // this.$api.sSetObject("userObj", {
     //   userId: this.$route.query.userId ? this.$route.query.userId : "nHoIlS9HDYodone",
     //   objType: this.$route.query.objType ? this.$route.query.objType : "2",
