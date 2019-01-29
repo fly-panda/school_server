@@ -75,11 +75,11 @@
             <FormItem v-if="!(settingFormItem.type == 'title'||settingFormItem.type == 'imgShow')"  label="提示" prop="describe">
                 <Input type="textarea" :rows="3" v-model="settingFormItem.describe"></Input>
             </FormItem>
-            <FormItem  v-if="!(settingFormItem.type == 'describe'  || settingFormItem.type == 'title'||settingFormItem.type == 'imgShow'||settingFormItem.type == 'download'|| settingFormItem.type == 'slider')" label="校验" :style="settingFormItem.type==='input'?{'font-weight': 400, 'border-bottom': 'none', 'padding-bottom': 0}:{'font-weight': 400}" prop="require">
-                <Checkbox style="font-weight: 400" v-model="settingFormItem.require">&nbsp;&nbsp;这是一个必填选项</Checkbox>
+            <FormItem  v-if="!(settingFormItem.type == 'describe' || settingFormItem.type == 'title'||settingFormItem.type == 'imgShow'||settingFormItem.type == 'download'|| settingFormItem.type == 'slider')" label="校验" :style="settingFormItem.type==='input'?{'font-weight': 400, 'border-bottom': 'none', 'padding-bottom': 0}:{'font-weight': 400}" prop="require">
+                <Checkbox style="font-weight: 400" v-model="settingFormItem.require" v-if="settingFormItem.type != 'imgCheck'">&nbsp;&nbsp;这是一个必填选项</Checkbox>
                 <div v-if="settingFormItem.type =='imgCheck'">
-                    <Checkbox style="font-weight: 400">&nbsp;&nbsp;最少选&nbsp;&nbsp;<input type="number" class="img-inp" v-model="settingFormItem.minlen">&nbsp;&nbsp;项&nbsp;&nbsp;</Checkbox>
-                    <Checkbox style="font-weight: 400">&nbsp;&nbsp;最多选&nbsp;&nbsp;<input type="number" class="img-inp" v-model="settingFormItem.maxlen">&nbsp;&nbsp;项&nbsp;&nbsp;</Checkbox>
+                  <Checkbox v-model="settingFormItem.isMin" style="font-weight: 400">&nbsp;&nbsp;最少选&nbsp;&nbsp;<input type="number" class="img-inp" v-model="settingFormItem.minlen">&nbsp;&nbsp;项&nbsp;&nbsp;</Checkbox>
+                  <Checkbox v-model="settingFormItem.isMax" style="font-weight: 400">&nbsp;&nbsp;最多选&nbsp;&nbsp;<input type="number" class="img-inp" v-model="settingFormItem.maxlen">&nbsp;&nbsp;项&nbsp;&nbsp;</Checkbox>
                 </div>
 
                 <Checkbox v-if="settingFormItem.type =='score'"  style="font-weight: 400" v-model="settingFormItem.isCheck">&nbsp;&nbsp;可以选择多个评分项</Checkbox>
@@ -108,7 +108,7 @@
                             <Row class='file-view' v-if="SelectItem.name!=''">
                                 <div>
                                      <p class="flex-cls">
-                                        <img class="img-cls" :src="SelectItem.url" alt="">
+                                        <img class="img-cls" :src="baseImg+SelectItem.url" alt="">
                                         <span class="title-cls" :title="SelectItem.name">{{SelectItem.name}}</span>
                                         <!-- <Icon class="close-cls" type="ios-close" @click="delImgFun(SelectItem)"/> -->
                                     </p>
@@ -434,6 +434,7 @@ export default {
     props:["tempId"],
     data() {
         return {
+        		baseImg: this.$api.getBase(),
             content: '<h1> 富文本编辑器</h1>',
             content:'',
             progress:0,
@@ -686,6 +687,7 @@ export default {
             formObj.data = this.sortable_item;
             formObj.describe = this.content;
             return formObj;
+            // console.log(formObj)
         },
         saveSoltItem(){
             if(this.checksFun()>1){

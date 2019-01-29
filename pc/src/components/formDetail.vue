@@ -496,6 +496,7 @@
               >
                 <div v-for="(item,ind) in cont.obj.imgArr" :key="ind" style="text-align: center;">
                   <img :src="baseImg+item.url" alt>
+
                   <Checkbox class="checkboxItem" :label="ind">
                     <span>{{item.labels}}</span>
                   </Checkbox>
@@ -585,13 +586,20 @@ export default {
       imgSrc: ""
     };
   },
-  filter: {},
+  filter: {
+
+  },
   mounted() {
     // console.log("asd",this.previewObj)
     // this.previewObj=datas.data;
     this.getData();
     // this.getSheng();
-
+    this.previewObj.data.map(function(item){
+  		if (item.ele == "imgcheck") {
+      	item.obj.minlen=Number(item.obj.minlen);
+      	item.obj.maxlen=Number(item.obj.maxlen);
+      }
+  	})
     if (this.taskid) {
     } else {
       // this.previewObj=this.$api.sGetObject("previewObj");
@@ -835,43 +843,44 @@ export default {
     checkAllGroupChange() {},
     requireCheck() {
       let msg = "";
+      let str= "为必填项，请填写后提交!";
       this.previewObj.data.some((item, i) => {
         msg = "";
         if (item.obj.require) {
           if (item.ele == "input" && !item.obj.placeholder) {
             // this.$Message.warning(item.obj.label+"为必填项，请填写后提交!");
-            msg = item.obj.label;
+            msg = item.obj.label+str;
             return true;
           }
 
           if (item.ele == "text" && !item.obj.placeholder) {
             // this.$Message.warning(item.obj.label+"为必填项，请填写后提交!");
-            msg = item.obj.label;
+            msg = item.obj.label+str;
             return true;
           }
           if (item.ele == "select" && item.obj.value < "-1") {
             // this.$Message.warning(item.obj.label+"为必填项，请填写后提交!");
-            msg = item.obj.label;
+            msg = item.obj.label+str;
             return true;
           }
           if (item.ele == "checkbox" && item.obj.value.length == 0) {
             // this.$Message.warning(item.obj.label+"为必填项，请填写后提交!");
-            msg = item.obj.label;
+            msg = item.obj.label+str;
             return true;
           }
           if (item.ele == "truefalse" && !item.obj.value) {
             // this.$Message.warning(item.obj.label+"为必填项，请填写后提交!");
-            msg = item.obj.label;
+            msg = item.obj.label+str;
             return true;
           }
           if (item.ele == "radio" && !toString(item.obj.value)) {
             // this.$Message.warning(item.obj.label+"为必填项，请填写后提交!");
-            msg = item.obj.label;
+            msg = item.obj.label+str;
             return true;
           }
           if (item.ele == "uploads" && item.obj.value.length == 0) {
             // this.$Message.warning(item.obj.label+"为必填项，请填写后提交!");
-            msg = item.obj.label;
+            msg = item.obj.label+str;
             return true;
           }
           if (
@@ -879,7 +888,7 @@ export default {
             (!item.obj.valueDate && !item.obj.valueTime)
           ) {
             // this.$Message.warning(item.obj.label+"为必填项，请填写后提交!");
-            msg = item.obj.label;
+            msg = item.obj.label+str;
             return true;
           }
 
@@ -888,25 +897,27 @@ export default {
             (!item.obj.shengValue && !item.obj.shiValue && !item.obj.quValue)
           ) {
             // this.$Message.warning(item.obj.label+"为必填项，请填写后提交!");
-            msg = item.obj.label;
+            msg = item.obj.label+str;
             return true;
           }
-          if (item.ele == "imgcheck" && item.obj.value.length == 0) {
-            // this.$Message.warning(item.obj.label+"为必填项，请填写后提交!");
-            msg = item.obj.label;
-            return true;
+          if (item.ele == "imgcheck") {
+            if(item.obj.value.length == 0){
+            	 // this.$Message.warning(item.obj.label+"为必填项，请填写后提交!");
+           		msg = item.obj.label+str;
+            	return true;
+            }
           }
           if (
             item.ele == "selectcontact" &&
             (item.obj.value < "-1" && item.obj.value1 < "-1")
           ) {
             // this.$Message.warning(item.obj.label+"为必填项，请填写后提交!");
-            msg = item.obj.label;
+            msg = item.obj.label+str;
             return true;
           }
           if (item.ele == "slider" && !toString(item.obj.value)) {
             // this.$Message.warning(item.obj.label+"为必填项，请填写后提交!");
-            msg = item.obj.label;
+            msg = item.obj.label+str;
             return true;
           }
           if (
@@ -914,7 +925,7 @@ export default {
             (item.obj.value < "-1" && item.obj.valueArr.length == 0)
           ) {
             // this.$Message.warning(item.obj.label+"为必填项，请填写后提交!");
-            msg = item.obj.label;
+            msg = item.obj.label+str;
             return true;
           }
           if (
@@ -922,7 +933,7 @@ export default {
             JSON.stringify(item.obj.selObj) == "{}"
           ) {
             // this.$Message.warning(item.obj.label+"为必填项，请填写后提交!");
-            msg = item.obj.label;
+            msg = item.obj.label+str;
             return true;
           }
           if (
@@ -930,7 +941,7 @@ export default {
             JSON.stringify(item.obj.selObj) == "{}"
           ) {
             // this.$Message.warning(item.obj.label+"为必填项，请填写后提交!");
-            msg = item.obj.label;
+            msg = item.obj.label+str;
             return true;
           }
           if (
@@ -938,7 +949,7 @@ export default {
             JSON.stringify(item.obj.selObj) == "{}"
           ) {
             // this.$Message.warning(item.obj.label+"为必填项，请填写后提交!");
-            msg = item.obj.label;
+            msg = item.obj.label+str;
             return true;
           }
           if (
@@ -946,8 +957,19 @@ export default {
             JSON.stringify(item.obj.selObj) == "{}"
           ) {
             // this.$Message.warning(item.obj.label+"为必填项，请填写后提交!");
-            msg = item.obj.label;
+            msg = item.obj.label+str;
             return true;
+          }
+        }else{
+        	if (item.ele == "imgcheck") {
+            if(item.obj.value.length<item.obj.minlen){
+          		msg=item.obj.label + "最少选择"+item.obj.minlen+"项!"
+          		return true;
+          	}
+          	if(item.obj.value.length>item.obj.maxlen){
+          		msg=item.obj.label + "最多选择"+item.obj.maxlen+"项!"
+          		return true;
+          	}
           }
         }
       });
@@ -964,6 +986,7 @@ export default {
       let msg = this.requireCheck();
       // console.log(JSON.stringify(self.previewObj));
       if (msg == "success") {
+
         if (this.id) {
           self.$api.post(
             "/submit/update",

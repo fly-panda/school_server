@@ -1,18 +1,18 @@
 
 {
-  
+
 }
 export default (_self, h) => {
-return [
-    h("imgShow", {
-        props: {
-            isCheck: true,
-            defaultList:_self.obj.imgArr
-        },
-        on: {
-        }
-    })
-];
+	return [
+		h("imgShow", {
+			props: {
+				isCheck: true,
+				defaultList:_self.obj.imgArr
+			},
+			on: {
+			}
+		})
+	];
 };
 
 
@@ -30,19 +30,21 @@ placeholder: '',
 // 是否显示行内元素
 inlineBlock: false,
 // 是否必填
-require: true,
+require: false,
 // 最大长度
 maxlen:1,
-minlen:0,
+minlen:1,
+isMin:false,
+isMax:false,
 imgArr:[
-                {
-                    'titles':'图片',
-                    'name': '',
-                    'url': '',
-                    'progress':0,
-                    "size":"0",
-                    'labels':"选项"
-                }
+	{
+		'titles':'图片',
+		'name': '',
+		'url': '',
+		'progress':0,
+		"size":"0",
+		'labels':"选项"
+	}
 ],
 describe: '',
 gradesType: 'add',
