@@ -1612,7 +1612,7 @@ a:hover {
 .checkbox-form,
 .radio-box-form {
   .weui-cell__bd {
-    font-size: 14px;
+    font-size: 11px;
   }
   .weui-cell {
     padding: 0;
@@ -1671,7 +1671,7 @@ a:hover {
   }
   input,
   textarea {
-    font-size: 14px;
+    font-size: 11px;
   }
   textarea {
     border: 1px solid #c3c9cf;
@@ -1696,13 +1696,13 @@ a:hover {
   .form-wrapper {
     padding: px2rem(20);
     .title {
-      font-size: 14px;
+      font-size: 16px;
       color: #212A33;
       font-weight: 600;
       margin-bottom: 10px;
     }
     .des {
-      font-size: 9px;
+      font-size: 11px;
       color: #4a4a4a;
       letter-spacing: 0;
       text-align: justify;
@@ -1715,8 +1715,9 @@ a:hover {
     .select-item {
       margin-bottom: 28px;
       .select-item-title {
-        font-size: 14px;
+        font-size: 13px;
         color: #363636;
+        font-weight: 600;
       }
       .select-item-txt {
         font-size: 12px;
