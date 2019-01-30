@@ -124,16 +124,27 @@ export default {
 
 				let typeArr=datas.valuetype.split(",");
 				if(columnsArr.length>0){
-					self.columns8.push({
-						type: 'index2',
-						width: 60,
-						title:"序号",
-						align: 'center',
+					let oldArr=[
+						{
+							type: 'index2',
+							width: 80,
+							title:"序号",
+							align: 'center',
 
-						render: (h, params) => {
-							return h('span', params.index + (this.currentPage- 1) * this.pagesize + 1);
-						}
-					});
+							render: (h, params) => {
+								return h('span', params.index + (this.currentPage- 1) * this.pagesize + 1);
+							}
+						},
+						{
+							// type: 'index2',
+							width: 150,
+							title:"提交人",
+							key:"submiter",
+							align: 'center'
+						},
+					]
+					self.columns8.push(oldArr[0]);
+					self.columns8.push(oldArr[1]);
 					for(let i=0;i<columnsArr.length;i++){
 						let objs={};
 						if(typeArr[i]=="uploadimg"){
@@ -204,7 +215,9 @@ export default {
 							objs={
 								title:columnsArr[i],
 								minWidth:100,
-								key:"value"+i
+								key:"value"+i,
+								ellipsis:true,
+								tooltip:true
 							}
 						}
 						self.columns8.push(objs);
@@ -280,8 +293,11 @@ export default {
 		font-size: 16px;
 		color: #888888;
 		letter-spacing: 0.95px;
+
 		.title-txt{
-			flex:1;
+			// flex:1;
+			width: 1170px;
+			margin: 0 auto;
 		}
 		.btn-view{
 			button{
@@ -302,9 +318,10 @@ export default {
 		}
 	}
 	.duplicate-content {
-		width: 100%;
+		width: 1170px;
+		margin:0 auto;
 		// height: 100%;
-		padding: 20px 215px;
+		padding: 20px 0;
 
 		overflow-y: auto;
 		.nopass{
