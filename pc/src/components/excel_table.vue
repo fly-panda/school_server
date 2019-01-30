@@ -261,7 +261,9 @@
 								objs={
 									title:columnsArr[i],
 									minWidth:100,
-									key:"value"+i
+									key:"value"+i,
+									ellipsis:true,
+									tooltip:true
 								}
 							}
 							self.columns8.push(objs);
