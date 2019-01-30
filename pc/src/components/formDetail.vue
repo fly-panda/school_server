@@ -589,17 +589,20 @@ export default {
 	filter: {
 
 	},
-	mounted() {
+	created() {
 		// console.log("asd",this.previewObj)
 		// this.previewObj=datas.data;
 		this.getData();
 		// this.getSheng();
-		this.previewObj.data.map(function(item){
-			if (item.ele == "imgcheck") {
-				item.obj.minlen=Number(item.obj.minlen);
-				item.obj.maxlen=Number(item.obj.maxlen);
-			}
-		})
+		setTimeout(() => {
+		  this.previewObj.data.map(function(item){
+				if (item.ele == "imgcheck") {
+					item.obj.minlen=Number(item.obj.minlen);
+					item.obj.maxlen=Number(item.obj.maxlen);
+				}
+			})
+		}, 300)
+
 		if (this.taskid) {
 		} else {
 			// this.previewObj=this.$api.sGetObject("previewObj");

@@ -165,6 +165,7 @@ export default {
 .titles{
 	padding: 58px 66px 20px 66px;
 	font-family: PingFangSC-Medium;
+	text-align: center;
 	font-size: 24px;
 	color: #333333;
 	letter-spacing: 0;
