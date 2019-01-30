@@ -1658,7 +1658,16 @@ a:hover {
   font-size: 20px !important;
   background: #fff !important;
 }
+.scroller-item {
+  font-size: 18px !important;
+}
 .form-page {
+  .vux-tab-ink-bar,.vux-tab-ink-bar-transition-backward {
+    height: 2px !important;
+    span {
+      width: 40px !important;
+    }
+  }
   padding-bottom: 53px;
   padding-top: 44px;
   font-size: 14px;
@@ -1699,13 +1708,13 @@ a:hover {
       font-size: px2rem(18);
       color: #212A33;
       font-weight: 600;
-      margin-bottom: 10px;
+      margin-bottom: 24px;
     }
     .des {
       font-size: px2rem(15);
       color: #4a4a4a;
       letter-spacing: 0;
-      text-align: justify;
+      // text-align: justify;
       line-height: 28px;
       margin-bottom: 20px;
       img {

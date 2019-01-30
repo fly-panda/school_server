@@ -10,7 +10,7 @@
               @click="toggle(0)"
               class="open"
               src="../../assets/img/btn/close.png"
-              width="50"
+              width="60"
               alt
             >
             <img
@@ -18,7 +18,7 @@
               @click="toggle(1)"
               class="close"
               src="../../assets/img/btn/open.png"
-              width="50"
+              width="60"
               alt
             >
           </div>
@@ -226,12 +226,12 @@ export default {
           position: absolute;
         }
         .del {
-          top: -40px;
-          left: 0;
+          top: -46px;
+          left: 11px;
         }
         .change {
-          top: 4px;
-          left: -44px;
+          top: 16px;
+          left: -50px;
         }
       }
     }

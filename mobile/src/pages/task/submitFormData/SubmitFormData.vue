@@ -208,7 +208,7 @@ export default {
       align-items: center;
       justify-content: space-between;
       border-bottom: 1px solid #f0f0f0;
-      padding: 20px 0 6px 0;
+      padding: 20px 0 8px 0;
       .left {
         display: flex;
         align-items: center;

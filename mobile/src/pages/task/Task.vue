@@ -199,8 +199,8 @@ export default {
           align-items: center;
           .icon1 {
             display: inline-block;
-            width: 13px;
-            height: 18px;
+            width: 20px;
+            height: 25px;
             margin-right: 10px;
           }
           .icon2 {

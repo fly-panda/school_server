@@ -1,5 +1,5 @@
 <template>
-  <div v-show="!isShowloading">
+  <div v-show="!isShowloading" class="box">
     <!-- tab切换 -->
     <tab
       :line-width="1"
@@ -163,6 +163,14 @@ export default {
 .vux-tab .vux-tab-item {
   font-size: 20px !important;
   background: #fff !important;
+}
+.box {
+  .vux-tab-ink-bar,.vux-tab-ink-bar-transition-backward {
+    height: 2px !important;
+    span {
+      width: 80px !important;
+    }
+  }
 }
 
 .history-record {
