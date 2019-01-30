@@ -73,7 +73,7 @@
                 <Input type="text" v-model="settingFormItem.placeholder"></Input>
             </FormItem>
             <FormItem v-if="!(settingFormItem.type == 'title'||settingFormItem.type == 'imgShow')"  label="提示" prop="describe">
-                <Input type="textarea" :rows="3" v-model="settingFormItem.describe"></Input>
+                <Input style="font-size: 12px;" type="textarea" :rows="3" v-model="settingFormItem.describe"></Input>
             </FormItem>
             <FormItem  v-if="!(settingFormItem.type == 'describe' || settingFormItem.type == 'title'||settingFormItem.type == 'imgShow'||settingFormItem.type == 'download'|| settingFormItem.type == 'slider')" label="校验" :style="settingFormItem.type==='input'?{'font-weight': 400, 'border-bottom': 'none', 'padding-bottom': 0}:{'font-weight': 400}" prop="require">
                 <Checkbox style="font-weight: 400" v-model="settingFormItem.require" v-if="settingFormItem.type != 'imgCheck'">&nbsp;&nbsp;这是一个必填选项</Checkbox>
@@ -274,7 +274,7 @@
                                 </Col>
                             </Row>
                             <Row style="padding: 0 20px;" >
-                                <Col span="12">
+                                <Col span="16">
                                 <Button type="dashed" long @click="handleAddSelectItems(index)" icon="md-add">增加选项</Button>
                                 </Col>
                             </Row>
@@ -541,6 +541,10 @@ export default {
         }
     },
     created(){
+    	  document.body.ondrop = function (event) {
+            event.preventDefault();
+            event.stopPropagation();
+        }
         if(this.$route.query.isBack==1){
             let previewObj=this.$api.sGetObject("previewObj");
             this.formTitle=previewObj.title;
@@ -749,7 +753,9 @@ export default {
             curRemoveObj.splice(index, 1)
         },
         handleRemoveSelectItems(index,i){
+
             let curRemoveObj = this.sortable_item[this.curIndex].obj.items[index].arrs;
+            console.log(this.sortable_item[this.curIndex])
             if(curRemoveObj.length == 1){
                 this.$Message.error('至少保留一个选项')
                 return false
@@ -768,12 +774,14 @@ export default {
             }else{
                 curRemoveObj.push({
                     "label_value": curRemoveObj.length + 1,
-                    "label_name": ''
+                    "label_name": '',
+                   	"arrs":[]
                 })
             }
 
         },
         handleAddSelectItems(index){
+
             let curRemoveObj = this.sortable_item[this.curIndex].obj.items[index].arrs;
             curRemoveObj.push({
                 "label_value": curRemoveObj.length + 1,

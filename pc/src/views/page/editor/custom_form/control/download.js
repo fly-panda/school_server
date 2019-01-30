@@ -23,6 +23,7 @@ export default (_self, h) => {
                     style: {
                         width: '100%',
                         height: '38px',
+                        'line-height':'38px',
                         background: '#FFFFFF',
                         border: '1px dashed #C1C1C1',
                         'border-radius': '2px',
@@ -35,7 +36,7 @@ export default (_self, h) => {
 
                     },
                     props: {
-                     
+
                     }
                 },item.label_name)
             ]
