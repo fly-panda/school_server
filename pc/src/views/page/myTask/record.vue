@@ -231,16 +231,12 @@ export default {
 		},
 
 		backFun(){
-			if(this.data7.length==0){
 				this.$router.push({
-                    path:"/taskDetail",
-                    query:{
-                    	taskid:this.taskid
-                    }
-                })
-			}else{
-				this.$router.go(-1);
-			}
+            path:"/taskDetail",
+            query:{
+            	taskid:this.taskid
+            }
+        })
 		},
 		changeFun(page){
 			this.currentPage=page;
