@@ -286,7 +286,7 @@
 					let datas=JSON.parse(r.data);
 					self.submitMsg.state=datas.state;
 					for(let i=0;i<datas.content.length;i++){
-						datas.content[i].title=self.columns8[i+1].title;
+						datas.content[i].title=self.columns8[i+2].title;
 						if(datas.content[i].type=="uploadimg"&&datas.content[i].value!=""){
 							datas.content[i].value=datas.content[i].value.split(",");
 						}
@@ -294,6 +294,7 @@
 							datas.content[i].value=datas.content[i].value.split(",");
 						}
 					}
+
 					self.reason=datas.reason;
 					self.submitMsg.submiter=datas.submiter;
 					self.submitMsg.createtime=datas.createtime;
