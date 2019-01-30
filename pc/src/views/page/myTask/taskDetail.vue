@@ -217,7 +217,20 @@ export default {
             padding:20px 30px;
             line-height: 20px;
             margin-bottom: 20px;
-            font-size: 15px;
+            font-family: SourceHanSansCN-Medium;
+					font-size: 13px;
+					color: #363636;
+					letter-spacing: 0.66px;
+					line-height: 13px;
+					p{
+						margin-top: 10px;
+						font-family: SourceHanSansCN-Regular;
+						font-size: 13px;
+						color: #363636;
+						letter-spacing: 0.66px;
+						text-align: justify;
+						line-height: 13px;
+					}
         }
         .contentTop{
             height: 160px;
