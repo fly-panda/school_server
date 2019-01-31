@@ -80,7 +80,7 @@
                 <img :src="baseUrl + item.url">
                 <div class="del-img" 
                      @click="delImg(obj.obj.uploadList, index)"
-                     v-show="openType != 0">X</div>
+                     >X</div>
               </div>
             </div>
             <div class="upload">
@@ -978,11 +978,12 @@ export default {
     },
     // 删除上传的图片
     delImg(list, idx) {
-      // console.log(list);
-      let path = list[idx].src;
+      console.log(list);
+      let path = list[idx].url;
       Indicator.open({
         text: "删除中",
       });
+      console.log(path)
       this.$api.get("/file/deleteFile", { path: path }, r => {
         console.log(r);
         Indicator.close();

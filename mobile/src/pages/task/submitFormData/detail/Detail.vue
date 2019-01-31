@@ -4,7 +4,7 @@
     <div class="bghly" v-show="allData.state == 2">
       <div class="box">
         <div class="title">不合格理由：</div>
-        <div v-html="allData.reason"></div>
+        <div v-html="allData.reason" style="word-wrap:break-word"></div>
       </div>
     </div>
     <!-- 标题 -->
