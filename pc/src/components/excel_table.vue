@@ -190,7 +190,6 @@
 						]
 						self.columns8.push(oldArr[0]);
 						self.columns8.push(oldArr[1]);
-						console.log(1,self.columns8)
 						for(let i=0;i<columnsArr.length;i++){
 							let objs={};
 							if(typeArr[i]=="uploadimg"){
